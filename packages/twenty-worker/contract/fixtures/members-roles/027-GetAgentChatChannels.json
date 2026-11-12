@@ -1,0 +1,40 @@
+{
+  "flow": "members-roles",
+  "sequence": 27,
+  "capturedAt": "2026-11-12T12:15:10.244Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetAgentChatChannels",
+  "query": "query GetAgentChatChannels {\n  agentChatChannels {\n    id\n    name\n    icon\n    color\n    position\n    roleIds\n    applicationId\n    isAccessible\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "263",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "agentChatChannels": [
+        {
+          "id": "66ac0db3-489c-4d74-8678-2f4dca1b46b7",
+          "name": "General",
+          "icon": "IconMessages",
+          "color": null,
+          "position": 0,
+          "roleIds": [],
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "isAccessible": true,
+          "__typename": "AgentChatChannel"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,94 @@
+{
+  "flow": "members-roles",
+  "sequence": 87,
+  "capturedAt": "2026-11-12T12:20:30.287Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "97f03083-fefb-4565-b1d6-d14d78821b14",
+      "queryId": "record-table-empty-company",
+      "operationSignature": {
+        "objectNameSingular": "company",
+        "variables": {
+          "filter": {
+            "or": [
+              {
+                "address": {
+                  "addressStreet1": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressStreet2": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressCity": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressState": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressCountry": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressPostcode": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              }
+            ]
+          },
+          "orderBy": [
+            {
+              "annualRevenue": {
+                "amountMicros": "DescNullsLast"
+              }
+            },
+            {
+              "position": "AscNullsFirst"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-5>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

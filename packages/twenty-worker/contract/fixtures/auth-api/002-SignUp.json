@@ -1,0 +1,38 @@
+{
+  "flow": "auth-api",
+  "sequence": 2,
+  "capturedAt": "2026-11-12T11:32:52.606Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SignUp",
+  "query": "mutation SignUp($email: String!, $password: String!, $captchaToken: String, $locale: String, $verifyEmailRedirectPath: String, $affiliatePartnerName: String) {\n  signUp(\n    email: $email\n    password: $password\n    captchaToken: $captchaToken\n    locale: $locale\n    verifyEmailRedirectPath: $verifyEmailRedirectPath\n    affiliatePartnerName: $affiliatePartnerName\n  ) {\n    availableWorkspaces {\n      ...AvailableWorkspacesFragment\n      __typename\n    }\n    tokens {\n      ...AuthTokenPairFragment\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AvailableWorkspaceFragment on AvailableWorkspace {\n  id\n  displayName\n  loginToken\n  inviteHash\n  personalInviteToken\n  workspaceUrls {\n    subdomainUrl\n    customUrl\n    __typename\n  }\n  logo\n  sso {\n    type\n    id\n    issuer\n    name\n    status\n    __typename\n  }\n  __typename\n}\n\nfragment AuthTokenFragment on AuthToken {\n  token\n  expiresAt\n  __typename\n}\n\nfragment AvailableWorkspacesFragment on AvailableWorkspaces {\n  availableWorkspacesForSignIn {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  availableWorkspacesForSignUp {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  __typename\n}\n\nfragment AuthTokenPairFragment on AuthTokenPair {\n  accessOrWorkspaceAgnosticToken {\n    ...AuthTokenFragment\n    __typename\n  }\n  refreshToken {\n    ...AuthTokenFragment\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "email": "alice@example.com",
+    "password": "AnotherPassword1",
+    "locale": "en"
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "168",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "User already exists",
+        "extensions": {
+          "subCode": "USER_ALREADY_EXISTS",
+          "userFriendlyMessage": "User already exists",
+          "code": "FORBIDDEN"
+        }
+      }
+    ],
+    "data": null
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,99 @@
+{
+  "flow": "data-model-api",
+  "sequence": 3,
+  "capturedAt": "2026-11-12T11:54:48.458Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconRelationManyToOne",
+        "label": "Lead",
+        "name": "lead",
+        "isLabelSyncedWithName": true,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "RELATION",
+        "relationCreationPayload": {
+          "type": "MANY_TO_ONE",
+          "targetObjectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+          "targetFieldLabel": "Led Projects",
+          "targetFieldIcon": "IconUsers"
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-69>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1222",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createOneField": {
+        "id": "48a49573-3ede-4ad8-ba07-ad9972092369",
+        "type": "RELATION",
+        "name": "lead",
+        "label": "Lead",
+        "description": "Projects tied to the Person",
+        "icon": "IconRelationManyToOne",
+        "isActive": true,
+        "isUnique": false,
+        "isSearchable": false,
+        "isNullable": true,
+        "createdAt": "2026-11-12T11:54:47.755Z",
+        "updatedAt": "2026-11-12T11:54:47.755Z",
+        "settings": {
+          "onDelete": "SET_NULL",
+          "relationType": "MANY_TO_ONE",
+          "joinColumnName": "leadId"
+        },
+        "defaultValue": null,
+        "options": null,
+        "isLabelSyncedWithName": true,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "object": {
+          "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+          "__typename": "Object"
+        },
+        "relation": {
+          "type": "MANY_TO_ONE",
+          "sourceObjectMetadata": {
+            "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+            "nameSingular": "project",
+            "namePlural": "projects",
+            "__typename": "Object"
+          },
+          "targetObjectMetadata": {
+            "id": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+            "nameSingular": "person",
+            "namePlural": "people",
+            "__typename": "Object"
+          },
+          "sourceFieldMetadata": {
+            "id": "48a49573-3ede-4ad8-ba07-ad9972092369",
+            "name": "lead",
+            "__typename": "Field"
+          },
+          "targetFieldMetadata": {
+            "id": "d0b4047a-cb68-468b-bd81-535f040fb57e",
+            "name": "ledProjects",
+            "__typename": "Field"
+          },
+          "__typename": "Relation"
+        },
+        "morphRelations": null,
+        "__typename": "Field"
+      }
+    }
+  },
+  "repeatCount": 1
+}

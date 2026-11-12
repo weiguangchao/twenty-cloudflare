@@ -1,0 +1,45 @@
+{
+  "flow": "auth-signout-signin",
+  "sequence": 14,
+  "capturedAt": "2026-11-12T11:21:16.392Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CurrentUserSessions",
+  "query": "query CurrentUserSessions {\n  currentUserSessions {\n    id\n    workspaceId\n    authProvider\n    isImpersonating\n    userAgent\n    ipAddress\n    country\n    region\n    city\n    createdAt\n    lastActiveAt\n    expiresAt\n    isCurrent\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "546",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "currentUserSessions": [
+        {
+          "id": "d27363a5-cac4-4981-bf49-6e736552f416",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:19:45.896Z",
+          "lastActiveAt": "2026-11-12T11:19:45.896Z",
+          "expiresAt": "2027-05-11T11:19:45.896Z",
+          "isCurrent": true,
+          "__typename": "UserSession"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

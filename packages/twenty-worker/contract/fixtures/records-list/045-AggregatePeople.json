@@ -1,0 +1,49 @@
+{
+  "flow": "records-list",
+  "sequence": 45,
+  "capturedAt": "2026-11-12T11:24:23.321Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregatePeople",
+  "query": "query AggregatePeople($filter: PersonFilterInput) {\n  people(filter: $filter) {\n    percentageEmptyPhones\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "emails": {
+            "primaryEmail": {
+              "ilike": "%example3%"
+            }
+          }
+        },
+        {
+          "emails": {
+            "additionalEmails": {
+              "like": "%example3%"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "percentageEmptyPhones": 1,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 2
+}

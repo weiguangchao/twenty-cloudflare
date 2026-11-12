@@ -1,0 +1,25 @@
+{
+  "flow": "files",
+  "sequence": 79,
+  "capturedAt": "2026-11-12T12:12:24.923Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "OnEventSubscription",
+  "query": "subscription OnEventSubscription($eventStreamId: String!) {\n  onEventSubscription(eventStreamId: $eventStreamId) {\n    eventStreamId\n    objectRecordEventsWithQueryIds {\n      objectRecordEvent {\n        action\n        objectNameSingular\n        recordId\n        userId\n        workspaceMemberId\n        properties {\n          updatedFields\n          before\n          after\n          diff\n        }\n      }\n      queryIds\n    }\n    metadataEvents {\n      type\n      metadataName\n      recordId\n      updatedCollectionHash\n      properties {\n        updatedFields\n        before\n        after\n        diff\n      }\n    }\n    queueJobEvents {\n      jobId\n      state\n      attemptsMade\n      failedReason\n      progress\n      enqueuedAt\n      startedAt\n      finishedAt\n    }\n  }\n}",
+  "variables": {
+    "eventStreamId": "bcbaff3c-237e-4dbb-ac16-205380a3edc2"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json; charset=utf-8",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "cache-control": "no-cache",
+    "content-type": "text/event-stream"
+  },
+  "response": null,
+  "repeatCount": 1
+}

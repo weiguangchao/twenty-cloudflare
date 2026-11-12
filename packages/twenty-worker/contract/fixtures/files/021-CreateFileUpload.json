@@ -1,0 +1,38 @@
+{
+  "flow": "files",
+  "sequence": 21,
+  "capturedAt": "2026-11-12T12:09:25.571Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateFileUpload",
+  "query": "mutation CreateFileUpload($filename: String!, $size: Float!, $fileFolder: FileFolder!, $fieldMetadataId: String) {\n  createFileUpload(\n    filename: $filename\n    size: $size\n    fileFolder: $fileFolder\n    fieldMetadataId: $fieldMetadataId\n  ) {\n    fileId\n    uploadUrl\n    contentType\n    expiresAt\n    __typename\n  }\n}",
+  "variables": {
+    "filename": "avatar.png",
+    "size": 177,
+    "fileFolder": "CorePicture"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "737",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createFileUpload": {
+        "fileId": "62238fe7-1b38-4466-865f-7c717cf4ad74",
+        "uploadUrl": "http://localhost:3000/file-upload/62238fe7-1b38-4466-865f-7c717cf4ad74?token=<redacted-jwt-88>",
+        "contentType": "application/octet-stream",
+        "expiresAt": "2026-11-12T12:24:25.483Z",
+        "__typename": "FileUploadTarget"
+      }
+    }
+  },
+  "repeatCount": 1
+}

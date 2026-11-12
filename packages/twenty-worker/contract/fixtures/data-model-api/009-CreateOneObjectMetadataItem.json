@@ -1,0 +1,1215 @@
+{
+  "flow": "data-model-api",
+  "sequence": 9,
+  "capturedAt": "2026-11-12T11:54:49.192Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneObjectMetadataItem",
+  "query": "mutation CreateOneObjectMetadataItem($input: CreateOneObjectInput!) {\n  createOneObject(input: $input) {\n    id\n    universalIdentifier\n    nameSingular\n    namePlural\n    labelSingular\n    labelPlural\n    description\n    icon\n    color\n    isRemote\n    isActive\n    isSystem\n    isUIEditable\n    isUICreatable\n    isSearchable\n    openRecordIn\n    shortcut\n    duplicateCriteria\n    createdAt\n    updatedAt\n    labelIdentifierFieldMetadataId\n    imageIdentifierFieldMetadataId\n    isLabelSyncedWithName\n    applicationId\n    fieldsList {\n      id\n      universalIdentifier\n      type\n      name\n      label\n      description\n      icon\n      isActive\n      isSystem\n      isUIEditable\n      isSystemSideEffect\n      isNullable\n      isUnique\n      isSearchable\n      createdAt\n      updatedAt\n      defaultValue\n      options\n      settings\n      isLabelSyncedWithName\n      morphId\n      applicationId\n      relation {\n        type\n        sourceObjectMetadata {\n          id\n          nameSingular\n          namePlural\n          __typename\n        }\n        targetObjectMetadata {\n          id\n          nameSingular\n          namePlural\n          __typename\n        }\n        sourceFieldMetadata {\n          id\n          name\n          __typename\n        }\n        targetFieldMetadata {\n          id\n          name\n          __typename\n        }\n        __typename\n      }\n      morphRelations {\n        type\n        sourceObjectMetadata {\n          id\n          nameSingular\n          namePlural\n          __typename\n        }\n        targetObjectMetadata {\n          id\n          nameSingular\n          namePlural\n          __typename\n        }\n        sourceFieldMetadata {\n          id\n          name\n          __typename\n        }\n        targetFieldMetadata {\n          id\n          name\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "object": {
+        "labelSingular": "Person",
+        "labelPlural": "People",
+        "nameSingular": "person",
+        "namePlural": "people",
+        "icon": "IconUser",
+        "isLabelSyncedWithName": true
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-69>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "27214",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "Multiple validation errors occurred while creating object",
+        "extensions": {
+          "code": "METADATA_VALIDATION_FAILED",
+          "errors": {
+            "fieldMetadata": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "59517354-96bc-5074-9da3-1a9209f9b0b7",
+                  "name": "name",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "a77db1bd-716e-5aa5-89aa-dbadcbca07f4",
+                  "name": "id",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "230d4619-5610-5372-a4e7-1d2abcc5e229",
+                  "name": "createdAt",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "2e5c96e9-b7a4-5a48-aca0-4781bbbee2d9",
+                  "name": "createdBy",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "f62cf085-a748-55a5-b327-2955717865d6",
+                  "name": "deletedAt",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "0d0bf3f7-b521-5356-9ebe-60f8a46e70b1",
+                  "name": "position",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "97536123-a399-5b5f-a0cb-f9d47e8fe63a",
+                  "name": "updatedAt",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "222ede4f-5384-5ced-bb4e-d706b19fcf64",
+                  "name": "updatedBy",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "464afc7a-c0a4-543e-a732-aa1884d39d14",
+                  "name": "searchVector",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "51077eff-db6b-5d5a-99dc-890c9017d3b8",
+                  "name": "timelineActivities",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "targetPerson",
+                    "message": "Name \"targetPerson\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"targetPerson\" is not available as it is already used by another field"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Relation target object metadata not found",
+                    "userFriendlyMessage": "Object targeted by the relation not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "041ebd34-729f-5d96-8e95-747cc6a54dda",
+                  "name": "targetPerson",
+                  "objectMetadataUniversalIdentifier": "20202020-6736-4337-b5c4-8b39fae325a5"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "321ad945-bab2-5f3a-8f8a-d0ee9abf8844",
+                  "name": "attachments",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "targetPerson",
+                    "message": "Name \"targetPerson\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"targetPerson\" is not available as it is already used by another field"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Relation target object metadata not found",
+                    "userFriendlyMessage": "Object targeted by the relation not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "7194a3bb-fef0-5372-becf-d38df14bfa06",
+                  "name": "targetPerson",
+                  "objectMetadataUniversalIdentifier": "20202020-bd3d-4c60-8dca-571c71d4447a"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "cd16a9fe-9c1a-5e55-a054-b0243e32b359",
+                  "name": "noteTargets",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "targetPerson",
+                    "message": "Name \"targetPerson\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"targetPerson\" is not available as it is already used by another field"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Relation target object metadata not found",
+                    "userFriendlyMessage": "Object targeted by the relation not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "35c9d0a3-9cc7-5fc0-9107-175eb798536f",
+                  "name": "targetPerson",
+                  "objectMetadataUniversalIdentifier": "20202020-fff0-4b44-be82-bda313884400"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "f0bc4e35-72e5-534b-86b8-3a79e40158af",
+                  "name": "taskTargets",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "targetPerson",
+                    "message": "Name \"targetPerson\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"targetPerson\" is not available as it is already used by another field"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Relation target object metadata not found",
+                    "userFriendlyMessage": "Object targeted by the relation not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "444f6f8b-384f-5da1-a72d-7d9afc83708f",
+                  "name": "targetPerson",
+                  "objectMetadataUniversalIdentifier": "20202020-5a9a-44e8-95df-771cd06d0fb1"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Field to create related object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "f9b07526-2b15-5b74-8eaf-ab7151ec1e38",
+                  "name": "agentChatThreadTargets",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "targetPerson",
+                    "message": "Name \"targetPerson\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"targetPerson\" is not available as it is already used by another field"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Relation target object metadata not found",
+                    "userFriendlyMessage": "Object targeted by the relation not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "a32a9eed-656b-5bd5-92b2-4ec0c7feba71",
+                  "name": "targetPerson",
+                  "objectMetadataUniversalIdentifier": "9f2a5bf4-3a57-4e61-b561-eaf5a5b86973"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              }
+            ],
+            "objectMetadata": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "OBJECT_ALREADY_EXISTS",
+                    "message": "Object already exists",
+                    "userFriendlyMessage": "Object already exists"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467",
+                  "namePlural": "people",
+                  "nameSingular": "person"
+                },
+                "metadataName": "objectMetadata",
+                "type": "create"
+              }
+            ],
+            "view": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d"
+                },
+                "metadataName": "view",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b"
+                },
+                "metadataName": "view",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "fd8b0cbc-aa8b-5c55-a046-f2b7dffc8d78"
+                },
+                "metadataName": "view",
+                "type": "create"
+              }
+            ],
+            "viewField": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "67499dc0-773f-5b9c-b25c-32520561f47f",
+                  "viewUniversalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d",
+                  "fieldMetadataUniversalIdentifier": "59517354-96bc-5074-9da3-1a9209f9b0b7"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "4738e1f5-360f-50ab-945a-0896422c0214",
+                  "viewUniversalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d",
+                  "fieldMetadataUniversalIdentifier": "230d4619-5610-5372-a4e7-1d2abcc5e229"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "52c8e6e7-634d-54de-b2a3-57bdf7eafb7f",
+                  "viewUniversalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d",
+                  "fieldMetadataUniversalIdentifier": "2e5c96e9-b7a4-5a48-aca0-4781bbbee2d9"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "fe22d7bc-21c6-5e2c-9f56-9acbfc68c7be",
+                  "viewUniversalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d",
+                  "fieldMetadataUniversalIdentifier": "97536123-a399-5b5f-a0cb-f9d47e8fe63a"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "135de3a7-ceb8-5edf-8b7a-bb7aa0850ac8",
+                  "viewUniversalIdentifier": "7218a75e-0238-5ba6-82be-e1bece61c04d",
+                  "fieldMetadataUniversalIdentifier": "222ede4f-5384-5ced-bb4e-d706b19fcf64"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "0ab9229e-2b5e-587a-8eca-c6fcc59c401f",
+                  "viewUniversalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b",
+                  "fieldMetadataUniversalIdentifier": "59517354-96bc-5074-9da3-1a9209f9b0b7"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "9c8c0e8f-6bf4-5e53-ae97-3424a5747caf",
+                  "viewUniversalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b",
+                  "fieldMetadataUniversalIdentifier": "230d4619-5610-5372-a4e7-1d2abcc5e229"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "d64eb60f-c599-5866-8c2e-734930f20ead",
+                  "viewUniversalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b",
+                  "fieldMetadataUniversalIdentifier": "2e5c96e9-b7a4-5a48-aca0-4781bbbee2d9"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "026747f1-dc1e-594b-ab02-6c5fc34d38bd",
+                  "viewUniversalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b",
+                  "fieldMetadataUniversalIdentifier": "97536123-a399-5b5f-a0cb-f9d47e8fe63a"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "45be01e6-330c-562b-bbd4-a7feff1f34ad",
+                  "viewUniversalIdentifier": "eb70810b-a6cf-5e58-82c1-445726a9978b",
+                  "fieldMetadataUniversalIdentifier": "222ede4f-5384-5ced-bb4e-d706b19fcf64"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "ecaacf84-b54c-54d4-91b3-ba64f061c38c",
+                  "viewUniversalIdentifier": "fd8b0cbc-aa8b-5c55-a046-f2b7dffc8d78",
+                  "fieldMetadataUniversalIdentifier": "230d4619-5610-5372-a4e7-1d2abcc5e229"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "be0f70c0-182a-5618-b606-d83477a518b1",
+                  "viewUniversalIdentifier": "fd8b0cbc-aa8b-5c55-a046-f2b7dffc8d78",
+                  "fieldMetadataUniversalIdentifier": "2e5c96e9-b7a4-5a48-aca0-4781bbbee2d9"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "dc2b273f-2836-5937-b513-7b2f997319f4",
+                  "viewUniversalIdentifier": "fd8b0cbc-aa8b-5c55-a046-f2b7dffc8d78",
+                  "fieldMetadataUniversalIdentifier": "97536123-a399-5b5f-a0cb-f9d47e8fe63a"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "View not found",
+                    "userFriendlyMessage": "View not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "147fc8c6-5b36-5524-8c31-3ec3fedb94ae",
+                  "viewUniversalIdentifier": "fd8b0cbc-aa8b-5c55-a046-f2b7dffc8d78",
+                  "fieldMetadataUniversalIdentifier": "222ede4f-5384-5ced-bb4e-d706b19fcf64"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              }
+            ],
+            "index": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_ALREADY_EXISTS",
+                    "message": "Index with same name already exists",
+                    "userFriendlyMessage": "Index with same name already exists"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "6546f35f-f81a-4dc8-a446-c20835266683",
+                  "name": "IDX_e49dd7da4ed5c919babcd31c93b"
+                },
+                "metadataName": "index",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_ALREADY_EXISTS",
+                    "message": "Index with same name already exists",
+                    "userFriendlyMessage": "Index with same name already exists"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "dd74cb3e-d4c4-4ddd-8131-7496a67fb64a",
+                  "name": "IDX_04d8ad72536bbeb4430998211f8"
+                },
+                "metadataName": "index",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_ALREADY_EXISTS",
+                    "message": "Index with same name already exists",
+                    "userFriendlyMessage": "Index with same name already exists"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "7fb7bbd8-34e3-470a-8918-9d4ea848600a",
+                  "name": "IDX_a1e176335c31525bf3cc12f0e00"
+                },
+                "metadataName": "index",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_ALREADY_EXISTS",
+                    "message": "Index with same name already exists",
+                    "userFriendlyMessage": "Index with same name already exists"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "7331bb66-3d41-419c-a4e8-9ff98e8b0004",
+                  "name": "IDX_f3d9b01b0d587804e7beeb2a534"
+                },
+                "metadataName": "index",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_ALREADY_EXISTS",
+                    "message": "Index with same name already exists",
+                    "userFriendlyMessage": "Index with same name already exists"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "39a22a77-a698-4a07-ba07-76c833442be9",
+                  "name": "IDX_f1441ffea34b02323606d22c751"
+                },
+                "metadataName": "index",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INDEX_OBJECT_NOT_FOUND",
+                    "message": "Could not find index related object metadata",
+                    "userFriendlyMessage": "Index related object not found"
+                  },
+                  {
+                    "code": "INDEX_FIELD_NOT_FOUND",
+                    "message": "Could not find index field related field metadata",
+                    "userFriendlyMessage": "Field referenced in index does not exist"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "3103b94f-3205-57d2-b925-202125854f8d",
+                  "name": "IDX_5acf06eaecb9ad3f7218a96accd"
+                },
+                "metadataName": "index",
+                "type": "create"
+              }
+            ],
+            "pageLayout": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_PAGE_LAYOUT_DATA",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "41f88f46-168d-5b7a-b229-1d4f96fb4e36",
+                  "name": "Default Person Layout"
+                },
+                "metadataName": "pageLayout",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_PAGE_LAYOUT_DATA",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "de4bf8ed-27da-511f-a0d5-e41886aa867d",
+                  "name": "Creation Form"
+                },
+                "metadataName": "pageLayout",
+                "type": "create"
+              }
+            ],
+            "pageLayoutWidget": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "be6d969d-b0d2-589d-a494-723e34208567",
+                  "pageLayoutTabUniversalIdentifier": "7781746b-a0d0-55ef-afd7-8c7fb51bbd02"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "2bfaab9d-bf0f-5cfe-aa51-7f318b43a669",
+                  "pageLayoutTabUniversalIdentifier": "772758c3-8acc-5418-9c2f-b2d4cdc94d84"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "b81eed87-5eb9-5bee-9d31-a7a37505df20",
+                  "pageLayoutTabUniversalIdentifier": "f9816c8f-346e-5a84-aec4-fe452f651e05"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "5c3d7464-0064-5ee5-abc3-c15bb54d64a8",
+                  "pageLayoutTabUniversalIdentifier": "2fc24d18-f92c-504e-937e-176af08ac4ce"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "a034ece2-cfb2-5826-9677-b06e35cb255c",
+                  "pageLayoutTabUniversalIdentifier": "28759736-8b24-5843-9b20-200104d1c1a7"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_TAB_NOT_FOUND",
+                    "message": "Page layout tab not found",
+                    "userFriendlyMessage": "Page layout tab not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "ff3514c8-3079-5c34-97bb-7bd5a304b2e9",
+                  "pageLayoutTabUniversalIdentifier": "4569589c-18ff-5af9-81ae-979f46a011a1"
+                },
+                "metadataName": "pageLayoutWidget",
+                "type": "create"
+              }
+            ],
+            "pageLayoutTab": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "772758c3-8acc-5418-9c2f-b2d4cdc94d84",
+                  "title": "Home"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "f9816c8f-346e-5a84-aec4-fe452f651e05",
+                  "title": "Timeline"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "2fc24d18-f92c-504e-937e-176af08ac4ce",
+                  "title": "Tasks"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "28759736-8b24-5843-9b20-200104d1c1a7",
+                  "title": "Notes"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "4569589c-18ff-5af9-81ae-979f46a011a1",
+                  "title": "Files"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "PAGE_LAYOUT_NOT_FOUND",
+                    "message": "Page layout not found",
+                    "userFriendlyMessage": "Page layout not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "7781746b-a0d0-55ef-afd7-8c7fb51bbd02",
+                  "title": "Fields"
+                },
+                "metadataName": "pageLayoutTab",
+                "type": "create"
+              }
+            ],
+            "commandMenuItem": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_COMMAND_MENU_ITEM_INPUT",
+                    "message": "Navigation target object metadata not found",
+                    "userFriendlyMessage": "Navigation target object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "9b063f2e-b4d1-539d-952d-1da3037b7ad6"
+                },
+                "metadataName": "commandMenuItem",
+                "type": "create"
+              }
+            ],
+            "navigationMenuItem": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_NAVIGATION_MENU_ITEM_INPUT",
+                    "message": "Target object metadata not found",
+                    "userFriendlyMessage": "Target object not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "20a3066e-feed-4ca8-a2f8-6cee0518153e",
+                  "name": null,
+                  "type": "OBJECT"
+                },
+                "metadataName": "navigationMenuItem",
+                "type": "create"
+              }
+            ],
+            "searchFieldMetadata": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "FIELD_METADATA_NOT_FOUND",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  },
+                  {
+                    "code": "TS_VECTOR_FIELD_METADATA_NOT_FOUND",
+                    "message": "TS_VECTOR field metadata not found",
+                    "userFriendlyMessage": "Search vector field not found"
+                  },
+                  {
+                    "code": "OBJECT_METADATA_NOT_FOUND",
+                    "message": "Object metadata not found",
+                    "userFriendlyMessage": "Object metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "95fae1a1-2a1b-5252-bb2e-b858d1f6b56d",
+                  "objectMetadataUniversalIdentifier": "47a625f1-9c34-4fca-bdd9-c57c1cf64467"
+                },
+                "metadataName": "searchFieldMetadata",
+                "type": "create"
+              }
+            ]
+          },
+          "summary": {
+            "totalErrors": 60,
+            "fieldMetadata": 19,
+            "objectMetadata": 1,
+            "view": 3,
+            "viewField": 14,
+            "index": 6,
+            "pageLayout": 2,
+            "pageLayoutWidget": 6,
+            "pageLayoutTab": 6,
+            "commandMenuItem": 1,
+            "navigationMenuItem": 1,
+            "searchFieldMetadata": 1
+          },
+          "userFriendlyMessage": "Many validation errors",
+          "message": "Validation failed for 19 fieldMetadata, 1 objectMetadata, 3 views, 14 viewFields, 6 indices, 2 pageLayouts, 6 pageLayoutWidgets, 6 pageLayoutTabs, 1 commandMenuItem, 1 navigationMenuItem, 1 searchFieldMetadata"
+        }
+      }
+    ],
+    "data": null
+  },
+  "repeatCount": 1
+}

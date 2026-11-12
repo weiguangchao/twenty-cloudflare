@@ -1,0 +1,140 @@
+{
+  "flow": "record-detail",
+  "sequence": 11,
+  "capturedAt": "2026-11-12T11:26:57.708Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneCompany",
+  "query": "query FindOneCompany($objectRecordId: UUID!) {\n  company(\n    filter: {or: [{deletedAt: {is: NULL}}, {deletedAt: {is: NOT_NULL}}], id: {eq: $objectRecordId}}\n  ) {\n    __typename\n    accountOwner {\n      __typename\n      avatarUrl\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    accountOwnerId\n    address {\n      addressStreet1\n      addressStreet2\n      addressCity\n      addressState\n      addressCountry\n      addressPostcode\n      addressLat\n      addressLng\n      __typename\n    }\n    agentChatThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          thread {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    annualRevenue {\n      amountMicros\n      currencyCode\n      __typename\n    }\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventTargets {\n      edges {\n        node {\n          __typename\n          calendarEvent {\n            __typename\n            id\n            title\n          }\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    domainName {\n      primaryLinkUrl\n      primaryLinkLabel\n      secondaryLinks {\n        label\n        url\n        __typename\n      }\n      __typename\n    }\n    id\n    linkedinLink {\n      primaryLinkUrl\n      primaryLinkLabel\n      secondaryLinks {\n        label\n        url\n        __typename\n      }\n      __typename\n    }\n    messageThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          messageThread {\n            __typename\n            id\n            subject\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    name\n    noteTargets {\n      edges {\n        node {\n          __typename\n          id\n          note {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    opportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    people {\n      edges {\n        node {\n          __typename\n          avatarFile {\n            fileId\n            label\n            extension\n            url\n            __typename\n          }\n          id\n          name {\n            firstName\n            lastName\n            __typename\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    taskTargets {\n      edges {\n        node {\n          __typename\n          id\n          task {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "objectRecordId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "company": {
+        "__typename": "Company",
+        "accountOwner": null,
+        "accountOwnerId": null,
+        "address": {
+          "addressStreet1": "888 Brannan St",
+          "addressStreet2": "",
+          "addressCity": "San Francisco",
+          "addressState": "CA",
+          "addressCountry": "United States",
+          "addressPostcode": "94103",
+          "addressLat": null,
+          "addressLng": null,
+          "__typename": "Address"
+        },
+        "agentChatThreadTargets": {
+          "edges": [],
+          "__typename": "AgentChatThreadTargetConnection"
+        },
+        "annualRevenue": {
+          "amountMicros": null,
+          "currencyCode": null,
+          "__typename": "Currency"
+        },
+        "attachments": {
+          "edges": [],
+          "__typename": "AttachmentConnection"
+        },
+        "calendarEventTargets": {
+          "edges": [],
+          "__typename": "CalendarEventTargetConnection"
+        },
+        "createdAt": "2026-11-12T11:19:49.323Z",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "domainName": {
+          "primaryLinkUrl": "airbnb.com",
+          "primaryLinkLabel": "",
+          "secondaryLinks": [],
+          "__typename": "Links"
+        },
+        "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "linkedinLink": {
+          "primaryLinkUrl": "",
+          "primaryLinkLabel": "",
+          "secondaryLinks": [],
+          "__typename": "Links"
+        },
+        "messageThreadTargets": {
+          "edges": [],
+          "__typename": "MessageThreadTargetConnection"
+        },
+        "name": "Airbnb",
+        "noteTargets": {
+          "edges": [],
+          "__typename": "NoteTargetConnection"
+        },
+        "opportunities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "9543adcf-ec03-44e2-9233-3c2d3ebae98a",
+                "name": "Enterprise Plan Upgrade"
+              },
+              "__typename": "OpportunityEdge"
+            }
+          ],
+          "__typename": "OpportunityConnection"
+        },
+        "people": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Person",
+                "avatarFile": null,
+                "id": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+                "name": {
+                  "firstName": "Brian",
+                  "lastName": "Chesky",
+                  "__typename": "FullName"
+                }
+              },
+              "__typename": "PersonEdge"
+            }
+          ],
+          "__typename": "PersonConnection"
+        },
+        "position": 1,
+        "taskTargets": {
+          "edges": [],
+          "__typename": "TaskTargetConnection"
+        },
+        "timelineActivities": {
+          "edges": [],
+          "__typename": "TimelineActivityConnection"
+        },
+        "updatedAt": "2026-11-12T11:19:49.323Z",
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        }
+      }
+    }
+  },
+  "repeatCount": 2
+}

@@ -1,0 +1,33 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 51,
+  "capturedAt": "2026-11-12T11:39:29.917Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "RemoveQueryFromEventStream",
+  "query": "mutation RemoveQueryFromEventStream($input: RemoveQueryFromEventStreamInput!) {\n  removeQueryFromEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "9ac134f8-7af3-4b8d-9f93-c16c161dd6fd",
+      "queryId": "record-show-note-f3751b71-ddd1-4017-b55c-e829ce9bb1e1-109eaad8-27c3-4f41-83b1-68df24763eec"
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "44",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "removeQueryFromEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

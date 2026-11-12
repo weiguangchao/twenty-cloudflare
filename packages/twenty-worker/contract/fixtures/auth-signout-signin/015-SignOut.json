@@ -1,0 +1,25 @@
+{
+  "flow": "auth-signout-signin",
+  "sequence": 15,
+  "capturedAt": "2026-11-12T11:21:21.849Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SignOut",
+  "query": "mutation SignOut($refreshToken: String) {\n  signOut(refreshToken: $refreshToken)\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "25",
+    "content-type": "application/graphql-response+json; charset=utf-8",
+    "set-cookie": "__Host-twenty-session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax\ntwenty-session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax"
+  },
+  "response": null,
+  "repeatCount": 1
+}

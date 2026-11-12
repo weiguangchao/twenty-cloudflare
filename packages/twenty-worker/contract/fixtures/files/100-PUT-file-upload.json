@@ -1,0 +1,22 @@
+{
+  "flow": "files",
+  "sequence": 100,
+  "capturedAt": "2026-11-12T12:12:37.079Z",
+  "endpoint": "/file-upload",
+  "method": "PUT",
+  "path": "/file-upload/5821f859-5a0e-4b52-b0ce-1a65d20add88",
+  "operationName": "PUT /file-upload",
+  "query": null,
+  "variables": {
+    "token": "<redacted-jwt-117>"
+  },
+  "requestBody": null,
+  "requestHeaders": {
+    "content-type": "application/octet-stream",
+    "origin": "http://localhost:3001"
+  },
+  "status": 204,
+  "responseHeaders": {},
+  "response": null,
+  "repeatCount": 1
+}

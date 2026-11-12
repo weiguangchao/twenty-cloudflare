@@ -1,0 +1,28 @@
+{
+  "flow": "members-roles",
+  "sequence": 79,
+  "capturedAt": "2026-11-12T12:20:12.104Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetInviteSuggestions",
+  "query": "query GetInviteSuggestions {\n  getInviteSuggestions {\n    email\n    displayName\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-5>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "36",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "getInviteSuggestions": []
+    }
+  },
+  "repeatCount": 1
+}

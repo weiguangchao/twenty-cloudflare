@@ -1,0 +1,77 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 116,
+  "capturedAt": "2026-11-12T11:38:14.447Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "position": {
+            "gt": -89
+          }
+        },
+        {
+          "and": [
+            {
+              "position": {
+                "eq": -89
+              }
+            },
+            {
+              "id": {
+                "gt": "ac15dca9-2891-4f48-ab02-81365d943d55"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "42cd1124-c623-45a1-b322-26546833f9c5"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTg1LCJpZCI6IjQyY2QxMTI0LWM2MjMtNDVhMS1iMzIyLTI2NTQ2ODMzZjljNSJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": true,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6LTg1LCJpZCI6IjQyY2QxMTI0LWM2MjMtNDVhMS1iMzIyLTI2NTQ2ODMzZjljNSJ9",
+          "endCursor": "eyJwb3NpdGlvbiI6LTg1LCJpZCI6IjQyY2QxMTI0LWM2MjMtNDVhMS1iMzIyLTI2NTQ2ODMzZjljNSJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 91,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

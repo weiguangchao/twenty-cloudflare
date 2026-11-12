@@ -1,0 +1,34 @@
+{
+  "flow": "data-model",
+  "sequence": 43,
+  "capturedAt": "2026-11-12T11:44:44.416Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindAllViews",
+  "query": "query FindAllViews($viewTypes: [ViewType!]) {\n  getViews(viewTypes: $viewTypes) {\n    ...ViewFragment\n    __typename\n  }\n}\n\nfragment ViewFieldFragment on ViewField {\n  id\n  fieldMetadataId\n  viewId\n  isVisible\n  position\n  size\n  aggregateOperation\n  viewFieldGroupId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFieldGroupFragment on ViewFieldGroup {\n  id\n  name\n  position\n  isVisible\n  viewId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  viewFields {\n    ...ViewFieldFragment\n    __typename\n  }\n  __typename\n}\n\nfragment ViewFilterFragment on ViewFilter {\n  id\n  fieldMetadataId\n  operand\n  value\n  viewFilterGroupId\n  positionInViewFilterGroup\n  subFieldName\n  relationTargetFieldMetadataId\n  viewId\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFilterGroupFragment on ViewFilterGroup {\n  id\n  parentViewFilterGroupId\n  logicalOperator\n  positionInViewFilterGroup\n  viewId\n  __typename\n}\n\nfragment ViewSortFragment on ViewSort {\n  id\n  fieldMetadataId\n  direction\n  subFieldName\n  viewId\n  createdAt\n  deletedAt\n  updatedAt\n  __typename\n}\n\nfragment ViewGroupFragment on ViewGroup {\n  id\n  isVisible\n  fieldValue\n  position\n  viewId\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFragment on View {\n  id\n  name\n  objectMetadataId\n  type\n  key\n  icon\n  position\n  isCompact\n  kanbanAggregateOperation\n  kanbanAggregateOperationFieldMetadataId\n  mainGroupByFieldMetadataId\n  shouldHideEmptyGroups\n  kanbanColumnWidth\n  groupLoadLimit\n  anyFieldFilterValue\n  calendarFieldMetadataId\n  calendarEndFieldMetadataId\n  calendarLayout\n  visibility\n  createdByUserWorkspaceId\n  applicationId\n  universalIdentifier\n  isActive\n  viewFields {\n    ...ViewFieldFragment\n    __typename\n  }\n  viewFieldGroups {\n    ...ViewFieldGroupFragment\n    __typename\n  }\n  viewFilters {\n    ...ViewFilterFragment\n    __typename\n  }\n  viewFilterGroups {\n    ...ViewFilterGroupFragment\n    __typename\n  }\n  viewSorts {\n    ...ViewSortFragment\n    __typename\n  }\n  viewGroups {\n    ...ViewGroupFragment\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "viewTypes": [
+      "TABLE",
+      "KANBAN",
+      "CALENDAR",
+      "LIST"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "126976",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "repeatCount": 1,
+  "responseOmitted": {
+    "reason": "intermediate copy of a large collection, see the first and last fixture of this operation in the flow",
+    "bytes": 126976
+  }
+}

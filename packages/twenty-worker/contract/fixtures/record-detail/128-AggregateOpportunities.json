@@ -1,0 +1,38 @@
+{
+  "flow": "record-detail",
+  "sequence": 128,
+  "capturedAt": "2026-11-12T11:31:16.383Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateOpportunities",
+  "query": "query AggregateOpportunities($filter: OpportunityFilterInput) {\n  opportunities(filter: $filter) {\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "pointOfContactId": {
+        "in": [
+          "07394720-1c4d-4703-ace2-241ba54ea531"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "opportunities": {
+        "totalCount": 0,
+        "__typename": "OpportunityConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

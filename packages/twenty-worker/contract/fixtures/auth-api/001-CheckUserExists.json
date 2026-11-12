@@ -1,0 +1,33 @@
+{
+  "flow": "auth-api",
+  "sequence": 1,
+  "capturedAt": "2026-11-12T11:32:52.581Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CheckUserExists",
+  "query": "query CheckUserExists($email: String!, $captchaToken: String) {\n  checkUserExists(email: $email, captchaToken: $captchaToken) {\n    exists\n    availableWorkspacesCount\n    isEmailVerified\n    __typename\n  }\n}",
+  "variables": {
+    "email": "nobody@example.com"
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "128",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "checkUserExists": {
+        "exists": false,
+        "availableWorkspacesCount": 0,
+        "isEmailVerified": false,
+        "__typename": "CheckUserExist"
+      }
+    }
+  },
+  "repeatCount": 1
+}

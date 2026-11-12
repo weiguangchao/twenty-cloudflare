@@ -1,0 +1,220 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 50,
+  "capturedAt": "2026-11-12T12:02:44.101Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyTimelineActivities",
+  "query": "query FindManyTimelineActivities($filter: TimelineActivityFilterInput, $orderBy: [TimelineActivityOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  timelineActivities(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        happensAt\n        id\n        linkedObjectMetadataId\n        linkedRecordId\n        position\n        properties\n        timelineActivityTypeId\n        timelineActivityTypeSnapshot\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        workspaceMember {\n          __typename\n          avatarUrl\n          id\n          name {\n            firstName\n            lastName\n            __typename\n          }\n        }\n        workspaceMemberId\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "targetInitiativeId": {
+        "eq": "11b170fb-3229-40e9-8c51-e42cf4a3d12f"
+      }
+    },
+    "orderBy": [
+      {
+        "happensAt": "DescNullsFirst"
+      }
+    ],
+    "limit": 60
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "timelineActivities": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "TimelineActivity",
+              "createdAt": "2026-11-12T12:02:30.128Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "happensAt": "2026-11-12T12:02:30.091Z",
+              "id": "14485844-79dc-43b2-b43f-2105845bd1e1",
+              "linkedObjectMetadataId": null,
+              "linkedRecordId": null,
+              "position": 0,
+              "properties": {
+                "diff": {
+                  "cost": {
+                    "after": {
+                      "amountMicros": 25000000000,
+                      "currencyCode": "EUR"
+                    },
+                    "before": {
+                      "amountMicros": 25000000000,
+                      "currencyCode": "USD"
+                    }
+                  },
+                  "tags": {
+                    "after": [
+                      "OPTION_1"
+                    ],
+                    "before": []
+                  },
+                  "phase": {
+                    "after": "EXECUTION",
+                    "before": null
+                  },
+                  "dueDate": {
+                    "after": "2026-12-31",
+                    "before": null
+                  },
+                  "hotline": {
+                    "after": {
+                      "additionalPhones": [],
+                      "primaryPhoneNumber": "2025550123",
+                      "primaryPhoneCallingCode": "+1",
+                      "primaryPhoneCountryCode": "US"
+                    },
+                    "before": {
+                      "additionalPhones": [],
+                      "primaryPhoneNumber": "",
+                      "primaryPhoneCallingCode": "",
+                      "primaryPhoneCountryCode": ""
+                    }
+                  },
+                  "website": {
+                    "after": {
+                      "primaryLinkUrl": "https://example.com",
+                      "secondaryLinks": [],
+                      "primaryLinkLabel": "Site"
+                    },
+                    "before": {
+                      "primaryLinkUrl": "",
+                      "secondaryLinks": [],
+                      "primaryLinkLabel": ""
+                    }
+                  },
+                  "isActive": {
+                    "after": false,
+                    "before": true
+                  },
+                  "priority": {
+                    "after": "RATING_4",
+                    "before": null
+                  },
+                  "kickoffAt": {
+                    "after": "2026-11-20T09:30:00.000Z",
+                    "before": null
+                  }
+                }
+              },
+              "timelineActivityTypeId": "9f5c9ff2-87ee-484c-b143-4ea353191cee",
+              "timelineActivityTypeSnapshot": {
+                "id": "9f5c9ff2-87ee-484c-b143-4ea353191cee",
+                "icon": "IconEditCircle",
+                "name": "recordUpdated",
+                "label": "updated",
+                "action": "updated",
+                "universalIdentifier": "20202020-0d1a-4f0e-8a55-1c0a2f0a2c02",
+                "objectUniversalIdentifier": null,
+                "frontComponentUniversalIdentifier": null
+              },
+              "updatedAt": "2026-11-12T12:02:43.733Z",
+              "updatedBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "workspaceMember": {
+                "__typename": "WorkspaceMember",
+                "avatarUrl": "",
+                "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": {
+                  "firstName": "Alice",
+                  "lastName": "Admin",
+                  "__typename": "FullName"
+                }
+              },
+              "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa"
+            },
+            "cursor": "eyJoYXBwZW5zQXQiOiIyMDI2LTExLTEyIDIwOjAyOjMwLjA5MSswOCIsImlkIjoiMTQ0ODU4NDQtNzlkYy00M2IyLWI0M2YtMjEwNTg0NWJkMWUxIn0",
+            "__typename": "TimelineActivityEdge"
+          },
+          {
+            "node": {
+              "__typename": "TimelineActivity",
+              "createdAt": "2026-11-12T12:01:04.141Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "happensAt": "2026-11-12T12:01:03.392Z",
+              "id": "d7a07317-7b93-4fa9-b17f-42df0983cb3a",
+              "linkedObjectMetadataId": null,
+              "linkedRecordId": null,
+              "position": 0,
+              "properties": {},
+              "timelineActivityTypeId": "612afbb6-ebad-4b05-9e30-140de5cfaca2",
+              "timelineActivityTypeSnapshot": {
+                "id": "612afbb6-ebad-4b05-9e30-140de5cfaca2",
+                "icon": "IconCirclePlus",
+                "name": "recordCreated",
+                "label": "was created by",
+                "action": "created",
+                "universalIdentifier": "20202020-0d1a-4f0e-8a55-1c0a2f0a2c01",
+                "objectUniversalIdentifier": null,
+                "frontComponentUniversalIdentifier": null
+              },
+              "updatedAt": "2026-11-12T12:01:04.141Z",
+              "updatedBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "workspaceMember": {
+                "__typename": "WorkspaceMember",
+                "avatarUrl": "",
+                "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": {
+                  "firstName": "Alice",
+                  "lastName": "Admin",
+                  "__typename": "FullName"
+                }
+              },
+              "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa"
+            },
+            "cursor": "eyJoYXBwZW5zQXQiOiIyMDI2LTExLTEyIDIwOjAxOjAzLjM5MiswOCIsImlkIjoiZDdhMDczMTctN2I5My00ZmE5LWIxN2YtNDJkZjA5ODNjYjNhIn0",
+            "__typename": "TimelineActivityEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJoYXBwZW5zQXQiOiIyMDI2LTExLTEyIDIwOjAyOjMwLjA5MSswOCIsImlkIjoiMTQ0ODU4NDQtNzlkYy00M2IyLWI0M2YtMjEwNTg0NWJkMWUxIn0",
+          "endCursor": "eyJoYXBwZW5zQXQiOiIyMDI2LTExLTEyIDIwOjAxOjAzLjM5MiswOCIsImlkIjoiZDdhMDczMTctN2I5My00ZmE5LWIxN2YtNDJkZjA5ODNjYjNhIn0",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 2,
+        "__typename": "TimelineActivityConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

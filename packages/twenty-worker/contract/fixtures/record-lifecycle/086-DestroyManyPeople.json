@@ -1,0 +1,45 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 86,
+  "capturedAt": "2026-11-12T11:37:36.979Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "DestroyManyPeople",
+  "query": "mutation DestroyManyPeople($filter: PersonFilterInput!) {\n  destroyPeople(filter: $filter) {\n    id\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "babadf91-49fa-41a4-ace9-242b0e0afe33",
+          "e7132b7f-cac9-45ff-b249-e173df411702"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "destroyPeople": [
+        {
+          "id": "babadf91-49fa-41a4-ace9-242b0e0afe33",
+          "__typename": "Person"
+        },
+        {
+          "id": "e7132b7f-cac9-45ff-b249-e173df411702",
+          "__typename": "Person"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

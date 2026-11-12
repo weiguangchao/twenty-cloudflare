@@ -1,0 +1,40 @@
+{
+  "flow": "data-model",
+  "sequence": 288,
+  "capturedAt": "2026-11-12T11:58:20.797Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyProjects",
+  "query": "query FindManyProjects($filter: ProjectFilterInput, $orderBy: [ProjectOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  projects(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        aliases\n        contactEmails {\n          primaryEmail\n          additionalEmails\n          __typename\n        }\n        cost {\n          amountMicros\n          currencyCode\n          __typename\n        }\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        documents {\n          fileId\n          label\n          extension\n          url\n          __typename\n        }\n        dueDate\n        hotline {\n          primaryPhoneNumber\n          primaryPhoneCountryCode\n          primaryPhoneCallingCode\n          additionalPhones {\n            number\n            callingCode\n            countryCode\n            __typename\n          }\n          __typename\n        }\n        id\n        isActive\n        kickoffAt\n        leadId\n        name\n        ownerCompanyId\n        ownerPersonId\n        phase\n        position\n        priority\n        projectCode\n        settingsJson\n        siteAddress {\n          addressStreet1\n          addressStreet2\n          addressCity\n          addressState\n          addressCountry\n          addressPostcode\n          addressLat\n          addressLng\n          __typename\n        }\n        sponsorName {\n          firstName\n          lastName\n          __typename\n        }\n        summary {\n          blocknote\n          markdown\n          tiptap\n          __typename\n        }\n        tags\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        website {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "projects": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "ProjectConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

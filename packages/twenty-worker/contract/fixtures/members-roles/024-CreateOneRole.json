@@ -1,0 +1,64 @@
+{
+  "flow": "members-roles",
+  "sequence": 24,
+  "capturedAt": "2026-11-12T12:15:09.982Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneRole",
+  "query": "mutation CreateOneRole($createRoleInput: CreateRoleInput!) {\n  createOneRole(createRoleInput: $createRoleInput) {\n    ...RoleFragment\n    __typename\n  }\n}\n\nfragment RoleFragment on Role {\n  id\n  label\n  description\n  icon\n  canUpdateAllSettings\n  canAccessAllTools\n  canAccessAllAgentChatChannels\n  isEditable\n  canReadAllObjectRecords\n  canUpdateAllObjectRecords\n  canSoftDeleteAllObjectRecords\n  canDestroyAllObjectRecords\n  canBeAssignedToUsers\n  canBeAssignedToAgents\n  canBeAssignedToApiKeys\n  applicationId\n  universalIdentifier\n  __typename\n}",
+  "variables": {
+    "createRoleInput": {
+      "id": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+      "label": "Read Only",
+      "description": "Can view records but not change them",
+      "icon": "IconUser",
+      "canUpdateAllSettings": true,
+      "canAccessAllTools": true,
+      "canAccessAllAgentChatChannels": true,
+      "canReadAllObjectRecords": true,
+      "canUpdateAllObjectRecords": false,
+      "canSoftDeleteAllObjectRecords": false,
+      "canDestroyAllObjectRecords": false,
+      "canBeAssignedToUsers": true,
+      "canBeAssignedToAgents": true,
+      "canBeAssignedToApiKeys": true
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "632",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createOneRole": {
+        "id": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+        "label": "Read Only",
+        "description": "Can view records but not change them",
+        "icon": "IconUser",
+        "canUpdateAllSettings": true,
+        "canAccessAllTools": true,
+        "canAccessAllAgentChatChannels": true,
+        "isEditable": true,
+        "canReadAllObjectRecords": true,
+        "canUpdateAllObjectRecords": false,
+        "canSoftDeleteAllObjectRecords": false,
+        "canDestroyAllObjectRecords": false,
+        "canBeAssignedToUsers": true,
+        "canBeAssignedToAgents": true,
+        "canBeAssignedToApiKeys": true,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "universalIdentifier": "ae56d1dd-5dc8-425b-a344-21fef01565ff",
+        "__typename": "Role"
+      }
+    }
+  },
+  "repeatCount": 1
+}

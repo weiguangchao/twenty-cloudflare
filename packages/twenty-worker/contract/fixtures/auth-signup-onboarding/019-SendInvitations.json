@@ -1,0 +1,35 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 19,
+  "capturedAt": "2026-11-12T11:20:32.286Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SendInvitations",
+  "query": "mutation SendInvitations($emails: [String!]!, $roleId: UUID) {\n  sendInvitations(emails: $emails, roleId: $roleId) {\n    success\n    errors\n    result {\n      ... on WorkspaceInvitation {\n        id\n        email\n        roleId\n        expiresAt\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "emails": []
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "100",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "sendInvitations": {
+        "success": true,
+        "errors": [],
+        "result": [],
+        "__typename": "SendInvitations"
+      }
+    }
+  },
+  "repeatCount": 1
+}

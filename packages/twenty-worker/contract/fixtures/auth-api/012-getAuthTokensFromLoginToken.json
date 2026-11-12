@@ -1,0 +1,46 @@
+{
+  "flow": "auth-api",
+  "sequence": 12,
+  "capturedAt": "2026-11-12T11:32:52.937Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "getAuthTokensFromLoginToken",
+  "query": "mutation getAuthTokensFromLoginToken($loginToken: String!, $origin: String!) {\n  getAuthTokensFromLoginToken(loginToken: $loginToken, origin: $origin) {\n    tokens {\n      ...AuthTokenPairFragment\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AuthTokenFragment on AuthToken {\n  token\n  expiresAt\n  __typename\n}\n\nfragment AuthTokenPairFragment on AuthTokenPair {\n  accessOrWorkspaceAgnosticToken {\n    ...AuthTokenFragment\n    __typename\n  }\n  refreshToken {\n    ...AuthTokenFragment\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "loginToken": "<redacted-jwt-17>",
+    "origin": "http://localhost:3001"
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1560",
+    "content-type": "application/json; charset=utf-8",
+    "set-cookie": "twenty-session=<redacted-session-4>; Path=/; Expires=Tue, 11 May 2027 11:32:52 GMT; HttpOnly; SameSite=Lax"
+  },
+  "response": {
+    "data": {
+      "getAuthTokensFromLoginToken": {
+        "tokens": {
+          "accessOrWorkspaceAgnosticToken": {
+            "token": "<redacted-jwt-18>",
+            "expiresAt": "2026-11-12T12:02:52.927Z",
+            "__typename": "AuthToken"
+          },
+          "refreshToken": {
+            "token": "<redacted-jwt-19>",
+            "expiresAt": "2027-01-11T11:32:52.929Z",
+            "__typename": "AuthToken"
+          },
+          "__typename": "AuthTokenPair"
+        },
+        "__typename": "AuthTokens"
+      }
+    }
+  },
+  "repeatCount": 1
+}

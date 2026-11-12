@@ -1,0 +1,67 @@
+{
+  "flow": "views",
+  "sequence": 85,
+  "capturedAt": "2026-11-12T12:07:12.763Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateManyNavigationMenuItems",
+  "query": "mutation CreateManyNavigationMenuItems($inputs: [CreateNavigationMenuItemInput!]!) {\n  createManyNavigationMenuItems(inputs: $inputs) {\n    ...NavigationMenuItemQueryFields\n    __typename\n  }\n}\n\nfragment NavigationMenuItemFields on NavigationMenuItem {\n  id\n  type\n  userWorkspaceId\n  targetRecordId\n  targetObjectMetadataId\n  viewId\n  folderId\n  name\n  link\n  nativePageKey\n  icon\n  color\n  pageLayoutId\n  agentChatChannelId\n  position\n  applicationId\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment NavigationMenuItemQueryFields on NavigationMenuItem {\n  ...NavigationMenuItemFields\n  targetRecordIdentifier {\n    id\n    labelIdentifier\n    imageIdentifier\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "inputs": [
+      {
+        "id": "2d5578e4-883e-4cbe-bc20-617fecc440d1",
+        "type": "RECORD",
+        "targetRecordId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "targetObjectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+        "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+        "position": 1
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "795",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createManyNavigationMenuItems": [
+        {
+          "id": "2d5578e4-883e-4cbe-bc20-617fecc440d1",
+          "type": "RECORD",
+          "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+          "targetRecordId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+          "targetObjectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+          "viewId": null,
+          "folderId": null,
+          "name": null,
+          "link": null,
+          "nativePageKey": null,
+          "icon": null,
+          "color": null,
+          "pageLayoutId": null,
+          "agentChatChannelId": null,
+          "position": 1,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "createdAt": "2026-11-12T12:07:12.671Z",
+          "updatedAt": "2026-11-12T12:07:12.671Z",
+          "__typename": "NavigationMenuItem",
+          "targetRecordIdentifier": {
+            "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+            "labelIdentifier": "Airbnb",
+            "imageIdentifier": "https://twenty-icons.com/airbnb.com",
+            "__typename": "RecordIdentifier"
+          }
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

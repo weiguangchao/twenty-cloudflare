@@ -1,0 +1,35 @@
+{
+  "flow": "members-roles",
+  "sequence": 103,
+  "capturedAt": "2026-11-12T12:21:13.435Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CheckUserExists",
+  "query": "query CheckUserExists($email: String!, $captchaToken: String) {\n  checkUserExists(email: $email, captchaToken: $captchaToken) {\n    exists\n    availableWorkspacesCount\n    isEmailVerified\n    __typename\n  }\n}",
+  "variables": {
+    "email": "alice@example.com"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "127",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "checkUserExists": {
+        "exists": true,
+        "availableWorkspacesCount": 1,
+        "isEmailVerified": false,
+        "__typename": "CheckUserExist"
+      }
+    }
+  },
+  "repeatCount": 1
+}

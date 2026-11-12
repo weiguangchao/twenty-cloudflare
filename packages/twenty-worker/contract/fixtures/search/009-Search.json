@@ -1,0 +1,136 @@
+{
+  "flow": "search",
+  "sequence": 9,
+  "capturedAt": "2026-11-12T11:41:35.763Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "王",
+    "limit": 30,
+    "filter": {},
+    "includedObjectNameSingulars": [
+      "note",
+      "workspaceMember",
+      "company",
+      "opportunity",
+      "messageList",
+      "person",
+      "task",
+      "dashboard",
+      "messageCampaign"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "2912",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "0a222b2b-db72-4bf1-aa1c-e6b55b47aab6",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test025",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiIwYTIyMmIyYi1kYjcyLTRiZjEtYWExYy1lNmI1NWI0N2FhYjYifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "42cd1124-c623-45a1-b322-26546833f9c5",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test085",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiI0MmNkMTEyNC1jNjIzLTQ1YTEtYjMyMi0yNjU0NjgzM2Y5YzUifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "46e7341c-fd47-435f-8b6c-f0f559e4a388",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test040",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiI0NmU3MzQxYy1mZDQ3LTQzNWYtOGI2Yy1mMGY1NTllNGEzODgifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "72e95b53-9c6f-4110-991a-be493bcbe6cf",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test010",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiI3MmU5NWI1My05YzZmLTQxMTAtOTkxYS1iZTQ5M2JjYmU2Y2YifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "77444555-bf04-474d-9d79-2ba3d0687364",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test070",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiI3NzQ0NDU1NS1iZjA0LTQ3NGQtOWQ3OS0yYmEzZDA2ODczNjQifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "faf93171-bc40-422f-9beb-dcdeeb36d2b2",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test055",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiJmYWY5MzE3MS1iYzQwLTQyMmYtOWJlYi1kY2RlZWIzNmQyYjIifX0",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiJmYWY5MzE3MS1iYzQwLTQyMmYtOWJlYi1kY2RlZWIzNmQyYjIifX0",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

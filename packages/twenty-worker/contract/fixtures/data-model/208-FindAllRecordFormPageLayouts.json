@@ -1,0 +1,3131 @@
+{
+  "flow": "data-model",
+  "sequence": 208,
+  "capturedAt": "2026-11-12T11:50:47.989Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindAllRecordFormPageLayouts",
+  "query": "query FindAllRecordFormPageLayouts {\n  getPageLayouts(pageLayoutType: RECORD_FORM) {\n    ...PageLayoutFragment\n    __typename\n  }\n}\n\nfragment PageLayoutWidgetFragment on PageLayoutWidget {\n  id\n  applicationId\n  universalIdentifier\n  isSystemSideEffect\n  title\n  type\n  objectMetadataId\n  createdAt\n  updatedAt\n  isActive\n  deletedAt\n  conditionalDisplay\n  conditionalAvailabilityExpression\n  gridPosition {\n    column\n    columnSpan\n    row\n    rowSpan\n    __typename\n  }\n  position {\n    ... on PageLayoutWidgetGridPosition {\n      layoutMode\n      row\n      column\n      rowSpan\n      columnSpan\n      __typename\n    }\n    ... on PageLayoutWidgetVerticalListPosition {\n      layoutMode\n      index\n      heightBehavior\n      __typename\n    }\n    ... on PageLayoutWidgetCanvasPosition {\n      layoutMode\n      __typename\n    }\n    __typename\n  }\n  configuration {\n    ... on BarChartConfiguration {\n      configurationType\n      aggregateFieldMetadataId\n      aggregateOperation\n      primaryAxisGroupByFieldMetadataId\n      primaryAxisGroupBySubFieldName\n      primaryAxisDateGranularity\n      primaryAxisOrderBy\n      primaryAxisManualSortOrder\n      secondaryAxisGroupByFieldMetadataId\n      secondaryAxisGroupBySubFieldName\n      secondaryAxisGroupByDateGranularity\n      secondaryAxisOrderBy\n      secondaryAxisManualSortOrder\n      omitNullValues\n      axisNameDisplay\n      displayDataLabel\n      displayLegend\n      numberFormat\n      rangeMin\n      rangeMax\n      color\n      description\n      filter\n      groupMode\n      layout\n      isCumulative\n      splitMultiValueFields\n      timezone\n      firstDayOfTheWeek\n      __typename\n    }\n    ... on LineChartConfiguration {\n      configurationType\n      aggregateFieldMetadataId\n      aggregateOperation\n      primaryAxisGroupByFieldMetadataId\n      primaryAxisGroupBySubFieldName\n      primaryAxisDateGranularity\n      primaryAxisOrderBy\n      primaryAxisManualSortOrder\n      secondaryAxisGroupByFieldMetadataId\n      secondaryAxisGroupBySubFieldName\n      secondaryAxisGroupByDateGranularity\n      secondaryAxisOrderBy\n      secondaryAxisManualSortOrder\n      omitNullValues\n      axisNameDisplay\n      displayDataLabel\n      displayLegend\n      numberFormat\n      rangeMin\n      rangeMax\n      color\n      description\n      filter\n      isStacked\n      isCumulative\n      splitMultiValueFields\n      timezone\n      firstDayOfTheWeek\n      __typename\n    }\n    ... on PieChartConfiguration {\n      configurationType\n      groupByFieldMetadataId\n      aggregateFieldMetadataId\n      aggregateOperation\n      groupBySubFieldName\n      dateGranularity\n      orderBy\n      manualSortOrder\n      displayDataLabel\n      showCenterMetric\n      displayLegend\n      numberFormat\n      hideEmptyCategory\n      splitMultiValueFields\n      color\n      description\n      filter\n      timezone\n      firstDayOfTheWeek\n      __typename\n    }\n    ... on AggregateChartConfiguration {\n      configurationType\n      aggregateFieldMetadataId\n      aggregateOperation\n      label\n      displayDataLabel\n      numberFormat\n      description\n      filter\n      prefix\n      suffix\n      timezone\n      firstDayOfTheWeek\n      ratioAggregateConfig {\n        fieldMetadataId\n        optionValue\n        __typename\n      }\n      __typename\n    }\n    ... on IframeConfiguration {\n      configurationType\n      url\n      __typename\n    }\n    ... on StandaloneRichTextConfiguration {\n      configurationType\n      body {\n        blocknote\n        markdown\n        tiptap\n        __typename\n      }\n      __typename\n    }\n    ... on CalendarConfiguration {\n      configurationType\n      __typename\n    }\n    ... on EmailsConfiguration {\n      configurationType\n      __typename\n    }\n    ... on EmailThreadConfiguration {\n      configurationType\n      __typename\n    }\n    ... on CallRecordingSummaryConfiguration {\n      configurationType\n      __typename\n    }\n    ... on CallRecordingTranscriptConfiguration {\n      configurationType\n      __typename\n    }\n    ... on ChatThreadsConfiguration {\n      configurationType\n      __typename\n    }\n    ... on ChatConfiguration {\n      configurationType\n      __typename\n    }\n    ... on MessageCampaignBodyConfiguration {\n      configurationType\n      __typename\n    }\n    ... on MessageCampaignDetailsConfiguration {\n      configurationType\n      __typename\n    }\n    ... on FieldConfiguration {\n      configurationType\n      fieldDisplayMode\n      fieldMetadataId\n      viewId\n      nestedRelationFieldMetadataId\n      isUIEditable\n      __typename\n    }\n    ... on FieldRichTextConfiguration {\n      configurationType\n      __typename\n    }\n    ... on FieldsConfiguration {\n      configurationType\n      viewId\n      newFieldDefaultVisibility\n      shouldAllowUserToSeeHiddenFields\n      __typename\n    }\n    ... on FormFieldConfiguration {\n      configurationType\n      fieldMetadataId\n      __typename\n    }\n    ... on FilesConfiguration {\n      configurationType\n      __typename\n    }\n    ... on NotesConfiguration {\n      configurationType\n      __typename\n    }\n    ... on TasksConfiguration {\n      configurationType\n      __typename\n    }\n    ... on TimelineConfiguration {\n      configurationType\n      __typename\n    }\n    ... on ViewConfiguration {\n      configurationType\n      __typename\n    }\n    ... on RecordTableConfiguration {\n      configurationType\n      viewId\n      recordLimit\n      isUIEditable\n      __typename\n    }\n    ... on WorkflowConfiguration {\n      configurationType\n      __typename\n    }\n    ... on WorkflowRunConfiguration {\n      configurationType\n      __typename\n    }\n    ... on WorkflowVersionConfiguration {\n      configurationType\n      __typename\n    }\n    ... on FrontComponentConfiguration {\n      configurationType\n      frontComponentId\n      headerCommandMenuItemUniversalIdentifiers\n      __typename\n    }\n    __typename\n  }\n  pageLayoutTabId\n  __typename\n}\n\nfragment PageLayoutTabFragment on PageLayoutTab {\n  id\n  applicationId\n  universalIdentifier\n  isSystemSideEffect\n  title\n  icon\n  position\n  layoutMode\n  widgets {\n    ...PageLayoutWidgetFragment\n    __typename\n  }\n  pageLayoutId\n  isActive\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment PageLayoutFragment on PageLayout {\n  id\n  applicationId\n  name\n  objectMetadataId\n  type\n  universalIdentifier\n  isSystemSideEffect\n  isFirstTabPinned\n  defaultTabToFocusOnMobileAndSidePanelId\n  createdAt\n  updatedAt\n  tabs {\n    ...PageLayoutTabFragment\n    __typename\n  }\n  __typename\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "84506",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "getPageLayouts": [
+        {
+          "id": "00901706-cf8a-4580-b8f9-253776ce7dcb",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "1d44cd5f-c2fb-51ba-b2e6-48c597aaf74c",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "d1cd5dfb-4dd2-5485-aa6a-ab852736d7aa",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "19d61862-08ca-43e7-9a5d-1b169af73098",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "5391f84c-87cc-5b46-8151-41980027374d",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "1f51e1a2-604a-47b1-99a5-bdbdcd8e3b1b",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "999cf125-75e6-47b4-a0d4-c30c1b7fbc5f",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "34d78d30-5179-53f1-81e0-2f70ba3b9acd",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "9ba6246b-249c-4e51-93e4-6b9ce32f4067",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "ba0be6b4-00ea-47b2-96b7-d9fa3a15ed6b",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "f83ea127-bdfb-5484-9d2f-4b683f8780d7",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 2,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "479f0d6a-1a04-4bc6-837a-78a6ee9940ed",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "72771e83-6778-495e-a489-b6c98905b548",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "fa90561d-0d55-58bd-ac0b-8bb80a406fec",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 3,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "c7db43f2-996d-410b-b019-643d67123a01",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "963ef7f2-d3d3-467e-b906-e4f2c0ed6735",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "fb4662a4-4d01-5a22-83f3-6aad11033627",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 4,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "d88b8800-37c6-4a28-a8ae-1e362b50d96e",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "f4e18d81-be99-4176-8ac1-dbb42ea12b42",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "d29f1e42-e61d-5cf8-b300-222d2da8f782",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 5,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "717a5fa9-0bd4-439c-8569-2ccf6b7fda80",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5fb23cfb-7c2c-4490-bb75-4c2f7b905631",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "00901706-cf8a-4580-b8f9-253776ce7dcb",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "02b8c4a7-70ce-4956-9885-17dcb58ec366",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "66282134-01a3-4f75-a900-ec33ba4bcc98",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "e811ab37-11bb-5158-94dd-3f2cd2df34a0",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "5eb4e77f-59ce-4dbd-909f-3ca6b37db9ce",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "47e7f509-7c54-54a4-a7d2-dd3b525c6a3e",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "02b8c4a7-70ce-4956-9885-17dcb58ec366",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "03b8bef2-7bf7-41fa-912f-fb4aa3d583e1",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "e3192478-fe47-4545-b39b-a8ae8b9a35d9",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "606cab27-0a44-54a6-81c2-109c4cf82764",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "007eab3d-3a0d-4614-b4a1-3eb561027716",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "0747927a-8722-56e3-b35b-7e45d1f00f8e",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "03b8bef2-7bf7-41fa-912f-fb4aa3d583e1",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "07388906-5840-4876-a9a8-b2fac6526881",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "0e9221d6-8aa7-4484-b3b0-056c3db93e68",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "20a5c21a-f9de-581c-8737-cc3d580acb5e",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "0ffc0b77-9da8-4fdd-88f0-a607ec62ce2d",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "913bb05b-05cf-5185-9cad-0b8873afc67b",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "07388906-5840-4876-a9a8-b2fac6526881",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "1029ab5f-a84d-45c3-a369-33ff3f61a922",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "f1138223-4c8d-425c-8ad8-dea4291ce217",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "403ad056-41e7-568a-abed-2ff0d8e85d88",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "bc739cbd-32d6-4ba5-a049-d0faf3bb4de4",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "7014610b-ed1e-57c8-be7e-b9cff139d485",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "1029ab5f-a84d-45c3-a369-33ff3f61a922",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "142c87b0-d076-4903-8763-2e6c1ef16d51",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "1f5ca1cd-8cea-482d-a3cf-868e9cd74555",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "304f6b0d-1efa-5719-8119-e2da0a18c845",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "0d9029c4-5944-4138-a13b-c3a04ad8522c",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "885a4995-d480-580e-9540-eda22b3f0d6d",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "142c87b0-d076-4903-8763-2e6c1ef16d51",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "2b3d0575-e140-46df-bc7c-31bc9d635dda",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "ab542967-15f7-4101-b9ce-64f9d15726cc",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "fc801fca-f9e7-5de8-a723-64beb40d765f",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "471ba6b1-8e3a-4d51-9422-415e22ab60c2",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "d1365b5e-5f1d-561c-ad38-770822ef8cfc",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "2b3d0575-e140-46df-bc7c-31bc9d635dda",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "2cb8950b-b5c9-4d4a-8427-d0b516c46072",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "4fdcd4ca-1ecb-4e32-a151-284561864a7d",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "d0ab29b6-3341-5e31-a3f0-fc62b5ac6976",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "42eea506-e799-4733-8a77-b97493eb1b6a",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "05f6ce3f-00db-586a-8d59-9bc2c7830a6d",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "2cb8950b-b5c9-4d4a-8427-d0b516c46072",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "3331b7b9-5a43-4057-9ed4-41486c27baef",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "2f06a112-394d-4c22-968c-3a585b328ef4",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "86c94cb7-c41c-582d-9b65-814b5e53016f",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "47163a63-7f9e-4eda-beee-fc00db9c4cd1",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "a4a2b658-579c-51f6-b7a2-2f45f0081b07",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "40db8a93-88e9-4df0-83f1-252eebebb711",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "e709e387-abbc-56a1-b953-58668278397d",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "2f06a112-394d-4c22-968c-3a585b328ef4",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "6e399177-e4c7-410f-a88c-e9e66461f3f8",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "47163a63-7f9e-4eda-beee-fc00db9c4cd1",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "402016b3-200d-4e95-bec4-bdc9a6295d85",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "c70c4d4f-6187-594c-8062-8670c1aff624",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "2f06a112-394d-4c22-968c-3a585b328ef4",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "cce422a8-3b6c-4e0c-959e-d4c5f83a0ee8",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "47163a63-7f9e-4eda-beee-fc00db9c4cd1",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "3331b7b9-5a43-4057-9ed4-41486c27baef",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "3875ba18-5513-47f3-bec5-f6eaf0169c7c",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "30ec8433-f00a-5664-9f0d-b9f85a2ac131",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "ee49fb95-bef9-58ae-a10a-531c852a847e",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "ca5c0e90-434d-498d-9719-0f5261106f0b",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "959ab5b4-73bd-50ef-b2a8-ec3cc754acc9",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "7baeca42-52db-4fd8-88f3-7e07e9b9d8f3",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "50be3fb2-48f0-4370-a1a9-f89f4dc9db44",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "1d8d9b7b-c916-56bc-aaac-542237d2732e",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "545607c5-8173-4acb-8063-1b5cdb73d9ca",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "4fe0cdc5-dcbe-4850-9ff4-3224f2db7a67",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "b69ea600-4a82-591e-b368-5d6cf99315a5",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 2,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "7ebd9b8e-cb7a-44a4-93ac-d7cce317c302",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "97ae1ab8-1572-4afb-81e8-6aa563082d46",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "870a04bf-8b7c-53f5-a3d3-cf0d85b75e07",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 3,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "149e5c50-c05b-4cde-9ab2-cb122f701851",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "c000625f-0a48-447a-8244-ea4ee7ce51d7",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "9ad60f2d-0656-5cdd-8fc5-16f1b0e90ca0",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 4,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "73d31b87-cd33-4a03-8014-fc5760a82879",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "322db165-2b41-4868-9598-d8c7ace409fe",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "c2acd052-6c3c-53fc-bb1a-20381412f572",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 5,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "fdf6e12d-eaac-48e1-9329-2fc34de047fc",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "d4aa5b7a-954b-45fc-a7e9-ef6b647c31db",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "3875ba18-5513-47f3-bec5-f6eaf0169c7c",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "3e3d3b66-a526-4877-a57f-8bc4e14eb014",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "73be341a-a10d-4db5-8e34-e8c0f0ee99cd",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "18bac956-3502-5569-8dae-94f72252cfd3",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "b1e4b752-615d-4c2d-a545-d0ee2e3d108d",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "ba7e7d65-2b2c-53dd-be8c-a294e8dee5cb",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "3e3d3b66-a526-4877-a57f-8bc4e14eb014",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "433f9fe0-7d5d-422b-87ed-79b00448eb5d",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "fdf357b6-0398-4e1c-8967-4f9f49fc922a",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "127e2ffc-2e94-5b68-812c-22f696cdb79b",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "ba8266d2-dc90-4f33-942a-5067a966a212",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "1ae79bf4-af44-5530-a959-8f0920a5b559",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "433f9fe0-7d5d-422b-87ed-79b00448eb5d",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "4c784082-2201-4db4-aa4d-bfc523b762b1",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "92416cc8-621b-435d-a3f3-29750eb58d93",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "e3716bd5-3bdc-511b-9895-34de39490bd9",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "e8ba1fd9-7361-490c-8835-096718245906",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "009e3791-0016-536c-8557-a1d86d0a2466",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "4c784082-2201-4db4-aa4d-bfc523b762b1",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "54122e79-b8be-4ee9-8512-25eefd0f46a8",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "927bc8f6-4ffe-493e-8d98-4ae5e110ced6",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "cb21580b-b039-5c5e-b897-56092847b7e1",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "1f6dc696-4721-4b0e-87f1-aa1b24e1e6d9",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "94e2bd06-9cdf-51f7-a283-605b86391c12",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "54122e79-b8be-4ee9-8512-25eefd0f46a8",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "6110b293-7ded-4e17-af26-c232db0beab8",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "3f5b477d-5481-457e-80e3-456403cf3f41",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "0ae3f529-fca3-56ea-850f-5ebc8a97369d",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "98f6e4f6-84e2-4597-b82c-a31d06fa8989",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "9d63c37e-a890-55d6-9bd8-1fcd2201881f",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "6110b293-7ded-4e17-af26-c232db0beab8",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "6f26224e-ac1b-40a7-9635-6878f0f64c37",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "52f0281d-4861-4081-b094-97025f8c6d8c",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "2d928ade-b573-5bde-a6fc-bb792fe1cb95",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "c8f4cd7d-80df-498f-9cf5-763d14021502",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "cbddf339-2ebc-52d6-9220-c733570332c0",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "27d40c93-bd6b-43c6-b32f-eff5260c0d33",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "5fc984e5-9c50-5afe-904b-d96f0cc42ac2",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "52f0281d-4861-4081-b094-97025f8c6d8c",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "b007beaa-4e4f-4b29-81b1-cd8ff2839011",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "c8f4cd7d-80df-498f-9cf5-763d14021502",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "6f26224e-ac1b-40a7-9635-6878f0f64c37",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "7dd96f59-e947-4ca3-b6a9-887f0f5e120a",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "7d71445f-8d50-445e-b3af-48eefa728aee",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "955371a6-81b1-514a-8c82-98a30ab6d68c",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "4b68a09a-93f5-4383-8e05-ef2377b09006",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "cade5094-ff84-5141-9024-3aa68bf8a783",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "7dd96f59-e947-4ca3-b6a9-887f0f5e120a",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "7f76abf9-dccb-4be1-b96d-8ebbbc23bd6b",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "f2dfc114-009f-476c-a1b7-573a324e9fe2",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "5cd18516-4258-5904-a0b1-ba16eaf94653",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "131e6928-f04e-4f1d-9839-20c2d2c32dbd",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "30d97d12-01fe-54a8-acb0-401e773bd23b",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "7f76abf9-dccb-4be1-b96d-8ebbbc23bd6b",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "807c118d-a245-4218-a8f0-3294f0d183b9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "6b13242f-5c35-4b4f-bedd-9fa8f2a33d2a",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "5854ac83-6658-5448-bf1e-b66d63c68055",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "d7db337d-2d2a-4bc5-9554-7f25056a344e",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "4b64992f-7e12-5f9a-bcb1-ec1ed84690e0",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "807c118d-a245-4218-a8f0-3294f0d183b9",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "8642732d-d858-4f39-a63a-93944f6a9244",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "2cd12f17-fab9-4770-befa-9b8c60306e98",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "daf438fd-ec60-5a13-826d-2d4f7cf0e894",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "f1fef005-64a8-49d5-b9d4-8b6149d05756",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "51dea528-d009-54f8-af3c-51ca9e2db0cc",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "8642732d-d858-4f39-a63a-93944f6a9244",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "864c6251-aabb-42f2-9ff0-0127433d92db",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "2637cfe5-dbb7-4864-8c86-c99b1f54d33a",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "a633aed2-dc86-5327-bfed-f32e1016364e",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "47323501-3284-406a-8738-2dea8549f5ec",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "9ce5b60c-4ca8-568b-b2b0-9c0520b91791",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "864c6251-aabb-42f2-9ff0-0127433d92db",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "86b67f76-1bd4-4c9e-bb48-a9ef2815b460",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "1b678466-aa62-4fca-a458-ff275be9dd94",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "7677603c-843b-5f38-b00e-81d4860c6822",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "23ca8c32-38ec-4c6b-a1c6-7f018b3a2460",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "f30bba78-ecc0-51f2-8e75-e72f33c9f581",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "e1079300-8b6b-4e7f-b907-fe8b762dbfd5",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "09306370-9034-5d13-bc03-8d6ae2d1a95e",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "1b678466-aa62-4fca-a458-ff275be9dd94",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "603e466b-20f2-4857-b95e-b3837638692a",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "23ca8c32-38ec-4c6b-a1c6-7f018b3a2460",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "86b67f76-1bd4-4c9e-bb48-a9ef2815b460",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "8a8580fc-fd11-46c8-9223-62650f507764",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "57448f48-fdf9-482a-a32e-5cce6b53b994",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "229339ca-1be6-5988-95ef-2d3375a428af",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "0d228707-8166-4b95-89e7-64b415bfcee3",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "06ca5f70-2bbb-54b6-9be7-487744812538",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "8a8580fc-fd11-46c8-9223-62650f507764",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "8d8fa033-eb6f-4244-9649-abb741ed24d4",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "8baf6c81-15a5-4a73-9157-18bf57f67905",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "2dce9897-8448-5868-a839-c10d5a4bbc65",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "0a45d13a-eb67-4396-af03-00480d5687cf",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "5f05f71c-0077-57ca-ac1f-97d55c146ef8",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "8d8fa033-eb6f-4244-9649-abb741ed24d4",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "9ead27eb-aa8d-4a34-a74b-ab259b178273",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "58d9947e-f5a6-4b5c-88ed-3f07c5961182",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "c545fd4f-dbb9-5993-aa92-b8a455e6bf5f",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "b82dc414-ac75-427d-9021-4e683b6f2ecc",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "2d4789a2-d602-53bc-83ee-8d3a85072bbd",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "9ead27eb-aa8d-4a34-a74b-ab259b178273",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "a1673813-b281-4c5c-ad86-e6a35aaf7ef9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "731dc6fe-2504-4f83-8307-291a9e9b8686",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "6dc2a951-7183-59ea-a542-1de18423b6ee",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "70a500f4-d0ba-4ae0-b73f-61a696e9b784",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "416e9adf-39a7-5b4a-8046-200f3ee14087",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "666a40df-a5c5-4c71-9cdd-f459a4aeb220",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "4efe46b8-e051-57d8-9bac-8d299a80981f",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "731dc6fe-2504-4f83-8307-291a9e9b8686",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "b5512c93-67bb-48b0-a1b0-70bc765d9725",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "70a500f4-d0ba-4ae0-b73f-61a696e9b784",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "a1673813-b281-4c5c-ad86-e6a35aaf7ef9",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "a2778f54-cdfb-4ece-bb2b-473e77c12c10",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "f07de057-3a49-596f-93d4-e2368686e0c9",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "bba3302e-7479-53c1-9703-b482830d0297",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "8ad57457-40e5-410d-bc35-1a600611605e",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "cc26515a-138a-5267-89a3-e21ba358cb06",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "94ed65fb-8bfc-4c9e-9c9e-29fd62867073",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "bb5caed7-6302-497b-81c6-5812080604ab",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "56793064-d3d7-5f76-8d47-18ffa524974a",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "4f7b3304-3bdf-41c8-a09f-334e35a7d434",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "cff60188-0386-4cf5-9b65-1da40318a67e",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "88f72fc4-105b-5f4b-88bf-c7e8e02dcfef",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 2,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "a9b1efc0-f3b6-4089-bacd-d314f02053fa",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "359ae4dd-6df3-437e-8627-4b58d1ab744a",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "ca075e35-206d-59fd-9c2f-11e14b4be53d",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 3,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "ffe0c517-fa32-400b-abc0-97ab086904fa",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "b16f18e1-6f8d-4d98-bfb9-6b9d275a648b",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "f3502584-c763-5cf1-8599-4feef6defd5d",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 4,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "40f743e5-6b13-4834-b2a0-67f36fdf8d4d",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "22b421ff-3e81-4b23-8d5b-1035b591bdf0",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "a2778f54-cdfb-4ece-bb2b-473e77c12c10",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "a4b739a8-825b-44f9-b4ce-8f4ccaa39ec9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "d3c90d38-798a-4db5-95ce-6c328779d89f",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "74e23ba9-70ac-5812-9ce1-02f94b3dc999",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "da1fa8ef-cd97-4bbc-943d-c57a35532921",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "64cdbf02-67aa-54ff-97c0-5fe73fdcb120",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "a4b739a8-825b-44f9-b4ce-8f4ccaa39ec9",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "ab8e72cd-45c8-4923-ad3c-8ec88d04b569",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "01c0d47a-163d-44d0-913d-b42ee408e7af",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "b4a18287-fe2a-5ec4-8f4b-de9f19601278",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "cf9c8700-3689-4d78-8b2d-9de43d7f0e6c",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "6d8da6be-c2de-5b64-a9a2-90fe0f7d41ad",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "ab8e72cd-45c8-4923-ad3c-8ec88d04b569",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "ae4a75f4-f651-4807-96e4-bc52e374d1d3",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "c23fd58b-b64d-403d-a216-76be18fe23d8",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "c10bb679-4726-54dd-b72e-8adb623b56f8",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "2a8a4aed-e11e-4df5-8f09-5fffaba1f5cd",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "08feee7b-ad7a-5958-ae48-9310733db287",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "ae4a75f4-f651-4807-96e4-bc52e374d1d3",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "b7a7a34d-a3da-4ffb-a94b-fb9b3d561dbc",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "edbdb6c6-d5e4-4cce-94f9-cf2a77f4eeca",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "8d414dde-75f5-5041-b54f-d5bba8c9b1a5",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "77fc7fbc-d036-4e03-ba54-4c63031c5050",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "f75d72c4-ab90-590e-93bd-3e5703afba2d",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "355915f0-048e-427b-9463-d4e1519c0fa1",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "d4b7e732-3753-5fc4-8b74-4f987edfe954",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "edbdb6c6-d5e4-4cce-94f9-cf2a77f4eeca",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "ab433996-22cf-4e7a-8c4a-130410aaf551",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "77fc7fbc-d036-4e03-ba54-4c63031c5050",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "d4bb504b-b035-4b31-8f50-c4b046d0cc6a",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "b498d502-4a5f-5cd6-bd32-3c49c1609912",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "edbdb6c6-d5e4-4cce-94f9-cf2a77f4eeca",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "f42a303f-b894-4365-af82-d16185935b83",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "77fc7fbc-d036-4e03-ba54-4c63031c5050",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "b7a7a34d-a3da-4ffb-a94b-fb9b3d561dbc",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "d3b2af0b-c003-4bd1-a6ca-19dde70e4765",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "455632d6-c7b5-448c-ac21-1a27a6351619",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "798b8611-e4e5-59c6-9558-063ccd3017c0",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "25e1ad94-22f5-434a-918f-fbfb8e905408",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "b7e35584-6d46-5f48-96ac-4c7790b1b0a7",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "d3b2af0b-c003-4bd1-a6ca-19dde70e4765",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "d5f0a49c-8162-4175-8164-2abc2e6398ee",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "890659fa-f479-4d8e-a0f5-4693c1f8f5f7",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "967258da-022c-5297-931b-1799bec30d75",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "5e3c4c70-bff2-4693-80cc-0fb9e4ad4f50",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "7153c3df-2454-5163-b678-36389ef09b79",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "d5f0a49c-8162-4175-8164-2abc2e6398ee",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "df3f5f5e-dee1-41b1-8dc2-0314a0559acf",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "f7074915-ee14-437d-98d7-9a45fc33fd87",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "1467c7c2-42b6-5337-ae32-c859a9352585",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "5af1ada6-56c3-4c50-8fa2-801f1543223e",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "fa76805c-0549-5a6a-b610-244519861efd",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "df3f5f5e-dee1-41b1-8dc2-0314a0559acf",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "e375ad48-5035-4feb-8a16-6ce6996afc3d",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "038b2018-2f26-4d92-81f5-8e2c3bef3ed4",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "47becd45-0ad1-542a-b61c-8ad44821fd76",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "1602d5d7-fe77-4bd4-8186-e8cfb136c711",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "21c9fd32-b2df-50bb-99bc-e4a6ea978a95",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "e375ad48-5035-4feb-8a16-6ce6996afc3d",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "e44b4e79-af44-47e0-9296-fa025b4ce1dd",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "dbaf8372-c0f6-4625-aad8-e1f2012026f4",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "6c76f7bb-9403-58a3-9fbd-9a100caf3426",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "ef6cb37e-37f7-41ad-82cb-eff0e80d1748",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "760782ed-98a1-5b60-838c-ffc7a07d920e",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "e44b4e79-af44-47e0-9296-fa025b4ce1dd",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "e57c92c7-3951-44ce-8aa5-52adde5de30f",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "0495f4cb-3de0-4f9f-8af1-bb2a652c22d5",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "66c98a80-262c-5736-97fb-ea4dd6dc7f5b",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "7b7510d0-a2bf-4a3c-8740-fde18b1380fc",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "af784f8e-629a-5288-aa11-60e3c9421eb4",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "e57c92c7-3951-44ce-8aa5-52adde5de30f",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "e7a15899-9097-4aba-bb7c-7f65cb0d2862",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "4273c288-172c-49dc-99b7-7e52830a684f",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "672d8c56-90f1-5923-8c18-7566369c9f78",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "3c9fc682-b916-4a6b-b0a4-30553e16d1ac",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "8eefa250-558c-5327-b958-b7ec652fb6b1",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "8a1de97f-d7c6-4bfd-86f7-b9f0554cb6f8",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "c805db0e-f9a5-5c79-bc3e-6806437d60e6",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4273c288-172c-49dc-99b7-7e52830a684f",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "7a28840e-b48b-437d-b59f-91b96bf8223f",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "3c9fc682-b916-4a6b-b0a4-30553e16d1ac",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "d5a8a7c9-fabf-4181-94ae-0cb0fa213549",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "9c8c6ed7-3a6b-5719-8fc7-f93aee51239f",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "4273c288-172c-49dc-99b7-7e52830a684f",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "503eb7e9-0694-4055-9372-73b9240603c6",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "3c9fc682-b916-4a6b-b0a4-30553e16d1ac",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "e7a15899-9097-4aba-bb7c-7f65cb0d2862",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "e8221063-8e71-4401-aa31-c16fc85adecf",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "014de895-8cea-44d7-b195-3164204098b9",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "fc0eabb1-ccf0-5e4f-8343-ca287e0e1f8d",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "00ae2112-6d26-44e0-a7c1-a3e5cc4d53cc",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "5631b220-6942-5d0a-95a3-61bc9c717370",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "e8221063-8e71-4401-aa31-c16fc85adecf",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "eaf72545-f0ee-498e-b3df-75bac0e666b9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "9a73418d-815c-4185-88c4-1dbe0e60d61c",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "bd0d173b-4c56-5f6b-8a82-a7c7154ac920",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "70ac5c6b-333c-4486-aa87-4aaf4214a706",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "e736bf53-ce9d-54fb-91ba-478a9684971c",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "eaf72545-f0ee-498e-b3df-75bac0e666b9",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "ed9a10f1-92c4-40be-9ac3-e6ec748cbded",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "3cbab0f7-38c4-555f-a328-ff0bbe9109e3",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "2f387a04-d678-5444-8406-c10bfaf4c2bd",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "5bead199-2a08-42d5-a292-690df3b08ec5",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "aef0121d-29f3-51ea-9911-8b27d8da886c",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "665ab17e-6f2b-47c4-9333-8528f537a1fa",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "080ba2e3-f0ca-4b3c-867e-07046fd1618c",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "dff1d04a-a3ed-5870-9926-c14ae4c8c228",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "22859451-7f7d-437f-a02f-d0bc58f12785",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "51b8bcde-1ea9-4690-a9a3-cf555410ca3d",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "88fb235d-e2ee-5aba-957e-fd84b98c8628",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 2,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "8bd3a336-2e0d-4b76-8292-b2c31e33b141",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "0848d1ec-5e2a-47fb-8cac-852e13e8956c",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "5dc7c50b-84e5-5943-b31e-4b404e41ad62",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 3,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "b67151a4-c0a3-4f63-a06a-c01e10917555",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "59a7661c-00e8-4e90-a3c6-ef83563c8550",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "9e10aa94-cfd4-58db-975b-b8e6266a8d8d",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 4,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "f7c6089e-f727-4213-ba17-3537e82092de",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "6c02ed47-3255-4670-9c55-0eaf52132bd1",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "c4402557-da9f-5884-8ac3-ed6dc9487ff9",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 5,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "5a89dd0c-7548-4a2c-b064-8e8021372810",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "e002a6d7-40e5-4a4f-868b-f83b874c93c5",
+                  "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+                  "universalIdentifier": "c4b77e77-600f-50a0-b9cb-c85d1092eef1",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+                  "createdAt": "2026-11-12T11:19:46.100Z",
+                  "updatedAt": "2026-11-12T11:19:46.100Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 6,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "150613b6-b18c-442f-83b8-fc1101be0d24",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "16c1dfad-c8f5-43d7-98b1-c981b4464108",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "ed9a10f1-92c4-40be-9ac3-e6ec748cbded",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "f093248d-8950-43b9-b94e-5329a8468bf2",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Creation Form",
+          "objectMetadataId": "da41db81-219a-47a5-bdeb-4e5fd2772964",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "83bb4f6d-fc1b-5c97-8d1c-d2124d0d3fee",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:19:46.100Z",
+          "updatedAt": "2026-11-12T11:19:46.100Z",
+          "tabs": [
+            {
+              "id": "a5572361-3df7-4a65-81ea-f5a8ed509fa1",
+              "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "universalIdentifier": "cd46b965-f9c3-527e-9fd1-98048691eed3",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [],
+              "pageLayoutId": "f093248d-8950-43b9-b94e-5329a8468bf2",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        },
+        {
+          "id": "771e7e5d-e569-4876-be0a-8e9d5e65520a",
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "name": "Creation Form",
+          "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+          "type": "RECORD_FORM",
+          "universalIdentifier": "49fff8ac-351a-5ba8-a819-6080d059915e",
+          "isSystemSideEffect": true,
+          "isFirstTabPinned": true,
+          "defaultTabToFocusOnMobileAndSidePanelId": null,
+          "createdAt": "2026-11-12T11:44:42.026Z",
+          "updatedAt": "2026-11-12T11:44:42.026Z",
+          "tabs": [
+            {
+              "id": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+              "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+              "universalIdentifier": "ec5d681c-54d5-5bbc-9474-6036db066fb6",
+              "isSystemSideEffect": true,
+              "title": "Fields",
+              "icon": "IconList",
+              "position": 10,
+              "layoutMode": "VERTICAL_LIST",
+              "widgets": [
+                {
+                  "id": "385986d9-d318-4404-b42b-18fe9858eff4",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "c9f25a13-40b6-56e9-92ff-e0f701e14143",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:44:42.022Z",
+                  "updatedAt": "2026-11-12T11:44:42.022Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 0,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "2b75dec5-3d5e-4173-9945-ac46c4044b45",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "cc6d330b-1edb-4187-b1ea-48fe791084fe",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "ca6503f1-9ad6-53ba-b316-7b51fc8201fe",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:45:31.142Z",
+                  "updatedAt": "2026-11-12T11:45:31.142Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 1,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "e621c5cc-8b57-441a-aed3-268e3bd44108",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "1ef9723d-f303-4503-872c-85cd99a32809",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "00b3f087-a722-51d1-a670-759353313772",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:45:47.788Z",
+                  "updatedAt": "2026-11-12T11:45:47.788Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 2,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "85fae2f3-8bca-4acf-8f5a-319aa253ee46",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "2cc45024-1bab-4b65-bd1e-ba8a071da9b2",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "894917e5-3973-5db5-bfc8-6d6dfaacd02e",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:46:03.792Z",
+                  "updatedAt": "2026-11-12T11:46:03.792Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 3,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "36941d7b-296e-41a6-a0d2-d5b45ae6764a",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "18514985-776a-4bd1-a49e-359c5819a839",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "474aa26f-9882-575d-a055-a0ce0f1b8570",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:46:24.351Z",
+                  "updatedAt": "2026-11-12T11:46:24.351Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 4,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "14b2de7d-a1a7-4074-b44d-c5e12c2b12bb",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "192df871-7d10-4eef-b052-c8e884db3251",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "fee45b51-27c4-5344-8b8f-69b16c9c37a3",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:46:44.766Z",
+                  "updatedAt": "2026-11-12T11:46:44.766Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 5,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "fb7c21c7-fc12-4fd4-8eb2-ea9258da52cf",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "15bff690-3933-4b9b-a133-a42b8eda1220",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "0dd267fd-60a1-5618-8180-1435db42c01a",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:47:02.197Z",
+                  "updatedAt": "2026-11-12T11:47:02.197Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 6,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "545b1f87-ae8c-4efb-a335-2c047a7a1443",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "2006e767-3ace-41ff-ba80-04de84ab253a",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "dd6ea916-105a-5952-9f59-9e406e040ea5",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:47:22.132Z",
+                  "updatedAt": "2026-11-12T11:47:22.132Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 7,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "003ed89f-3339-49aa-afd4-61312023225e",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "5bf0262e-1998-4ffe-b6e5-e4eca5da8d49",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "6d89a4d4-1247-5d5a-95a6-725702f52163",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:48:03.105Z",
+                  "updatedAt": "2026-11-12T11:48:03.105Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 8,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "91a91719-986c-400a-ad78-506e085a1fc0",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "d396bf60-f1e4-4c4c-9356-055037b5cf0a",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "9dd8c1f5-fe03-5ba9-823b-e88ebc791afb",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:48:18.356Z",
+                  "updatedAt": "2026-11-12T11:48:18.356Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 9,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "fbaf5443-c505-4072-b8ad-e6f3cadee97b",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "12cbf901-b68b-451a-a1ba-1fb3cf46829c",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "783592fe-ad9d-5055-8cf6-2532372eb457",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:48:36.247Z",
+                  "updatedAt": "2026-11-12T11:48:36.247Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 10,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "30bff545-cda3-4b6b-bc2e-70720db39e82",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "2f4450d3-b883-4b4a-ae1d-6c035de0aafc",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "b41d8063-0805-58bf-9e65-3ffb9a791f60",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:48:57.905Z",
+                  "updatedAt": "2026-11-12T11:48:57.905Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 11,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "93ce2867-501c-42c3-9459-8c5bf300568d",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "64cd555b-ab38-4d8d-8966-9efaf0a9bc0a",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "377efa22-b500-5780-b45b-4b31ef113546",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:49:18.717Z",
+                  "updatedAt": "2026-11-12T11:49:18.717Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 12,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "22d4a50b-7218-46fe-9468-219a2f7aada0",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "20b13f12-5a15-4422-85e0-9dcc05b85bd1",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "ce19c898-4ee5-5c39-838b-8bbac292a2c0",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:49:37.248Z",
+                  "updatedAt": "2026-11-12T11:49:37.248Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 13,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "03eb77ae-f487-4429-b2d2-07eea0105b62",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "5c8b541a-d10f-4e1c-9480-0c6dfadddf46",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "b3d5bdb0-ee0d-5e03-9bb4-3b6853c68ca6",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:50:03.461Z",
+                  "updatedAt": "2026-11-12T11:50:03.461Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 14,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "06182996-4a4b-4196-8a5a-579bad9ce2db",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                },
+                {
+                  "id": "a33da3e7-4d69-41b0-86aa-288813f8eba3",
+                  "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+                  "universalIdentifier": "7537658c-b405-594b-a645-9fef6f06ede1",
+                  "isSystemSideEffect": true,
+                  "title": "",
+                  "type": "FORM_FIELD",
+                  "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+                  "createdAt": "2026-11-12T11:50:25.385Z",
+                  "updatedAt": "2026-11-12T11:50:25.385Z",
+                  "isActive": true,
+                  "deletedAt": null,
+                  "conditionalDisplay": null,
+                  "conditionalAvailabilityExpression": null,
+                  "gridPosition": {
+                    "column": 0,
+                    "columnSpan": 12,
+                    "row": 0,
+                    "rowSpan": 1,
+                    "__typename": "GridPosition"
+                  },
+                  "position": {
+                    "layoutMode": "VERTICAL_LIST",
+                    "index": 15,
+                    "heightBehavior": null,
+                    "__typename": "PageLayoutWidgetVerticalListPosition"
+                  },
+                  "configuration": {
+                    "configurationType": "FORM_FIELD",
+                    "fieldMetadataId": "25bc97ae-8334-4409-8fed-fc01c6fb1d3c",
+                    "__typename": "FormFieldConfiguration"
+                  },
+                  "pageLayoutTabId": "5e60b2f9-f243-4eae-8161-b3a89bf751f5",
+                  "__typename": "PageLayoutWidget"
+                }
+              ],
+              "pageLayoutId": "771e7e5d-e569-4876-be0a-8e9d5e65520a",
+              "isActive": true,
+              "createdAt": "2026-11-12T11:44:42.026Z",
+              "updatedAt": "2026-11-12T11:44:42.026Z",
+              "__typename": "PageLayoutTab"
+            }
+          ],
+          "__typename": "PageLayout"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,53 @@
+{
+  "flow": "data-model-api",
+  "sequence": 4,
+  "capturedAt": "2026-11-12T11:54:48.539Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconRelationOneToMany",
+        "label": "Opportunities",
+        "name": "opportunities",
+        "isLabelSyncedWithName": true,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "RELATION",
+        "relationCreationPayload": {
+          "type": "ONE_TO_MANY",
+          "targetObjectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+          "targetFieldLabel": "Project",
+          "targetFieldIcon": "IconListNumbers"
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-69>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "353",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "2 deferred schema action(s) are still running on workspace 9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+        "extensions": {
+          "subCode": "DEFERRED_WORKSPACE_MIGRATION_ACTIONS_IN_PROGRESS",
+          "userFriendlyMessage": "A previous data model change is still being applied in the background. Please try again in a moment.",
+          "code": "CONFLICT"
+        }
+      }
+    ],
+    "data": null
+  },
+  "repeatCount": 1
+}

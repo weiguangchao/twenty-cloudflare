@@ -1,0 +1,36 @@
+{
+  "flow": "permissions-api",
+  "sequence": 7,
+  "capturedAt": "2026-11-12T12:22:43.929Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "SortPeopleByJobTitle",
+  "query": "query SortPeopleByJobTitle { people(first: 2, orderBy: [{ jobTitle: AscNullsFirst }]) { edges { node { id } } } }",
+  "variables": {},
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-196>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": null
+    },
+    "errors": [
+      {
+        "message": "Entity performing the request does not have permission",
+        "extensions": {
+          "userFriendlyMessage": "用户没有权限。",
+          "subCode": "PERMISSION_DENIED",
+          "code": "FORBIDDEN"
+        }
+      }
+    ]
+  },
+  "repeatCount": 1
+}

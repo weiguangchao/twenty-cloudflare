@@ -1,0 +1,26 @@
+{
+  "flow": "file-access-api",
+  "sequence": 1,
+  "capturedAt": "2026-11-12T12:13:21.554Z",
+  "endpoint": "/file/files-field",
+  "method": "GET",
+  "path": "/file/files-field/9062968d-4f32-4e86-acf5-4825f45665a1",
+  "operationName": "GET /file/files-field",
+  "query": null,
+  "variables": {
+    "token": "<redacted-jwt-110>"
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "cache-control": "private, max-age=86400, immutable",
+    "content-disposition": "inline",
+    "content-type": "text/plain"
+  },
+  "response": "Proposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\nProposal draft for Airbnb\n",
+  "repeatCount": 1
+}

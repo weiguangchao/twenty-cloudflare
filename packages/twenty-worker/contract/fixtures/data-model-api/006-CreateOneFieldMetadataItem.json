@@ -1,0 +1,110 @@
+{
+  "flow": "data-model-api",
+  "sequence": 6,
+  "capturedAt": "2026-11-12T11:54:48.784Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconAbc",
+        "label": "Code",
+        "name": "code",
+        "isLabelSyncedWithName": true,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "TEXT"
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-69>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1676",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "Multiple validation errors occurred while creating fields",
+        "extensions": {
+          "code": "METADATA_VALIDATION_FAILED",
+          "errors": {
+            "fieldMetadata": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "NOT_AVAILABLE",
+                    "value": "code",
+                    "message": "Name \"code\" is not available as it is already used by another field",
+                    "userFriendlyMessage": "Name \"code\" is not available as it is already used by another field"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "ecee50a7-f6b3-4e71-9403-42c05adefa5a",
+                  "name": "code",
+                  "objectMetadataUniversalIdentifier": "1eca72e1-470c-49f0-997f-e4c8147f7477"
+                },
+                "metadataName": "fieldMetadata",
+                "type": "create"
+              }
+            ],
+            "viewField": [
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "6f720589-c4f3-5e20-a506-0dc18b45e7e0",
+                  "viewUniversalIdentifier": "30816dde-cb5d-5b62-ab71-019e7ed2cce3",
+                  "fieldMetadataUniversalIdentifier": "ecee50a7-f6b3-4e71-9403-42c05adefa5a"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              },
+              {
+                "status": "fail",
+                "errors": [
+                  {
+                    "code": "INVALID_VIEW_DATA",
+                    "message": "Field metadata not found",
+                    "userFriendlyMessage": "Field metadata not found"
+                  }
+                ],
+                "flatEntityMinimalInformation": {
+                  "universalIdentifier": "67b2c4b7-6d5f-5a1a-bd3e-5e2559fedb69",
+                  "viewUniversalIdentifier": "0fc3c5b0-fc7c-5b82-947b-dbfda7f31141",
+                  "fieldMetadataUniversalIdentifier": "ecee50a7-f6b3-4e71-9403-42c05adefa5a"
+                },
+                "metadataName": "viewField",
+                "type": "create"
+              }
+            ]
+          },
+          "summary": {
+            "totalErrors": 3,
+            "fieldMetadata": 1,
+            "viewField": 2
+          },
+          "userFriendlyMessage": "Many validation errors",
+          "message": "Validation failed for 1 fieldMetadata, 2 viewFields"
+        }
+      }
+    ],
+    "data": null
+  },
+  "repeatCount": 1
+}

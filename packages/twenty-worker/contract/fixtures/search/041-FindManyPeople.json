@@ -1,0 +1,727 @@
+{
+  "flow": "search",
+  "sequence": 41,
+  "capturedAt": "2026-11-12T11:42:03.506Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        avatarFile {\n          fileId\n          label\n          extension\n          url\n          __typename\n        }\n        company {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        companyId\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        emails {\n          primaryEmail\n          additionalEmails\n          __typename\n        }\n        id\n        jobTitle\n        linkedinLink {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n        name {\n          firstName\n          lastName\n          __typename\n        }\n        phones {\n          primaryPhoneNumber\n          primaryPhoneCountryCode\n          primaryPhoneCallingCode\n          additionalPhones {\n            number\n            callingCode\n            countryCode\n            __typename\n          }\n          __typename\n        }\n        position\n        updatedAt\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "or": [
+            {
+              "name": {
+                "firstName": {
+                  "ilike": "%Test01%"
+                }
+              }
+            },
+            {
+              "name": {
+                "lastName": {
+                  "ilike": "%Test01%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "or": [
+            {
+              "emails": {
+                "primaryEmail": {
+                  "ilike": "%Test01%"
+                }
+              }
+            },
+            {
+              "emails": {
+                "additionalEmails": {
+                  "like": "%Test01%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "or": [
+            {
+              "linkedinLink": {
+                "primaryLinkUrl": {
+                  "ilike": "%Test01%"
+                }
+              }
+            },
+            {
+              "linkedinLink": {
+                "primaryLinkLabel": {
+                  "ilike": "%Test01%"
+                }
+              }
+            },
+            {
+              "linkedinLink": {
+                "secondaryLinks": {
+                  "like": "%Test01%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "jobTitle": {
+            "ilike": "%Test01%"
+          }
+        },
+        {
+          "or": [
+            {
+              "phones": {
+                "primaryPhoneNumber": {
+                  "ilike": "%01%"
+                }
+              }
+            },
+            {
+              "phones": {
+                "primaryPhoneCallingCode": {
+                  "ilike": "%01%"
+                }
+              }
+            },
+            {
+              "phones": {
+                "additionalPhones": {
+                  "like": "%01%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "avatarUrl": {
+            "ilike": "%Test01%"
+          }
+        },
+        {
+          "or": [
+            {
+              "createdBy": {
+                "name": {
+                  "ilike": "%Test01%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "or": [
+            {
+              "updatedBy": {
+                "name": {
+                  "ilike": "%Test01%"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "limit": 60,
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person19@example5.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "83fdc62d-80d5-4df1-a54c-e64bd56eaa2b",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Ava",
+                "lastName": "Test019",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -19,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE5LCJpZCI6IjgzZmRjNjJkLTgwZDUtNGRmMS1hNTRjLWU2NGJkNTZlYWEyYiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person18@example4.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "a2c30986-3ab6-414a-bcfe-a5d87914b775",
+              "jobTitle": "Sales",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Emma",
+                "lastName": "Test018",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -18,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE4LCJpZCI6ImEyYzMwOTg2LTNhYjYtNDE0YS1iY2ZlLWE1ZDg3OTE0Yjc3NSJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person17@example3.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "c9a78dd6-6f1e-474f-9298-72ad6e220576",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Noah",
+                "lastName": "Test017",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -17,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE3LCJpZCI6ImM5YTc4ZGQ2LTZmMWUtNDc0Zi05Mjk4LTcyYWQ2ZTIyMDU3NiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person16@example2.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "98f9e3e5-a552-4fff-95d2-7f2a95d08ea6",
+              "jobTitle": "Sales",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Olivia",
+                "lastName": "Test016",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -16,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE2LCJpZCI6Ijk4ZjllM2U1LWE1NTItNGZmZi05NWQyLTdmMmE5NWQwOGVhNiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person15@example1.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "d4e40b4b-ed95-462c-9361-13347041f4a7",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Liam",
+                "lastName": "Test015",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -15,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE1LCJpZCI6ImQ0ZTQwYjRiLWVkOTUtNDYyYy05MzYxLTEzMzQ3MDQxZjRhNyJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person14@example0.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "e5d841d1-0c53-46d8-8b25-7558737da191",
+              "jobTitle": "Sales",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "陈",
+                "lastName": "Test014",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -14,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTE0LCJpZCI6ImU1ZDg0MWQxLTBjNTMtNDZkOC04YjI1LTc1NTg3MzdkYTE5MSJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person13@example6.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "3cc8e789-dc04-4c00-8c92-95ff2dbf74f6",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "刘",
+                "lastName": "Test013",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -13,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTEzLCJpZCI6IjNjYzhlNzg5LWRjMDQtNGMwMC04YzkyLTk1ZmYyZGJmNzRmNiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person12@example5.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "e98d8113-60f4-4ff5-9e9a-9da95c0c6277",
+              "jobTitle": "Sales",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "张",
+                "lastName": "Test012",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -12,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTEyLCJpZCI6ImU5OGQ4MTEzLTYwZjQtNGZmNS05ZTlhLTlkYTk1YzBjNjI3NyJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person11@example4.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "cda91174-cb75-4184-a09d-79518d66ec2b",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "李",
+                "lastName": "Test011",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -11,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTExLCJpZCI6ImNkYTkxMTc0LWNiNzUtNDE4NC1hMDlkLTc5NTE4ZDY2ZWMyYiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person10@example3.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "72e95b53-9c6f-4110-991a-be493bcbe6cf",
+              "jobTitle": "Sales",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "王",
+                "lastName": "Test010",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -10,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTEwLCJpZCI6IjcyZTk1YjUzLTljNmYtNDExMC05OTFhLWJlNDkzYmNiZTZjZiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "zoe@example.com",
+                "additionalEmails": [
+                  "zoe.alt@example.com"
+                ],
+                "__typename": "Emails"
+              },
+              "id": "07394720-1c4d-4703-ace2-241ba54ea531",
+              "jobTitle": "Staff Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Zoey",
+                "lastName": "Test007",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "612345678",
+                "primaryPhoneCountryCode": "FR",
+                "primaryPhoneCallingCode": "+33",
+                "additionalPhones": [
+                  {
+                    "number": "2025550123",
+                    "callingCode": "+1",
+                    "countryCode": "US",
+                    "__typename": "AdditionalPhone"
+                  }
+                ],
+                "__typename": "Phones"
+              },
+              "position": -7,
+              "updatedAt": "2026-11-12T11:33:12.444Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTcsImlkIjoiMDczOTQ3MjAtMWM0ZC00NzAzLWFjZTItMjQxYmE1NGVhNTMxIn0",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6LTE5LCJpZCI6IjgzZmRjNjJkLTgwZDUtNGRmMS1hNTRjLWU2NGJkNTZlYWEyYiJ9",
+          "endCursor": "eyJwb3NpdGlvbiI6LTcsImlkIjoiMDczOTQ3MjAtMWM0ZC00NzAzLWFjZTItMjQxYmE1NGVhNTMxIn0",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 11,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

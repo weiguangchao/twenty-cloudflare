@@ -1,0 +1,32 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 18,
+  "capturedAt": "2026-11-12T11:33:30.610Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregatePeople",
+  "query": "query AggregatePeople($filter: PersonFilterInput) {\n  people(filter: $filter) {\n    countUniqueValuesEmails\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {}
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "countUniqueValuesEmails": 95,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 4
+}

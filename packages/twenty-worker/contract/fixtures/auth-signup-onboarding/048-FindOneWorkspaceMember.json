@@ -1,0 +1,157 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 48,
+  "capturedAt": "2026-11-12T11:20:39.899Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneWorkspaceMember",
+  "query": "query FindOneWorkspaceMember($objectRecordId: UUID!) {\n  workspaceMember(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    accountOwnerForCompanies {\n      edges {\n        node {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreadParticipants {\n      edges {\n        node {\n          __typename\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedAgentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedTasks {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    avatarUrl\n    blocklist {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarStartDay\n    colorScheme\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    dateFormat\n    deletedAt\n    id\n    jobTitle\n    locale\n    messageParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    numberFormat\n    openRecordIn\n    ownedOpportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    timeFormat\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    timeZone\n    uiScale\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    userEmail\n    userId\n  }\n}",
+  "variables": {
+    "objectRecordId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "workspaceMember": {
+        "__typename": "WorkspaceMember",
+        "accountOwnerForCompanies": {
+          "edges": [],
+          "__typename": "CompanyConnection"
+        },
+        "agentChatThreadParticipants": {
+          "edges": [],
+          "__typename": "AgentChatThreadParticipantConnection"
+        },
+        "agentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedAgentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedTasks": {
+          "edges": [],
+          "__typename": "TaskConnection"
+        },
+        "avatarUrl": "",
+        "blocklist": {
+          "edges": [],
+          "__typename": "BlocklistConnection"
+        },
+        "calendarEventParticipants": {
+          "edges": [],
+          "__typename": "CalendarEventParticipantConnection"
+        },
+        "calendarStartDay": 7,
+        "colorScheme": "System",
+        "createdAt": "2026-11-12T11:19:49.295Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "dateFormat": "SYSTEM",
+        "deletedAt": null,
+        "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+        "jobTitle": "",
+        "locale": "zh-CN",
+        "messageParticipants": {
+          "edges": [],
+          "__typename": "MessageParticipantConnection"
+        },
+        "name": {
+          "firstName": "Alice",
+          "lastName": "Admin",
+          "__typename": "FullName"
+        },
+        "numberFormat": "SYSTEM",
+        "openRecordIn": "SIDE_PANEL",
+        "ownedOpportunities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "822639e5-9bf7-40f1-8882-a11140362339",
+                "name": "Platform Migration"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "fc747edc-cb00-4078-8d6b-1fab2611dae4",
+                "name": "AI Model Training"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "75de302f-1044-4957-8da4-1f67ebefd52b",
+                "name": "Workspace Expansion"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "2beb07b0-340c-41d7-be33-5aa91757f329",
+                "name": "API Integration Deal"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "9543adcf-ec03-44e2-9233-3c2d3ebae98a",
+                "name": "Enterprise Plan Upgrade"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5",
+                "name": "Design Partnership"
+              },
+              "__typename": "OpportunityEdge"
+            }
+          ],
+          "__typename": "OpportunityConnection"
+        },
+        "position": 0,
+        "timeFormat": "SYSTEM",
+        "timelineActivities": {
+          "edges": [],
+          "__typename": "TimelineActivityConnection"
+        },
+        "timeZone": "system",
+        "uiScale": "Default",
+        "updatedAt": "2026-11-12T11:20:11.119Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "userEmail": "alice@example.com",
+        "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,43 @@
+{
+  "flow": "members-roles",
+  "sequence": 46,
+  "capturedAt": "2026-11-12T12:19:18.527Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "2e212a40-3387-4491-97d1-4d6448c819b9",
+      "queryId": "agent-chat-thread-participant-operations",
+      "operationSignature": {
+        "objectNameSingular": "agentChatThreadParticipant",
+        "variables": {
+          "filter": {
+            "workspaceMemberId": {
+              "eq": "baa03178-0030-4e0a-b7c8-59312b5d3eaa"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

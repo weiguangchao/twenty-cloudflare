@@ -1,0 +1,54 @@
+{
+  "flow": "records-list",
+  "sequence": 62,
+  "capturedAt": "2026-11-12T11:25:53.117Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "7c21d644-3109-4142-aa1d-637cff4e752f",
+      "queryId": "record-board-opportunities-0b6fd4d6-525a-4fff-8c63-f6d17179dd5c",
+      "operationSignature": {
+        "objectNameSingular": "opportunity",
+        "variables": {
+          "filter": {
+            "stage": {
+              "in": [
+                "NEW",
+                "SCREENING",
+                "MEETING",
+                "PROPOSAL",
+                "CUSTOMER"
+              ]
+            }
+          },
+          "orderBy": [
+            {
+              "position": "AscNullsFirst"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

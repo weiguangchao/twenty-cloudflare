@@ -1,0 +1,48 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 8,
+  "capturedAt": "2026-11-12T11:19:45.846Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SignUpInNewWorkspace",
+  "query": "mutation SignUpInNewWorkspace($input: SignUpInNewWorkspaceInput) {\n  signUpInNewWorkspace(input: $input) {\n    loginToken {\n      ...AuthTokenFragment\n      __typename\n    }\n    workspace {\n      id\n      workspaceUrls {\n        ...WorkspaceUrlsFragment\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AuthTokenFragment on AuthToken {\n  token\n  expiresAt\n  __typename\n}\n\nfragment WorkspaceUrlsFragment on WorkspaceUrls {\n  subdomainUrl\n  customUrl\n  __typename\n}",
+  "variables": {
+    "input": {
+      "displayName": "Acme"
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-1>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "794",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "signUpInNewWorkspace": {
+        "loginToken": {
+          "token": "<redacted-jwt-3>",
+          "expiresAt": "2026-11-12T11:34:45.832Z",
+          "__typename": "AuthToken"
+        },
+        "workspace": {
+          "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "workspaceUrls": {
+            "subdomainUrl": "http://localhost:3001/",
+            "customUrl": null,
+            "__typename": "WorkspaceUrls"
+          },
+          "__typename": "WorkspaceUrlsAndId"
+        },
+        "__typename": "SignUp"
+      }
+    }
+  },
+  "repeatCount": 1
+}

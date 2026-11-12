@@ -1,0 +1,472 @@
+{
+  "flow": "record-detail",
+  "sequence": 38,
+  "capturedAt": "2026-11-12T11:27:26.269Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "",
+    "limit": 30,
+    "filter": {},
+    "includedObjectNameSingulars": [
+      "note",
+      "workspaceMember",
+      "company",
+      "opportunity",
+      "messageList",
+      "person",
+      "task",
+      "dashboard",
+      "messageCampaign"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "12511",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "07394720-1c4d-4703-ace2-241ba54ea531",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test007",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMDczOTQ3MjAtMWM0ZC00NzAzLWFjZTItMjQxYmE1NGVhNTMxIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "087d0be2-9cad-47e2-8c41-d4d4af2d212f",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Ava Test079",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMDg3ZDBiZTItOWNhZC00N2UyLThjNDEtZDRkNGFmMmQyMTJmIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0a222b2b-db72-4bf1-aa1c-e6b55b47aab6",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test025",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGEyMjJiMmItZGI3Mi00YmYxLWFhMWMtZTZiNTViNDdhYWI2In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0b1f2033-9d1b-4e06-8bdd-a2fe68e51f3f",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "李 Test086",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGIxZjIwMzMtOWQxYi00ZTA2LThiZGQtYTJmZTY4ZTUxZjNmIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0e47007e-5026-4c95-b87d-0b3e2b21e8e2",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Noah Test002",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGU0NzAwN2UtNTAyNi00Yzk1LWI4N2QtMGIzZTJiMjFlOGUyIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0e4823bf-b13a-402d-ab41-9f775a70d927",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Ethan Test023",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGU0ODIzYmYtYjEzYS00MDJkLWFiNDEtOWY3NzVhNzBkOTI3In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0eacbcb8-c93b-4ba1-8ac6-916f517f121c",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "张 Test027",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGVhY2JjYjgtYzkzYi00YmExLThhYzYtOTE2ZjUxN2YxMjFjIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "0f6cd7b1-7db1-4d5d-8993-f03998912b00",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Ethan Test068",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMGY2Y2Q3YjEtN2RiMS00ZDVkLTg5OTMtZjAzOTk4OTEyYjAwIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "114e7962-d8cd-40fe-9687-eeb2ef5f37d1",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Noah Test077",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMTE0ZTc5NjItZDhjZC00MGZlLTk2ODctZWViMmVmNWYzN2QxIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "11667637-eb47-4b0d-90b4-b411c69ecb2f",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Olivia Test061",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMTE2Njc2MzctZWI0Ny00YjBkLTkwYjQtYjQxMWM2OWVjYjJmIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "149cfaf0-04d0-4239-b092-a63c27dee533",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "李 Test056",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMTQ5Y2ZhZjAtMDRkMC00MjM5LWIwOTItYTYzYzI3ZGVlNTMzIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "154960f2-1ce5-48f4-bc89-f3a52f8127fe",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Sofia Test084",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMTU0OTYwZjItMWNlNS00OGY0LWJjODktZjNhNTJmODEyN2ZlIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "16d1043c-c6cd-43c0-8949-e7c5667490dd",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "李 Test071",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMTZkMTA0M2MtYzZjZC00M2MwLTg5NDktZTdjNTY2NzQ5MGRkIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "1a8cb163-4319-4f16-928e-b441627d37bc",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Olivia Test031",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMWE4Y2IxNjMtNDMxOS00ZjE2LTkyOGUtYjQ0MTYyN2QzN2JjIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "1b7042f3-54c2-4f2d-b4d1-98107274f98c",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Sofia Test009",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMWI3MDQyZjMtNTRjMi00ZjJkLWI0ZDEtOTgxMDcyNzRmOThjIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "1df3edee-cbe7-4eda-aa24-9680db4973f5",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Emma Test078",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMWRmM2VkZWUtY2JlNy00ZWRhLWFhMjQtOTY4MGRiNDk3M2Y1In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "1e9fd87d-11ba-41a8-8dc3-3e97deaa3cac",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "刘 Test043",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMWU5ZmQ4N2QtMTFiYS00MWE4LThkYzMtM2U5N2RlYWEzY2FjIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "24c389c6-7d0a-4238-869d-3874d7ec72f5",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Sofia Test024",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMjRjMzg5YzYtN2QwYS00MjM4LTg2OWQtMzg3NGQ3ZWM3MmY1In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "2807a9e1-d768-4660-b23e-b3dea81ec222",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Sofia Test054",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMjgwN2E5ZTEtZDc2OC00NjYwLWIyM2UtYjNkZWE4MWVjMjIyIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "2cbd6ac8-55d5-42e6-8d2a-a5e59cdbbf93",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Ethan Test083",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMmNiZDZhYzgtNTVkNS00MmU2LThkMmEtYTVlNTljZGJiZjkzIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "2fcd1961-0270-438d-b9d1-7c32d4e91b3a",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test082",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMmZjZDE5NjEtMDI3MC00MzhkLWI5ZDEtN2MzMmQ0ZTkxYjNhIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "316abda8-efef-4d99-9fc3-6666736f4b8d",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Noah Test062",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMzE2YWJkYTgtZWZlZi00ZDk5LTlmYzMtNjY2NjczNmY0YjhkIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "36336ee9-9ce8-4eee-b3bd-bb88985815f0",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Emma Test033",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiMzYzMzZlZTktOWNlOC00ZWVlLWIzYmQtYmI4ODk4NTgxNWYwIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "3cc8e789-dc04-4c00-8c92-95ff2dbf74f6",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "刘 Test013",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiM2NjOGU3ODktZGMwNC00YzAwLThjOTItOTVmZjJkYmY3NGY2In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "4134e4dc-5286-4510-9c04-634a185b81e4",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Noah Test047",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDEzNGU0ZGMtNTI4Ni00NTEwLTljMDQtNjM0YTE4NWI4MWU0In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "42cd1124-c623-45a1-b322-26546833f9c5",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test085",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDJjZDExMjQtYzYyMy00NWExLWIzMjItMjY1NDY4MzNmOWM1In19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "42f674d0-1e33-4a2f-b75f-f7d66f2e1ba1",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Noah Test032",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDJmNjc0ZDAtMWUzMy00YTJmLWI3NWYtZjdkNjZmMmUxYmExIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "45fecd26-e088-4a01-a6b6-8ba3a45aa972",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test022",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDVmZWNkMjYtZTA4OC00YTAxLWE2YjYtOGJhM2E0NWFhOTcyIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "46642131-690f-49ac-a59d-46582abb73aa",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "陈 Test029",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDY2NDIxMzEtNjkwZi00OWFjLWE1OWQtNDY1ODJhYmI3M2FhIn19",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "46e7341c-fd47-435f-8b6c-f0f559e4a388",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "王 Test040",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDZlNzM0MWMtZmQ0Ny00MzVmLThiNmMtZjBmNTU5ZTRhMzg4In19",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": true,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsicGVyc29uIjoiNDZlNzM0MWMtZmQ0Ny00MzVmLThiNmMtZjBmNTU5ZTRhMzg4In19",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 2
+}

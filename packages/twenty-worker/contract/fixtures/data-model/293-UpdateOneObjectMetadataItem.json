@@ -1,0 +1,52 @@
+{
+  "flow": "data-model",
+  "sequence": 293,
+  "capturedAt": "2026-11-12T11:58:30.262Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpdateOneObjectMetadataItem",
+  "query": "mutation UpdateOneObjectMetadataItem($idToUpdate: UUID!, $updatePayload: UpdateObjectPayload!) {\n  updateOneObject(input: {id: $idToUpdate, update: $updatePayload}) {\n    id\n    nameSingular\n    namePlural\n    labelSingular\n    labelPlural\n    description\n    icon\n    color\n    isActive\n    isSearchable\n    openRecordIn\n    createdAt\n    updatedAt\n    labelIdentifierFieldMetadataId\n    imageIdentifierFieldMetadataId\n    isLabelSyncedWithName\n    applicationId\n    __typename\n  }\n}",
+  "variables": {
+    "idToUpdate": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+    "updatePayload": {
+      "description": "nitiatives"
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "612",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "updateOneObject": {
+        "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "nameSingular": "initiative",
+        "namePlural": "initiatives",
+        "labelSingular": "Initiative",
+        "labelPlural": "Initiatives",
+        "description": "nitiatives",
+        "icon": "IconListNumbers",
+        "color": "gray",
+        "isActive": true,
+        "isSearchable": true,
+        "openRecordIn": "USER_CHOICE",
+        "createdAt": "2026-11-12T11:44:41.969Z",
+        "updatedAt": "2026-11-12T11:58:30.153Z",
+        "labelIdentifierFieldMetadataId": "2b75dec5-3d5e-4173-9945-ac46c4044b45",
+        "imageIdentifierFieldMetadataId": null,
+        "isLabelSyncedWithName": true,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "__typename": "Object"
+      }
+    }
+  },
+  "repeatCount": 1
+}

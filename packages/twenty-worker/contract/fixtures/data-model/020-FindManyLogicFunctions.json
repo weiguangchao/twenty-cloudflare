@@ -1,0 +1,28 @@
+{
+  "flow": "data-model",
+  "sequence": 20,
+  "capturedAt": "2026-11-12T11:43:35.198Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindManyLogicFunctions",
+  "query": "query FindManyLogicFunctions {\n  findManyLogicFunctions {\n    ...LogicFunctionFields\n    __typename\n  }\n}\n\nfragment LogicFunctionFields on LogicFunction {\n  id\n  name\n  description\n  runtime\n  timeoutSeconds\n  executionMode\n  sourceHandlerPath\n  handlerName\n  cronTriggerSettings\n  databaseEventTriggerSettings\n  httpRouteTriggerSettings\n  toolTriggerSettings\n  workflowActionTriggerSettings\n  applicationId\n  universalIdentifier\n  createdAt\n  updatedAt\n  __typename\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "38",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "findManyLogicFunctions": []
+    }
+  },
+  "repeatCount": 2
+}

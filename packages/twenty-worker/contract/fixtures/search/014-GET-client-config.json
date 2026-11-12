@@ -1,0 +1,20 @@
+{
+  "flow": "search",
+  "sequence": 14,
+  "capturedAt": "2026-11-12T11:41:56.117Z",
+  "endpoint": "/client-config",
+  "method": "GET",
+  "path": "/client-config",
+  "operationName": "GET /client-config",
+  "query": null,
+  "variables": {
+    "v": "v1"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>"
+  },
+  "status": 200,
+  "responseHeaders": {},
+  "response": null,
+  "repeatCount": 1
+}

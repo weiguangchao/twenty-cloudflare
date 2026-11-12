@@ -1,0 +1,45 @@
+{
+  "flow": "permissions-api",
+  "sequence": 5,
+  "capturedAt": "2026-11-12T12:22:43.922Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindPeopleWithoutJobTitle",
+  "query": "query FindPeopleWithoutJobTitle { people(first: 2) { edges { node { id name { firstName } } } } }",
+  "variables": {},
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-196>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "id": "07394720-1c4d-4703-ace2-241ba54ea531",
+              "name": {
+                "firstName": "Zoey"
+              }
+            }
+          },
+          {
+            "node": {
+              "id": "087d0be2-9cad-47e2-8c41-d4d4af2d212f",
+              "name": {
+                "firstName": "Ava"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "repeatCount": 1
+}

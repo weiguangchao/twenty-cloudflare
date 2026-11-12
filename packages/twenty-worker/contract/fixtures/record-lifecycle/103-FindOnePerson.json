@@ -1,0 +1,39 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 103,
+  "capturedAt": "2026-11-12T11:38:13.152Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOnePerson",
+  "query": "query FindOnePerson($objectRecordId: UUID!) {\n  person(\n    filter: {or: [{deletedAt: {is: NULL}}, {deletedAt: {is: NOT_NULL}}], id: {eq: $objectRecordId}}\n  ) {\n    __typename\n    agentChatThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          thread {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    avatarFile {\n      fileId\n      label\n      extension\n      url\n      __typename\n    }\n    avatarUrl\n    calendarEventParticipants {\n      edges {\n        node {\n          __typename\n          calendarEvent {\n            __typename\n            id\n            title\n          }\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventTargets {\n      edges {\n        node {\n          __typename\n          calendarEvent {\n            __typename\n            id\n            title\n          }\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    company {\n      __typename\n      domainName {\n        primaryLinkUrl\n        primaryLinkLabel\n        secondaryLinks {\n          label\n          url\n          __typename\n        }\n        __typename\n      }\n      id\n      name\n    }\n    companyId\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    emails {\n      primaryEmail\n      additionalEmails\n      __typename\n    }\n    id\n    jobTitle\n    linkedinLink {\n      primaryLinkUrl\n      primaryLinkLabel\n      secondaryLinks {\n        label\n        url\n        __typename\n      }\n      __typename\n    }\n    listMemberships {\n      edges {\n        node {\n          __typename\n          id\n          list {\n            __typename\n            id\n            name\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    messageParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n          message {\n            __typename\n            id\n            subject\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    messageThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          messageThread {\n            __typename\n            id\n            subject\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    noteTargets {\n      edges {\n        node {\n          __typename\n          id\n          note {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    phones {\n      primaryPhoneNumber\n      primaryPhoneCountryCode\n      primaryPhoneCallingCode\n      additionalPhones {\n        number\n        callingCode\n        countryCode\n        __typename\n      }\n      __typename\n    }\n    pointOfContactForOpportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    taskTargets {\n      edges {\n        node {\n          __typename\n          id\n          task {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "objectRecordId": "2cab27bf-3d9d-4448-9989-f88c1b033f2d"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "person": null
+    },
+    "errors": [
+      {
+        "message": "Record not found",
+        "extensions": {
+          "subCode": "RECORD_NOT_FOUND",
+          "userFriendlyMessage": "此记录不存在或已被删除。",
+          "code": "NOT_FOUND"
+        }
+      }
+    ]
+  },
+  "repeatCount": 1
+}

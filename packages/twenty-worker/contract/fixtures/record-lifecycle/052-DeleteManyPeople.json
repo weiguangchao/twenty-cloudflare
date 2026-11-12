@@ -1,0 +1,40 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 52,
+  "capturedAt": "2026-11-12T11:34:29.901Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "DeleteManyPeople",
+  "query": "mutation DeleteManyPeople($filter: PersonFilterInput!) {\n  deletePeople(filter: $filter) {\n    id\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "a75bbfb2-4bd7-4674-9afa-a9f1b6b374d3"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "deletePeople": [
+        {
+          "id": "a75bbfb2-4bd7-4674-9afa-a9f1b6b374d3",
+          "__typename": "Person"
+        }
+      ]
+    }
+  },
+  "repeatCount": 2
+}

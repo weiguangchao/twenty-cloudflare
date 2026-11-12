@@ -1,0 +1,59 @@
+{
+  "flow": "record-detail",
+  "sequence": 30,
+  "capturedAt": "2026-11-12T11:27:13.728Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        emails {\n          primaryEmail\n          additionalEmails\n          __typename\n        }\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "companyId": {
+        "eq": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+      }
+    },
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "emails": {
+                "primaryEmail": "chesky@airbnb.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "a2e78a5e-338b-46df-8811-fa08c7d19d35"
+            },
+            "cursor": "eyJpZCI6ImEyZTc4YTVlLTMzOGItNDZkZi04ODExLWZhMDhjN2QxOWQzNSJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6ImEyZTc4YTVlLTMzOGItNDZkZi04ODExLWZhMDhjN2QxOWQzNSJ9",
+          "endCursor": "eyJpZCI6ImEyZTc4YTVlLTMzOGItNDZkZi04ODExLWZhMDhjN2QxOWQzNSJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

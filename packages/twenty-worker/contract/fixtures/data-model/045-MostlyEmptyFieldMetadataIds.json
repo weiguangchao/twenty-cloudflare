@@ -1,0 +1,30 @@
+{
+  "flow": "data-model",
+  "sequence": 45,
+  "capturedAt": "2026-11-12T11:44:44.952Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "MostlyEmptyFieldMetadataIds",
+  "query": "query MostlyEmptyFieldMetadataIds($objectMetadataId: UUID!) {\n  mostlyEmptyFieldMetadataIds(objectMetadataId: $objectMetadataId)\n}",
+  "variables": {
+    "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "43",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "mostlyEmptyFieldMetadataIds": []
+    }
+  },
+  "repeatCount": 25
+}

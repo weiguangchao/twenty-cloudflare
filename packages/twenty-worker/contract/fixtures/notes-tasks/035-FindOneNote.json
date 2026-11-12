@@ -1,0 +1,113 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 35,
+  "capturedAt": "2026-11-12T11:38:54.694Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneNote",
+  "query": "query FindOneNote($objectRecordId: UUID!) {\n  note(\n    filter: {or: [{deletedAt: {is: NULL}}, {deletedAt: {is: NOT_NULL}}], id: {eq: $objectRecordId}}\n  ) {\n    __typename\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    bodyV2 {\n      blocknote\n      markdown\n      tiptap\n      __typename\n    }\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    id\n    noteTargets {\n      edges {\n        node {\n          __typename\n          id\n          targetCompany {\n            __typename\n            domainName {\n              primaryLinkUrl\n              primaryLinkLabel\n              secondaryLinks {\n                label\n                url\n                __typename\n              }\n              __typename\n            }\n            id\n            name\n          }\n          targetOpportunity {\n            __typename\n            id\n            name\n          }\n          targetPerson {\n            __typename\n            avatarFile {\n              fileId\n              label\n              extension\n              url\n              __typename\n            }\n            id\n            name {\n              firstName\n              lastName\n              __typename\n            }\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    title\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "objectRecordId": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "note": {
+        "__typename": "Note",
+        "attachments": {
+          "edges": [],
+          "__typename": "AttachmentConnection"
+        },
+        "bodyV2": {
+          "blocknote": null,
+          "markdown": "",
+          "tiptap": null,
+          "__typename": "RichText"
+        },
+        "createdAt": "2026-11-12T11:38:53.815Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "id": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1",
+        "noteTargets": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "NoteTarget",
+                "id": "29073b2b-ccbf-4bcb-8056-c93081f1a992",
+                "targetCompany": {
+                  "__typename": "Company",
+                  "domainName": {
+                    "primaryLinkUrl": "airbnb.com",
+                    "primaryLinkLabel": "",
+                    "secondaryLinks": [
+                      {
+                        "label": "News",
+                        "url": "news.airbnb.com",
+                        "__typename": "SecondaryLink"
+                      }
+                    ],
+                    "__typename": "Links"
+                  },
+                  "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                  "name": "Airbnb"
+                },
+                "targetOpportunity": null,
+                "targetPerson": null
+              },
+              "__typename": "NoteTargetEdge"
+            }
+          ],
+          "__typename": "NoteTargetConnection"
+        },
+        "position": 2,
+        "timelineActivities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "6e811137-588a-4024-be73-49005c226b6e",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            }
+          ],
+          "__typename": "TimelineActivityConnection"
+        },
+        "title": "",
+        "updatedAt": "2026-11-12T11:38:53.815Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        }
+      }
+    }
+  },
+  "repeatCount": 1
+}

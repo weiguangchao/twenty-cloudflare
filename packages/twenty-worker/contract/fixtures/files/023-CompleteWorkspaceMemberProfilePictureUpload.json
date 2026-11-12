@@ -1,0 +1,37 @@
+{
+  "flow": "files",
+  "sequence": 23,
+  "capturedAt": "2026-11-12T12:09:25.626Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CompleteWorkspaceMemberProfilePictureUpload",
+  "query": "mutation CompleteWorkspaceMemberProfilePictureUpload($fileId: String!) {\n  completeWorkspaceMemberProfilePictureUpload(fileId: $fileId) {\n    id\n    path\n    size\n    createdAt\n    url\n    __typename\n  }\n}",
+  "variables": {
+    "fileId": "62238fe7-1b38-4466-865f-7c717cf4ad74"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "784",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "completeWorkspaceMemberProfilePictureUpload": {
+        "id": "62238fe7-1b38-4466-865f-7c717cf4ad74",
+        "path": "core-picture/62238fe7-1b38-4466-865f-7c717cf4ad74.png",
+        "size": 177,
+        "createdAt": "2026-11-12T12:09:25.471Z",
+        "url": "http://localhost:3000/file/core-picture/62238fe7-1b38-4466-865f-7c717cf4ad74?token=<redacted-jwt-89>",
+        "__typename": "FileWithSignedUrl"
+      }
+    }
+  },
+  "repeatCount": 1
+}

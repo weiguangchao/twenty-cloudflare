@@ -1,0 +1,46 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 17,
+  "capturedAt": "2026-11-12T12:00:47.423Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyInitiatives",
+  "query": "query FindManyInitiatives($filter: InitiativeFilterInput, $orderBy: [InitiativeOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  initiatives(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        id\n        name\n        position\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {},
+    "limit": 60,
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "initiatives": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "InitiativeConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

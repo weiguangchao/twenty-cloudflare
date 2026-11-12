@@ -1,0 +1,87 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 50,
+  "capturedAt": "2026-11-12T11:39:26.066Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "CreateNoteTargets",
+  "query": "mutation CreateNoteTargets($data: [NoteTargetCreateInput!]!, $upsert: Boolean) {\n  createNoteTargets(data: $data, upsert: $upsert) {\n    __typename\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    id\n    note {\n      __typename\n      id\n      title\n    }\n    noteId\n    position\n    targetCompany {\n      __typename\n      domainName {\n        primaryLinkUrl\n        primaryLinkLabel\n        secondaryLinks {\n          label\n          url\n          __typename\n        }\n        __typename\n      }\n      id\n      name\n    }\n    targetCompanyId\n    targetOpportunity {\n      __typename\n      id\n      name\n    }\n    targetOpportunityId\n    targetPerson {\n      __typename\n      avatarFile {\n        fileId\n        label\n        extension\n        url\n        __typename\n      }\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    targetPersonId\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "data": [
+      {
+        "noteId": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1",
+        "targetPersonId": "a2e78a5e-338b-46df-8811-fa08c7d19d35"
+      }
+    ],
+    "upsert": true
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "createNoteTargets": [
+        {
+          "__typename": "NoteTarget",
+          "createdAt": "2026-11-12T11:39:25.896Z",
+          "createdBy": {
+            "source": "MANUAL",
+            "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+            "name": "Alice Admin",
+            "context": {
+              "provider": null,
+              "applicationId": null,
+              "__typename": "ActorContext"
+            },
+            "__typename": "Actor"
+          },
+          "deletedAt": null,
+          "id": "53ad6132-2390-46a8-bc51-7134b0b2e975",
+          "note": {
+            "__typename": "Note",
+            "id": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1",
+            "title": "Kickoff meeting"
+          },
+          "noteId": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1",
+          "position": -1,
+          "targetCompany": null,
+          "targetCompanyId": null,
+          "targetOpportunity": null,
+          "targetOpportunityId": null,
+          "targetPerson": {
+            "__typename": "Person",
+            "avatarFile": null,
+            "id": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+            "name": {
+              "firstName": "Brian",
+              "lastName": "Chesky",
+              "__typename": "FullName"
+            }
+          },
+          "targetPersonId": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+          "updatedAt": "2026-11-12T11:39:25.896Z",
+          "updatedBy": {
+            "source": "MANUAL",
+            "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+            "name": "Alice Admin",
+            "context": {
+              "provider": null,
+              "applicationId": null,
+              "__typename": "ActorContext"
+            },
+            "__typename": "Actor"
+          }
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

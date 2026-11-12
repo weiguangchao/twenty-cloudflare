@@ -1,0 +1,79 @@
+{
+  "flow": "record-detail",
+  "sequence": 77,
+  "capturedAt": "2026-11-12T11:29:23.411Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyOpportunities",
+  "query": "query FindManyOpportunities($filter: OpportunityFilterInput, $orderBy: [OpportunityOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  opportunities(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        deletedAt\n        id\n        position\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "and": [
+        {
+          "id": {
+            "eq": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5"
+          }
+        },
+        {
+          "or": [
+            {
+              "deletedAt": {
+                "is": "NULL"
+              }
+            },
+            {
+              "deletedAt": {
+                "is": "NOT_NULL"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "opportunities": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Opportunity",
+              "deletedAt": null,
+              "id": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5",
+              "position": 5
+            },
+            "cursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NDU3ZjhlOS0xNmFlLTQzYjktOTJlZS1jYmQyMWYzZGRlZDUifQ",
+            "__typename": "OpportunityEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NDU3ZjhlOS0xNmFlLTQzYjktOTJlZS1jYmQyMWYzZGRlZDUifQ",
+          "endCursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NDU3ZjhlOS0xNmFlLTQzYjktOTJlZS1jYmQyMWYzZGRlZDUifQ",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "OpportunityConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

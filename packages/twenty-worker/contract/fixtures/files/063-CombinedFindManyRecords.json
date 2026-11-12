@@ -1,0 +1,85 @@
+{
+  "flow": "files",
+  "sequence": 63,
+  "capturedAt": "2026-11-12T12:10:47.953Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "CombinedFindManyRecords",
+  "query": "query CombinedFindManyRecords($filterTask: TaskFilterInput, $filterNote: NoteFilterInput, $orderByTask: [TaskOrderByInput], $orderByNote: [NoteOrderByInput], $afterTask: String, $beforeTask: String, $firstTask: Int, $lastTask: Int, $afterNote: String, $beforeNote: String, $firstNote: Int, $lastNote: Int) {\n  tasks(\n    filter: $filterTask\n    orderBy: $orderByTask\n    after: $afterTask\n    before: $beforeTask\n    first: $firstTask\n    last: $lastTask\n  ) {\n    edges {\n      node {\n        __typename\n        id\n        title\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n  notes(\n    filter: $filterNote\n    orderBy: $orderByNote\n    after: $afterNote\n    before: $beforeNote\n    first: $firstNote\n    last: $lastNote\n  ) {\n    edges {\n      node {\n        __typename\n        id\n        title\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filterTask": {
+      "id": {
+        "in": [
+          "37a24a59-f068-49ba-ade8-31307a8061d5"
+        ]
+      }
+    },
+    "filterNote": {
+      "id": {
+        "in": [
+          "f3751b71-ddd1-4017-b55c-e829ce9bb1e1"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "tasks": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Task",
+              "id": "37a24a59-f068-49ba-ade8-31307a8061d5",
+              "title": "Send proposal"
+            },
+            "cursor": "eyJpZCI6IjM3YTI0YTU5LWYwNjgtNDliYS1hZGU4LTMxMzA3YTgwNjFkNSJ9",
+            "__typename": "TaskEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6IjM3YTI0YTU5LWYwNjgtNDliYS1hZGU4LTMxMzA3YTgwNjFkNSJ9",
+          "endCursor": "eyJpZCI6IjM3YTI0YTU5LWYwNjgtNDliYS1hZGU4LTMxMzA3YTgwNjFkNSJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "TaskConnection"
+      },
+      "notes": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Note",
+              "id": "f3751b71-ddd1-4017-b55c-e829ce9bb1e1",
+              "title": "Kickoff meeting"
+            },
+            "cursor": "eyJpZCI6ImYzNzUxYjcxLWRkZDEtNDAxNy1iNTVjLWU4MjljZTliYjFlMSJ9",
+            "__typename": "NoteEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6ImYzNzUxYjcxLWRkZDEtNDAxNy1iNTVjLWU4MjljZTliYjFlMSJ9",
+          "endCursor": "eyJpZCI6ImYzNzUxYjcxLWRkZDEtNDAxNy1iNTVjLWU4MjljZTliYjFlMSJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "NoteConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

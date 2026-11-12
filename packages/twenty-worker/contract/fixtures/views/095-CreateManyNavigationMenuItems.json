@@ -1,0 +1,61 @@
+{
+  "flow": "views",
+  "sequence": 95,
+  "capturedAt": "2026-11-12T12:08:05.051Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateManyNavigationMenuItems",
+  "query": "mutation CreateManyNavigationMenuItems($inputs: [CreateNavigationMenuItemInput!]!) {\n  createManyNavigationMenuItems(inputs: $inputs) {\n    ...NavigationMenuItemQueryFields\n    __typename\n  }\n}\n\nfragment NavigationMenuItemFields on NavigationMenuItem {\n  id\n  type\n  userWorkspaceId\n  targetRecordId\n  targetObjectMetadataId\n  viewId\n  folderId\n  name\n  link\n  nativePageKey\n  icon\n  color\n  pageLayoutId\n  agentChatChannelId\n  position\n  applicationId\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment NavigationMenuItemQueryFields on NavigationMenuItem {\n  ...NavigationMenuItemFields\n  targetRecordIdentifier {\n    id\n    labelIdentifier\n    imageIdentifier\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "inputs": [
+      {
+        "id": "bb8aa414-63b1-4b24-873d-382067219a26",
+        "type": "VIEW",
+        "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+        "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+        "position": 2
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "603",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createManyNavigationMenuItems": [
+        {
+          "id": "bb8aa414-63b1-4b24-873d-382067219a26",
+          "type": "VIEW",
+          "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+          "targetRecordId": null,
+          "targetObjectMetadataId": null,
+          "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+          "folderId": null,
+          "name": null,
+          "link": null,
+          "nativePageKey": null,
+          "icon": null,
+          "color": null,
+          "pageLayoutId": null,
+          "agentChatChannelId": null,
+          "position": 2,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "createdAt": "2026-11-12T12:08:04.942Z",
+          "updatedAt": "2026-11-12T12:08:04.942Z",
+          "__typename": "NavigationMenuItem",
+          "targetRecordIdentifier": null
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

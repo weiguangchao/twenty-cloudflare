@@ -1,0 +1,134 @@
+{
+  "flow": "data-model-api",
+  "sequence": 13,
+  "capturedAt": "2026-11-12T11:55:31.884Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconRelationManyToOne",
+        "label": "Owner",
+        "name": "owner",
+        "isLabelSyncedWithName": false,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "MORPH_RELATION",
+        "morphRelationsCreationPayload": [
+          {
+            "type": "MANY_TO_ONE",
+            "targetObjectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+            "targetFieldLabel": "Owned Projects",
+            "targetFieldIcon": "IconUsers"
+          },
+          {
+            "type": "MANY_TO_ONE",
+            "targetObjectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+            "targetFieldLabel": "Owned Projects",
+            "targetFieldIcon": "IconUsers"
+          }
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-72>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1754",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createOneField": {
+        "id": "450da39f-165e-4f80-88df-c1b390460077",
+        "type": "MORPH_RELATION",
+        "name": "owner",
+        "label": "Owner",
+        "description": "Projects tied to the Person",
+        "icon": "IconRelationManyToOne",
+        "isActive": true,
+        "isUnique": false,
+        "isSearchable": false,
+        "isNullable": true,
+        "createdAt": "2026-11-12T11:55:30.541Z",
+        "updatedAt": "2026-11-12T11:55:30.541Z",
+        "settings": {
+          "onDelete": "SET_NULL",
+          "relationType": "MANY_TO_ONE"
+        },
+        "defaultValue": null,
+        "options": null,
+        "isLabelSyncedWithName": false,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "object": {
+          "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+          "__typename": "Object"
+        },
+        "relation": null,
+        "morphRelations": [
+          {
+            "type": "MANY_TO_ONE",
+            "sourceObjectMetadata": {
+              "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+              "nameSingular": "project",
+              "namePlural": "projects",
+              "__typename": "Object"
+            },
+            "targetObjectMetadata": {
+              "id": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+              "nameSingular": "person",
+              "namePlural": "people",
+              "__typename": "Object"
+            },
+            "sourceFieldMetadata": {
+              "id": "bf7701ad-073a-4326-a046-8a8f0ec74c01",
+              "name": "owner",
+              "__typename": "Field"
+            },
+            "targetFieldMetadata": {
+              "id": "4c940a32-99aa-4329-9bc7-ad4fc0c1f894",
+              "name": "ownedProjects",
+              "__typename": "Field"
+            },
+            "__typename": "Relation"
+          },
+          {
+            "type": "MANY_TO_ONE",
+            "sourceObjectMetadata": {
+              "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+              "nameSingular": "project",
+              "namePlural": "projects",
+              "__typename": "Object"
+            },
+            "targetObjectMetadata": {
+              "id": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+              "nameSingular": "company",
+              "namePlural": "companies",
+              "__typename": "Object"
+            },
+            "sourceFieldMetadata": {
+              "id": "8da1b186-eb5c-4761-9961-94d84d72c242",
+              "name": "owner",
+              "__typename": "Field"
+            },
+            "targetFieldMetadata": {
+              "id": "0d0b44b7-bfab-4b6a-a4d3-50b28f1b3294",
+              "name": "ownedProjects",
+              "__typename": "Field"
+            },
+            "__typename": "Relation"
+          }
+        ],
+        "__typename": "Field"
+      }
+    }
+  },
+  "repeatCount": 1
+}

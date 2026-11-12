@@ -1,0 +1,28 @@
+{
+  "flow": "search",
+  "sequence": 17,
+  "capturedAt": "2026-11-12T11:41:58.057Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "MyConnectedAccounts",
+  "query": "query MyConnectedAccounts {\n  myConnectedAccounts {\n    id\n    handle\n    provider\n    authFailedAt\n    authFailedReason\n    archivedAt\n    scopes\n    handleAliases\n    lastSignedInAt\n    userWorkspaceId\n    connectionProviderId\n    applicationId\n    name\n    scope\n    lastCredentialsRefreshedAt\n    connectionParameters {\n      IMAP {\n        host\n        port\n        connectionSecurity\n        username\n        __typename\n      }\n      SMTP {\n        host\n        port\n        connectionSecurity\n        username\n        __typename\n      }\n      CALDAV {\n        host\n        username\n        __typename\n      }\n      __typename\n    }\n    createdAt\n    updatedAt\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "35",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "myConnectedAccounts": []
+    }
+  },
+  "repeatCount": 2
+}

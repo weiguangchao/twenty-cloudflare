@@ -1,0 +1,46 @@
+{
+  "flow": "views",
+  "sequence": 34,
+  "capturedAt": "2026-11-12T12:04:34.711Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateViewSort",
+  "query": "mutation CreateViewSort($input: CreateViewSortInput!) {\n  createViewSort(input: $input) {\n    ...ViewSortFragment\n    __typename\n  }\n}\n\nfragment ViewSortFragment on ViewSort {\n  id\n  fieldMetadataId\n  direction\n  subFieldName\n  viewId\n  createdAt\n  deletedAt\n  updatedAt\n  __typename\n}",
+  "variables": {
+    "input": {
+      "id": "4a538ecc-80c9-440f-9390-9f13ba89086c",
+      "fieldMetadataId": "d88b8800-37c6-4a28-a8ae-1e362b50d96e",
+      "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+      "direction": "DESC",
+      "subFieldName": null
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "336",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createViewSort": {
+        "id": "4a538ecc-80c9-440f-9390-9f13ba89086c",
+        "fieldMetadataId": "d88b8800-37c6-4a28-a8ae-1e362b50d96e",
+        "direction": "DESC",
+        "subFieldName": null,
+        "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+        "createdAt": "2026-11-12T12:04:34.282Z",
+        "deletedAt": null,
+        "updatedAt": "2026-11-12T12:04:34.282Z",
+        "__typename": "ViewSort"
+      }
+    }
+  },
+  "repeatCount": 1
+}

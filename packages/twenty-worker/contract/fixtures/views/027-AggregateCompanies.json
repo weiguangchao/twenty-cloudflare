@@ -1,0 +1,77 @@
+{
+  "flow": "views",
+  "sequence": 27,
+  "capturedAt": "2026-11-12T12:03:29.776Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateCompanies",
+  "query": "query AggregateCompanies($filter: CompanyFilterInput) {\n  companies(filter: $filter) {\n    percentageEmptyLinkedinLink\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "address": {
+            "addressStreet1": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressStreet2": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressCity": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressState": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressCountry": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressPostcode": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "percentageEmptyLinkedinLink": 0.75,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 3
+}

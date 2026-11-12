@@ -1,0 +1,114 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 23,
+  "capturedAt": "2026-11-12T11:34:00.428Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "",
+    "limit": 60,
+    "filter": {},
+    "includedObjectNameSingulars": [
+      "company"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "2506",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "06290608-8bf0-4806-99ae-a715a6a93fad",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Notion",
+              "imageUrl": "https://twenty-icons.com/notion.com",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6IjA2MjkwNjA4LThiZjAtNDgwNi05OWFlLWE3MTVhNmE5M2ZhZCJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Stripe",
+              "imageUrl": "https://twenty-icons.com/stripe.com",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6IjFmNzAxNTdjLTRlYTUtNGQ4MS1iYzQ5LWUxNDAxYWJmYmI5NCJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Figma",
+              "imageUrl": "https://twenty-icons.com/figma.com",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6IjlkNWJjZjQzLTdkMzgtNGU4OC04MmNiLWQ2ZDRjZTYzOGJmMCJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Airbnb",
+              "imageUrl": "https://twenty-icons.com/airbnb.com",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6ImM3NzZlZTQ5LWY2MDgtNGE3Ny04Y2M4LTZmZTk2YWUxZTQzZiJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Anthropic",
+              "imageUrl": "https://twenty-icons.com/anthropic.com",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6ImY0NWVlNDIxLThhM2UtNGFhNS1hMWNmLTcyMDdjYzY3NTRlMSJ9fQ",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsiY29tcGFueSI6ImY0NWVlNDIxLThhM2UtNGFhNS1hMWNmLTcyMDdjYzY3NTRlMSJ9fQ",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

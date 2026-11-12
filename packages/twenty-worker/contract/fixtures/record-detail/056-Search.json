@@ -1,0 +1,137 @@
+{
+  "flow": "record-detail",
+  "sequence": 56,
+  "capturedAt": "2026-11-12T11:28:48.982Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "Zoe Test007",
+    "includedObjectNameSingulars": [
+      "person"
+    ],
+    "filter": {
+      "not": {
+        "id": {
+          "in": [
+            "a2e78a5e-338b-46df-8811-fa08c7d19d35"
+          ]
+        }
+      }
+    },
+    "limit": 30,
+    "after": null
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "2901",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "07394720-1c4d-4703-ace2-241ba54ea531",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test007",
+              "imageUrl": "",
+              "tsRankCD": 0.1,
+              "tsRank": 0.06079271,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMSwidHNSYW5rIjowLjA2MDc5MjcxfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJwZXJzb24iOiIwNzM5NDcyMC0xYzRkLTQ3MDMtYWNlMi0yNDFiYTU0ZWE1MzEifX0",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "2fcd1961-0270-438d-b9d1-7c32d4e91b3a",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test082",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0.030396355,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6IjJmY2QxOTYxLTAyNzAtNDM4ZC1iOWQxLTdjMzJkNGU5MWIzYSJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "45fecd26-e088-4a01-a6b6-8ba3a45aa972",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test022",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0.030396355,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6IjQ1ZmVjZDI2LWUwODgtNGEwMS1hNmI2LThiYTNhNDVhYTk3MiJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "ab94ba09-d879-43cd-8d7b-98c515bbd4a0",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test037",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0.030396355,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6ImFiOTRiYTA5LWQ4NzktNDNjZC04ZDdiLTk4YzUxNWJiZDRhMCJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "b4686bb6-4107-46f1-a0f8-0e38eb5137e7",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test067",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0.030396355,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6ImI0Njg2YmI2LTQxMDctNDZmMS1hMGY4LTBlMzhlYjUxMzdlNyJ9fQ",
+            "__typename": "SearchResultEdge"
+          },
+          {
+            "node": {
+              "recordId": "c0ff0dbf-eba1-430c-9818-77fd47ccbea3",
+              "objectNameSingular": "person",
+              "objectLabelSingular": "人员",
+              "label": "Zoe Test052",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0.030396355,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6ImMwZmYwZGJmLWViYTEtNDMwYy05ODE4LTc3ZmQ0N2NjYmVhMyJ9fQ",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MC4wMzAzOTYzNTV9LCJsYXN0UmVjb3JkSWRzUGVyT2JqZWN0Ijp7InBlcnNvbiI6ImMwZmYwZGJmLWViYTEtNDMwYy05ODE4LTc3ZmQ0N2NjYmVhMyJ9fQ",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

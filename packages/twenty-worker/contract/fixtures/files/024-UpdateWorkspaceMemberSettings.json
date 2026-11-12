@@ -1,0 +1,35 @@
+{
+  "flow": "files",
+  "sequence": 24,
+  "capturedAt": "2026-11-12T12:09:25.890Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpdateWorkspaceMemberSettings",
+  "query": "mutation UpdateWorkspaceMemberSettings($input: UpdateWorkspaceMemberSettingsInput!) {\n  updateWorkspaceMemberSettings(input: $input)\n}",
+  "variables": {
+    "input": {
+      "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+      "update": {
+        "avatarUrl": "http://localhost:3001/file/core-picture/62238fe7-1b38-4466-865f-7c717cf4ad74"
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "47",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "updateWorkspaceMemberSettings": true
+    }
+  },
+  "repeatCount": 1
+}

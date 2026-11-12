@@ -1,0 +1,141 @@
+{
+  "flow": "members-roles",
+  "sequence": 63,
+  "capturedAt": "2026-11-12T12:19:37.020Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CurrentUserSessions",
+  "query": "query CurrentUserSessions {\n  currentUserSessions {\n    id\n    workspaceId\n    authProvider\n    isImpersonating\n    userAgent\n    ipAddress\n    country\n    region\n    city\n    createdAt\n    lastActiveAt\n    expiresAt\n    isCurrent\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "2898",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "currentUserSessions": [
+        {
+          "id": "0ec8ee66-8f52-4d1c-975a-ede72e03b887",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:22:09.174Z",
+          "lastActiveAt": "2026-11-12T12:19:19.795Z",
+          "expiresAt": "2027-05-11T11:22:09.173Z",
+          "isCurrent": true,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "629bacca-5e2e-4014-9a3d-14a9a29ea8bd",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T12:02:43.166Z",
+          "lastActiveAt": "2026-11-12T12:02:43.166Z",
+          "expiresAt": "2027-05-11T12:02:43.166Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "a74a98cf-37a0-46a2-bd07-06029798691b",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T12:02:11.545Z",
+          "lastActiveAt": "2026-11-12T12:02:11.545Z",
+          "expiresAt": "2027-05-11T12:02:11.545Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "370aca8d-5c0a-4aa3-a76b-7a147a21e024",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:54:59.504Z",
+          "lastActiveAt": "2026-11-12T11:54:59.503Z",
+          "expiresAt": "2027-05-11T11:54:59.503Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "2a996f1e-cf76-4763-833b-814096b664f2",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:54:47.633Z",
+          "lastActiveAt": "2026-11-12T11:54:47.633Z",
+          "expiresAt": "2027-05-11T11:54:47.633Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "1fc94683-6a10-443b-a4bb-6673a8f7fef6",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:33:11.942Z",
+          "lastActiveAt": "2026-11-12T11:33:11.942Z",
+          "expiresAt": "2027-05-11T11:33:11.942Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        },
+        {
+          "id": "d63905f8-e500-4ed7-8813-8cf09ed6f0c5",
+          "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "authProvider": "password",
+          "isImpersonating": false,
+          "userAgent": "node",
+          "ipAddress": "::1",
+          "country": null,
+          "region": null,
+          "city": null,
+          "createdAt": "2026-11-12T11:32:52.767Z",
+          "lastActiveAt": "2026-11-12T11:32:52.767Z",
+          "expiresAt": "2027-05-11T11:32:52.767Z",
+          "isCurrent": false,
+          "__typename": "UserSession"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

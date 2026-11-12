@@ -1,0 +1,74 @@
+{
+  "flow": "members-roles",
+  "sequence": 132,
+  "capturedAt": "2026-11-12T12:22:21.595Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpdateWorkspaceMemberRole",
+  "query": "mutation UpdateWorkspaceMemberRole($workspaceMemberId: UUID!, $roleId: UUID!) {\n  updateWorkspaceMemberRole(\n    workspaceMemberId: $workspaceMemberId\n    roleId: $roleId\n  ) {\n    ...WorkspaceMemberQueryFragment\n    roles {\n      ...RoleFragment\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment WorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  colorScheme\n  uiScale\n  openRecordIn\n  avatarUrl\n  locale\n  userEmail\n  userId\n  userWorkspaceId\n  timeZone\n  dateFormat\n  timeFormat\n  calendarStartDay\n  numberFormat\n  __typename\n}\n\nfragment RoleFragment on Role {\n  id\n  label\n  description\n  icon\n  canUpdateAllSettings\n  canAccessAllTools\n  canAccessAllAgentChatChannels\n  isEditable\n  canReadAllObjectRecords\n  canUpdateAllObjectRecords\n  canSoftDeleteAllObjectRecords\n  canDestroyAllObjectRecords\n  canBeAssignedToUsers\n  canBeAssignedToAgents\n  canBeAssignedToApiKeys\n  applicationId\n  universalIdentifier\n  __typename\n}",
+  "variables": {
+    "workspaceMemberId": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+    "roleId": "4567f8ad-441f-4454-89f1-e68b374b70f0"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1149",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "updateWorkspaceMemberRole": {
+        "id": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+        "name": {
+          "firstName": "Bob",
+          "lastName": "Member",
+          "__typename": "FullName"
+        },
+        "colorScheme": "System",
+        "uiScale": "Default",
+        "openRecordIn": "SIDE_PANEL",
+        "avatarUrl": "",
+        "locale": "zh-CN",
+        "userEmail": "bob@example.com",
+        "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80",
+        "userWorkspaceId": "c3c10104-d68d-4541-91ea-06cc54201802",
+        "timeZone": "system",
+        "dateFormat": "SYSTEM",
+        "timeFormat": "SYSTEM",
+        "calendarStartDay": 7,
+        "numberFormat": "SYSTEM",
+        "__typename": "WorkspaceMember",
+        "roles": [
+          {
+            "id": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+            "label": "Read Only",
+            "description": "Can view records but not change them",
+            "icon": "IconUser",
+            "canUpdateAllSettings": true,
+            "canAccessAllTools": true,
+            "canAccessAllAgentChatChannels": true,
+            "isEditable": true,
+            "canReadAllObjectRecords": true,
+            "canUpdateAllObjectRecords": false,
+            "canSoftDeleteAllObjectRecords": false,
+            "canDestroyAllObjectRecords": false,
+            "canBeAssignedToUsers": true,
+            "canBeAssignedToAgents": true,
+            "canBeAssignedToApiKeys": true,
+            "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+            "universalIdentifier": "ae56d1dd-5dc8-425b-a344-21fef01565ff",
+            "__typename": "Role"
+          }
+        ]
+      }
+    }
+  },
+  "repeatCount": 1
+}

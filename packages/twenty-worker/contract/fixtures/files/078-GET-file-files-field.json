@@ -1,0 +1,24 @@
+{
+  "flow": "files",
+  "sequence": 78,
+  "capturedAt": "2026-11-12T12:11:55.261Z",
+  "endpoint": "/file/files-field",
+  "method": "GET",
+  "path": "/file/files-field/9062968d-4f32-4e86-acf5-4825f45665a1",
+  "operationName": "GET /file/files-field",
+  "query": null,
+  "variables": {
+    "token": "<redacted-jwt-110>"
+  },
+  "requestHeaders": {
+    "origin": "http://localhost:3001"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "cache-control": "private, max-age=86400, immutable",
+    "content-disposition": "inline",
+    "content-type": "text/plain"
+  },
+  "response": null,
+  "repeatCount": 2
+}

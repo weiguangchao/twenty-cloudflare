@@ -1,0 +1,28 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 14,
+  "capturedAt": "2026-11-12T11:38:42.290Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "MyCalendarChannels",
+  "query": "query MyCalendarChannels($connectedAccountId: UUID) {\n  myCalendarChannels(connectedAccountId: $connectedAccountId) {\n    id\n    handle\n    visibility\n    syncStatus\n    syncStage\n    syncStageStartedAt\n    isContactAutoCreationEnabled\n    contactAutoCreationPolicy\n    excludePrivateEvents\n    isSyncEnabled\n    connectedAccountId\n    createdAt\n    updatedAt\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "34",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "myCalendarChannels": []
+    }
+  },
+  "repeatCount": 3
+}

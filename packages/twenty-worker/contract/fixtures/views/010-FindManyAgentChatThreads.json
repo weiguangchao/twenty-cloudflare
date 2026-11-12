@@ -1,0 +1,60 @@
+{
+  "flow": "views",
+  "sequence": 10,
+  "capturedAt": "2026-11-12T12:03:04.867Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyAgentChatThreads",
+  "query": "query FindManyAgentChatThreads($filter: AgentChatThreadFilterInput, $orderBy: [AgentChatThreadOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  agentChatThreads(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        assigneeId\n        channelArchivedAt\n        channelId\n        channelSnoozedUntil\n        contextWindowTokens\n        conversationSize\n        conversationType\n        createdAt\n        deletedAt\n        directMessageFirstWorkspaceMemberId\n        directMessageSecondWorkspaceMemberId\n        id\n        lastActivityAt\n        lastMessageSenderWorkspaceMemberId\n        lastMessageText\n        participants {\n          edges {\n            node {\n              __typename\n              archivedAt\n              id\n              isSubscribed\n              lastMentionedAt\n              lastReadAt\n              mentionsResolvedAt\n              snoozedUntil\n              threadId\n              updatedAt\n              workspaceMemberId\n            }\n            __typename\n          }\n          __typename\n        }\n        pendingQuestionMessageId\n        title\n        totalCacheReadTokens\n        totalInputCredits\n        totalInputTokens\n        totalOutputCredits\n        totalOutputTokens\n        updatedAt\n        workspaceMemberId\n        writerWorkspaceMemberIds\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "deletedAt": {
+            "is": "NULL"
+          }
+        },
+        {
+          "deletedAt": {
+            "is": "NOT_NULL"
+          }
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "lastActivityAt": "DescNullsLast"
+      }
+    ],
+    "limit": 200,
+    "lastCursor": null
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "agentChatThreads": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "AgentChatThreadConnection"
+      }
+    }
+  },
+  "repeatCount": 9
+}

@@ -1,0 +1,59 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 58,
+  "capturedAt": "2026-11-12T11:34:54.022Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "a75bbfb2-4bd7-4674-9afa-a9f1b6b374d3"
+        ]
+      },
+      "deletedAt": {
+        "is": "NOT_NULL"
+      }
+    },
+    "limit": 30
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "a75bbfb2-4bd7-4674-9afa-a9f1b6b374d3"
+            },
+            "cursor": "eyJpZCI6ImE3NWJiZmIyLTRiZDctNDY3NC05YWZhLWE5ZjFiNmIzNzRkMyJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6ImE3NWJiZmIyLTRiZDctNDY3NC05YWZhLWE5ZjFiNmIzNzRkMyJ9",
+          "endCursor": "eyJpZCI6ImE3NWJiZmIyLTRiZDctNDY3NC05YWZhLWE5ZjFiNmIzNzRkMyJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

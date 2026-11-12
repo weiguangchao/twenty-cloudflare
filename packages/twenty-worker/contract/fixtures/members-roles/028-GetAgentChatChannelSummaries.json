@@ -1,0 +1,42 @@
+{
+  "flow": "members-roles",
+  "sequence": 28,
+  "capturedAt": "2026-11-12T12:15:10.245Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetAgentChatChannelSummaries",
+  "query": "query GetAgentChatChannelSummaries {\n  agentChatChannelSummaries {\n    channelId\n    openCount\n    needsInputCount\n    mentionedCount\n    hasUnreadOpen\n    assignedToMeCount\n    assignedCount\n    unassignedCount\n    snoozedCount\n    doneCount\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "298",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "agentChatChannelSummaries": [
+        {
+          "channelId": "66ac0db3-489c-4d74-8678-2f4dca1b46b7",
+          "openCount": 0,
+          "needsInputCount": 0,
+          "mentionedCount": 0,
+          "hasUnreadOpen": false,
+          "assignedToMeCount": 0,
+          "assignedCount": 0,
+          "unassignedCount": 0,
+          "snoozedCount": 0,
+          "doneCount": 0,
+          "__typename": "AgentChatChannelSummary"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,44 @@
+{
+  "flow": "permissions-api",
+  "sequence": 9,
+  "capturedAt": "2026-11-12T12:22:44.378Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "DeleteManyPeople",
+  "query": "mutation DeleteManyPeople($filter: PersonFilterInput!) {\n  deletePeople(filter: $filter) {\n    id\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "07394720-1c4d-4703-ace2-241ba54ea531"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-196>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "deletePeople": null
+    },
+    "errors": [
+      {
+        "message": "Entity performing the request does not have permission",
+        "extensions": {
+          "userFriendlyMessage": "用户没有权限。",
+          "subCode": "PERMISSION_DENIED",
+          "code": "FORBIDDEN"
+        }
+      }
+    ]
+  },
+  "repeatCount": 1
+}

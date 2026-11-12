@@ -1,0 +1,58 @@
+{
+  "flow": "auth-signout-signin",
+  "sequence": 5,
+  "capturedAt": "2026-11-12T11:21:15.742Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindManyApplications",
+  "query": "query FindManyApplications {\n  findManyApplications {\n    id\n    name\n    description\n    logoUrl\n    version\n    universalIdentifier\n    applicationRegistrationId\n    applicationRegistration {\n      id\n      latestAvailableVersion\n      sourceType\n      __typename\n    }\n    defaultRoleId\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "851",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "findManyApplications": [
+        {
+          "id": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "name": "Standard",
+          "description": null,
+          "logoUrl": null,
+          "version": "1.0.1",
+          "universalIdentifier": "20202020-64aa-4b6f-b003-9c74b97cee20",
+          "applicationRegistrationId": null,
+          "applicationRegistration": null,
+          "defaultRoleId": "f6f35f57-86ff-440e-aca5-f0c35fc7509d",
+          "__typename": "Application"
+        },
+        {
+          "id": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "name": "Custom",
+          "description": null,
+          "logoUrl": null,
+          "version": "1.0.1",
+          "universalIdentifier": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "applicationRegistrationId": "7f9602b9-02d4-4139-ad5d-d4db00044074",
+          "applicationRegistration": {
+            "id": "7f9602b9-02d4-4139-ad5d-d4db00044074",
+            "latestAvailableVersion": null,
+            "sourceType": "LOCAL",
+            "__typename": "ApplicationRegistrationSummary"
+          },
+          "defaultRoleId": "4c9cc615-5720-42bc-b952-b57d286e43fd",
+          "__typename": "Application"
+        }
+      ]
+    }
+  },
+  "repeatCount": 2
+}

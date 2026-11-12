@@ -1,0 +1,36 @@
+{
+  "flow": "permissions-api",
+  "sequence": 4,
+  "capturedAt": "2026-11-12T12:22:43.917Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindPeopleWithJobTitle",
+  "query": "query FindPeopleWithJobTitle { people(first: 2) { edges { node { id name { firstName } jobTitle } } } }",
+  "variables": {},
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en",
+    "authorization": "Bearer <redacted-jwt-196>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": null
+    },
+    "errors": [
+      {
+        "message": "Entity performing the request does not have permission: no permission to read field \"jobTitle\" on \"person\"",
+        "extensions": {
+          "userFriendlyMessage": "用户没有权限。",
+          "subCode": "PERMISSION_DENIED",
+          "code": "FORBIDDEN"
+        }
+      }
+    ]
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,54 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 52,
+  "capturedAt": "2026-11-12T11:39:30.600Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyTaskTargets",
+  "query": "query FindManyTaskTargets($filter: TaskTargetFilterInput, $orderBy: [TaskTargetOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  taskTargets(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        createdAt\n        id\n        task {\n          __typename\n          assigneeId\n          bodyV2 {\n            blocknote\n            markdown\n            tiptap\n            __typename\n          }\n          createdAt\n          createdBy {\n            source\n            workspaceMemberId\n            name\n            context {\n              provider\n              applicationId\n              __typename\n            }\n            __typename\n          }\n          deletedAt\n          dueAt\n          id\n          position\n          status\n          taskTargets {\n            edges {\n              node {\n                __typename\n                createdAt\n                createdBy {\n                  source\n                  workspaceMemberId\n                  name\n                  context {\n                    provider\n                    applicationId\n                    __typename\n                  }\n                  __typename\n                }\n                deletedAt\n                id\n                position\n                targetCompany {\n                  __typename\n                  domainName {\n                    primaryLinkUrl\n                    primaryLinkLabel\n                    secondaryLinks {\n                      label\n                      url\n                      __typename\n                    }\n                    __typename\n                  }\n                  id\n                  name\n                }\n                targetCompanyId\n                targetOpportunity {\n                  __typename\n                  id\n                  name\n                }\n                targetOpportunityId\n                targetPerson {\n                  __typename\n                  avatarFile {\n                    fileId\n                    label\n                    extension\n                    url\n                    __typename\n                  }\n                  id\n                  name {\n                    firstName\n                    lastName\n                    __typename\n                  }\n                }\n                targetPersonId\n                task {\n                  __typename\n                  id\n                  title\n                }\n                taskId\n                updatedAt\n                updatedBy {\n                  source\n                  workspaceMemberId\n                  name\n                  context {\n                    provider\n                    applicationId\n                    __typename\n                  }\n                  __typename\n                }\n              }\n              __typename\n            }\n            __typename\n          }\n          title\n          updatedAt\n          updatedBy {\n            source\n            workspaceMemberId\n            name\n            context {\n              provider\n              applicationId\n              __typename\n            }\n            __typename\n          }\n        }\n        taskId\n        updatedAt\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "targetCompanyId": {
+            "eq": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+          }
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "createdAt": "DescNullsFirst"
+      }
+    ],
+    "limit": 200
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "taskTargets": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "TaskTargetConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

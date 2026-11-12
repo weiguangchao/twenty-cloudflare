@@ -1,0 +1,33 @@
+{
+  "flow": "members-roles",
+  "sequence": 77,
+  "capturedAt": "2026-11-12T12:20:12.002Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SkipSyncEmailOnboardingStep",
+  "query": "mutation SkipSyncEmailOnboardingStep($isAutoSkipped: Boolean!) {\n  skipSyncEmailOnboardingStep(isAutoSkipped: $isAutoSkipped) {\n    success\n    __typename\n  }\n}",
+  "variables": {
+    "isAutoSkipped": true
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-5>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "94",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "skipSyncEmailOnboardingStep": {
+        "success": true,
+        "__typename": "OnboardingStepSuccess"
+      }
+    }
+  },
+  "repeatCount": 1
+}

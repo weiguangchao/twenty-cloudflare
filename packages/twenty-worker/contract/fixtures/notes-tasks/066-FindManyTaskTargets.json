@@ -1,0 +1,172 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 66,
+  "capturedAt": "2026-11-12T11:39:58.244Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyTaskTargets",
+  "query": "query FindManyTaskTargets($filter: TaskTargetFilterInput, $orderBy: [TaskTargetOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  taskTargets(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        createdAt\n        id\n        task {\n          __typename\n          assigneeId\n          bodyV2 {\n            blocknote\n            markdown\n            tiptap\n            __typename\n          }\n          createdAt\n          createdBy {\n            source\n            workspaceMemberId\n            name\n            context {\n              provider\n              applicationId\n              __typename\n            }\n            __typename\n          }\n          deletedAt\n          dueAt\n          id\n          position\n          status\n          taskTargets {\n            edges {\n              node {\n                __typename\n                createdAt\n                createdBy {\n                  source\n                  workspaceMemberId\n                  name\n                  context {\n                    provider\n                    applicationId\n                    __typename\n                  }\n                  __typename\n                }\n                deletedAt\n                id\n                position\n                targetCompany {\n                  __typename\n                  domainName {\n                    primaryLinkUrl\n                    primaryLinkLabel\n                    secondaryLinks {\n                      label\n                      url\n                      __typename\n                    }\n                    __typename\n                  }\n                  id\n                  name\n                }\n                targetCompanyId\n                targetOpportunity {\n                  __typename\n                  id\n                  name\n                }\n                targetOpportunityId\n                targetPerson {\n                  __typename\n                  avatarFile {\n                    fileId\n                    label\n                    extension\n                    url\n                    __typename\n                  }\n                  id\n                  name {\n                    firstName\n                    lastName\n                    __typename\n                  }\n                }\n                targetPersonId\n                task {\n                  __typename\n                  id\n                  title\n                }\n                taskId\n                updatedAt\n                updatedBy {\n                  source\n                  workspaceMemberId\n                  name\n                  context {\n                    provider\n                    applicationId\n                    __typename\n                  }\n                  __typename\n                }\n              }\n              __typename\n            }\n            __typename\n          }\n          title\n          updatedAt\n          updatedBy {\n            source\n            workspaceMemberId\n            name\n            context {\n              provider\n              applicationId\n              __typename\n            }\n            __typename\n          }\n        }\n        taskId\n        updatedAt\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "targetCompanyId": {
+            "eq": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+          }
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "createdAt": "DescNullsFirst"
+      }
+    ],
+    "limit": 200
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "taskTargets": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "TaskTarget",
+              "createdAt": "2026-11-12T11:39:39.577Z",
+              "id": "79f7bcff-ede8-4810-9e31-e8ac37eca5af",
+              "task": {
+                "__typename": "Task",
+                "assigneeId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "bodyV2": {
+                  "blocknote": null,
+                  "markdown": "",
+                  "tiptap": null,
+                  "__typename": "RichText"
+                },
+                "createdAt": "2026-11-12T11:39:39.541Z",
+                "createdBy": {
+                  "source": "MANUAL",
+                  "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                  "name": "Alice Admin",
+                  "context": {
+                    "provider": null,
+                    "applicationId": null,
+                    "__typename": "ActorContext"
+                  },
+                  "__typename": "Actor"
+                },
+                "deletedAt": null,
+                "dueAt": null,
+                "id": "37a24a59-f068-49ba-ade8-31307a8061d5",
+                "position": 2,
+                "status": "IN_PROGRESS",
+                "taskTargets": {
+                  "edges": [
+                    {
+                      "node": {
+                        "__typename": "TaskTarget",
+                        "createdAt": "2026-11-12T11:39:39.577Z",
+                        "createdBy": {
+                          "source": "MANUAL",
+                          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                          "name": "Alice Admin",
+                          "context": {
+                            "provider": null,
+                            "applicationId": null,
+                            "__typename": "ActorContext"
+                          },
+                          "__typename": "Actor"
+                        },
+                        "deletedAt": null,
+                        "id": "79f7bcff-ede8-4810-9e31-e8ac37eca5af",
+                        "position": 0,
+                        "targetCompany": {
+                          "__typename": "Company",
+                          "domainName": {
+                            "primaryLinkUrl": "airbnb.com",
+                            "primaryLinkLabel": "",
+                            "secondaryLinks": [
+                              {
+                                "label": "News",
+                                "url": "news.airbnb.com",
+                                "__typename": "SecondaryLink"
+                              }
+                            ],
+                            "__typename": "Links"
+                          },
+                          "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                          "name": "Airbnb"
+                        },
+                        "targetCompanyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                        "targetOpportunity": null,
+                        "targetOpportunityId": null,
+                        "targetPerson": null,
+                        "targetPersonId": null,
+                        "task": {
+                          "__typename": "Task",
+                          "id": "37a24a59-f068-49ba-ade8-31307a8061d5",
+                          "title": "Send proposal"
+                        },
+                        "taskId": "37a24a59-f068-49ba-ade8-31307a8061d5",
+                        "updatedAt": "2026-11-12T11:39:39.577Z",
+                        "updatedBy": {
+                          "source": "MANUAL",
+                          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                          "name": "Alice Admin",
+                          "context": {
+                            "provider": null,
+                            "applicationId": null,
+                            "__typename": "ActorContext"
+                          },
+                          "__typename": "Actor"
+                        }
+                      },
+                      "__typename": "TaskTargetEdge"
+                    }
+                  ],
+                  "__typename": "TaskTargetConnection"
+                },
+                "title": "Send proposal",
+                "updatedAt": "2026-11-12T11:39:58.085Z",
+                "updatedBy": {
+                  "source": "MANUAL",
+                  "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                  "name": "Alice Admin",
+                  "context": {
+                    "provider": null,
+                    "applicationId": null,
+                    "__typename": "ActorContext"
+                  },
+                  "__typename": "Actor"
+                }
+              },
+              "taskId": "37a24a59-f068-49ba-ade8-31307a8061d5",
+              "updatedAt": "2026-11-12T11:39:39.577Z"
+            },
+            "cursor": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTEyIDE5OjM5OjM5LjU3NzIzMyswOCIsImlkIjoiNzlmN2JjZmYtZWRlOC00ODEwLTllMzEtZThhYzM3ZWNhNWFmIn0",
+            "__typename": "TaskTargetEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTEyIDE5OjM5OjM5LjU3NzIzMyswOCIsImlkIjoiNzlmN2JjZmYtZWRlOC00ODEwLTllMzEtZThhYzM3ZWNhNWFmIn0",
+          "endCursor": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTEyIDE5OjM5OjM5LjU3NzIzMyswOCIsImlkIjoiNzlmN2JjZmYtZWRlOC00ODEwLTllMzEtZThhYzM3ZWNhNWFmIn0",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "TaskTargetConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

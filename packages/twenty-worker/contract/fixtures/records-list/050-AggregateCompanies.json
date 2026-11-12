@@ -1,0 +1,32 @@
+{
+  "flow": "records-list",
+  "sequence": 50,
+  "capturedAt": "2026-11-12T11:25:48.565Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateCompanies",
+  "query": "query AggregateCompanies($filter: CompanyFilterInput) {\n  companies(filter: $filter) {\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {}
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "totalCount": 5,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 2
+}

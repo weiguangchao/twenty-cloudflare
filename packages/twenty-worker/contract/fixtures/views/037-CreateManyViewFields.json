@@ -1,0 +1,55 @@
+{
+  "flow": "views",
+  "sequence": 37,
+  "capturedAt": "2026-11-12T12:05:03.300Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateManyViewFields",
+  "query": "mutation CreateManyViewFields($inputs: [CreateViewFieldInput!]!) {\n  createManyViewFields(inputs: $inputs) {\n    ...ViewFieldFragment\n    __typename\n  }\n}\n\nfragment ViewFieldFragment on ViewField {\n  id\n  fieldMetadataId\n  viewId\n  isVisible\n  position\n  size\n  aggregateOperation\n  viewFieldGroupId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}",
+  "variables": {
+    "inputs": [
+      {
+        "id": "aae32163-5ba6-4e14-8a73-a371c2cb1b6e",
+        "fieldMetadataId": "d88b8800-37c6-4a28-a8ae-1e362b50d96e",
+        "position": 7,
+        "isVisible": true,
+        "size": 100,
+        "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "413",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createManyViewFields": [
+        {
+          "id": "aae32163-5ba6-4e14-8a73-a371c2cb1b6e",
+          "fieldMetadataId": "d88b8800-37c6-4a28-a8ae-1e362b50d96e",
+          "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+          "isVisible": true,
+          "position": 7,
+          "size": 100,
+          "aggregateOperation": null,
+          "viewFieldGroupId": null,
+          "isActive": true,
+          "createdAt": "2026-11-12T12:05:02.776Z",
+          "updatedAt": "2026-11-12T12:05:02.776Z",
+          "deletedAt": null,
+          "__typename": "ViewField"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

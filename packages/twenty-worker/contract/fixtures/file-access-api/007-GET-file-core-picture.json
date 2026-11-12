@@ -1,0 +1,27 @@
+{
+  "flow": "file-access-api",
+  "sequence": 7,
+  "capturedAt": "2026-11-12T12:13:21.583Z",
+  "endpoint": "/file/core-picture",
+  "method": "GET",
+  "path": "/file/core-picture/62238fe7-1b38-4466-865f-7c717cf4ad74",
+  "operationName": "GET /file/core-picture",
+  "query": null,
+  "variables": {},
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "http://localhost:3001",
+    "x-locale": "en"
+  },
+  "status": 403,
+  "responseHeaders": {
+    "content-length": "69",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "message": "Forbidden resource",
+    "error": "Forbidden",
+    "statusCode": 403
+  },
+  "repeatCount": 1
+}

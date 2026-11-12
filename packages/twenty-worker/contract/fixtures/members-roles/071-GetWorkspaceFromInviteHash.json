@@ -1,0 +1,36 @@
+{
+  "flow": "members-roles",
+  "sequence": 71,
+  "capturedAt": "2026-11-12T12:19:57.090Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetWorkspaceFromInviteHash",
+  "query": "query GetWorkspaceFromInviteHash($inviteHash: String!) {\n  findWorkspaceFromInviteHash(inviteHash: $inviteHash) {\n    id\n    displayName\n    logo\n    allowImpersonation\n    __typename\n  }\n}",
+  "variables": {
+    "inviteHash": "<redacted-invite-hash-1>"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-twenty-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "695",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "findWorkspaceFromInviteHash": {
+        "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+        "displayName": "Acme",
+        "logo": "http://localhost:3000/file/core-picture/ff1e2459-9aa8-47ca-a47b-06fc42e53d91?token=<redacted-jwt-156>",
+        "allowImpersonation": true,
+        "__typename": "Workspace"
+      }
+    }
+  },
+  "repeatCount": 1
+}

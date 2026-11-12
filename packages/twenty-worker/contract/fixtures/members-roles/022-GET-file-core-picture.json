@@ -1,0 +1,24 @@
+{
+  "flow": "members-roles",
+  "sequence": 22,
+  "capturedAt": "2026-11-12T12:14:31.307Z",
+  "endpoint": "/file/core-picture",
+  "method": "GET",
+  "path": "/file/core-picture/68e29b6b-7c7b-4f0f-a31e-9e4315b4088a",
+  "operationName": "GET /file/core-picture",
+  "query": null,
+  "variables": {
+    "token": "<redacted-jwt-126>"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; twenty-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "cache-control": "private, max-age=86400, immutable",
+    "content-disposition": "inline",
+    "content-type": "image/png"
+  },
+  "response": null,
+  "repeatCount": 1
+}
