@@ -36,6 +36,19 @@ const requireSetting = async (context: MetadataContext, flag: string) => {
 };
 
 export const METADATA_QUERY_RESOLVERS: Record<string, Resolver> = {
+  objectRecordCounts: async (_source, _arguments, context) => {
+    const data = await requireSetting(context, 'DATA_MODEL');
+    const auth = await context.requireAuth();
+    return context.workspace(data.workspace.id).getObjectRecordCounts({
+      userId: auth.userId,
+      userWorkspaceId: data.membership.id,
+      workspaceMemberId: data.membership.workspaceMemberId,
+    });
+  },
+  mostlyEmptyFieldMetadataIds: async (_source, _arguments, context) => {
+    await requireSetting(context, 'DATA_MODEL');
+    return [];
+  },
   minimalMetadata: async (_source, _arguments, context) => {
     const { tables, collectionHashes } = await context.requireMetadata();
     return {

@@ -27,7 +27,7 @@
 | 5 | 记录查询引擎（读） | 4 | 完成 |
 | 6 | 记录写入与副作用 | 5 | 完成 |
 | 7 | 搜索 | 6 | 完成 |
-| 8 | 元数据写入 API 与视图 | 4 | 未开始 |
+| 8 | 元数据写入 API 与视图 | 4 | 完成 |
 | 9 | 文件 | 4 | 未开始 |
 | 10 | 权限与成员管理 | 6、8 | 未开始 |
 | 11 | 实时事件 | 6 | 未开始 |
@@ -766,6 +766,16 @@ npx nx test twenty-worker
 - 改字段名后，已有数据仍然可读。
 - 能新建视图、保存筛选和排序、调整列，刷新后保持。
 - 能收藏和取消收藏记录。
+
+**实施记录**
+
+- **写入入口与事务**：`/metadata` 的对象、字段、索引 mutation 复用阶段 2 的操作；新增视图、视图字段、字段分组、筛选、筛选分组、排序、分组及导航菜单的增删改，包含 SDL 中的批量入口。Worker 认证后调用 DO 的粗粒度 `executeMetadataMutation`，参数编码成 JSON，避免内联 GraphQL 输入生成的无原型对象触发 RPC DataCloneError。在同一个 `transactionSync` 内做权限校验、元数据和 DDL 写入、搜索索引同步、collectionHashes 更新。每批最多 200 项，一项失败整批回滚；嵌套返回值投影前清空请求内的元数据缓存，记录 schema 按既有 snapshot version 失效。
+- **默认 UI 元数据**：新建自定义对象同时生成 INDEX 表格视图、详情字段视图、带 Home/Timeline/Tasks/Notes/Files 标签的记录页布局、创建表单和 workspace 导航项。新建或删除字段同步默认视图与创建表单，关联同时处理两端；字段改名保留原 ID，所以布局和已有记录继续可读。Kanban 视图按 Select 选项生成分组。没有采集到布局编辑 mutation，本阶段按方案只生成默认布局，编辑接口保留到后续需要时实现。
+- **权限与校验**：DO 重新校验实际成员、用户和角色，数据模型写入需要 DATA_MODEL，公共视图写入需要 VIEWS，workspace 导航需要 WORKSPACE；个人导航只能由所属成员修改。视图字段、筛选、排序及父分组必须属于同一对象或视图；拦截筛选组和导航文件夹循环、跨成员文件夹、重复列、无效记录和不安全链接。原生页面键复用 shared 的 isNativePageKey。软删除视图一并隐藏子实体，筛选组递归软删除；永久删除沿用 SQLite 外键级联。校验异常保留 METADATA_VALIDATION_FAILED 的 errors/summary 结构和 create/update/delete 类型。
+- **默认值与设置页**：API 接收字段默认值后递归去掉 SQL 字面量外层单引号并还原成对单引号，兼容复合字段 JSON 内的字面量；阶段 2 的内部操作不改签名。ObjectRecordCounts 查询实际未删除记录数，MostlyEmptyFieldMetadataIds 按允许的降级返回空列表。currentUser 返回实际的 workspaceCustomApplication，修复前端把自定义字段当作标准字段、改标签时不生成同步 API 名称的问题。补齐导航项 targetRecordIdentifier，通过一次 DO RPC 按读取权限取得收藏记录的实时标签及图片标识，刷新后收藏不再因缺少标签被前端隐藏；FILES 签名图片 URL 留给阶段 9。
+- **契约与测试**：新增 43 条元数据写入 fixture 重放，覆盖对象和各字段类型、改名、停用启用、删除、视图列、筛选、排序和收藏。使用真实静态 GraphQL schema/resolver 和 workerd DO，以测试上下文注入已认证身份；另有 9 项 HTTP 行为测试覆盖真实认证入口、默认布局、SQL 默认值、改名后数据、关联、批量回滚、嵌套筛选删除、循环引用、导航排序与收藏权限。历史 fixture 比较响应结构和字段类型，生成 ID、时间及历史字段数量不作逐值比较。旧服务两条 deferred schema action 尚未完成的临时 CONFLICT fixture 不重放：新实现同步提交 DDL，不存在该后台等待状态。
+- **浏览器验收**：在独立的 .wrangler/stage8-acceptance 数据副本上通过共享预览创建 Stage Eight Project、文本和数字字段及指向人员的关联；新建记录并选择 Brian Chesky，列表和默认详情页均能读取。把 Reference 改成 Tracking Reference 后，已有 Preserved reference 值仍可读。新建 Stage Eight Saved 视图，保存名称筛选、名称升序并隐藏 Owner 列，刷新后保持；收藏后刷新显示正确记录名，取消收藏后刷新移除。其余字段类型由 fixture 重放覆盖。验收发现的 RPC 序列化和 workspaceCustomApplication 缺失问题已修复并纳入 HTTP 回归测试。
+- **检查结果**：36 个测试文件、778 项测试通过；直接 tsgo、Nx lint、格式检查、git diff --check 和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 4,844.57 KiB，gzip 699.75 KiB。lint/test 沿用 --skip-nx-cache --excludeTaskDependencies 的本机 shared 依赖绕行方式。未修改 twenty-front 或 twenty-server，未部署远程资源。
 
 ### 阶段 9：文件
 

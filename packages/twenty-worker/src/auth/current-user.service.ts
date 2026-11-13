@@ -4,6 +4,7 @@ import {
   workspaceUrls,
 } from '@/auth/workspace-lifecycle.service';
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
+import { CUSTOM_APPLICATION_ID } from '@/workspace/metadata/constants/metadata-application-ids.constant';
 
 export const currentUser = async (context: MetadataContext) => {
   const auth = await context.requireAuth();
@@ -104,7 +105,10 @@ export const currentUser = async (context: MetadataContext) => {
       hasValidSignedEnterpriseKey: false,
       hasValidEnterpriseValidityToken: false,
       workspaceUrls: workspaceUrls(workspace),
-      workspaceCustomApplication: null,
+      workspaceCustomApplication:
+        data?.applications.find(
+          (application) => application.id === CUSTOM_APPLICATION_ID,
+        ) ?? null,
       installedApplications: data?.applications ?? [],
       featureFlags: data?.featureFlags ?? [],
       defaultRole: data?.defaultRole ?? null,

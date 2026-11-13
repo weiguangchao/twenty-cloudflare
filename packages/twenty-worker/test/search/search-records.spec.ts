@@ -252,17 +252,14 @@ it('paginates across objects and rank ties without duplicates and honors filters
       const ids: string[] = [];
       let after: string | null = null;
       for (let page = 0; page < 5; page++) {
-        const result = queryRecords<{ search: SearchConnection }>(
-          instance,
-          identity,
-          SEARCH_QUERY,
-          {
-            searchInput: term,
-            limit: 2,
-            after,
-            includedObjectNameSingulars: ['person', 'company'],
-          },
-        ).search;
+        const result: SearchConnection = queryRecords<{
+          search: SearchConnection;
+        }>(instance, identity, SEARCH_QUERY, {
+          searchInput: term,
+          limit: 2,
+          after,
+          includedObjectNameSingulars: ['person', 'company'],
+        }).search;
         ids.push(...result.edges.map((edge) => edge.node.recordId));
         after = result.pageInfo.endCursor;
         if (!result.pageInfo.hasNextPage) break;

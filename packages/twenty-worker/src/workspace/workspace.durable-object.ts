@@ -67,6 +67,11 @@ import {
   type RecordQueryInput,
 } from '@/workspace/record-api/types/record-query.type';
 import { apiError } from '@/shared/errors/api-error.util';
+import { navigationRecordIdentifiers } from '@/workspace/metadata/read/navigation-record-identifiers.util';
+import {
+  executeMetadataMutation,
+  metadataWritePermissions,
+} from '@/workspace/metadata/operations/execute-metadata-mutation.util';
 
 // One instance per workspace, addressed with WORKSPACE.idFromName(workspaceId).
 export class WorkspaceDurableObject extends DurableObject<Env> {
@@ -304,6 +309,61 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
   createObject(input: CreateObjectInput) {
     return runMetadataOperation(this.ctx.storage, (context) =>
       createObject(context, input),
+    );
+  }
+
+  executeMetadataMutation(
+    name: string,
+    argumentsJson: string,
+    identity: RecordQueryIdentity,
+  ) {
+    try {
+      return JSON.stringify(
+        runMetadataOperation(this.ctx.storage, (context) =>
+          executeMetadataMutation(
+            context,
+            name,
+            JSON.parse(argumentsJson) as Record<string, unknown>,
+            identity,
+          ),
+        ),
+      );
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
+    }
+  }
+
+  getObjectRecordCounts(identity: RecordQueryIdentity) {
+    const context = {
+      sql: this.ctx.storage.sql,
+      store: new MetadataStore(this.ctx.storage.sql),
+    };
+    const permissions = metadataWritePermissions(context, identity);
+    if (!permissions.permissionFlags.includes('DATA_MODEL'))
+      throw apiError('Permission denied', 'FORBIDDEN');
+    return context.store
+      .findMany('objectMetadata')
+      .filter((object) => object.isActive)
+      .map((object) => ({
+        objectNamePlural: object.namePlural,
+        totalCount: context.sql
+          .exec<{ count: number }>(
+            `SELECT COUNT(*) AS "count" FROM "rec_${object.nameSingular}" WHERE "deletedAt" IS NULL`,
+          )
+          .one().count,
+      }));
+  }
+
+  getNavigationRecordIdentifiers(identity: RecordQueryIdentity) {
+    const context = {
+      sql: this.ctx.storage.sql,
+      store: new MetadataStore(this.ctx.storage.sql),
+    };
+    return navigationRecordIdentifiers(
+      context,
+      metadataWritePermissions(context, identity),
     );
   }
 

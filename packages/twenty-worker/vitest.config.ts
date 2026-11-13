@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { cloudflareTest } from '@cloudflare/vitest-plugin';
 import { defineConfig } from 'vitest/config';
 import { readRecordFixtures } from './test/config/read-record-fixtures.util';
+import { readMetadataWriteFixtures } from './test/config/read-metadata-write-fixtures.util';
 
 export default defineConfig({
   plugins: [
@@ -36,6 +37,9 @@ export default defineConfig({
     name: 'twenty-worker',
     include: ['test/**/*.spec.ts'],
     provide: {
+      metadataWriteContracts: readMetadataWriteFixtures(
+        path.resolve(__dirname, 'contract/fixtures'),
+      ),
       recordReadContracts: readRecordFixtures(
         path.resolve(__dirname, 'contract/fixtures'),
       ),

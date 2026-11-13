@@ -153,7 +153,11 @@ export const METADATA_FIELD_RESOLVERS: Record<
       (await context.requireMetadata()).workspace.id,
     isCustom: (source) => source.isSystemSideEffect === false,
   },
-  NavigationMenuItem: { targetRecordIdentifier: () => null },
+  NavigationMenuItem: {
+    targetRecordIdentifier: async (source, _arguments, context) =>
+      (await context.requireNavigationIdentifiers()).get(String(source.id)) ??
+      null,
+  },
   Application: {
     objects: async (source, _arguments, context) =>
       (await context.requireMetadata()).tables.objectMetadata.filter(

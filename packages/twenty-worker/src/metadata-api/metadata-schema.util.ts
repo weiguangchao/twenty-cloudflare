@@ -26,6 +26,7 @@ import {
   METADATA_MUTATION_RESOLVERS,
 } from '@/metadata-api/metadata-read.resolvers';
 import { METADATA_FIELD_RESOLVERS } from '@/metadata-api/metadata-field.resolvers';
+import { METADATA_WRITE_RESOLVERS } from '@/metadata-api/metadata-write.resolvers';
 import { createHeartbeatStream } from '@/metadata-api/subscriptions/create-heartbeat-stream.util';
 
 const zeroValue = (type: GraphQLOutputType): unknown => {
@@ -126,6 +127,7 @@ export const buildMetadataSchema = () => {
           });
       } else if (type === mutation) {
         field.resolve =
+          METADATA_WRITE_RESOLVERS[field.name] ??
           METADATA_MUTATION_RESOLVERS[field.name] ??
           AUTH_MUTATION_RESOLVERS[field.name] ??
           (async (_source, _arguments, context: MetadataContext) => {
