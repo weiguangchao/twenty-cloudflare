@@ -20,8 +20,8 @@
 | 阶段 | 内容 | 依赖 | 状态 |
 |---|---|---|---|
 | 0 | 契约与种子数据采集 | 无 | 完成 |
-| 1 | 工程骨架与平台验证 | 0 | 未开始 |
-| 2 | Workspace DO：元数据存储与 DDL 引擎 | 1 | 未开始 |
+| 1 | 工程骨架与平台验证 | 0 | 完成 |
+| 2 | Workspace DO：元数据存储与 DDL 引擎 | 1 | 完成 |
 | 3 | 认证、会话与 workspace 生命周期 | 1 | 未开始 |
 | 4 | 元数据读取 API 与应用启动 | 2、3 | 未开始 |
 | 5 | 记录查询引擎（读） | 4 | 未开始 |
@@ -109,29 +109,38 @@ Worker: twenty-worker（一个脚本，同时承载静态资源和 API）
 
 ## 4. 平台限制
 
-2026-11-12 从官方文档查得，来源见第 10 节。
+2026-11-12 从官方文档查得，来源见第 10 节。标了"已验证"的项由阶段 1 的 `test/platform/` 在 workerd 本地运行时里确认过。
 
 | 项目 | 限制 | 对设计的影响 |
 |---|---|---|
 | DO SQLite 单库容量 | 10 GB | 单个 workspace 的数据上限 |
 | D1 单库容量 | 10 GB，不可提升 | core 库只放身份数据，足够 |
-| 每表最大列数 | 100 | 复合字段存成一个 JSON 列；每个对象限制 90 个字段 |
-| 每条查询最大绑定参数 | 100 | 批量写入分片；`IN` 列表用 `json_each(?)` 传一个参数 |
-| SQL 语句最大长度 | 100 KB | 不拼超长语句 |
-| `LIKE`/`GLOB` 模式最大长度 | 50 字节 | 包含匹配用 `instr`，不用 `LIKE '%x%'` |
-| 单行、字符串、BLOB 大小 | D1 为 2 MB；DO 文档页写 8 MB | 富文本和 JSON 字段写入前校验大小，按 2 MB 保守处理 |
+| 每表最大列数 | 100（已验证，第 101 列报 `too many columns`） | 复合字段存成一个 JSON 列；每个对象限制 90 个字段 |
+| 每条查询最大绑定参数 | 100（已验证） | 批量写入分片；`IN` 列表用 `json_each(?)` 传一个参数，5000 个 ID 已验证可用 |
+| SQL 语句最大长度 | 100,000 字节（已验证，不是 100 KiB） | 不拼超长语句，值一律用绑定参数传 |
+| `LIKE`/`GLOB` 模式最大长度 | 50 字节（已验证，超过报 `LIKE or GLOB pattern too complex`） | 包含匹配用 `instr`，不用 `LIKE '%x%'` |
+| 单行、字符串、BLOB 大小 | D1 为 2 MB；DO 是整行约 8 MiB（已验证：限制按整行算，单值 8 MiB 可写，两个 5 MiB 的值放同一行就报 `SQLITE_TOOBIG`） | 富文本和 JSON 字段写入前按 2 MB 保守校验；同一行所有列合计还要低于 8 MiB |
 | Worker 和 DO 内存 | 128 MB | 不把大结果集整体载入内存 |
 | CPU 时间 | 默认 30 秒，可配到 5 分钟 | 批量操作分批，每批独立事务 |
 | Worker 启动时间 | 1 秒 | GraphQL schema 懒构建，不放在全局作用域 |
 | Worker 体积 | 64 MiB 未压缩 | 无压力 |
 | 单个 DO 请求速率 | 软限制 1000 次每秒 | 一个 workspace 的并发上限，CRM 场景足够 |
 | 数值精度 | 游标返回的整数受 JS 52 位精度限制 | `amountMicros` 上限约 9×10^15，够用；不要存更大的整数 |
-| `sql.exec` | 不能执行 `BEGIN`、`SAVEPOINT` | 事务一律用 `ctx.storage.transactionSync()` |
+| `sql.exec` | 不能执行 `BEGIN`、`SAVEPOINT`（已验证） | 事务一律用 `ctx.storage.transactionSync()`；回调里的 DDL 在抛异常时一起回滚（已验证） |
 | DO 时间点恢复 | 30 天 | 备份策略的基础，见阶段 13 |
 | Queues | 消息 128 KB，延迟最长 24 小时，重试最多 100 次 | 只传 ID，不传载荷 |
 | Email Service | 仍为 beta | 邮件发送放在可选阶段，v1 用邀请链接 |
 
-DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNING`、`ON CONFLICT`。不支持自定义函数，所以没有 `REGEXP`。
+DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNING`、`ON CONFLICT`。不支持自定义函数，所以没有 `REGEXP`；`sqlite_version()` 等函数也被禁用。以上都已验证。
+
+阶段 1 验证得到的其他事实：
+
+- 外键默认开启（`PRAGMA foreign_keys` 为 1）。`ALTER TABLE ADD COLUMN ... REFERENCES` 加的外键，`ON DELETE CASCADE` 和 `SET NULL` 都生效，插入悬空引用会报错。删除带外键的列不会被阻止。
+- `RENAME COLUMN` 会同步改写引用该列的索引。`DROP COLUMN` 遇到列上有索引会报错，要先删索引。
+- FTS5 的 `trigram` 分词器可用，不区分大小写，中文和拉丁文子串都能命中，`bm25()` 可用。查询词少于 3 个字符时匹配不到任何结果，必须回退到 `instr`。加 `remove_diacritics 1` 后能忽略重音。用户输入直接放进 `MATCH` 会触发语法错误，需要转义成带引号的短语。
+- 表达式加 `WHERE` 条件的唯一索引（`("emails" ->> '$.primaryEmail') WHERE "deletedAt" IS NULL`）生效：软删除的记录不参与唯一性检查。
+- `->>` 返回 SQL 值，`->` 返回 JSON 文本（`'{"a":1}' -> '$.a'` 是字符串 `'1'`）。
+- 从 DO 内部可以访问 D1 和 R2 绑定。
 
 ## 5. 数据层约定
 
@@ -172,8 +181,9 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 ### 5.3 约束
 
 - 只有 `id` 是 `PRIMARY KEY NOT NULL`。其余列在 SQLite 层面都可空，**非空、默认值、选项合法性都在应用层校验**。原因是 SQLite 改列约束需要重建整张表。
-- 唯一约束用唯一索引实现。复合子字段上的唯一约束用表达式索引，如 `CREATE UNIQUE INDEX ... ON "rec_person" ("emails" ->> '$.primaryEmail') WHERE "deletedAt" IS NULL`。
-- 外键的 `ON DELETE` 行为（`CASCADE`、`SET NULL`、`RESTRICT`）是否由 SQLite 外键执行，取决于阶段 1 的验证结果。验证不通过就在应用层的同一事务里实现。
+- 唯一约束用唯一索引实现。复合子字段上的唯一约束用表达式索引，如 `CREATE UNIQUE INDEX ... ON "rec_person" ("emails" ->> '$.primaryEmail') WHERE "deletedAt" IS NULL`。没有指定子字段的复合字段唯一索引，展开为该类型里 `isIncludedInUniqueConstraint` 的全部子字段（邮箱是 `primaryEmail`，链接是 `primaryLinkUrl`，电话是号码、国家码、区号三个）。
+- 标准元数据里的唯一索引沿用旧系统的 `indexWhereClause`：`person.emails`、`company.domainName`、`workspaceMember.userEmail` 没有 `WHERE` 条件，软删除的记录也参与唯一性检查。用户通过 `isUnique` 新建的唯一索引带 `WHERE "deletedAt" IS NULL`。
+- 外键的 `ON DELETE` 行为（`CASCADE`、`SET NULL`、`RESTRICT`）由 SQLite 外键执行：阶段 1 已验证 DO 里外键默认开启，`ALTER TABLE ADD COLUMN ... REFERENCES` 加的 `CASCADE` 和 `SET NULL` 都生效。
 - 每个对象最多 90 个字段，创建第 91 个时返回 `METADATA_VALIDATION_FAILED`。
 
 ### 5.4 系统字段
@@ -313,9 +323,10 @@ packages/twenty-worker/
 
 - HTTP 路由：Hono。
 - GraphQL：`graphql` 16 加 `graphql-yoga`（和现有服务端一致，前端的 `graphql-sse` 客户端能直接对接）。DO 内的记录 API 用 graphql-js 直接构建 schema 并执行。
-- 测试：vitest 加 `@cloudflare/vitest-pool-workers`，在 workerd 里跑真实的 DO SQLite 和 D1。
+- 测试：vitest 加 `@cloudflare/vitest-plugin`（原 `@cloudflare/vitest-pool-workers`，已改名，旧包不再更新），在 workerd 里跑真实的 DO SQLite 和 D1。
 - 端到端：现有的 `packages/twenty-e2e-testing`（Playwright），目标指向 `wrangler dev`。
-- wrangler 版本和 `packages/twenty-website` 保持一致。`compatibility_date` 取建包当天，开启 `nodejs_compat`。
+- wrangler 版本和 `packages/twenty-website` 保持一致（4.151）。`compatibility_date` 取这个 wrangler 自带的 workerd 支持的最新日期（2026-10-12），升级 wrangler 时一起调整；开启 `nodejs_compat`。
+- 仓库的 `.yarnrc.yml` 设了 `npmMinimalAgeGate: 3d`，发布不满 3 天的包装不上，新加依赖时要选更早的版本。
 
 ### 7.3 `/metadata` 的 schema 策略
 
@@ -420,6 +431,27 @@ npx nx test twenty-worker
 - 平台验证测试全部有明确结论。结论和第 4、5 节不符的，已更正文档并说明对后续阶段的影响。
 - 7.4 的三条命令通过。
 
+**实施记录**
+
+- **包结构**：`packages/twenty-worker` 已加入根 `package.json` 的 workspaces。nx 目标有 `dev`、`build`（`wrangler deploy --dry-run`，依赖 `twenty-front:build`）、`deploy`、`test`、`typecheck`、`lint`。`worker-configuration.d.ts` 由 `wrangler types --include-runtime=false` 生成并入库，运行时类型来自 `@cloudflare/workers-types`。`migrations/` 和 `src/shared/` 等空目录留给后续阶段创建。
+- **偏离 7.2**：
+  - 测试库用 `@cloudflare/vitest-plugin`。原定的 `@cloudflare/vitest-pool-workers` 已改名、不再更新。
+  - `compatibility_date` 是 2026-10-12，不是建包当天：和 twenty-website 一致的 wrangler 4.151 自带的 workerd 最多支持到这一天。
+  - 仓库的 3 天包龄限制使依赖只能选较早的版本：hono 4.13.17、vitest-plugin 1.6.1、workers-types 5.20261108.1。
+- **路由**：静态资源指向 `twenty-front/build`，开启 SPA 回退。`run_worker_first` 列出 `ApiPath` 的全部前缀（每个前缀写 `/x` 和 `/x/*` 两条），`test/wrangler-config.spec.ts` 校验两者一致。未实现的 API 路径返回 JSON 404。
+- **client config**：所有可选功能关闭，`serverUrl` 和 `frontDomain` 取自请求地址。`signInPrefilled` 为 false，e2e 测试需要预填账号时再考虑开关。前端类型里有、旧服务端不返回的 `isTwoFactorAuthenticationEnabled` 也返回了（false）。
+- **Workspace DO**：构造函数在 `blockConcurrencyWhile` 里跑 `sys_migration` 机制。迁移按数组顺序、各自在一个 `transactionSync` 里执行；名字必须唯一且升序，失败的迁移整体回滚、保持待执行。当前迁移列表为空，`ping()` 返回 `"pong"`。
+- **平台验证**：结论都写进了第 4 节和 5.3 节，测试在 `test/platform/`。和原文不符、需要后续阶段注意的有：
+  - SQL 语句上限是 100,000 字节，不是 100 KiB。
+  - DO 的大小上限按整行算，约 8 MiB。原文写的是单值上限。
+  - trigram 搜索词少于 3 个字符时一定匹配不到。
+  - `DROP COLUMN` 要先删索引。
+  - 删除带外键的列不会被阻止。
+- **前端开发方式**：vite 开发服务器本来就把 `ApiPath` 前缀代理到 `REACT_APP_SERVER_BASE_URL`（默认 `http://localhost:3000`），所以只把 `wrangler dev` 的端口设成 3000，前端零改动。已验证从 3001 端口访问 `/healthz`、`/client-config`、`/metadata` 都转发到了 Worker。
+- **验收**：`wrangler dev` 下浏览器打开 `/` 跳到 `/welcome`，登录页正常渲染，`/client-config` 返回 200。控制台只有 `/metadata` 的 404（`GetPublicWorkspaceDataByDomain`、`TrackAnalytics`），阶段 3 和 4 实现。
+- `twenty-front` 的生产构建在本机耗时约 50 分钟，产物 65 MB、2167 个文件，最大单文件 7 MB，在 Workers 静态资源的限制内。
+- 根目录 `.oxfmtrc.jsonc` 排除了契约 fixture、导出数据、种子 JSON 和生成的类型文件，否则 `nx lint` 会要求重排这些数据文件。
+
 ### 阶段 2：Workspace DO 的元数据存储与 DDL 引擎
 
 **目标**：在 DO 内实现元数据的存储，以及"元数据变更到表结构变更"的全部逻辑。本阶段不涉及 HTTP，只做 DO 的内部模块和 RPC 方法，用测试驱动。
@@ -431,7 +463,7 @@ npx nx test twenty-worker
 1. 建 `meta_` 表。至少包括：对象、字段（选项可以内嵌为 JSON）、索引、搜索字段、视图、视图字段、视图字段分组、视图筛选、视图筛选分组、视图排序、视图分组、页面布局、布局 tab、布局 widget、导航菜单项、命令菜单项、角色、角色分配、对象权限、字段权限、权限标志、时间线活动类型、关联记录路径、feature flag、键值对、文件。列以阶段 0 导出的 JSON 为准（`src/workspace/seed/standard-metadata.json` 的 `tables`；字段选项在旧系统里同时存在 `fieldMetadata.options` 列和 `fieldMetadataOption` 表）。
 2. 初始化：新 DO 首次启动时载入 `standard-metadata.json`，建出 10 张 `rec_` 表和对应索引。
 3. 对象操作：创建、改名、改标签、停用和启用、删除。创建自定义对象时要按旧系统的行为自动加上系统字段，以及它和 `noteTarget`、`taskTarget`、`attachment`、`timelineActivity` 之间的关联字段。阶段 0 确认旧系统加的是 `attachments`、`noteTargets`、`taskTargets`、`timelineActivities`、`agentChatThreadTargets`，最后一个在范围外，不加。
-4. 字段操作：创建、改名（`RENAME COLUMN`）、改标签和设置、改选项（含改选项值时更新已有数据）、改默认值、停用和启用、删除。
+4. 字段操作：创建、改名（`RENAME COLUMN`）、改标签和设置、改选项（含改选项值时更新已有数据）、改默认值、停用和启用、删除。删除字段前要先删掉该列上的索引，否则 `DROP COLUMN` 报错（阶段 1 已验证）；`RENAME COLUMN` 会自动改写索引。
 5. 关联字段：一对多和多对一成对创建和删除；多对一侧建 `<名>Id` 列和索引；morph 关联按旧系统规则展开为每个目标一个字段。
 6. 索引和唯一约束的创建、删除。
 7. 校验：名称唯一、保留字、命名格式、90 个字段上限、不能删改系统字段和标准字段的受保护属性。校验失败返回带原因的结构化错误，不抛裸异常。
@@ -452,6 +484,30 @@ npx nx test twenty-worker
 - 每种字段类型的创建、改名、删除都有测试，测试同时断言元数据表和物理表。
 - 任一步失败时元数据和表结构都回滚，有测试覆盖。
 - 自定义对象创建后，能在 `noteTarget` 等对象上看到对应的关联字段。
+
+**实施记录**
+
+- **元数据表**：28 张 `meta_` 表由 `contract/scripts/generate-metadata-table-definitions.mjs` 从旧系统的 `core` schema 生成，产物是 `metadata-table-definitions.constant.ts`。列和旧表一致，去掉了 `workspaceId`。表之间的外键和 `ON DELETE` 规则（50 条）也照搬过来，删除对象或字段时，视图字段、筛选、排序、索引列、搜索字段、页面布局等由 SQLite 级联清理，不用手写。`fieldMetadataOption` 没有建表，选项存在 `fieldMetadata.options` 里，但 `collectionHashes` 里仍报告这个集合。
+- **初始化**：走 `sys_migration` 机制，`0001-create-metadata-tables` 建表，`0002-load-standard-metadata` 载入种子、建 10 张记录表和 35 个物理索引。6 个 `TS_VECTOR` 的 GIN 索引只保留元数据，阶段 7 换成 FTS5。种子里的默认 feature flag 也在这一步写入，阶段 3 不用再写。每个新 DO 首次构造时都会自动完成初始化。
+- **操作**：DO 上的 RPC 方法是 `createObject`、`updateObject`、`deleteObject`、`createField`、`updateField`、`deleteField`、`createIndex`、`deleteIndex`。另有 `getCollectionHashes()`，以及按版本缓存的 `getMetadataSnapshot()`，供记录引擎使用。每个操作在一个 `transactionSync` 里同时改元数据和表结构，返回 `{ status: 'success', value }` 或 `{ status: 'fail', failure }`。`failure` 的结构和旧系统 `METADATA_VALIDATION_FAILED` 的 extensions 一致（`errors` 按元数据名分组，带 `summary`），阶段 8 可以直接透传。非校验类的意外错误照常抛出，同样整体回滚。
+- **对齐旧系统的行为**：
+  - 可编辑属性按标准、自定义、系统、系统副作用、关联字段分别限制。
+  - 自定义对象的系统字段、`name` 字段、搜索字段，以及和 `timelineActivity`、`attachment`、`noteTarget`、`taskTarget` 的 `target<对象>` morph 关联，名称、标签、图标、描述、`onDelete` 都和阶段 0 导出里的 `initiative` 一致。
+  - 对象改名时，这四个 `target<对象>` 字段跟着改名，用户自建的反向关联不改。
+  - 评分字段默认生成 `RATING_1` 到 `RATING_5` 五个选项。
+  - 选项改值或删除时，同步改写已有数据，`MULTI_SELECT` 的 JSON 数组也一样，交换两个值也不会冲突。
+- **偏离和取舍**：
+  - 索引名是随机的 `IDX_<27 位十六进制>`，不是旧系统的确定性哈希。事务内不能 `await`，WebCrypto 的摘要又是异步的；而索引名只要求唯一。
+  - 旧系统检查的"复合字段展开后的列名保留字"（如 `emailsPrimaryEmail`）没有实现，新存储不展开复合字段。
+  - 对象名额外的 lodash `camelCase` 检查也没有实现，命名格式靠正则保证。
+  - 自定义对象的默认视图和页面布局属于阶段 8。
+- **给后续阶段的提示**：
+  - GraphQL `Field` 上的 `isUnique`、`isSearchable` 在旧表里不是列：前者看有没有只含该字段的唯一索引，后者看 `searchFieldMetadata`。阶段 4、8 输出时要现算。
+  - 阶段 6 写入时，复合字段的空子字段要存 `null`，不要存空字符串，否则 `person.emails` 这类没有 `WHERE` 的唯一索引会把空邮箱当成重复。
+  - 阶段 3 激活 workspace 时，默认角色取种子的 `defaultRoleUniversalIdentifier`（Member）。
+  - JSON 列在类型上是 `JsonValue`，递归部分用 interface 声明，否则 workers-types 的 RPC 类型推导会报"无限深"，DO stub 的返回值会变成 `never`。
+- **测试**：16 个测试文件、97 个用例。覆盖 21 种字段类型各自的创建、改名、删除，每步同时断言元数据表和物理表；以及关联、morph、对象生命周期、校验失败、三种回滚场景（后期校验失败、DDL 中途失败、唯一索引因重复数据建不出来）、集合哈希和快照缓存。
+- Worker 包体积因为内嵌了种子 JSON，增至 2.5 MiB（gzip 后 462 KiB）。
 
 ### 阶段 3：认证、会话与 workspace 生命周期
 

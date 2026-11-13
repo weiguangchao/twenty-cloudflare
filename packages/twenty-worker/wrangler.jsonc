@@ -1,0 +1,103 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "twenty-worker",
+  "main": "src/index.ts",
+  // Newest date the workerd bundled with wrangler 4.151 accepts.
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "../twenty-front/build",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    // Mirrors ApiPath in twenty-shared; test/wrangler-config.spec.ts keeps them in sync.
+    "run_worker_first": [
+      "/admin-panel",
+      "/admin-panel/*",
+      "/app",
+      "/app/*",
+      "/application-registration-claim",
+      "/application-registration-claim/*",
+      "/apps",
+      "/apps/*",
+      "/auth",
+      "/auth/*",
+      "/client-config",
+      "/client-config/*",
+      "/cloudflare",
+      "/cloudflare/*",
+      "/emailing",
+      "/emailing/*",
+      "/file",
+      "/file/*",
+      "/file-upload",
+      "/file-upload/*",
+      "/files",
+      "/files/*",
+      "/graphql",
+      "/graphql/*",
+      "/healthz",
+      "/healthz/*",
+      "/mcp",
+      "/mcp/*",
+      "/metadata",
+      "/metadata/*",
+      "/oauth",
+      "/oauth/*",
+      "/open-api",
+      "/open-api/*",
+      "/public-assets",
+      "/public-assets/*",
+      "/rest",
+      "/rest/*",
+      "/s",
+      "/s/*",
+      "/webhooks",
+      "/webhooks/*",
+      "/.well-known",
+      "/.well-known/*",
+    ],
+  },
+  "d1_databases": [
+    {
+      "binding": "CORE_DB",
+      "database_name": "twenty-core",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "twenty-files",
+    },
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOBS",
+        "queue": "twenty-jobs",
+      },
+    ],
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WORKSPACE",
+        "class_name": "WorkspaceDurableObject",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["WorkspaceDurableObject"],
+    },
+  ],
+  "dev": {
+    // The front's vite dev server proxies ApiPath prefixes to port 3000.
+    "port": 3000,
+  },
+  "observability": {
+    "enabled": true,
+  },
+}
