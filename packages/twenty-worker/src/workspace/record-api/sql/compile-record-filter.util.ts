@@ -1,4 +1,9 @@
 import { isPlainObject } from 'twenty-shared/utils';
+import {
+  compileSearchMatch,
+  readableSearchFields,
+  searchTerms,
+} from '@/workspace/search/search-match.util';
 
 import { apiError } from '@/shared/errors/api-error.util';
 import { RECORD_COMPOSITE_NULL_EQUIVALENTS } from '@/workspace/record-api/record-null-equivalents.constant';
@@ -157,29 +162,15 @@ export const compileRecordFilter = (
           throw apiError('Invalid search filter');
         const search = comparison.search;
         if (typeof search !== 'string') throw apiError('Invalid search term');
-        const searchable = object.searchFields.flatMap((entry) => {
-          const searchField = context.catalog.fieldsById.get(
-            entry.fieldMetadataId,
-          );
-          if (!searchField || searchField.type === 'TS_VECTOR') return [];
-          return [fieldExpression(context, object, [searchField.name], alias)];
-        });
-        const parts = search
-          .trim()
-          .split(/\s+/)
-          .filter(Boolean)
-          .map(
-            (term) =>
-              `(${
-                searchable
-                  .map((expression) => {
-                    bindings.push(term);
-                    return `instr(lower(CAST(${expression} AS TEXT)), lower(?)) > 0`;
-                  })
-                  .join(' OR ') || '0'
-              })`,
-          );
-        conditions.push(parts.join(' AND ') || '1');
+        conditions.push(
+          compileSearchMatch(
+            object,
+            readableSearchFields(context, object),
+            searchTerms(search),
+            alias,
+            bindings,
+          ),
+        );
         continue;
       }
       const expression = fieldExpression(

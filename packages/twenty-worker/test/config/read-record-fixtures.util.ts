@@ -3,7 +3,10 @@ import path from 'node:path';
 
 import standardMetadata from '../../src/workspace/seed/standard-metadata.json';
 import { type FieldMetadataRow } from '../../src/workspace/metadata/types/field-metadata-row.type';
-import { type ObjectMetadataRow } from '../../src/workspace/metadata/types/metadata-row.type';
+import {
+  type MetadataRow,
+  type ObjectMetadataRow,
+} from '../../src/workspace/metadata/types/metadata-row.type';
 
 export type ReadRecordFixture = {
   path: string;
@@ -27,6 +30,7 @@ export const readRecordFixtures = (directory: string) => {
     tables: {
       objectMetadata: ObjectMetadataRow[];
       fieldMetadata: FieldMetadataRow[];
+      searchFieldMetadata: MetadataRow<'searchFieldMetadata'>[];
     };
   };
   const customObject = exported.tables.objectMetadata.find(
@@ -46,6 +50,7 @@ export const readRecordFixtures = (directory: string) => {
   );
   const fixtures: ReadRecordFixture[] = [];
   const writeFixtures: ReadRecordFixture[] = [];
+  const searchFixtures: ReadRecordFixture[] = [];
   const records = new Map<string, CapturedRecord>();
   const objects = new Map(
     [...standardMetadata.tables.objectMetadata, customObject].map((object) => [
@@ -106,6 +111,14 @@ export const readRecordFixtures = (directory: string) => {
         | { extensions?: { code?: string } }[]
         | undefined;
       const expectedErrorCode = errors?.[0]?.extensions?.code;
+      if (fixture.operationName === 'Search' && !errors) {
+        searchFixtures.push({
+          path: `${flow.name}/${name}`,
+          query: fixture.query,
+          variables: (fixture.variables ?? {}) as Record<string, unknown>,
+          data: response?.data,
+        });
+      }
       if (
         fixture.query.trim().startsWith('mutation') &&
         (!errors || expectedErrorCode === 'BAD_USER_INPUT') &&
@@ -138,5 +151,9 @@ export const readRecordFixtures = (directory: string) => {
     customObject,
     customFields,
     writeFixtures,
+    searchFixtures,
+    customSearchFields: exported.tables.searchFieldMetadata.filter(
+      (field) => field.objectMetadataId === customObject.id,
+    ),
   };
 };

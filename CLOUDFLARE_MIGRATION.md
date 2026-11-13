@@ -26,7 +26,7 @@
 | 4 | 元数据读取 API 与应用启动 | 2、3 | 完成 |
 | 5 | 记录查询引擎（读） | 4 | 完成 |
 | 6 | 记录写入与副作用 | 5 | 完成 |
-| 7 | 搜索 | 6 | 未开始 |
+| 7 | 搜索 | 6 | 完成 |
 | 8 | 元数据写入 API 与视图 | 4 | 未开始 |
 | 9 | 文件 | 4 | 未开始 |
 | 10 | 权限与成员管理 | 6、8 | 未开始 |
@@ -724,6 +724,17 @@ npx nx test twenty-worker
 - 列表页的搜索框能筛选记录。
 - 包含引号、星号、括号的输入不报错。
 - 新建记录后立即可被搜到，删除后搜不到。
+
+**实施记录**
+
+- **索引与迁移**：新增 DO 迁移 0004，为每个对象建立 fts_<对象> 和 sys_searchIndex 注册表，使用阶段 1 验证过的 trigram remove_diacritics 1。索引按 searchFieldMetadata 及活动字段生成，每个搜索字段独立一列，列名由字段 ID 派生。迁移回填已有活动记录，软删除记录不进入索引。
+- **写入同步**：在 rec_ 表上安装 INSERT/UPDATE/DELETE 触发器，索引更新和原记录写入处于同一 SQLite 事务。覆盖记录 mutation、merge、成员资料、演示数据、外键级联及后台清理；软删除移除索引，恢复重新索引，失败请求一起回滚。已在 workerd 验证触发器内写 FTS5 可用，没有事务内异步 IO。
+- **元数据重建**：元数据操作在事务内暂停搜索触发器，完成 DDL 后按字段 ID、名称、类型和标签字段计算签名，仅重建发生变化的索引并恢复触发器。对象创建、改名、删除，字段新增、改名、搜索开关、启用停用和删除均覆盖；失败的校验或 DDL 会回滚触发器及索引。未为了索引变更修改已提交的旧迁移。
+- **文本提取与筛选**：复用 shared 的 isSearchableFieldType，提取文本、UUID、姓名、地址、富文本 markdown，以及邮箱、电话和链接的主要与附加值。邮箱补充分隔 @ 的形式，电话补充区号与号码、国内前导 0 的形式；不索引 JSON 属性名或富文本编辑器结构。searchVector.search 改为 FTS 查询，多个词要求全部命中；少于 3 个 Unicode 字符的词用索引内容列上的 instr 回退，长短词可以混用。MATCH 的值全部绑定，每个词转成转义后的带引号短语，输入中的引号、星号、括号不会变成查询语法。短词回退沿用 SQLite lower 的 ASCII 大小写边界。
+- **全局 Search**：在 /graphql 动态 schema 中补齐 SearchRecord、SearchResultConnection 和 ObjectRecordFilterInput，支持对象包含/排除、记录筛选、空输入、最多 100 条结果和游标分页。命中任一词可进入结果，命中全部词优先；tsRank 取负 bm25 以沿用降序约定，tsRankCD 在全部词命中时取该分数，其余为 0，纯短词或空输入为 0。排序追加标准对象优先级、对象名和记录 ID；游标保留旧契约的 lastRanks/lastRecordIdsPerObject，并增加 lastObjectNameSingular，避免跨对象同分分页遗漏或重复。只返回所需标签与图片列，姓名拼接，LINKS 图片复用 shared favicon 工具；FILES 图片的签名 URL 仍留给阶段 9。
+- **权限与契约**：搜索排除无读取权限的对象、不可读标签及不可读搜索字段，隐藏图片字段不输出值；显式包含对象时沿用旧服务允许搜索 isSearchable 为 false 的活动对象。重放全部 28 条 Search fixture，比较响应结构、typename、字段值类型和游标结构；7 条专门搜索场景中原有非空查询均有命中。历史快照和 trigram 排名与原 PostgreSQL 数据不同，不比较历史结果数量、排序或数值分数。365 条读取契约、74 条写入契约继续通过。
+- **浏览器验收**：从阶段 6 本地数据复制独立的 .wrangler/stage7-acceptance，验证 Brian、airbnb、chesky@、新建中文姓名的三字和两字查询、含引号/星号/括号的输入；现有 Search any field 列表入口按新人员邮箱准确筛到一条，软删除后全局搜索不再命中。新建记录不需重建索引即可被搜到。共享预览完成部分查询后，在新建步骤遇到两次定位失败，剩余流程用本地 Playwright 完成；最终无 GraphQL 错误、页面异常或失败 API 请求。前端与 twenty-server 均零改动，未部署远程资源。
+- **检查结果**：新增 40 项 workerd 测试（28 条 Search 契约、12 项行为），覆盖中文、重音、特殊字符、电话/邮箱/链接/地址/富文本、写入和元数据生命周期、回滚、权限、隔离和分页。最终 34 个测试文件、726 项测试全部通过；直接 tsgo、Nx lint、格式检查和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 4,813.61 KiB，gzip 693.49 KiB。lint/test 沿用 --skip-nx-cache --excludeTaskDependencies 的本机 shared 依赖绕行方式。
 
 ### 阶段 8：元数据写入 API 与视图
 

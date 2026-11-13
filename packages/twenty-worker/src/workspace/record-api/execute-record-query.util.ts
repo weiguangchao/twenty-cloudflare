@@ -1,6 +1,10 @@
 import { defaultFieldResolver, graphqlSync, type GraphQLSchema } from 'graphql';
 
 import { apiError } from '@/shared/errors/api-error.util';
+import {
+  searchRecords,
+  type SearchInput,
+} from '@/workspace/search/search-records.util';
 import { findDuplicateRecords } from '@/workspace/record-api/find-duplicate-records.util';
 import { groupRecords } from '@/workspace/record-api/group-records.util';
 import { parseRecordSelection } from '@/workspace/record-api/parse-record-selection.util';
@@ -24,6 +28,8 @@ export const attachRecordResolvers = (schema: GraphQLSchema) => {
       context: RecordQueryContext,
       info,
     ) => {
+      if (name === 'search')
+        return searchRecords(context, arguments_ as SearchInput);
       const object = context.catalog.objects.find((candidate) =>
         [
           candidate.namePlural,

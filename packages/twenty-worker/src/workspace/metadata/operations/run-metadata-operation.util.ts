@@ -6,6 +6,10 @@ import {
   type MetadataOperationResult,
 } from '@/workspace/metadata/types/metadata-operation-result.type';
 import { type MetadataOperationContext } from '@/workspace/metadata/types/metadata-operation-context.type';
+import {
+  suspendSearchIndexes,
+  synchronizeSearchIndexes,
+} from '@/workspace/search/synchronize-search-indexes.util';
 
 const toFailure = (
   exception: MetadataValidationException,
@@ -39,8 +43,10 @@ export const runMetadataOperation = <TValue>(
   try {
     const value = storage.transactionSync(() => {
       const store = new MetadataStore(storage.sql);
+      suspendSearchIndexes(storage.sql);
       const result = operation({ sql: storage.sql, store });
 
+      synchronizeSearchIndexes(storage.sql);
       bumpMetadataCollectionHashes(storage.sql, store.touchedEntityNames);
 
       return result;

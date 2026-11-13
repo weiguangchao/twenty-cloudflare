@@ -5,17 +5,17 @@ import { selectRows } from '../utils/select-rows.util';
 
 const createSearchTable = (sql: SqlStorage, tokenizer: string) => {
   sql.exec(
-    `CREATE VIRTUAL TABLE "fts_person" USING fts5("name", tokenize = '${tokenizer}')`,
+    `CREATE VIRTUAL TABLE "fts_platformPerson" USING fts5("name", tokenize = '${tokenizer}')`,
   );
   sql.exec(
-    `INSERT INTO "fts_person" ("name") VALUES ('张伟明'), ('北京字节跳动科技'), ('Airbnb Inc'), ('École Zürich')`,
+    `INSERT INTO "fts_platformPerson" ("name") VALUES ('张伟明'), ('北京字节跳动科技'), ('Airbnb Inc'), ('École Zürich')`,
   );
 };
 
 const search = (sql: SqlStorage, query: string) =>
   selectRows(
     sql,
-    'SELECT "name", bm25("fts_person") AS "rank" FROM "fts_person" WHERE "fts_person" MATCH ? ORDER BY "rank"',
+    'SELECT "name", bm25("fts_platformPerson") AS "rank" FROM "fts_platformPerson" WHERE "fts_platformPerson" MATCH ? ORDER BY "rank"',
     query,
   );
 
@@ -45,7 +45,7 @@ describe('FTS5 with the trigram tokenizer', () => {
       expect(
         selectRows(
           sql,
-          'SELECT "name" FROM "fts_person" WHERE instr("name", ?) > 0',
+          'SELECT "name" FROM "fts_platformPerson" WHERE instr("name", ?) > 0',
           '张伟',
         ),
       ).toEqual([{ name: '张伟明' }]);

@@ -22,6 +22,10 @@ import {
   type RecordCatalog,
   type RecordObject,
 } from '@/workspace/record-api/types/record-query.type';
+import {
+  SEARCH_FIELD_DEFINITION,
+  SEARCH_SCHEMA_DEFINITIONS,
+} from '@/workspace/search/search-schema.constant';
 
 let sharedDefinitions: Map<string, DefinitionNode> | undefined;
 
@@ -122,7 +126,7 @@ const fieldTypes = (object: RecordObject, field: FieldMetadataRow) => {
 };
 
 export const buildRecordSchema = (catalog: RecordCatalog) => {
-  const definitions: string[] = [];
+  const definitions: string[] = [SEARCH_SCHEMA_DEFINITIONS];
   const roots = new Set([
     'UUID',
     'DateTime',
@@ -133,8 +137,10 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
     'OrderByDirection',
     'GroupByDateGranularityInput',
     'OrderByDateGranularityInput',
+    'UUIDFilter',
+    'DateTimeFilter',
   ]);
-  const queries: string[] = [];
+  const queries: string[] = [SEARCH_FIELD_DEFINITION];
   const mutations: string[] = [];
   const addRoot = (name: string) => {
     for (const token of name.match(/[A-Za-z_][A-Za-z_0-9]*/g) ?? [])

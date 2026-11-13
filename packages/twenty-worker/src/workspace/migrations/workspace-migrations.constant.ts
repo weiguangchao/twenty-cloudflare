@@ -3,6 +3,7 @@ import { createMetadataTables } from '@/workspace/metadata/storage/create-metada
 import { loadStandardMetadata } from '@/workspace/metadata/seed/load-standard-metadata.util';
 import { type StandardMetadataSeed } from '@/workspace/metadata/types/standard-metadata-seed.type';
 import { type WorkspaceMigration } from '@/workspace/migrations/types/workspace-migration.type';
+import { createSearchIndexes } from '@/workspace/search/synchronize-search-indexes.util';
 import standardMetadataSeed from '@/workspace/seed/standard-metadata.json';
 import { createEventTables } from '@/workspace/events/create-event-tables.util';
 
@@ -23,4 +24,5 @@ export const WORKSPACE_MIGRATIONS: WorkspaceMigration[] = [
       ),
   },
   { name: '0003-create-workspace-event-tables', up: createEventTables },
+  { name: '0004-create-workspace-search-indexes', up: createSearchIndexes },
 ];

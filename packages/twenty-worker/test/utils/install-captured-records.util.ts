@@ -8,6 +8,7 @@ import { bumpMetadataCollectionHashes } from '@/workspace/metadata/storage/metad
 import { type MetadataRow } from '@/workspace/metadata/types/metadata-row.type';
 import { type JsonValue } from '@/workspace/metadata/types/json-value.type';
 import { type WorkspaceDurableObject } from '@/workspace/workspace.durable-object';
+import { synchronizeSearchIndexes } from '@/workspace/search/synchronize-search-indexes.util';
 
 import { type readRecordFixtures } from '../config/read-record-fixtures.util';
 import { createRecordIdentity, insertRecord } from './record-query-test.util';
@@ -48,6 +49,16 @@ export const installCapturedRecords = (
         field,
         objectName,
       );
+    store.update('objectMetadata', object.id, {
+      labelIdentifierFieldMetadataId: object.labelIdentifierFieldMetadataId,
+      imageIdentifierFieldMetadataId: object.imageIdentifierFieldMetadataId,
+    });
+    for (const field of contracts.customSearchFields)
+      store.insert(
+        'searchFieldMetadata',
+        field as MetadataRow<'searchFieldMetadata'>,
+      );
+    synchronizeSearchIndexes(sql);
     bumpMetadataCollectionHashes(sql, store.touchedEntityNames);
   });
   const identity = createRecordIdentity(instance);
