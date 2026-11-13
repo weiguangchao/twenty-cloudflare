@@ -7,6 +7,7 @@ export type UserRow = {
   locale: string;
   isEmailVerified: number;
   disabled: number;
+  deletedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -22,6 +23,7 @@ export type WorkspaceRow = {
   creatorUserId: string;
   activationStatus: string;
   defaultRoleId: string | null;
+  trashRetentionDays: number;
   createdAt: string;
   updatedAt: string;
 };

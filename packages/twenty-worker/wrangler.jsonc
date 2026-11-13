@@ -7,6 +7,7 @@
   "compatibility_flags": ["nodejs_compat"],
   // Shared's bundled chunks evaluate UUID defaults at startup; source modules can be tree-shaken.
   "alias": {
+    "twenty-shared/application": "../twenty-shared/src/application/index.ts",
     "twenty-shared/utils": "../twenty-shared/src/utils/index.ts",
     "twenty-shared/types": "../twenty-shared/src/types/index.ts",
     "twenty-shared/constants": "../twenty-shared/src/constants/index.ts",

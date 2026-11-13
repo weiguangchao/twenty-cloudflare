@@ -1,3 +1,4 @@
+import { apiError } from '@/shared/errors/api-error.util';
 import { GraphQLError, type GraphQLFieldResolver } from 'graphql';
 
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
@@ -17,6 +18,19 @@ export const METADATA_WRITE_RESOLVERS: Record<
     ) => {
       const data = await context.requireMetadata();
       const auth = await context.requireAuth();
+      if (name === 'updateWorkspaceMemberRole') {
+        const target = (
+          await context.store.membershipsForWorkspace(data.workspace.id)
+        ).find(
+          (membership) =>
+            membership.workspaceMemberId === arguments_.workspaceMemberId,
+        );
+        if (!target) throw apiError('Workspace member not found', 'NOT_FOUND');
+        arguments_ = {
+          ...arguments_,
+          targetIdentity: { userWorkspaceId: target.id, userId: target.userId },
+        };
+      }
       const response = JSON.parse(
         await context
           .workspace(data.workspace.id)

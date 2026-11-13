@@ -1,3 +1,7 @@
+import {
+  ROLE_MUTATIONS,
+  executeRoleMutation,
+} from '@/workspace/permissions/role-mutations.util';
 import { isPlainObject } from 'twenty-shared/utils';
 
 import { apiError } from '@/shared/errors/api-error.util';
@@ -44,6 +48,7 @@ const ENTITIES: Record<string, UiMetadataEntity> = {
   NavigationMenuItem: 'navigationMenuItem',
 };
 export const METADATA_WRITE_OPERATIONS = [
+  ...ROLE_MUTATIONS,
   'createOneObject',
   'updateOneObject',
   'updateManyObjects',
@@ -133,6 +138,8 @@ export const executeMetadataMutation = (
   if (!METADATA_WRITE_OPERATIONS.includes(name))
     throw apiError('Unknown metadata operation');
   const permissions = metadataWritePermissions(context, identity);
+  if (ROLE_MUTATIONS.includes(name))
+    return executeRoleMutation(context, name, arguments_, permissions);
   const service = new UiMetadataService(
     context,
     permissions,

@@ -7,7 +7,7 @@ export type ObjectRecordsPermissions = {
   canDestroyAllRecords: boolean;
   unreadableFields: string[];
   uneditableFields: string[];
-  restrictedFields: Record<string, { canRead: null; canUpdate: false }>;
+  restrictedFields: Record<string, { canRead: false | null; canUpdate: false }>;
   rowLevelRecordsPermissions: null;
 };
 

@@ -83,11 +83,16 @@ export const addWorkspaceMember = (
   const defaultRole = store.findMany('role', {
     universalIdentifier: standardMetadata.defaultRoleUniversalIdentifier,
   })[0];
+  const configuredRoleId = sql
+    .exec<{
+      defaultRoleId: string;
+    }>('SELECT "defaultRoleId" FROM "sys_workspaceSettings" WHERE "id" = 1')
+    .one().defaultRoleId;
   const role = isCreator
     ? store.findMany('role', {
         universalIdentifier: '20202020-02c2-43f2-b94d-cab1f2b532eb',
       })[0]
-    : defaultRole;
+    : (store.findById('role', configuredRoleId) ?? defaultRole);
 
   if (!getWorkspaceMember(sql, input)) {
     insertSeedRecord(sql, 'workspaceMember', {

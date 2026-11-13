@@ -1,4 +1,8 @@
 import {
+  MEMBER_QUERY_RESOLVERS,
+  MEMBER_MUTATION_RESOLVERS,
+} from '@/metadata-api/member.resolvers';
+import {
   buildSchema,
   defaultFieldResolver,
   getNamedType,
@@ -116,6 +120,7 @@ export const buildMetadataSchema = () => {
     for (const field of Object.values(type.getFields())) {
       if (type === query) {
         field.resolve =
+          MEMBER_QUERY_RESOLVERS[field.name] ??
           METADATA_QUERY_RESOLVERS[field.name] ??
           AUTH_QUERY_RESOLVERS[field.name] ??
           (async (_source, _arguments, context: MetadataContext) => {
@@ -128,6 +133,7 @@ export const buildMetadataSchema = () => {
           });
       } else if (type === mutation) {
         field.resolve =
+          MEMBER_MUTATION_RESOLVERS[field.name] ??
           FILE_MUTATION_RESOLVERS[field.name] ??
           METADATA_WRITE_RESOLVERS[field.name] ??
           METADATA_MUTATION_RESOLVERS[field.name] ??

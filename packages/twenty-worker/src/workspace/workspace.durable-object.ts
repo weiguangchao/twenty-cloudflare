@@ -1,3 +1,11 @@
+import {
+  removeWorkspaceMember,
+  processMemberCleanup,
+} from '@/workspace/lifecycle/remove-workspace-member.util';
+import {
+  updateWorkspaceSettings,
+  processWorkspaceSettings,
+} from '@/workspace/lifecycle/workspace-settings.util';
 import { DurableObject } from 'cloudflare:workers';
 import { GraphQLError } from 'graphql';
 import { RecordMutationRollback } from '@/workspace/record-api/mutations/record-mutation-rollback.exception';
@@ -97,7 +105,11 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     void ctx.blockConcurrencyWhile(async () => {
       await initializeRecordIndexTypes();
       runWorkspaceMigrations(ctx.storage, WORKSPACE_MIGRATIONS);
-      await scheduleWorkspaceAlarm(ctx.storage, ['file-cleanup']);
+      await scheduleWorkspaceAlarm(ctx.storage, [
+        'file-cleanup',
+        'member-cleanup',
+        'workspace-settings',
+      ]);
     });
   }
 
@@ -105,7 +117,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     return 'pong';
   }
 
-  private async withFileLock<TData>(operation: () => Promise<TData>) {
+  private async withWorkspaceLock<TData>(operation: () => Promise<TData>) {
     // A rejected blockConcurrencyWhile callback resets the DO before outbox retry state is saved.
     const outcome = await this.ctx.blockConcurrencyWhile(async () => {
       try {
@@ -152,8 +164,16 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       });
       expireFileUploads(this.ctx.storage);
       await processOutbox(this.ctx.storage, {
+        'member-cleanup': (item) =>
+          this.withWorkspaceLock(() =>
+            processMemberCleanup(this.env.CORE_DB, item),
+          ),
+        'workspace-settings': () =>
+          this.withWorkspaceLock(() =>
+            processWorkspaceSettings(this.ctx.storage.sql, this.env.CORE_DB),
+          ),
         'file-cleanup': (item) =>
-          this.withFileLock(() =>
+          this.withWorkspaceLock(() =>
             processFileCleanup(this.ctx.storage, this.env, item),
           ),
       });
@@ -168,7 +188,11 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       );
       throw error;
     } finally {
-      await scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']);
+      await scheduleWorkspaceAlarm(this.ctx.storage, [
+        'file-cleanup',
+        'member-cleanup',
+        'workspace-settings',
+      ]);
     }
   }
 
@@ -280,8 +304,101 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       throw error;
     } finally {
       this.ctx.waitUntil(
-        scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']),
+        scheduleWorkspaceAlarm(this.ctx.storage, [
+          'file-cleanup',
+          'member-cleanup',
+          'workspace-settings',
+        ]),
       );
+    }
+  }
+
+  private async flushLifecycleJobs() {
+    await processOutbox(this.ctx.storage, {
+      'member-cleanup': (item) => processMemberCleanup(this.env.CORE_DB, item),
+      'workspace-settings': () =>
+        processWorkspaceSettings(this.ctx.storage.sql, this.env.CORE_DB),
+    });
+    await scheduleWorkspaceAlarm(this.ctx.storage, [
+      'file-cleanup',
+      'member-cleanup',
+      'workspace-settings',
+    ]);
+  }
+
+  async updateWorkspaceSettings(
+    workspaceId: string,
+    values: Record<string, string | number>,
+    identity: RecordQueryIdentity,
+  ) {
+    try {
+      return await this.withWorkspaceLock(async () => {
+        const result = runMetadataOperation(this.ctx.storage, (context) =>
+          updateWorkspaceSettings(context, workspaceId, values, identity),
+        );
+        await this.flushLifecycleJobs();
+        if (
+          result.status === 'success' &&
+          this.ctx.storage.sql
+            .exec<{
+              status: string;
+            }>('SELECT "status" FROM "sys_outbox" WHERE "id" = ?', result.value)
+            .one().status !== 'done'
+        )
+          throw apiError(
+            'Workspace settings could not be synchronized',
+            'INTERNAL_SERVER_ERROR',
+          );
+        return JSON.stringify({ success: true });
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({
+          error: { message: error.message, code: error.extensions.code },
+        });
+      throw error;
+    }
+  }
+
+  async removeWorkspaceMember(
+    workspaceId: string,
+    identity: RecordQueryIdentity,
+    target: RecordQueryIdentity,
+  ) {
+    try {
+      return await this.withWorkspaceLock(async () => {
+        const membership = await this.env.CORE_DB.prepare(
+          'SELECT "id" FROM "userWorkspace" WHERE "id" = ? AND "workspaceId" = ? AND "userId" = ? AND "workspaceMemberId" = ?',
+        )
+          .bind(
+            target.userWorkspaceId,
+            workspaceId,
+            target.userId,
+            target.workspaceMemberId,
+          )
+          .first();
+        if (!membership)
+          throw apiError('Workspace member not found', 'NOT_FOUND');
+        runMetadataOperation(this.ctx.storage, (context) =>
+          removeWorkspaceMember(context, identity, target, workspaceId),
+        );
+        await this.flushLifecycleJobs();
+        const remaining = await this.env.CORE_DB.prepare(
+          'SELECT "id" FROM "userWorkspace" WHERE "id" = ?',
+        )
+          .bind(target.userWorkspaceId)
+          .first();
+        if (remaining)
+          throw apiError(
+            'Member removal could not be synchronized',
+            'INTERNAL_SERVER_ERROR',
+          );
+        return JSON.stringify({ success: true });
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
     }
   }
 
@@ -291,35 +408,64 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       string,
       string | number | { firstName: string; lastName: string }
     >,
+    identity?: RecordQueryIdentity,
   ) {
-    const allowedColumns = new Set([
-      'name',
-      'jobTitle',
-      'colorScheme',
-      'uiScale',
-      'openRecordIn',
-      'locale',
-      'timeZone',
-      'dateFormat',
-      'timeFormat',
-      'calendarStartDay',
-      'numberFormat',
-    ]);
-    const entries = Object.entries(update);
-    if (entries.some(([name]) => !allowedColumns.has(name)))
-      throw new Error('Unsupported profile setting');
-    if (entries.length === 0) return;
+    try {
+      if (identity) {
+        const permissions = metadataWritePermissions(
+          {
+            sql: this.ctx.storage.sql,
+            store: new MetadataStore(this.ctx.storage.sql),
+          },
+          identity,
+        );
+        if (
+          workspaceMemberId !== identity.workspaceMemberId ||
+          (Object.keys(update).some((key) =>
+            ['name', 'jobTitle'].includes(key),
+          ) &&
+            !permissions.permissionFlags.includes('PROFILE_INFORMATION'))
+        )
+          throw apiError('Permission denied', 'FORBIDDEN');
+      }
+      const allowedColumns = new Set([
+        'name',
+        'jobTitle',
+        'colorScheme',
+        'uiScale',
+        'openRecordIn',
+        'locale',
+        'timeZone',
+        'dateFormat',
+        'timeFormat',
+        'calendarStartDay',
+        'numberFormat',
+      ]);
+      const entries = Object.entries(update);
+      if (entries.some(([name]) => !allowedColumns.has(name)))
+        throw new Error('Unsupported profile setting');
+      if (entries.length === 0) return;
 
-    this.ctx.storage.transactionSync(() => {
-      this.ctx.storage.sql.exec(
-        `UPDATE "rec_workspaceMember" SET ${entries.map(([name]) => `"${name}" = ?`).join(', ')}, "updatedAt" = ? WHERE "id" = ? AND "deletedAt" IS NULL`,
-        ...entries.map(([, value]) =>
-          typeof value === 'object' ? JSON.stringify(value) : value,
-        ),
-        new Date().toISOString(),
-        workspaceMemberId,
-      );
-    });
+      this.ctx.storage.transactionSync(() => {
+        this.ctx.storage.sql.exec(
+          `UPDATE "rec_workspaceMember" SET ${entries.map(([name]) => `"${name}" = ?`).join(', ')}, "updatedAt" = ? WHERE "id" = ? AND "deletedAt" IS NULL`,
+          ...entries.map(([, value]) =>
+            typeof value === 'object' ? JSON.stringify(value) : value,
+          ),
+          new Date().toISOString(),
+          workspaceMemberId,
+        );
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return {
+          error: {
+            message: error.message,
+            code: String(error.extensions.code),
+          },
+        };
+      throw error;
+    }
   }
 
   getCollectionHashes(): MetadataCollectionHash[] {
@@ -400,7 +546,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       }
       const value =
         operation === 'picture'
-          ? await this.withFileLock(() => {
+          ? await this.withWorkspaceLock(() => {
               if (!identity) throw apiError('Permission denied', 'FORBIDDEN');
               return attachWorkspacePicture(
                 this.ctx.storage,
@@ -430,14 +576,18 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       throw error;
     } finally {
       this.ctx.waitUntil(
-        scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']),
+        scheduleWorkspaceAlarm(this.ctx.storage, [
+          'file-cleanup',
+          'member-cleanup',
+          'workspace-settings',
+        ]),
       );
     }
   }
 
   async deleteFiles(fileIds: string[]) {
     if (fileIds.length > 100) throw apiError('Invalid file cleanup batch');
-    await this.withFileLock(() =>
+    await this.withWorkspaceLock(() =>
       deleteWorkspaceFiles(this.ctx.storage, this.env, fileIds),
     );
   }
@@ -456,7 +606,9 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       .map((object) => ({
         objectNamePlural: object.namePlural,
         totalCount: context.sql
-          .exec<{ count: number }>(
+          .exec<{
+            count: number;
+          }>(
             `SELECT COUNT(*) AS "count" FROM "rec_${object.nameSingular}" WHERE "deletedAt" IS NULL`,
           )
           .one().count,

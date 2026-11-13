@@ -1,6 +1,7 @@
 import { applyD1Migrations, env, SELF } from 'cloudflare:test';
 import { expect } from 'vitest';
 
+import workspaceSettingsMigration from '../../migrations/0002-workspace-settings.sql?raw';
 import migration from '../../migrations/0001-core-auth.sql?raw';
 import signupFixture from '../../contract/fixtures/auth-signup-onboarding/005-SignUp.json';
 import userFixture from '../../contract/fixtures/auth-signup-onboarding/006-GetCurrentUser.json';
@@ -141,6 +142,13 @@ export const setupCoreTestDatabase = async () => {
     {
       name: '0001-core-auth.sql',
       queries: migration
+        .split(';')
+        .map((query) => query.trim())
+        .filter(Boolean),
+    },
+    {
+      name: '0002-workspace-settings.sql',
+      queries: workspaceSettingsMigration
         .split(';')
         .map((query) => query.trim())
         .filter(Boolean),

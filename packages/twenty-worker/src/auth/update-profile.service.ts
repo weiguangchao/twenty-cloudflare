@@ -32,6 +32,15 @@ export const updateProfile = async (
   if (workspace.activationStatus !== 'ACTIVE' || !isPlainObject(input))
     throw apiError('Invalid workspace member settings');
 
+  const permissions = (await context.requireMetadata()).permissions;
+  if (
+    Object.keys(input).some((key) =>
+      ['name', 'jobTitle', 'avatarUrl'].includes(key),
+    ) &&
+    !permissions.permissionFlags.includes('PROFILE_INFORMATION')
+  )
+    throw apiError('Permission denied', 'FORBIDDEN');
+
   const update: Record<
     string,
     string | number | { firstName: string; lastName: string }
@@ -88,9 +97,14 @@ export const updateProfile = async (
   }
   if ('avatarUrl' in input)
     await updateWorkspacePicture(context, input.avatarUrl, 'avatar');
-  await context
+  const result = await context
     .workspace(workspace.id)
-    .updateWorkspaceMemberProfile(workspaceMemberId, update);
+    .updateWorkspaceMemberProfile(workspaceMemberId, update, {
+      userId: auth.userId,
+      userWorkspaceId: membership.id,
+      workspaceMemberId: membership.workspaceMemberId,
+    });
+  if (result?.error) throw apiError(result.error.message, result.error.code);
   if (typeof update.name === 'object') {
     await context.env.CORE_DB.batch([
       context.env.CORE_DB.prepare(
@@ -107,5 +121,11 @@ export const updateProfile = async (
     ]);
   }
 
+  if (typeof update.locale === 'string')
+    await context.env.CORE_DB.prepare(
+      'UPDATE "user" SET "locale" = ?, "updatedAt" = ? WHERE "id" = ?',
+    )
+      .bind(update.locale, new Date().toISOString(), auth.userId)
+      .run();
   return true;
 };

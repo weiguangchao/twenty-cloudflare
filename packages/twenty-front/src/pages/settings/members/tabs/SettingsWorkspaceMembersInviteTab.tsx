@@ -1,4 +1,7 @@
 import { ToastOnQueryErrorEffect } from '@/apollo/components/ToastOnQueryErrorEffect';
+import { getToastOptionsFromError } from '@/error-handler/utils/getToastOptionsFromError';
+import { SettingsOptionCardContentSwitch } from '@/settings/components/SettingsOptions/SettingsOptionCardContentSwitch';
+import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { SettingsRolesQueryEffect } from '@/settings/roles/components/SettingsRolesQueryEffect';
 import { useSettingsAllRoles } from '@/settings/roles/hooks/useSettingsAllRoles';
@@ -13,7 +16,7 @@ import { useDeleteWorkspaceInvitation } from '@/workspace-invitation/hooks/useDe
 import { useResendWorkspaceInvitation } from '@/workspace-invitation/hooks/useResendWorkspaceInvitation';
 import { WorkspaceInviteLink } from '@/workspace/components/WorkspaceInviteLink';
 import { WorkspaceInviteTeam } from '@/workspace/components/WorkspaceInviteTeam';
-import { useQuery } from '@apollo/client/react';
+import { useMutation, useQuery } from '@apollo/client/react';
 import { styled } from '@linaria/react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { isNonEmptyArray } from '@sniptt/guards';
@@ -23,11 +26,15 @@ import { isDefined } from 'twenty-shared/utils';
 import { useToast } from 'twenty-ui/components/feedback';
 import { IconButton } from 'twenty-ui/components/input';
 import { Section } from 'twenty-ui/components/layout';
-import { IconMail, IconReload, IconTrash } from 'twenty-ui/icon';
+import { Button } from 'twenty-ui/primitives/input';
+import { IconLink, IconMail, IconReload, IconTrash } from 'twenty-ui/icon';
 import { Status } from 'twenty-ui/primitives/data-display';
-import { Tooltip } from 'twenty-ui/primitives/surfaces';
+import { Card, Tooltip } from 'twenty-ui/primitives/surfaces';
 import { useTheme, themeCssVariables } from 'twenty-ui/theme';
-import { GetWorkspaceInvitationsDocument } from '~/generated-metadata/graphql';
+import {
+  GetWorkspaceInvitationsDocument,
+  UpdateWorkspaceDocument,
+} from '~/generated-metadata/graphql';
 import { dateLocaleState } from '@/localization/states/dateLocaleState';
 
 const StyledButtonContainer = styled.div`
@@ -81,7 +88,38 @@ export const SettingsWorkspaceMembersInviteTab = () => {
   const { resendInvitation } = useResendWorkspaceInvitation();
   const { deleteWorkspaceInvitation } = useDeleteWorkspaceInvitation();
 
-  const currentWorkspace = useAtomStateValue(currentWorkspaceState);
+  const [currentWorkspace, setCurrentWorkspace] = useAtomState(
+    currentWorkspaceState,
+  );
+  const [updateWorkspace, { loading: isUpdatingInviteLink }] = useMutation(
+    UpdateWorkspaceDocument,
+  );
+
+  const handleUpdateInviteLink = async (enabled: boolean, reset = false) => {
+    if (!currentWorkspace) {
+      return;
+    }
+    const inviteHash = reset
+      ? crypto.randomUUID()
+      : currentWorkspace.inviteHash;
+    try {
+      await updateWorkspace({
+        variables: {
+          input: {
+            isPublicInviteLinkEnabled: enabled,
+            ...(reset ? { inviteHash } : {}),
+          },
+        },
+      });
+      setCurrentWorkspace({
+        ...currentWorkspace,
+        inviteHash,
+        isPublicInviteLinkEnabled: enabled,
+      });
+    } catch (error) {
+      enqueueToast(getToastOptionsFromError({ error }));
+    }
+  };
 
   const { data: invitationsData, error: invitationsError } = useQuery(
     GetWorkspaceInvitationsDocument,
@@ -124,18 +162,35 @@ export const SettingsWorkspaceMembersInviteTab = () => {
       <ToastOnQueryErrorEffect error={invitationsError} />
 
       <SettingsRolesQueryEffect />
-      {currentWorkspace?.inviteHash &&
-        currentWorkspace?.isPublicInviteLinkEnabled && (
-          <Section.Root>
-            <Section.Header
-              title={t`Invite by link`}
-              description={t`Share this link to invite users to join your workspace`}
-            />
-            <WorkspaceInviteLink
-              inviteLink={`${window.location.origin}/invite/${currentWorkspace?.inviteHash}`}
-            />
-          </Section.Root>
-        )}
+      <Section.Root>
+        <Section.Header
+          title={t`Invite by link`}
+          description={t`Share this link to invite users to join your workspace`}
+        />
+        <Card.Root>
+          <SettingsOptionCardContentSwitch
+            Icon={IconLink}
+            title={t`Invite by Link`}
+            checked={currentWorkspace?.isPublicInviteLinkEnabled ?? false}
+            disabled={isUpdatingInviteLink}
+            onChange={(enabled) => handleUpdateInviteLink(enabled)}
+          />
+        </Card.Root>
+        {currentWorkspace?.inviteHash &&
+          currentWorkspace.isPublicInviteLinkEnabled && (
+            <>
+              <WorkspaceInviteLink
+                inviteLink={`${window.location.origin}/invite/${currentWorkspace.inviteHash}`}
+              />
+              <Button
+                variant="outline"
+                startIcon={<IconReload />}
+                disabled={isUpdatingInviteLink}
+                onClick={() => handleUpdateInviteLink(true, true)}
+              >{t`Reset`}</Button>
+            </>
+          )}
+      </Section.Root>
       <Section.Root>
         <Section.Header
           title={t`Invite by email`}

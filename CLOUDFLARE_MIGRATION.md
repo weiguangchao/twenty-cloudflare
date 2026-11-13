@@ -29,7 +29,7 @@
 | 7 | 搜索 | 6 | 完成 |
 | 8 | 元数据写入 API 与视图 | 4 | 完成 |
 | 9 | 文件 | 4 | 完成 |
-| 10 | 权限与成员管理 | 6、8 | 未开始 |
+| 10 | 权限与成员管理 | 6、8 | 完成 |
 | 11 | 实时事件 | 6 | 未开始 |
 | 12 | 可选集成 | 10 | 未开始 |
 | 13 | 清理、部署与上线 | 全部 | 未开始 |
@@ -827,7 +827,7 @@ npx nx test twenty-worker
 2. 在记录引擎的读写路径上强制执行。无权读的字段不能出现在结果、筛选、排序里。
 3. `objectRecordsPermissions` 返回真实计算结果。
 4. 角色的增删改、对象权限和字段权限的设置、给成员分配角色。
-5. 邀请：生成和重置邀请链接（`inviteHash`），通过链接注册加入 workspace（`signUpInWorkspace`），落地页的 `getWorkspaceFromInviteHash`。成员页还会调用 `getWorkspaceInvitations`、`getApprovedAccessDomains`、`twoFactorAuthenticationRecoveryStatus`，v1 返回空值。
+5. 邀请：生成和重置邀请链接（`inviteHash`），通过链接注册加入 workspace（`signUpInWorkspace`），落地页的 `GetWorkspaceFromInviteHash`（实际字段 `findWorkspaceFromInviteHash`）。成员页还会调用 `GetWorkspaceInvitations`（实际字段 `findWorkspaceInvitations`）、`getApprovedAccessDomains`、`twoFactorAuthenticationRecoveryStatus`，v1 返回空值。
 6. 移除成员：撤销其 session，软删除 `workspaceMember`，处理其名下的收藏。
 7. workspace 设置的修改：名称、logo、默认角色、回收站保留天数。
 8. 个人资料的修改，删除自己的账号。
@@ -847,6 +847,16 @@ npx nx test twenty-worker
 - 对某角色隐藏一个字段后，该角色的前端界面里看不到这个字段；直接在查询里请求它、按它筛选或排序，都返回 `FORBIDDEN`（旧系统对整个查询报错，不是静默去掉字段，见 `contract/fixtures/permissions-api/`）。
 - 用邀请链接能加入 workspace，默认获得 Member 角色。
 - 被移除的成员立即失去访问。
+
+**实施记录**
+
+- **权限计算**：从实际的 role、roleTarget、rolePermissionFlag、objectPermission 和 fieldPermission 构建 PermissionContext；对象覆盖的 null 继承角色默认值，系统对象及 workspaceMember 沿用旧服务的规则。字段限制覆盖查询投影、别名、筛选、排序、聚合和写入；morph 关系的限制传播到同组字段，UI 只读字段始终不可编辑。采集 SDL 没有独立的创建权限输入，创建权限随编辑权限设置，与旧转换逻辑一致。每次请求重新计算，角色变更后 API 权限立即生效。
+- **角色操作**：实现角色增删改、对象/字段权限、权限标志和成员角色分配，更新对应 collection hash。对象权限列表按前端契约整体替换，字段权限按提交项更新，可用 null 恢复继承。校验角色名称唯一、读写权限一致、字段归属和批次重复项；保护不可编辑的 Admin、已分配角色和默认角色，并阻止工作区仍有其他成员时撤销最后一位管理员。
+- **邀请与页面能力**：邀请链接支持开启、关闭、轮换和落地校验，注册后按当前默认角色加入（初始为 Member）。链接管理使用 WORKSPACE_MEMBERS 权限，默认角色修改使用 ROLES，普通设置使用 WORKSPACE；因为 v1 不开放 SECURITY，邀请开关与旧服务的 SECURITY 归属不同。保留邀请、approved domains 和双因素恢复查询的 v1 空结果。只声明 CUSTOM_ROLES 能力以启用原前端的创建角色按钮，计费、行级权限、私有记录和记录分享仍关闭。
+- **成员与账号**：DO 事务软删除 workspaceMember、删除角色分配及其私人导航/收藏；再通过持久化 member-cleanup outbox 撤销 D1 会话并移除 membership。D1 暂时不可用时，DO 已拒绝该成员访问，alarm 继续重试清理。删除个人账号会停用并匿名化账号、清除密码和撤销会话；最后一个成员离开时删除 D1 workspace。软删除成员的邮箱同时匿名化，避免标准邮箱唯一索引阻止同邮箱重新注册加入。
+- **设置与存储**：D1 新增 0002-workspace-settings.sql，DO 新增 0006-initialize-workspace-settings；持久化 workspace 名称、默认角色和回收站保留天数，logo 继续走阶段 9 的文件路径。保留天数同步到清理任务。workspace-settings outbox 重试时读取最新设置，避免旧任务覆盖新修改。个人资料继续同步成员记录与 D1 用户信息，并执行 PROFILE_INFORMATION 权限检查。
+- **验证**：workerd 完整测试 40 个文件、817 项通过，新增成员/权限 HTTP 用例包含采集契约重放、隐藏字段、对象覆盖删除、字段限制恢复、权限批次回滚、邀请失效、会话撤销和 D1 故障重试；worker 直接 tsgo、lint 和 Wrangler dry-run 通过。前端直接 tsgo、改动文件的类型感知 lint、所在目录的文案检查和生产构建通过。
+- **浏览器验收**：独立的 .wrangler/stage10-acceptance 本地数据副本，通过成员设置页创建只读角色并隐藏 Job Title，邀请第二个用户注册并完成资料，随后分配角色。第二个用户的人员列表没有创建入口和 Job Title；直接写入和请求隐藏字段均返回 FORBIDDEN。成员移除、邀请开关/重置和设置持久化也在本地验收。前端只补充成员邀请页的链接管理入口，原因记在第 9 节；未修改 twenty-server，未部署远程资源。
 
 ### 阶段 11：实时事件
 
@@ -938,6 +948,7 @@ npx nx test twenty-worker
 | 阶段 | 文件 | 改动与原因 |
 | --- | --- | --- |
 | 6 | `src/modules/command-menu-item/display/components/SidePanelCommandMenuItemDisplayPage.tsx` | 仅在对应工作流命令可用时挂载 CoreObjectsCommands；普通 CRM 命令菜单不再读取已裁掉的 workflow 元数据。后端补造工作流对象及其依赖会重新引入范围外模型，一处渲染条件更小。 |
+| 10 | `src/pages/settings/members/tabs/SettingsWorkspaceMembersInviteTab.tsx` | 在成员邀请页补充链接开关和重置按钮，复用现有组件与文案；原开关位于 v1 已排除的 Security 页面，后端无法单独提供可操作的界面入口。 |
 
 ## 10. 参考来源
 

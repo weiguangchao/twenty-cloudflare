@@ -207,6 +207,8 @@ export const METADATA_FIELD_RESOLVERS: Record<
 };
 
 const NESTED_COLLECTIONS: [string, string, MetadataEntityName, string][] = [
+  ['Role', 'objectPermissions', 'objectPermission', 'roleId'],
+  ['Role', 'fieldPermissions', 'fieldPermission', 'roleId'],
   ['View', 'viewFields', 'viewField', 'viewId'],
   ['View', 'viewFieldGroups', 'viewFieldGroup', 'viewId'],
   ['View', 'viewFilters', 'viewFilter', 'viewId'],
