@@ -1,5 +1,11 @@
 import { DurableObject } from 'cloudflare:workers';
 import { GraphQLError } from 'graphql';
+import { RecordMutationRollback } from '@/workspace/record-api/mutations/record-mutation-rollback.exception';
+import {
+  processOutbox,
+  scheduleWorkspaceAlarm,
+} from '@/workspace/events/process-outbox.util';
+import { cleanupTrash } from '@/workspace/events/cleanup-trash.util';
 import { initializeRecordIndexTypes } from '@/workspace/metadata/ddl/record-index-ddl.util';
 
 import { type WorkspaceMemberInput } from '@/workspace/lifecycle/types/workspace-member-input.type';
@@ -78,11 +84,61 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     void ctx.blockConcurrencyWhile(async () => {
       await initializeRecordIndexTypes();
       runWorkspaceMigrations(ctx.storage, WORKSPACE_MIGRATIONS);
+      await scheduleWorkspaceAlarm(ctx.storage);
     });
   }
 
   ping(): string {
     return 'pong';
+  }
+
+  async alarm() {
+    try {
+      this.ctx.storage.transactionSync(() => {
+        const catalog = createRecordCatalog(this.getMetadataSnapshot());
+        const schema = buildRecordSchema(catalog);
+        const permissions = buildPermissionContext(
+          new MetadataStore(this.ctx.storage.sql),
+          'system',
+        );
+        for (const permission of permissions.objectRecordsPermissions)
+          permission.canDestroyAllRecords = true;
+        cleanupTrash({
+          sql: this.ctx.storage.sql,
+          catalog,
+          schema,
+          permissions,
+          mutation: {
+            identity: {
+              userId: '',
+              userWorkspaceId: '',
+              workspaceMemberId: '',
+            },
+            actor: {
+              source: 'SYSTEM',
+              name: 'System',
+              workspaceMemberId: null,
+            },
+            affectedRecords: 0,
+            changed: false,
+          },
+        });
+      });
+      // File and realtime consumers arrive in stages 9 and 11; retain their pending jobs.
+      await processOutbox(this.ctx.storage, {});
+    } catch (error) {
+      this.ctx.storage.sql.exec(
+        'UPDATE "sys_scheduledTask" SET "nextRunAt" = ?, "lastError" = ? WHERE "nextRunAt" <= ?',
+        Date.now() + 60_000,
+        error instanceof Error
+          ? error.message.slice(0, 1000)
+          : 'Scheduled task failed',
+        Date.now(),
+      );
+      throw error;
+    } finally {
+      await scheduleWorkspaceAlarm(this.ctx.storage);
+    }
   }
 
   activateWorkspace(input: WorkspaceMemberInput) {
@@ -170,9 +226,21 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           ...this.recordModel,
           sql: this.ctx.storage.sql,
           permissions,
+          mutation: {
+            identity,
+            actor: {
+              source: 'MANUAL',
+              workspaceMemberId: identity.workspaceMemberId,
+              name: `${member.name.firstName} ${member.name.lastName}`.trim(),
+              context: {},
+            },
+            affectedRecords: 0,
+            changed: false,
+          },
         });
       });
     } catch (error) {
+      if (error instanceof RecordMutationRollback) return error.response;
       if (error instanceof GraphQLError)
         return JSON.stringify({ errors: [error] });
       throw error;

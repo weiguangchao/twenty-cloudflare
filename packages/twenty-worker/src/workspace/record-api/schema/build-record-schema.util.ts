@@ -51,10 +51,17 @@ const commonDefinitions = (roots: Set<string>) => {
       });
   };
   for (const name of roots) collect(name);
-  return [...names].flatMap((name) => {
+  const definitions = [...names].flatMap((name) => {
     const definition = sharedDefinitions!.get(name);
     return definition ? [definition] : [];
   });
+  // Captured successful writes still include the legacy blocknote property.
+  for (const name of ['RichTextCreateInput', 'RichTextUpdateInput'])
+    if (names.has(name))
+      definitions.push(
+        ...parse(`extend input ${name} {blocknote: String}`).definitions,
+      );
+  return definitions;
 };
 
 const SCALAR_TYPES: Record<string, [string, string]> = {
@@ -139,7 +146,8 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
       filters: string[] = [],
       orders: string[] = [],
       groups: string[] = [],
-      creates: string[] = [];
+      creates: string[] = [],
+      updates: string[] = [];
     const groupedOrders: string[] = [];
     const arguments_ = (targetName: string) =>
       `first: Int, last: Int, offset: Int, before: String, after: String, filter: ${targetName}FilterInput, orderBy: [${targetName}OrderByInput]`;
@@ -166,6 +174,10 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
             `${column}: ID`,
             `${field.name}: ${target.typeName}RelationInput`,
           );
+          updates.push(
+            `${column}: ID`,
+            `${field.name}: ${target.typeName}RelationInput`,
+          );
         } else
           fields.push(
             `${field.name}(${arguments_(target.typeName)}): ${target.typeName}Connection`,
@@ -174,6 +186,7 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
       }
       const types = fieldTypes(object, field);
       for (const value of Object.values(types)) addRoot(value);
+      addRoot(types.create.replace(/CreateInput/g, 'UpdateInput'));
       if (['SELECT', 'MULTI_SELECT', 'RATING'].includes(field.type)) {
         const enumName = `${name}${capitalize(field.name)}Enum`;
         const values = field.options?.map((option) => option.value) ?? [
@@ -208,6 +221,9 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
       )
         groups.push(`${field.name}: ${types.group}`);
       creates.push(`${field.name}: ${types.create}`);
+      updates.push(
+        `${field.name}: ${types.create.replace(/CreateInput/g, 'UpdateInput')}`,
+      );
     }
     const aggregates = [...recordAggregations(object)].map(
       ([key, value]) => `${key}: ${value.type}`,
@@ -224,9 +240,35 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
       `input ${name}OrderByWithGroupByInput { aggregate: ${name}OrderByWithGroupByAggregateInput ${groupedOrders.join('\n')} }`,
       `input ${name}OrderByWithGroupByAggregateInput { ${[...recordAggregations(object).keys()].map((key) => `${key}: OrderByDirection`).join('\n')} }`,
       `input ${name}CreateInput { ${creates.join('\n')} }`,
-      `input ${name}UpdateInput { ${creates.join('\n')} }`,
-      `input ${name}WhereUniqueInput { id: UUID }`,
-      `input ${name}ConnectInput { where: ${name}WhereUniqueInput! }`,
+      `input ${name}UpdateInput { ${updates.join('\n')} }`,
+      `input ${name}WhereUniqueInput { id: ID ${object.indexes
+        .filter((index) => index.isUnique && index.indexFields.length === 1)
+        .flatMap((index) => {
+          const field = object.fields.find(
+            (field) => field.id === index.indexFields[0].fieldMetadataId,
+          );
+          if (!field || field.name === 'id') return [];
+          if (!COMPOSITE_GRAPHQL_TYPES[field.type])
+            return [`${field.name}: ${fieldTypes(object, field).create}`];
+          const subFields: Record<string, string[]> = {
+            EMAILS: ['primaryEmail'],
+            LINKS: ['primaryLinkUrl'],
+            PHONES: [
+              'primaryPhoneNumber',
+              'primaryPhoneCountryCode',
+              'primaryPhoneCallingCode',
+            ],
+          };
+          const properties = subFields[field.type];
+          if (!properties) return [];
+          const inputName = `${name}${capitalize(field.name)}WhereInput`;
+          definitions.push(
+            `input ${inputName} { ${properties.map((property) => `${property}: String`).join(' ')} }`,
+          );
+          return [`${field.name}: ${inputName}`];
+        })
+        .join(' ')} }`,
+      `input ${name}ConnectInput { where: ${name}WhereUniqueInput }`,
       `input ${name}RelationInput { connect: ${name}ConnectInput, create: ${name}CreateInput, disconnect: Boolean }`,
     );
     queries.push(
@@ -236,8 +278,15 @@ export const buildRecordSchema = (catalog: RecordCatalog) => {
       `${object.namePlural}GroupBy(groupBy: [${name}GroupByInput!]!, filter: ${name}FilterInput, orderBy: [${name}OrderByWithGroupByInput], orderByForRecords: [${name}OrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [${name}GroupByConnection!]`,
     );
     mutations.push(
-      `create${name}(data: ${name}CreateInput!): ${name}`,
+      `create${name}(data: ${name}CreateInput!, upsert: Boolean): ${name}`,
+      `create${capitalize(object.namePlural)}(data: [${name}CreateInput!]!, upsert: Boolean): [${name}!]`,
       `update${name}(id: UUID!, data: ${name}UpdateInput!): ${name}`,
+      `update${capitalize(object.namePlural)}(filter: ${name}FilterInput!, data: ${name}UpdateInput!): [${name}!]`,
+      ...['delete', 'destroy', 'restore'].flatMap((operation) => [
+        `${operation}${name}(id: UUID!): ${name}`,
+        `${operation}${capitalize(object.namePlural)}(filter: ${name}FilterInput!): [${name}!]`,
+      ]),
+      `merge${capitalize(object.namePlural)}(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): ${name}`,
     );
   }
   const generatedNames = new Set(

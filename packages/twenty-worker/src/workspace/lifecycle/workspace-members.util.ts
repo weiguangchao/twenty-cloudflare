@@ -1,4 +1,4 @@
-import { isPlainObject } from 'twenty-shared/utils';
+import { recordDefaultValue } from '@/workspace/record-api/mutations/record-default-value.util';
 
 import { type WorkspaceMemberInput } from '@/workspace/lifecycle/types/workspace-member-input.type';
 import { computeFieldColumn } from '@/workspace/metadata/ddl/compute-field-column.util';
@@ -8,24 +8,6 @@ import { type FieldMetadataRow } from '@/workspace/metadata/types/field-metadata
 import { type JsonValue } from '@/workspace/metadata/types/json-value.type';
 import demoData from '@/workspace/seed/demo-data.json';
 import standardMetadata from '@/workspace/seed/standard-metadata.json';
-
-const defaultValue = (value: JsonValue): JsonValue => {
-  if (typeof value === 'string') {
-    if (value === 'now') return new Date().toISOString();
-    if (value === 'uuid') return crypto.randomUUID();
-    if (value.startsWith("'") && value.endsWith("'"))
-      return value.slice(1, -1).replaceAll("''", "'");
-  }
-  if (Array.isArray(value)) return value.map(defaultValue);
-  if (isPlainObject(value))
-    return Object.fromEntries(
-      Object.entries(value).map(([key, entry]) => [
-        key,
-        defaultValue(entry as JsonValue),
-      ]),
-    );
-  return value;
-};
 
 const insertSeedRecord = (
   sql: SqlStorage,
@@ -42,7 +24,8 @@ const insertSeedRecord = (
   const entries = fields.flatMap((field) => {
     const column = computeFieldColumn(field);
     if (!column) return [];
-    const value = record[column.columnName] ?? defaultValue(field.defaultValue);
+    const value =
+      record[column.columnName] ?? recordDefaultValue(field.defaultValue);
     return [
       [
         column.columnName,

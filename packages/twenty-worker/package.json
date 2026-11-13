@@ -13,6 +13,7 @@
     "graphql": "16.14.2",
     "graphql-yoga": "5.24.6",
     "hono": "~4.13.17",
+    "libphonenumber-js": "1.11.5",
     "twenty-shared": "workspace:*"
   },
   "devDependencies": {

@@ -25,7 +25,7 @@
 | 3 | 认证、会话与 workspace 生命周期 | 1 | 完成 |
 | 4 | 元数据读取 API 与应用启动 | 2、3 | 完成 |
 | 5 | 记录查询引擎（读） | 4 | 完成 |
-| 6 | 记录写入与副作用 | 5 | 未开始 |
+| 6 | 记录写入与副作用 | 5 | 完成 |
 | 7 | 搜索 | 6 | 未开始 |
 | 8 | 元数据写入 API 与视图 | 4 | 未开始 |
 | 9 | 文件 | 4 | 未开始 |
@@ -687,6 +687,18 @@ npx nx test twenty-worker
 - 事务中途失败时没有残留数据，有测试覆盖。
 - alarm 重复触发时 outbox 项不会被重复生效，有测试覆盖。
 
+**实施记录**
+
+- **写入引擎**：动态 schema 和 resolver 支持 create/update/delete/restore/destroy 的单条、批量操作、create upsert 和 merge。支持多对一的嵌套 create、按唯一键 connect 和 disconnect；复合字段更新保留未提供的子字段。检查必填、类型、选项、morph 单目标、邮箱、电话、链接、富文本和大小，复用 shared 的校验与规范化工具，电话使用仓库已有版本的 libphonenumber-js。复合字段的空字符串存 null，单字段上限 2 MB、单行 8 MB；createdBy/updatedBy 由认证上下文覆盖，接入对象和字段 PermissionContext。
+- **批量与事务**：前端 CSV 固定每批 200 条，因此将 mutationMaximumAffectedRecords 与 Worker 写入上限统一为 200；SQL INSERT 仍按每句最多 100 个绑定参数分片。嵌套写入及合并的关系改写计入限制。整个 GraphQL 请求在 DO 的一个 transactionSync 中执行，后续别名、SQL 分片、校验或返回投影出错时，记录、时间线、导航清理和 outbox 全部回滚，响应 data 为 null。upsert 在创建嵌套记录之前匹配主键及元数据唯一索引，并遵守部分索引条件，避免更新时产生孤立关联。
+- **排序、合并与删除**：计算 first/last position，保留显式数值位置。merge 支持最多 9 条记录、优先记录、dryRun、复合字段及数组合并；迁移反向关联和时间线，去重备注/任务 junction，并处理被软删除记录仍占用的非部分唯一键。永久删除由 SQLite 执行 FK 的 CASCADE/SET NULL/RESTRICT，应用层同步生成关联变更事件和文件清理任务。
+- **同步副作用**：生成 shared database-events 结构的记录事件，保留身份、before/after、diff 和 updatedFields。写入带活动类型快照的创建、修改、删除、恢复时间线，备注和任务的关联及更新也写入目标记录时间线。删除记录时清理指向它的导航菜单项并更新 collection hash；失败请求同时回滚链接删除和 hash。
+- **outbox 与 alarm**：新增 DO 迁移 0003，建立 sys_outbox 与 sys_scheduledTask。outbox 支持领取、5 分钟租约、退避重试、完成确认和稳定的幂等键；消费者必须使用 item.id 去重，以覆盖副作用完成后、确认写入前的中断。重复 alarm、租约过期和中断后重试均有测试。实时事件、FILES 引用移除及永久删除的文件清理项先保持 pending，阶段 9/11 注册实际消费者；当前不会丢弃未支持的任务。每日清理软删除超过 30 天的记录，每轮最多 100 条，有积压时继续调度，失败保留诊断并延后重试。
+- **契约重放**：逐条重放 74 条范围内的成功写入及 BAD_USER_INPUT fixture，覆盖核心对象、自定义对象、关联、批量、upsert、恢复、销毁和合并。每条测试重建采集元数据与读取快照，比较保留选择的响应结构、值类型和错误码。较早脚本中的可空列表变量按当前 SDL 改成非空声明；保留旧服务实际接受的 blocknote 富文本输入。历史权限失败 fixture 留给阶段 10，事务、字段权限、唯一键冲突和返回投影失败另有行为测试；365 条读取契约继续通过。
+- **浏览器验收**：本地 wrangler 配合前端构建，完成创建人员、编辑职位、软删除、恢复、永久删除、列表多选合并，以及创建备注/任务并关联人员；时间线显示创建、修改及关联条目。通过原 CSV 向导导入 1,000 条人员，5 批各 200 条全部成功，无 GraphQL 错误、页面异常或失败 API 请求。访问已删除记录时，前端先发出的普通查询按契约返回 NOT_FOUND，随后带 deletedAt 查询成功。数据仅写入独立的 .wrangler/stage6-acceptance，未部署远程资源。单条合并的记录搜索选择器依赖阶段 7 的 Search，本阶段使用列表多选入口验收合并。
+- **启动兼容修正**：临时成员权限增加 IMPORT_CSV，开放现有导入入口。命令菜单原来会在普通记录页挂载工作流专用组件，因范围外 workflow 元数据已裁掉而崩溃；前端只补一处可用命令检查，详见第 9 节。twenty-server 参考包零改动。
+- **检查结果**：新增 90 项 workerd 测试，其中 74 条写契约、16 项行为测试；最终 31 个测试文件、686 项测试通过。Worker 与前端直接 tsgo 通过，Worker Nx lint 和前端改动文件的 type-aware lint、格式检查通过，均为 0 warnings/0 errors。前端构建及相关 5 项组件测试通过，Worker wrangler deploy --dry-run 通过；包体 4,795.99 KiB，gzip 689.43 KiB。lint/test 使用 --skip-nx-cache --excludeTaskDependencies，沿用阶段 3 的本机 shared 依赖任务绕行方式。
+
 ### 阶段 7：搜索
 
 **目标**：全局搜索和列表里的搜索筛选。
@@ -891,7 +903,9 @@ npx nx test twenty-worker
 
 ### 前端改动记录
 
-暂无。每次修改 `packages/twenty-front` 都在这里追加一行：阶段、文件、改了什么、为什么不能在后端解决。
+| 阶段 | 文件 | 改动与原因 |
+| --- | --- | --- |
+| 6 | `src/modules/command-menu-item/display/components/SidePanelCommandMenuItemDisplayPage.tsx` | 仅在对应工作流命令可用时挂载 CoreObjectsCommands；普通 CRM 命令菜单不再读取已裁掉的 workflow 元数据。后端补造工作流对象及其依赖会重新引入范围外模型，一处渲染条件更小。 |
 
 ## 10. 参考来源
 

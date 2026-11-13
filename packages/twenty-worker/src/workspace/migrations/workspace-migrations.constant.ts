@@ -4,6 +4,7 @@ import { loadStandardMetadata } from '@/workspace/metadata/seed/load-standard-me
 import { type StandardMetadataSeed } from '@/workspace/metadata/types/standard-metadata-seed.type';
 import { type WorkspaceMigration } from '@/workspace/migrations/types/workspace-migration.type';
 import standardMetadataSeed from '@/workspace/seed/standard-metadata.json';
+import { createEventTables } from '@/workspace/events/create-event-tables.util';
 
 export const WORKSPACE_MIGRATIONS: WorkspaceMigration[] = [
   {
@@ -21,4 +22,5 @@ export const WORKSPACE_MIGRATIONS: WorkspaceMigration[] = [
         standardMetadataSeed as unknown as StandardMetadataSeed,
       ),
   },
+  { name: '0003-create-workspace-event-tables', up: createEventTables },
 ];

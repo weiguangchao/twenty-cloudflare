@@ -5,6 +5,7 @@ import { type PermissionContext } from '@/workspace/permissions/types/permission
 
 const MEMBER_PERMISSION_FLAGS = [
   'VIEWS',
+  'IMPORT_CSV',
   'UPLOAD_FILE',
   'DOWNLOAD_FILE',
   'PROFILE_INFORMATION',

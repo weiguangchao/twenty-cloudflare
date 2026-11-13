@@ -10,6 +10,7 @@ export type ReadRecordFixture = {
   query: string;
   variables: Record<string, unknown>;
   data: unknown;
+  expectedErrorCode?: string;
 };
 export type CapturedRecord = {
   objectName: string;
@@ -44,6 +45,7 @@ export const readRecordFixtures = (directory: string) => {
         includedIds.has(field.relationTargetObjectMetadataId)),
   );
   const fixtures: ReadRecordFixture[] = [];
+  const writeFixtures: ReadRecordFixture[] = [];
   const records = new Map<string, CapturedRecord>();
   const objects = new Map(
     [...standardMetadata.tables.objectMetadata, customObject].map((object) => [
@@ -94,18 +96,34 @@ export const readRecordFixtures = (directory: string) => {
       (name) => name.endsWith('.json'),
     )) {
       const fixture = read(path.join(directory, flow.name, name));
-      if (
-        fixture.endpoint !== '/graphql' ||
-        typeof fixture.query !== 'string' ||
-        !fixture.query.trim().startsWith('query') ||
-        fixture.operationName === 'Search'
-      )
+      if (fixture.endpoint !== '/graphql' || typeof fixture.query !== 'string')
         continue;
       const response = (fixture.response ??
         (typeof fixture.responseRef === 'string'
           ? read(path.join(directory, fixture.responseRef)).response
           : undefined)) as { data?: unknown; errors?: unknown } | undefined;
-      if (response?.errors) continue;
+      const errors = response?.errors as
+        | { extensions?: { code?: string } }[]
+        | undefined;
+      const expectedErrorCode = errors?.[0]?.extensions?.code;
+      if (
+        fixture.query.trim().startsWith('mutation') &&
+        (!errors || expectedErrorCode === 'BAD_USER_INPUT') &&
+        !['permissions-api', 'removed-member-api'].includes(flow.name)
+      )
+        writeFixtures.push({
+          path: `${flow.name}/${name}`,
+          query: fixture.query,
+          variables: (fixture.variables ?? {}) as Record<string, unknown>,
+          data: response?.data,
+          expectedErrorCode,
+        });
+      if (
+        response?.errors ||
+        !fixture.query.trim().startsWith('query') ||
+        fixture.operationName === 'Search'
+      )
+        continue;
       collect(response?.data);
       fixtures.push({
         path: `${flow.name}/${name}`,
@@ -119,5 +137,6 @@ export const readRecordFixtures = (directory: string) => {
     records: [...records.values()],
     customObject,
     customFields,
+    writeFixtures,
   };
 };

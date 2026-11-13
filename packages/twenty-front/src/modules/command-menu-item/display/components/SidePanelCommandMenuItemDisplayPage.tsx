@@ -227,7 +227,9 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
             {sectionCommandMenuItems.map((item) => (
               <CommandMenuItemRenderer item={item} key={item.id} />
             ))}
-            {(section === 'THIS_OBJECT' || section === 'SELECTION') && (
+            {((section === 'THIS_OBJECT' && coreObjectCommandIds.length > 0) ||
+              (section === 'SELECTION' &&
+                coreSelectionCommandIds.length > 0)) && (
               <CoreObjectsCommands section={section} />
             )}
             {getSectionAppActions(section).map((item) => {

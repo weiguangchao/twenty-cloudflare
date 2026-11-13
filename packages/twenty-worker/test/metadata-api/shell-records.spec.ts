@@ -111,7 +111,7 @@ it('filters and pages members and reads demo CRM records', async () => {
   expect(records.result.data!.companies.edges).toHaveLength(5);
 });
 
-it('authenticates shell queries, rejects cross-origin requests, and blocks record mutations', async () => {
+it('authenticates record queries and mutations and rejects cross-origin requests', async () => {
   const unauthorized = await SELF.fetch(`${ORIGIN}/graphql`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -129,7 +129,10 @@ it('authenticates shell queries, rejects cross-origin requests, and blocks recor
       .response.status,
   ).toBe(403);
   const mutation = await recordsRequest(
-    'mutation { createCompany(data: {name: "Do not create"}) { id } }',
+    'mutation { createCompany(data: {name: "Created through record API"}) { id name } }',
   );
-  expect(mutation.result.errors?.[0].extensions.code).toBe('NOT_IMPLEMENTED');
+  expect(mutation.result.errors).toBeUndefined();
+  expect(mutation.result.data).toMatchObject({
+    createCompany: { name: 'Created through record API' },
+  });
 });

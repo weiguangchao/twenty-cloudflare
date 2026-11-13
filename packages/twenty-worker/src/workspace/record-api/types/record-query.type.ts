@@ -53,6 +53,12 @@ export type RecordQueryContext = {
   catalog: RecordCatalog;
   schema: GraphQLSchema;
   permissions: PermissionContext;
+  mutation?: {
+    identity: RecordQueryIdentity;
+    actor: RecordData;
+    affectedRecords: number;
+    changed: boolean;
+  };
 };
 
 export type OrderLeaf = {

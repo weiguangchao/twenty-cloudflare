@@ -281,6 +281,7 @@ describe('captured metadata startup operations', () => {
         'ROLES',
         'WORKSPACE_MEMBERS',
         'VIEWS',
+        'IMPORT_CSV',
       ]),
     );
     expect(
@@ -350,6 +351,9 @@ describe('captured metadata startup operations', () => {
     expect(current.workspaceMembers).toHaveLength(2);
     expect((await user(connection)).workspaceMembers).toHaveLength(2);
     expect(current.currentUserWorkspace!.permissionFlags).toContain('VIEWS');
+    expect(current.currentUserWorkspace!.permissionFlags).toContain(
+      'IMPORT_CSV',
+    );
     expect(current.currentUserWorkspace!.permissionFlags).not.toContain(
       'DATA_MODEL',
     );

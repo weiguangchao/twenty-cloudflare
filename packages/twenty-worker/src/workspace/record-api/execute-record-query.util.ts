@@ -6,6 +6,8 @@ import { groupRecords } from '@/workspace/record-api/group-records.util';
 import { parseRecordSelection } from '@/workspace/record-api/parse-record-selection.util';
 import { RecordQueryEngine } from '@/workspace/record-api/record-query-engine';
 import { selectedRecordFields } from '@/workspace/record-api/record-field-values.util';
+import { executeRecordMutation } from '@/workspace/record-api/mutations/execute-record-mutation.util';
+import { RecordMutationRollback } from '@/workspace/record-api/mutations/record-mutation-rollback.exception';
 import {
   type QueryArguments,
   type RecordQueryContext,
@@ -44,10 +46,16 @@ export const attachRecordResolvers = (schema: GraphQLSchema) => {
         .get('');
     };
   }
-  for (const field of Object.values(schema.getMutationType()!.getFields()))
-    field.resolve = () => {
-      throw apiError('Record mutations are not implemented', 'NOT_IMPLEMENTED');
-    };
+  for (const [name, field] of Object.entries(
+    schema.getMutationType()!.getFields(),
+  ))
+    field.resolve = (_source, arguments_, context: RecordQueryContext, info) =>
+      executeRecordMutation(
+        name,
+        arguments_,
+        context,
+        parseRecordSelection(info),
+      );
 };
 
 export const executeRecordQuery = (
@@ -71,8 +79,25 @@ export const executeRecordQuery = (
     result.errors = result.errors.map((error) => {
       if (error.extensions.code) return error;
       if (!error.path) return apiError(error.message);
+      if (
+        error.originalError instanceof Error &&
+        /constraint failed|SQLITE_CONSTRAINT/i.test(error.originalError.message)
+      )
+        return apiError(
+          /UNIQUE|PRIMARY KEY/i.test(error.originalError.message)
+            ? 'A record with this unique value already exists'
+            : 'Record violates a relation constraint',
+          'CONFLICT',
+        );
       console.error('Record query failed', error.originalError);
       return apiError('Unable to load records', 'INTERNAL_SERVER_ERROR');
     });
-  return JSON.stringify(result);
+  const response = JSON.stringify(
+    result.errors && context.mutation?.changed
+      ? { ...result, data: null }
+      : result,
+  );
+  if (result.errors && context.mutation?.changed)
+    throw new RecordMutationRollback(response);
+  return response;
 };

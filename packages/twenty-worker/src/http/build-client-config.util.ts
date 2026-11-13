@@ -1,4 +1,5 @@
 import { type ClientConfig } from '@/http/types/client-config.type';
+import { MUTATION_MAXIMUM_AFFECTED_RECORDS } from '@/workspace/record-api/mutations/record-mutation.constants';
 
 // Every optional product feature is off; see CLOUDFLARE_MIGRATION.md section 2.
 export const buildClientConfig = (requestUrl: URL): ClientConfig => ({
@@ -23,7 +24,7 @@ export const buildClientConfig = (requestUrl: URL): ClientConfig => ({
   support: { supportDriver: 'NONE' },
   sentry: {},
   captcha: {},
-  api: { mutationMaximumAffectedRecords: 100 },
+  api: { mutationMaximumAffectedRecords: MUTATION_MAXIMUM_AFFECTED_RECORDS },
   onboarding: null,
   isAttachmentPreviewEnabled: true,
   analyticsEnabled: false,
