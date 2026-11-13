@@ -34108,6 +34108,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jose@npm:^6.2.13":
+  version: 6.2.17
+  resolution: "jose@npm:6.2.17"
+  checksum: 10c0/1a00d44656e38664c54a8b2d903b6c947b3fc4275f7ede2462f74e50ce320359ea324deba15652dcc158c14ed99135a2382a4c5718be350923a9e583bea727db
+  languageName: node
+  linkType: hard
+
 "jotai@npm:^2.17.1":
   version: 2.17.1
   resolution: "jotai@npm:2.17.1"
@@ -46688,16 +46695,23 @@ __metadata:
   dependencies:
     "@cloudflare/vitest-plugin": "npm:~1.6.1"
     "@cloudflare/workers-types": "npm:~5.20261108.1"
+    "@lingui/core": "npm:^5.9.5"
     "@sniptt/guards": "npm:0.2.0"
+    "@types/react": "npm:^19.2.0"
+    "@types/react-dom": "npm:^19.2.0"
     "@types/sanitize-html": "npm:2.16.0"
     bcryptjs: "npm:3.0.2"
     file-type: "npm:21.3.4"
     graphql: "npm:16.14.2"
     graphql-yoga: "npm:5.24.6"
     hono: "npm:~4.13.17"
+    jose: "npm:^6.2.13"
     libphonenumber-js: "npm:1.11.5"
     mrmime: "npm:2.0.1"
+    react: "npm:^19.2.0"
+    react-dom: "npm:^19.2.0"
     sanitize-html: "npm:2.18.1"
+    twenty-emails: "workspace:*"
     twenty-shared: "workspace:*"
     vitest: "npm:^4.1.0"
     wrangler: "npm:^4.151.0"

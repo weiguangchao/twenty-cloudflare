@@ -1,3 +1,8 @@
+import { oauthProviders } from '@/auth/oauth/oauth-provider.util';
+import {
+  acceptWorkspaceInvitation,
+  sendWorkspaceInvitations,
+} from '@/auth/workspace-invitation.service';
 import { GraphQLError, type GraphQLFieldResolver } from 'graphql';
 import { verifyToken } from '@/auth/token.service';
 
@@ -28,7 +33,7 @@ import { apiError } from '@/shared/errors/api-error.util';
 type Credentials = { email: string; password: string; locale?: string | null };
 type Resolver = GraphQLFieldResolver<unknown, MetadataContext>;
 
-const credentialsSession = async (
+export const credentialsSession = async (
   context: MetadataContext,
   user: Awaited<ReturnType<typeof userFromCredentials>>,
 ) => {
@@ -84,13 +89,7 @@ export const AUTH_QUERY_RESOLVERS: Record<string, Resolver> = {
       displayName: workspace.displayName,
       logo: workspace.logo,
       workspaceUrls: workspaceUrls(workspace),
-      authProviders: {
-        sso: [],
-        google: false,
-        microsoft: false,
-        password: true,
-        magicLink: false,
-      },
+      authProviders: oauthProviders(context.env),
       authBypassProviders: { google: false, microsoft: false, password: false },
     };
   },
@@ -149,9 +148,18 @@ export const AUTH_MUTATION_RESOLVERS: Record<string, Resolver> = {
   ) => createWorkspace(context, input?.displayName),
   signUpInWorkspace: async (
     _source,
-    input: Credentials & { workspaceId?: string; workspaceInviteHash?: string },
+    input: Credentials & {
+      workspaceId?: string;
+      workspaceInviteHash?: string;
+      workspacePersonalInviteToken?: string;
+    },
     context,
   ) => {
+    if (input.workspacePersonalInviteToken)
+      return acceptWorkspaceInvitation(context, {
+        ...input,
+        workspacePersonalInviteToken: input.workspacePersonalInviteToken,
+      });
     const workspace = await context.store.workspaceByOrigin(
       new URL(context.request.url).origin,
     );
@@ -207,15 +215,12 @@ export const AUTH_MUTATION_RESOLVERS: Record<string, Resolver> = {
   },
   sendInvitations: async (
     _source,
-    { emails }: { emails: string[] },
+    { emails, roleId }: { emails: string[]; roleId?: string },
     context,
   ) => {
     const { membership } = await requireWorkspace(context);
     if (emails.length > 0)
-      throw apiError(
-        'Email invitations are not implemented',
-        'NOT_IMPLEMENTED',
-      );
+      return sendWorkspaceInvitations(context, emails, roleId);
     if (membership.profilePending)
       throw apiError('Complete your profile first');
     await context.env.CORE_DB.prepare(

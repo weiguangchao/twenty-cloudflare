@@ -31,7 +31,7 @@
 | 9 | 文件 | 4 | 完成 |
 | 10 | 权限与成员管理 | 6、8 | 完成 |
 | 11 | 实时事件 | 6 | 完成 |
-| 12 | 可选集成 | 10 | 未开始 |
+| 12 | 可选集成 | 10 | 完成（外部配置待接入） |
 | 13 | 清理、部署与上线 | 全部 | 未开始 |
 
 可以并行的组合：2 和 3；5、8、9；7、10、11。
@@ -900,11 +900,24 @@ npx nx test twenty-worker
 
 每一项单独确认后再做，互相独立。
 
+2026-11-13 需求方确认三项全部实现，顺序为 12a → 12b → 12c。
+
 **12a 邮件发送**：用 Cloudflare Email Service（当前 beta，开工前先确认状态和发信域名要求）。包括邀请邮件、重置密码、邮箱验证。模板复用 `packages/twenty-emails`，先确认它在 Workers 运行时里能渲染。发送走 Queue 以便重试。
 
 **12b API key、REST API、webhook**：API key 的创建和撤销，Bearer 认证；`/rest` 下的记录接口，复用记录引擎；webhook 从 outbox 经 Queue 投递，带签名和重试。参考 `S/engine/api/rest/`、`S/engine/core-modules/api-key/`、`S/engine/metadata-modules/webhook/`。
 
 **12c Google 和 Microsoft 登录**：OAuth 授权码流程，回调后重定向到 `/verify?loginToken=`，参考 `S/engine/core-modules/auth/services/auth.service.ts:826`。只做登录，不申请邮件和日历权限。
+
+**实施记录**
+
+- **邮件与运行时**：使用原生 `EMAIL` send_email binding；D1 迁移 `0003-transactional-email.sql` 增加邮件任务、个人邀请与 action token 数据。复用 twenty-emails 的模板和翻译，邮件主题取翻译后的标题。模板在 workerd 渲染通过，但预构建包包含顶层 UUID 默认值，真实 Wrangler 启动不允许执行；因此在发信处理器中延迟导入，并把 shared/translations 指向源文件。原生本地邮件模拟器已生成 HTML/text 邮件。
+- **邀请与账户邮件**：实现个人邀请的发送、查询、重发、撤销及按邮箱加入，公共邀请关闭时仍可用，可按管理员指定角色加入。实现一小时密码重置与邮箱验证链接；重发失效旧链接，链接与邮箱、origin 绑定且只能消费一次，密码重置撤销已有会话。EMAIL_VERIFICATION_REQUIRED 可启用密码注册邮箱验证；未验证用户不能建立或访问 workspace。普通未知邮箱请求保持相同成功响应。
+- **邮件可靠性**：先持久化 D1 邮件任务，再向 Queue 发送任务 ID；失败由五分钟 cron 补发。发送使用租约、指数退避及最多十次尝试；完成后擦除任务载荷，过期任务清除。任务中待发送的链接暂存至投递或过期，APP token 表只存 hash。邮件交付仍为至少一次，不能声称第三方邮件服务具有跨进程恰好一次语义。
+- **API key**：DO 迁移 `0008-initialize-integrations` 增加 key、webhook 和投递表。实现 key 创建、读取、改名、角色分配、轮换和撤销；只保存 token hash。Bearer 可访问 /graphql 和 /rest，按 workspace origin 隔离；每次请求在 DO 重新检查有效期、撤销状态与实际角色。开放现有 API_KEYS_AND_WEBHOOKS 权限及原前端开发者设置入口；API 身份不进入账户/设置 mutation，actor 标记为 API，事件不会携带 token hash。
+- **REST 范围**：请求转换为动态 schema 上的 GraphQL 操作，继续使用现有事务、验证和副作用。覆盖单条/批量创建、upsert、单条/筛选批量更新、读取、永久/软删除和恢复；支持 REST 或 JSON 筛选、排序、游标、offset、字段选择及最多两层关系展开。沿用旧 REST 的永久删除默认值。搜索、聚合、分组、去重和合并通过同一 key 使用现有 GraphQL；未复制旧服务这些高级 REST 专用端点，接口范围及例子写在 `packages/twenty-worker/INTEGRATIONS.md`。
+- **Webhook**：记录变更事务内持久化待办，outbox 经 Queue 仅传 DO/投递 ID，Worker 发起外部请求。发送前按当前角色投影字段和关系，并重新读取 endpoint 与 secret；删除后取消待发项。沿用 timestamp:rawBody 的 HMAC-SHA256 hex 签名，增加稳定 delivery ID，接收端需去重。请求五秒超时、禁止重定向、仅允许公共 HTTPS hostname；启用 global_fetch_strictly_public。失败退避，Queue 耗尽后由 alarm 恢复，最多十次、24 小时；webhook 仅订阅记录变更，元数据继续经 SSE。
+- **OAuth**：D1 迁移 `0004-oauth-login.sql` 保存十分钟单次 state 和 provider/issuer/subject 身份关联。使用 httpOnly state cookie、PKCE S256、nonce，以及 jose 的 RS256/JWKS、issuer、audience、有效期校验和 Microsoft tenant 限制。只请求 openid/profile/email，不保存 provider access/refresh token。现有成员返回 /verify?loginToken，新实例注册使用 agnostic session。Microsoft 邮箱及非权威 Google 邮箱不会直接绑定已有账号，需已登录的同邮箱账号、个人邀请或本地邮件证明。
+- **验证与验收**：完整 workerd 回归 47 个文件、852 项通过，涵盖新邮件流程、原模板渲染、REST、key 轮换/过期/角色变更、webhook 签名与权限过滤/重试、签名 ID token 的 OAuth 流程和绑定防护；公网路由标志调整后的相关 18 项检查、直接 tsgo、lint 与 Wrangler dry-run 也通过。真实 Wrangler 本地服务验证邮件邀请注册及资料设置、密码重置后以新密码登录、设置页创建 key 并调用 REST、创建/删除 webhook。没有修改前端或 twenty-server，没有部署远程资源。真实收件、Google/Microsoft 真实账号登录等待外部域名和应用配置，配置步骤见 INTEGRATIONS.md。
 
 ### 阶段 13：清理、部署与上线
 
@@ -943,14 +956,14 @@ npx nx test twenty-worker
 | 每对象 90 个字段上限 | 源于每表 100 列 | 在界面上给出明确报错 |
 | 大小写和重音 | SQLite 的 `lower()` 只处理 ASCII | 搜索走 FTS5，不受影响；筛选的差异接受 |
 | 长时间操作阻塞 DO | DO 单线程，一次大批量写入会让该 workspace 的其他请求排队 | 批量操作分批，每批一个事务，批间让出 |
-| Email Service 仍是 beta | 影响邀请邮件和密码重置 | v1 用邀请链接；密码重置在 12a 之前不可用，需要告知需求方 |
+| Email Service 仍是 beta | 影响邀请邮件和密码重置的真实投递 | 12a 已实现；接入 Workers Paid 与已验证发信域名后启用，未配置时继续使用邀请链接 |
 | 费用未估算 | DO 按请求、时长、读写行数计费 | 阶段 5 完成后用真实查询测一次行读取量再估 |
 
 ### 未决事项
 
 1. 单 workspace 还是多 workspace 部署（当前默认单 workspace）。
-2. 阶段 12 的三项做不做、先后顺序。
-3. 没有邮件发送时，密码重置是否需要一个临时方案（比如管理员重置）。
+2. 阶段 12 三项已确认并实现；待提供发信域名及 Google/Microsoft 应用配置以做真实集成验收。
+3. 未接入发信域名前密码重置不可投递；本地仅模拟发信。
 4. 阶段 13 删除旧代码的范围，需要需求方确认清单。
 
 ### 前端改动记录
@@ -982,6 +995,16 @@ npx nx test twenty-worker
 阶段 11 补充核验（2026-11-13）：
 
 - DO WebSocket Hibernation API、连接附件与自动应答：https://developers.cloudflare.com/durable-objects/best-practices/websockets/
+
+阶段 12 补充核验（2026-11-13）：
+
+- Email Sending beta 与 Workers Paid 要求：https://developers.cloudflare.com/email-service/
+- 发信域名配置：https://developers.cloudflare.com/email-service/configuration/domains/
+- 原生结构化邮件 API：https://developers.cloudflare.com/email-service/api/send-emails/workers-api/
+- 本地邮件模拟器：https://developers.cloudflare.com/email-service/observability/local-development/sending/
+- Google OpenID Connect：https://developers.google.com/identity/openid-connect/openid-connect
+- Microsoft OIDC 与 token claims：https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc 、https://learn.microsoft.com/en-us/entra/identity-platform/id-token-claims-reference
+- 公网 fetch 路由标志：https://developers.cloudflare.com/workers/configuration/compatibility-flags/#global-fetch-strictly-public
 
 仓库内的参考：
 

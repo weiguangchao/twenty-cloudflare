@@ -13,6 +13,8 @@ export type RecordQueryInput = {
 };
 
 export type RecordQueryIdentity = {
+  apiKeyId?: string;
+  apiKeyTokenHash?: string;
   userId: string;
   userWorkspaceId: string;
   workspaceMemberId: string;

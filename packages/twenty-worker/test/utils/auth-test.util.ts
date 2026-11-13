@@ -1,3 +1,5 @@
+import oauthMigration from '../../migrations/0004-oauth-login.sql?raw';
+import emailMigration from '../../migrations/0003-transactional-email.sql?raw';
 import { applyD1Migrations, env, SELF } from 'cloudflare:test';
 import { expect } from 'vitest';
 
@@ -153,12 +155,30 @@ export const setupCoreTestDatabase = async () => {
         .map((query) => query.trim())
         .filter(Boolean),
     },
+    {
+      name: '0003-transactional-email.sql',
+      queries: emailMigration
+        .split(';')
+        .map((query) => query.trim())
+        .filter(Boolean),
+    },
+    {
+      name: '0004-oauth-login.sql',
+      queries: oauthMigration
+        .split(';')
+        .map((query) => query.trim())
+        .filter(Boolean),
+    },
   ]);
 };
 
 export const clearCoreTestDatabase = async () => {
   await env.CORE_DB.batch(
     [
+      'oauthState',
+      'oauthIdentity',
+      'emailDelivery',
+      'workspaceInvitation',
       'appToken',
       'usedLoginToken',
       'userSession',

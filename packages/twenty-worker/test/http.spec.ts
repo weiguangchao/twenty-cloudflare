@@ -73,7 +73,7 @@ describe('GET /client-config', () => {
 
 describe('unknown API routes', () => {
   it('returns a JSON 404', async () => {
-    const response = await SELF.fetch('http://localhost/rest/companies');
+    const response = await SELF.fetch('http://localhost/oauth/not-implemented');
 
     expect(response.status).toBe(404);
     expect(await response.json()).toEqual({

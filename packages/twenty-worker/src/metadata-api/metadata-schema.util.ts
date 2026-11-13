@@ -1,4 +1,16 @@
 import {
+  INTEGRATION_QUERY_RESOLVERS,
+  INTEGRATION_MUTATION_RESOLVERS,
+} from '@/metadata-api/integration.resolvers';
+import {
+  EMAIL_AUTH_QUERY_RESOLVERS,
+  EMAIL_AUTH_MUTATION_RESOLVERS,
+} from '@/metadata-api/email-auth.resolvers';
+import {
+  INVITATION_QUERY_RESOLVERS,
+  INVITATION_MUTATION_RESOLVERS,
+} from '@/metadata-api/invitation.resolvers';
+import {
   MEMBER_QUERY_RESOLVERS,
   MEMBER_MUTATION_RESOLVERS,
 } from '@/metadata-api/member.resolvers';
@@ -121,6 +133,9 @@ export const buildMetadataSchema = () => {
     for (const field of Object.values(type.getFields())) {
       if (type === query) {
         field.resolve =
+          INTEGRATION_QUERY_RESOLVERS[field.name] ??
+          EMAIL_AUTH_QUERY_RESOLVERS[field.name] ??
+          INVITATION_QUERY_RESOLVERS[field.name] ??
           MEMBER_QUERY_RESOLVERS[field.name] ??
           METADATA_QUERY_RESOLVERS[field.name] ??
           AUTH_QUERY_RESOLVERS[field.name] ??
@@ -134,6 +149,9 @@ export const buildMetadataSchema = () => {
           });
       } else if (type === mutation) {
         field.resolve =
+          INTEGRATION_MUTATION_RESOLVERS[field.name] ??
+          EMAIL_AUTH_MUTATION_RESOLVERS[field.name] ??
+          INVITATION_MUTATION_RESOLVERS[field.name] ??
           EVENT_STREAM_MUTATION_RESOLVERS[field.name] ??
           MEMBER_MUTATION_RESOLVERS[field.name] ??
           FILE_MUTATION_RESOLVERS[field.name] ??

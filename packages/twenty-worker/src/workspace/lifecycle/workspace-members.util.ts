@@ -92,7 +92,7 @@ export const addWorkspaceMember = (
     ? store.findMany('role', {
         universalIdentifier: '20202020-02c2-43f2-b94d-cab1f2b532eb',
       })[0]
-    : (store.findById('role', configuredRoleId) ?? defaultRole);
+    : (store.findById('role', input.roleId ?? configuredRoleId) ?? defaultRole);
 
   if (!getWorkspaceMember(sql, input)) {
     insertSeedRecord(sql, 'workspaceMember', {

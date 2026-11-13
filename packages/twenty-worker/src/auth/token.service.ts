@@ -14,6 +14,7 @@ export type TokenClaims = {
   workspaceId?: string;
   sessionId?: string;
   fileId?: string;
+  authProvider?: string;
 };
 
 const encode = (bytes: Uint8Array) =>
@@ -66,7 +67,10 @@ const signingKey = async (secret: string, type: TokenType) => {
 export const signToken = async (
   secret: string,
   type: TokenType,
-  claims: Pick<TokenClaims, 'sub' | 'workspaceId' | 'sessionId' | 'fileId'>,
+  claims: Pick<
+    TokenClaims,
+    'sub' | 'workspaceId' | 'sessionId' | 'fileId' | 'authProvider'
+  >,
   lifetimeSeconds: number,
 ) => {
   const issuedAt = Math.floor(Date.now() / 1000);
@@ -123,7 +127,7 @@ export const verifyToken = async (
       typeof claims.iat !== 'number' ||
       !Number.isFinite(claims.iat) ||
       claims.iat > Date.now() / 1000 ||
-      ['workspaceId', 'sessionId', 'fileId'].some(
+      ['workspaceId', 'sessionId', 'fileId', 'authProvider'].some(
         (key) => isDefined(claims[key]) && !isNonEmptyString(claims[key]),
       ) ||
       !(await crypto.subtle.verify(

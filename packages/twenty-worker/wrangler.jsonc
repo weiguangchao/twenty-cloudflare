@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   // Newest date the workerd bundled with wrangler 4.151 accepts.
   "compatibility_date": "2026-10-12",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   // Shared's bundled chunks evaluate UUID defaults at startup; source modules can be tree-shaken.
   "alias": {
     "twenty-shared/application": "../twenty-shared/src/application/index.ts",
@@ -12,6 +12,7 @@
     "twenty-shared/types": "../twenty-shared/src/types/index.ts",
     "twenty-shared/constants": "../twenty-shared/src/constants/index.ts",
     "twenty-shared/metadata": "../twenty-shared/src/metadata/index.ts",
+    "twenty-shared/translations": "../twenty-shared/src/translations/index.ts",
     "twenty-shared/composite-type-definitions": "../twenty-shared/dist/types.mjs",
   },
   "secrets": { "required": ["APP_SECRET"] },
@@ -22,7 +23,8 @@
       "simple": { "limit": 20, "period": 60 },
     },
   ],
-  "triggers": { "crons": ["0 3 * * *"] },
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "send_email": [{ "name": "EMAIL" }],
   "rules": [{ "type": "Text", "globs": ["**/*.graphql"], "fallthrough": true }],
   "assets": {
     "directory": "../twenty-front/build",

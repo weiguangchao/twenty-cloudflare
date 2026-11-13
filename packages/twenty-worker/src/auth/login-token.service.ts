@@ -7,11 +7,12 @@ export const createLoginToken = (
   context: MetadataContext,
   userId: string,
   workspaceId: string,
+  authProvider = 'password',
 ) =>
   signToken(
     context.env.APP_SECRET,
     'login',
-    { sub: userId, workspaceId },
+    { sub: userId, workspaceId, authProvider },
     15 * 60,
   );
 
@@ -54,6 +55,7 @@ export const exchangeLoginToken = async (
       user.id,
       membership.id,
       workspace.id,
+      claims.authProvider,
     ),
   };
 };

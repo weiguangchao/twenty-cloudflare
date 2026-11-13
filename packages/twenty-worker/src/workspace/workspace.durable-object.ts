@@ -1,3 +1,15 @@
+import { isPlainObject } from 'twenty-shared/utils';
+import { enqueueOutbox } from '@/workspace/events/enqueue-outbox.util';
+import {
+  prepareWebhookDelivery,
+  completeWebhookDelivery,
+} from '@/workspace/integrations/webhook-delivery.util';
+import { integrationOperation } from '@/workspace/integrations/integration-operations.util';
+import { type ApiKeyRow } from '@/workspace/integrations/types/integration.type';
+import {
+  buildRestOperation,
+  type RestRequest,
+} from '@/workspace/integrations/build-rest-operation.util';
 import { authenticateRequest } from '@/auth/session.service';
 import { WorkspaceEventStreams } from '@/workspace/subscriptions/workspace-event-streams';
 import {
@@ -138,6 +150,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
         'workspace-settings',
         'record-event',
         'metadata-event',
+        'webhook-dispatch',
       ]);
     });
   }
@@ -204,7 +217,10 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
 
   private deliverRealtimeEvents() {
     this.realtimeDelivery ??= this.withWorkspaceLock(() =>
-      this.eventStreams.publish(),
+      Promise.all([
+        this.eventStreams.publish(),
+        this.dispatchWebhookJobs(),
+      ]).then(() => undefined),
     ).finally(() => {
       this.realtimeDelivery = undefined;
       this.ctx.waitUntil(
@@ -214,6 +230,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           'workspace-settings',
           'record-event',
           'metadata-event',
+          'webhook-dispatch',
         ]),
       );
     });
@@ -302,6 +319,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
         'workspace-settings',
         'record-event',
         'metadata-event',
+        'webhook-dispatch',
       ]);
     }
   }
@@ -368,18 +386,198 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     };
   }
 
+  private async dispatchWebhookJobs() {
+    const sql = this.ctx.storage.sql;
+    for (const pending of sql
+      .exec<{ id: string }>(
+        'SELECT "id" FROM "sys_webhookDelivery" WHERE "status" != \'done\' AND "attempts" < 10 AND "availableAt" <= ? AND "queuedUntil" <= ? AND ("leaseUntil" IS NULL OR "leaseUntil" <= ?) AND "createdAt" > ? LIMIT 100',
+        Date.now(),
+        Date.now(),
+        Date.now(),
+        Date.now() - 86_400_000,
+      )
+      .toArray()) {
+      const existing = sql
+        .exec(
+          'SELECT 1 FROM "sys_outbox" WHERE "kind" = \'webhook-dispatch\' AND "status" != \'done\' AND json_extract("payload", \'$.deliveryId\') = ?',
+          pending.id,
+        )
+        .toArray();
+      if (!existing.length)
+        enqueueOutbox(sql, 'webhook-dispatch', { deliveryId: pending.id });
+    }
+    await processOutbox(this.ctx.storage, {
+      'webhook-dispatch': async (item) => {
+        const { deliveryId } = item.payload as { deliveryId: string };
+        await this.env.JOBS.send({
+          kind: 'webhook-send',
+          durableObjectId: this.ctx.id.toString(),
+          deliveryId,
+        });
+        sql.exec(
+          'UPDATE "sys_webhookDelivery" SET "queuedUntil" = ? WHERE "id" = ?',
+          Date.now() + 300_000,
+          deliveryId,
+        );
+      },
+    });
+  }
+
+  prepareWebhookDelivery(id: string) {
+    const catalog = createRecordCatalog(this.getMetadataSnapshot());
+    const schema = buildRecordSchema(catalog);
+    return prepareWebhookDelivery(
+      this.ctx.storage,
+      id,
+      {
+        sql: this.ctx.storage.sql,
+        catalog,
+        schema,
+      },
+      this.env.APP_SECRET,
+    );
+  }
+
+  completeWebhookDelivery(id: string, attempt: number, success: boolean) {
+    completeWebhookDelivery(this.ctx.storage.sql, id, attempt, success);
+    this.ctx.waitUntil(this.deliverRealtimeEvents());
+  }
+
+  private recordPrincipal(identity: RecordQueryIdentity) {
+    const store = new MetadataStore(this.ctx.storage.sql);
+    if (identity.apiKeyId) {
+      const key = this.ctx.storage.sql
+        .exec<ApiKeyRow>(
+          'SELECT * FROM "sys_apiKey" WHERE "id" = ?',
+          identity.apiKeyId,
+        )
+        .toArray()[0];
+      if (
+        !key ||
+        key.revokedAt ||
+        key.expiresAt <= new Date().toISOString() ||
+        !key.tokenHash ||
+        key.tokenHash !== identity.apiKeyTokenHash
+      )
+        throw apiError('API key is invalid or expired', 'UNAUTHENTICATED');
+      const permissions = buildPermissionContext(store, identity.apiKeyId, [
+        key.roleId,
+      ]);
+      if (!permissions.roleIds.length)
+        throw apiError('API key role is unavailable', 'FORBIDDEN');
+      return {
+        permissions,
+        actor: {
+          source: 'API',
+          name: key.name,
+          workspaceMemberId: null,
+          context: {},
+        },
+      };
+    }
+    const member = getWorkspaceMember(this.ctx.storage.sql, identity);
+    if (!member || member.userId !== identity.userId)
+      throw apiError('Workspace access denied', 'FORBIDDEN');
+    const permissions = buildPermissionContext(store, identity.userWorkspaceId);
+    if (!permissions.roleIds.length)
+      throw apiError('Workspace access denied', 'FORBIDDEN');
+    return {
+      permissions,
+      actor: {
+        source: 'MANUAL',
+        workspaceMemberId: identity.workspaceMemberId,
+        name: `${member.name.firstName} ${member.name.lastName}`.trim(),
+        context: {},
+      },
+    };
+  }
+
+  executeIntegrationOperation(
+    operation: string,
+    inputJson: string,
+    identity: RecordQueryIdentity,
+  ) {
+    try {
+      const result = runMetadataOperation(this.ctx.storage, (context) =>
+        integrationOperation(
+          context,
+          identity,
+          operation,
+          JSON.parse(inputJson) as Record<string, unknown>,
+        ),
+      );
+      if (result.status === 'fail') throw apiError(result.failure.message);
+      return JSON.stringify({ value: result.value });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
+    } finally {
+      this.ctx.waitUntil(this.deliverRealtimeEvents());
+    }
+  }
+
+  executeRestRequest(inputJson: string, identity: RecordQueryIdentity) {
+    try {
+      const input = JSON.parse(inputJson) as RestRequest;
+      const { permissions } = this.recordPrincipal(identity);
+      const catalog = createRecordCatalog(this.getMetadataSnapshot());
+      const schema = buildRecordSchema(catalog);
+      const operation = buildRestOperation(input, catalog, schema, permissions);
+      const flattenConnections = (value: unknown): unknown => {
+        if (Array.isArray(value)) return value.map(flattenConnections);
+        if (!isPlainObject(value)) return value;
+        if (Array.isArray(value.edges))
+          return value.edges.map((edge: unknown) =>
+            isPlainObject(edge) ? flattenConnections(edge.node) : edge,
+          );
+        return Object.fromEntries(
+          Object.entries(value).map(([key, entry]) => [
+            key,
+            flattenConnections(entry),
+          ]),
+        );
+      };
+      const result = JSON.parse(
+        this.executeRecordQuery(
+          {
+            query: operation.query,
+            variables: operation.variables,
+            fileUrl: { workspaceId: input.workspaceId, origin: input.origin },
+          },
+          identity,
+        ),
+      ) as { data?: Record<string, unknown>; errors?: unknown[] };
+      if (result.errors) return JSON.stringify(result);
+      if (!operation.connection)
+        return JSON.stringify(flattenConnections(result));
+      const connection = result.data?.[operation.operation] as {
+        edges: { node: unknown }[];
+        totalCount: number;
+        pageInfo: unknown;
+      };
+      return JSON.stringify({
+        data: {
+          [operation.objectNamePlural]: connection.edges.map((edge) =>
+            flattenConnections(edge.node),
+          ),
+        },
+        totalCount: connection.totalCount,
+        pageInfo: connection.pageInfo,
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      if (error instanceof SyntaxError)
+        return JSON.stringify({ errors: [apiError('Invalid REST query')] });
+      throw error;
+    }
+  }
+
   executeRecordQuery(input: RecordQueryInput, identity: RecordQueryIdentity) {
     try {
       return this.ctx.storage.transactionSync(() => {
-        const member = getWorkspaceMember(this.ctx.storage.sql, identity);
-        if (!member || member.userId !== identity.userId)
-          throw apiError('Workspace access denied', 'FORBIDDEN');
-        const permissions = buildPermissionContext(
-          new MetadataStore(this.ctx.storage.sql),
-          identity.userWorkspaceId,
-        );
-        if (!permissions.roleIds.length)
-          throw apiError('Workspace access denied', 'FORBIDDEN');
+        const { permissions, actor } = this.recordPrincipal(identity);
         const snapshot = this.getMetadataSnapshot();
         if (this.recordModel?.catalog.version !== snapshot.version) {
           const catalog = createRecordCatalog(snapshot);
@@ -396,12 +594,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
             : undefined,
           mutation: {
             identity,
-            actor: {
-              source: 'MANUAL',
-              workspaceMemberId: identity.workspaceMemberId,
-              name: `${member.name.firstName} ${member.name.lastName}`.trim(),
-              context: {},
-            },
+            actor,
             affectedRecords: 0,
             changed: false,
           },
@@ -421,6 +614,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           'workspace-settings',
           'record-event',
           'metadata-event',
+          'webhook-dispatch',
         ]),
       );
     }
@@ -439,6 +633,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       'workspace-settings',
       'record-event',
       'metadata-event',
+      'webhook-dispatch',
     ]);
   }
 
@@ -701,6 +896,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           'workspace-settings',
           'record-event',
           'metadata-event',
+          'webhook-dispatch',
         ]),
       );
     }

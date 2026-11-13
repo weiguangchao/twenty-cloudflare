@@ -194,10 +194,6 @@ export const METADATA_QUERY_RESOLVERS: Record<string, Resolver> = {
       permissions.permissionFlags.includes(flag.key),
     );
   },
-  findWorkspaceInvitations: async (_source, _arguments, context) => {
-    await requireSetting(context, 'WORKSPACE_MEMBERS');
-    return [];
-  },
   recordPermissions: async (
     _source,
     { targets }: { targets: { objectMetadataId: string; recordId: string }[] },

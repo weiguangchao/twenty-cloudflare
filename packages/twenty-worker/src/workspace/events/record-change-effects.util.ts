@@ -1,3 +1,4 @@
+import { enqueueWebhookDeliveries } from '@/workspace/integrations/webhook-delivery.util';
 import { enqueueMetadataEvents } from '@/workspace/subscriptions/enqueue-metadata-events.util';
 import { capitalize, isPlainObject } from 'twenty-shared/utils';
 
@@ -85,9 +86,20 @@ const insertTimeline = (
     objectMetadata: { id: timelineObject.id, nameSingular: 'timelineActivity' },
     event: {
       recordId: record.id,
-      ...context.mutation!.identity,
+      ...(context.mutation!.identity.apiKeyId
+        ? {}
+        : {
+            userId: context.mutation!.identity.userId,
+            workspaceMemberId: context.mutation!.identity.workspaceMemberId,
+          }),
       properties: { after: record },
     },
+  });
+  enqueueWebhookDeliveries(context, {
+    recordId: record.id,
+    objectNameSingular: 'timelineActivity',
+    action: 'CREATED',
+    properties: { after: record },
   });
 };
 
@@ -116,7 +128,12 @@ export const recordChangeEffects = (
   );
   const base = {
     recordId: String(record.id),
-    ...(mutation.identity.userId ? mutation.identity : {}),
+    ...(!mutation.identity.apiKeyId && mutation.identity.userId
+      ? {
+          userId: mutation.identity.userId,
+          workspaceMemberId: mutation.identity.workspaceMemberId,
+        }
+      : {}),
   };
   const event: RecordChangeEvent =
     action === 'created'
@@ -131,6 +148,16 @@ export const recordChangeEffects = (
     name: `${object.nameSingular}.${action}`,
     objectMetadata: { id: object.id, nameSingular: object.nameSingular },
     event,
+  });
+  enqueueWebhookDeliveries(context, {
+    ...event,
+    objectNameSingular: object.nameSingular,
+    action: action.toUpperCase() as
+      | 'CREATED'
+      | 'UPDATED'
+      | 'DELETED'
+      | 'DESTROYED'
+      | 'RESTORED',
   });
   if (action === 'deleted' || action === 'destroyed') {
     const store = new MetadataStore(context.sql);

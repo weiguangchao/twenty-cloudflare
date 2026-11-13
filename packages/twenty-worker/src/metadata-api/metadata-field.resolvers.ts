@@ -1,4 +1,5 @@
 import { type GraphQLFieldResolver } from 'graphql';
+import { roleApiKeys } from '@/metadata-api/integration.resolvers';
 import { isDefined } from 'twenty-shared/utils';
 
 import { isLiveMetadataRow } from '@/metadata-api/metadata-read.resolvers';
@@ -170,6 +171,7 @@ export const METADATA_FIELD_RESOLVERS: Record<
       ),
   },
   Role: {
+    apiKeys: (source, _arguments, context) => roleApiKeys(context, source.id),
     workspaceMembers: async (source, _arguments, context) => {
       const data = await context.requireMetadata();
       const memberships = await context.store.membershipsForWorkspace(

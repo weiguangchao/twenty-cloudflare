@@ -1,5 +1,6 @@
 export type WorkspaceMemberInput = {
   userId: string;
+  roleId?: string;
   userWorkspaceId: string;
   workspaceMemberId: string;
   email: string;

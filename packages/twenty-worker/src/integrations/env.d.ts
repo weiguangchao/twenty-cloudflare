@@ -1,0 +1,9 @@
+interface Env {
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  MICROSOFT_CLIENT_ID?: string;
+  MICROSOFT_CLIENT_SECRET?: string;
+  MICROSOFT_TENANT_ID?: string;
+  EMAIL_FROM?: string;
+  EMAIL_VERIFICATION_REQUIRED?: string;
+}

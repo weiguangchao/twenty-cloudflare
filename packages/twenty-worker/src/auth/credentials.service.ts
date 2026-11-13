@@ -1,3 +1,5 @@
+import { sendVerificationEmail } from '@/auth/email-action.service';
+import { requireEmailSending } from '@/emails/email-delivery.service';
 import { emailSchema } from 'twenty-shared/utils';
 
 import { hashPassword, verifyPassword } from '@/auth/password.util';
@@ -72,14 +74,24 @@ export const registerUser = async (
     );
   }
 
+  if (context.env.EMAIL_VERIFICATION_REQUIRED === 'true')
+    requireEmailSending(context.env);
   const passwordHash = await hashPassword(input.password);
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
   try {
     await context.env.CORE_DB.prepare(
-      'INSERT INTO "user" ("id", "email", "passwordHash", "locale", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO "user" ("id", "email", "passwordHash", "locale", "isEmailVerified", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, ?, ?)',
     )
-      .bind(id, email, passwordHash, input.locale || 'en', now, now)
+      .bind(
+        id,
+        email,
+        passwordHash,
+        input.locale || 'en',
+        Number(context.env.EMAIL_VERIFICATION_REQUIRED !== 'true'),
+        now,
+        now,
+      )
       .run();
   } catch (error) {
     if (await context.store.userByEmail(email))
@@ -87,5 +99,7 @@ export const registerUser = async (
     throw error;
   }
 
-  return (await context.store.userById(id))!;
+  const user = (await context.store.userById(id))!;
+  if (!user.isEmailVerified) await sendVerificationEmail(context, user);
+  return user;
 };

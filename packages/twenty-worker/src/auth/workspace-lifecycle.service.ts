@@ -25,6 +25,12 @@ export const memberInput = (user: UserRow, membership: UserWorkspaceRow) => ({
 
 export const requireWorkspace = async (context: MetadataContext) => {
   const auth = await context.requireAuth();
+  if (!(await context.store.userById(auth.userId))?.isEmailVerified)
+    throw apiError(
+      'Verify your email address first',
+      'FORBIDDEN',
+      'EMAIL_NOT_VERIFIED',
+    );
   if (!auth.workspaceId)
     throw unauthenticated('A workspace session is required');
   const workspace = await context.store.workspaceById(auth.workspaceId);
@@ -66,6 +72,12 @@ export const createWorkspace = async (
   displayName?: string | null,
 ) => {
   const auth = await context.requireAuth();
+  if (!(await context.store.userById(auth.userId))?.isEmailVerified)
+    throw apiError(
+      'Verify your email address first',
+      'FORBIDDEN',
+      'EMAIL_NOT_VERIFIED',
+    );
   const origin = new URL(context.request.url).origin;
   const existing = await context.store.workspaceByOrigin(origin);
   if (existing?.creatorUserId === auth.userId)

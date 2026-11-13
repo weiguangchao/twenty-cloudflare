@@ -9,6 +9,12 @@ export const loadWorkspaceMetadata = async (
   authentication: Promise<AuthContext>,
 ) => {
   const auth = await authentication;
+  if (!(await store.userById(auth.userId))?.isEmailVerified)
+    throw apiError(
+      'Verify your email address first',
+      'FORBIDDEN',
+      'EMAIL_NOT_VERIFIED',
+    );
   if (!auth.workspaceId || !auth.userWorkspaceId)
     throw unauthenticated('A workspace session is required');
   const workspace = await store.workspaceById(auth.workspaceId);

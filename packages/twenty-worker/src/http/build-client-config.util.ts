@@ -1,22 +1,19 @@
+import { oauthProviders } from '@/auth/oauth/oauth-provider.util';
 import { type ClientConfig } from '@/http/types/client-config.type';
 import { MUTATION_MAXIMUM_AFFECTED_RECORDS } from '@/workspace/record-api/mutations/record-mutation.constants';
 
-// Every optional product feature is off; see CLOUDFLARE_MIGRATION.md section 2.
-export const buildClientConfig = (requestUrl: URL): ClientConfig => ({
+export const buildClientConfig = (
+  requestUrl: URL,
+  env?: Env,
+): ClientConfig => ({
   billing: { isBillingEnabled: false, trialPeriods: [] },
   aiModels: [],
   aiEvaluationModels: [],
   aiModelTiers: [],
-  authProviders: {
-    google: false,
-    magicLink: false,
-    password: true,
-    microsoft: false,
-    sso: [],
-  },
+  authProviders: oauthProviders(env),
   signInPrefilled: false,
   isMultiWorkspaceEnabled: false,
-  isEmailVerificationRequired: false,
+  isEmailVerificationRequired: env?.EMAIL_VERIFICATION_REQUIRED === 'true',
   defaultSubdomain: 'app',
   frontDomain: requestUrl.hostname,
   serverUrl: requestUrl.origin,

@@ -89,7 +89,17 @@ export const scheduleWorkspaceAlarm = async (
         )
         .one().next
     : null;
-  const next = [task, job].filter((value): value is number => value !== null);
+  const webhook = supportedKinds.includes('webhook-dispatch')
+    ? storage.sql
+        .exec<{ next: number | null }>(
+          'SELECT MIN(MAX("availableAt", "queuedUntil", COALESCE("leaseUntil", 0))) AS "next" FROM "sys_webhookDelivery" WHERE "status" != \'done\' AND "attempts" < 10 AND "createdAt" > ?',
+          Date.now() - 86_400_000,
+        )
+        .one().next
+    : null;
+  const next = [task, job, webhook].filter(
+    (value): value is number => value !== null,
+  );
   if (next.length)
     await storage.setAlarm(Math.max(Date.now() + 1000, Math.min(...next)));
 };

@@ -8,10 +8,15 @@ import { type PermissionContext } from '@/workspace/permissions/types/permission
 export const buildPermissionContext = (
   store: MetadataStore,
   userWorkspaceId: string,
+  assignedRoleIds?: string[],
 ): PermissionContext => {
-  const roles = store
-    .findMany('roleTarget', { userWorkspaceId })
-    .map((target) => store.findById('role', target.roleId))
+  const roles = (
+    assignedRoleIds ??
+    store
+      .findMany('roleTarget', { userWorkspaceId })
+      .map((target) => target.roleId)
+  )
+    .map((roleId) => store.findById('role', roleId))
     .filter(isDefined);
   const fields = store.findMany('fieldMetadata');
   const objectPermissions = store.findMany('objectPermission');

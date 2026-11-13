@@ -1,3 +1,4 @@
+import { oauthProviders } from '@/auth/oauth/oauth-provider.util';
 import {
   availableWorkspaces,
   requireWorkspace,
@@ -14,7 +15,7 @@ export const currentUser = async (context: MetadataContext) => {
     ...user,
     isEmailVerified: Boolean(user.isEmailVerified),
     disabled: Boolean(user.disabled),
-    hasPassword: true,
+    hasPassword: Boolean(user.passwordHash),
     canImpersonate: false,
     canAccessFullAdminPanel: false,
     userVars: {},
@@ -30,7 +31,7 @@ export const currentUser = async (context: MetadataContext) => {
     previousOnboardingStatus: null,
     isWorkspaceCreator: null,
   };
-  if (!auth.workspaceId) return base;
+  if (!auth.workspaceId || !user.isEmailVerified) return base;
 
   const { workspace, membership } = await requireWorkspace(context);
   const memberships =
@@ -93,8 +94,8 @@ export const currentUser = async (context: MetadataContext) => {
       isCampaignClickTrackingEnabled: false,
       isCampaignOpenTrackingEnabled: false,
       workspaceDiscoverability: 'MEMBERS_AND_INVITEES',
-      isGoogleAuthEnabled: false,
-      isMicrosoftAuthEnabled: false,
+      isGoogleAuthEnabled: oauthProviders(context.env).google,
+      isMicrosoftAuthEnabled: oauthProviders(context.env).microsoft,
       isPasswordAuthEnabled: true,
       isGoogleAuthBypassEnabled: false,
       isMicrosoftAuthBypassEnabled: false,

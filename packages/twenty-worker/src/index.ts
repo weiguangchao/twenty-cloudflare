@@ -1,3 +1,10 @@
+import { handleOAuthRequest } from '@/auth/oauth/oauth-login.service';
+import { deliverWebhook } from '@/integrations/deliver-webhook.service';
+import { handleRestRequest } from '@/http/handle-rest-request.util';
+import {
+  deliverEmail,
+  dispatchPendingEmails,
+} from '@/emails/email-delivery.service';
 import { Hono } from 'hono';
 
 import { buildClientConfig } from '@/http/build-client-config.util';
@@ -17,11 +24,32 @@ const app = new Hono<{ Bindings: Env }>();
 app.get('/healthz', (context) => context.json({ status: 'ok' }));
 
 app.get('/client-config', (context) =>
-  context.json(buildClientConfig(new URL(context.req.url))),
+  context.json(buildClientConfig(new URL(context.req.url), context.env)),
 );
 
 app.all('/metadata', (context) =>
   handleMetadataRequest(context.req.raw, context.env),
+);
+
+app.get('/auth/:provider', (context) =>
+  handleOAuthRequest(
+    context.req.raw,
+    context.env,
+    context.req.param('provider'),
+    false,
+  ),
+);
+app.get('/auth/:provider/redirect', (context) =>
+  handleOAuthRequest(
+    context.req.raw,
+    context.env,
+    context.req.param('provider'),
+    true,
+  ),
+);
+
+app.all('/rest/*', (context) =>
+  handleRestRequest(context.req.raw, context.env),
 );
 
 app.post('/graphql', (context) =>
@@ -57,6 +85,25 @@ export default {
       try {
         const body = message.body;
         if (
+          isPlainObject(body) &&
+          body.kind === 'webhook-send' &&
+          typeof body.durableObjectId === 'string' &&
+          typeof body.deliveryId === 'string'
+        ) {
+          await deliverWebhook(env, body.durableObjectId, body.deliveryId);
+          message.ack();
+          continue;
+        }
+        if (
+          isPlainObject(body) &&
+          body.kind === 'email-send' &&
+          typeof body.jobId === 'string'
+        ) {
+          await deliverEmail(env, body.jobId);
+          message.ack();
+          continue;
+        }
+        if (
           !isPlainObject(body) ||
           body.kind !== 'file-delete' ||
           typeof body.workspaceId !== 'string' ||
@@ -79,5 +126,6 @@ export default {
     context: ExecutionContext,
   ) => {
     context.waitUntil(cleanupExpiredCredentials(env.CORE_DB));
+    context.waitUntil(dispatchPendingEmails(env));
   },
 } satisfies ExportedHandler<Env>;

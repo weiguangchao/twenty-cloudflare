@@ -1,3 +1,4 @@
+import { initializeIntegrations } from '@/workspace/integrations/initialize-integrations.util';
 import { initializeEventStreams } from '@/workspace/subscriptions/initialize-event-streams.util';
 import { initializeWorkspaceSettings } from '@/workspace/lifecycle/initialize-workspace-settings.util';
 import { createMetadataCollectionHashTable } from '@/workspace/metadata/storage/metadata-collection-hashes.util';
@@ -34,4 +35,5 @@ export const WORKSPACE_MIGRATIONS: WorkspaceMigration[] = [
     up: initializeWorkspaceSettings,
   },
   { name: '0007-initialize-event-streams', up: initializeEventStreams },
+  { name: '0008-initialize-integrations', up: initializeIntegrations },
 ];

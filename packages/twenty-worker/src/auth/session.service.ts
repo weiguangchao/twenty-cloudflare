@@ -49,6 +49,7 @@ export const createSession = async (
   userId: string,
   userWorkspaceId: string | null,
   workspaceId: string | null,
+  authProvider = 'password',
 ) => {
   const sessionToken = `sess_${randomToken()}`;
   const sessionId = crypto.randomUUID();
@@ -71,7 +72,7 @@ export const createSession = async (
 
   await env.CORE_DB.batch([
     env.CORE_DB.prepare(
-      'INSERT INTO "userSession" ("id", "tokenHash", "userId", "userWorkspaceId", "userAgent", "ipAddress", "createdAt", "lastActiveAt", "expiresAt") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO "userSession" ("id", "tokenHash", "userId", "userWorkspaceId", "userAgent", "ipAddress", "createdAt", "lastActiveAt", "expiresAt", "authProvider") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     ).bind(
       sessionId,
       await hashToken(sessionToken),
@@ -82,6 +83,7 @@ export const createSession = async (
       now,
       now,
       expiresAt,
+      authProvider,
     ),
     env.CORE_DB.prepare(
       'INSERT INTO "appToken" ("id", "tokenHash", "type", "userId", "userSessionId", "expiresAt", "createdAt") VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -163,6 +165,9 @@ export const authenticateRequest = async (
 export const cleanupExpiredCredentials = async (database: D1Database) => {
   const now = new Date().toISOString();
   await database.batch([
+    database
+      .prepare('DELETE FROM "oauthState" WHERE "expiresAt" <= ?')
+      .bind(now),
     database.prepare('DELETE FROM "appToken" WHERE "expiresAt" <= ?').bind(now),
     database
       .prepare('DELETE FROM "usedLoginToken" WHERE "expiresAt" <= ?')
