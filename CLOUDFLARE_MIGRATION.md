@@ -22,7 +22,7 @@
 | 0 | 契约与种子数据采集 | 无 | 完成 |
 | 1 | 工程骨架与平台验证 | 0 | 完成 |
 | 2 | Workspace DO：元数据存储与 DDL 引擎 | 1 | 完成 |
-| 3 | 认证、会话与 workspace 生命周期 | 1 | 未开始 |
+| 3 | 认证、会话与 workspace 生命周期 | 1 | 完成 |
 | 4 | 元数据读取 API 与应用启动 | 2、3 | 未开始 |
 | 5 | 记录查询引擎（读） | 4 | 未开始 |
 | 6 | 记录写入与副作用 | 5 | 未开始 |
@@ -521,7 +521,7 @@ npx nx test twenty-worker
 4. 密码哈希：`bcryptjs`，10 轮。没有历史数据，不需要兼容旧哈希。
 5. token：登录 token（15 分钟，一次性）、文件 token、文件上传 token，统一用 HS256，密钥由 `APP_SECRET` 加类型派生，用 WebCrypto 实现。`AuthTokenPair` 里返回同样方式签发的 access token，同时支持 `Authorization: Bearer` 认证，供脚本调用。不实现 ES256 密钥轮换。
 6. 实现这些操作：`checkUserExists`、`getLoginTokenFromCredentials`、`getAuthTokensFromLoginToken`、`signIn`、`signUp`、`signUpInNewWorkspace`、`signUpInWorkspace`、`signOut`、`getPublicWorkspaceDataByDomain`、`activateWorkspace`，以及引导流程里前端会调用的 `getWorkspaceCreationDefaults`、`skipSyncEmailOnboardingStep`、`getInviteSuggestions`（空列表）、`sendInvitations`（空 emails 时返回成功）、`updateWorkspaceMemberSettings`、`currentUserSessions`。调用顺序见下方参考代码和 `contract/fixtures/auth-signup-onboarding/`。
-7. `activateWorkspace` 的步骤：把 workspace 状态置为创建中；初始化 DO（阶段 2）；给创建者分配 Admin 角色，建 Member 角色并设为默认；写入默认 feature flag；创建 `workspaceMember` 记录；预填演示数据；状态置为 `ACTIVE`。
+7. `activateWorkspace` 的步骤：把 workspace 状态置为创建中；初始化 DO（阶段 2，种子已含 Admin、Member 和默认 feature flag）；给创建者分配现有 Admin 角色，按种子的 `defaultRoleUniversalIdentifier` 设置默认角色；创建 `workspaceMember` 记录；预填演示数据；状态置为 `ACTIVE`。
 8. 引导状态：按旧逻辑计算，跳过邮件同步和计费两步。
 9. 定时任务：一个 Cron Trigger 清理过期的 session 和 token。
 10. 登录接口限流，用 Rate Limiting 绑定。
@@ -542,6 +542,19 @@ npx nx test twenty-worker
 - cookie 属性符合 6.2；不带 `x-twenty-session-cookie` 头的请求不被认证；跨源的 mutation 被拒绝。
 - 登录 token 第二次使用失败。
 - 错误密码、已存在邮箱、过期 session 的错误码和 fixture 一致。
+
+**实施记录**
+
+- **D1**：`migrations/0001-core-auth.sql` 创建六张身份表（包含 `usedLoginToken`），邮箱大小写归一化并加唯一约束。单 workspace 约束由可空的 `singleWorkspaceKey` 唯一列保证；认证上下文仍从 session 的 membership 解析 workspace，不写死 workspace ID。
+- **GraphQL**：`/metadata` 懒构建完整契约 SDL，实现自定义标量、认证和引导操作。未实现的查询返回零值，未实现的 mutation 在认证后返回 `NOT_IMPLEMENTED`。`currentUser` 支持前端完整查询，提供引导状态、`userVars`、当前成员、默认角色和 feature flag；完整对象权限及元数据读取留到阶段 4，目前只授予个人资料权限。额外实现 `goBackToPreviousOnboardingStep` 和 `revokeUserSession`，供引导返回和个人设置里的会话撤销使用。
+- **会话与 token**：cookie 有效期 180 天，服务端只存 SHA-256；HTTP/HTTPS 的名称、opt-in、导航读取和 Origin 检查按 6.2。Bearer access token 同样检查 D1 session，登出或撤销后立即失效。密码用 `bcryptjs` 3.0.2、10 轮；HS256 密钥用 HMAC 从 `APP_SECRET` 按用途派生。登录 token 有效期 15 分钟，通过 D1 唯一写入保证并发兑换只成功一次；access token 30 分钟、refresh token 180 天。文件和上传 token 提供签发校验工具，路由在阶段 9 接入。
+- **激活与加入**：D1 状态更新用条件写入取得激活权，超过两分钟的创建中状态可以重试。DO 的成员、角色关联、5 个公司、5 个人员和 6 个商机，以及 `sys_workspaceActivation` 标记在一个同步事务内提交；D1 完成写入前中断也能安全重试。默认角色和 feature flag 沿用阶段 2 种子，不重复创建。`signUpInWorkspace` 要求 workspace 已激活、公共邀请已开启且 hash 正确，加入者分配默认 Member；开启邀请和管理成员仍属于阶段 10。
+- **引导**：激活后直接进入 `PROFILE_CREATION`，跳过邮件同步和计费。个人资料更新只允许自己的成员记录，并校验允许的设置字段；保存姓名后进入 `INVITE_TEAM`，空邮箱邀请完成引导，非空邮箱仍返回 `NOT_IMPLEMENTED`。必须同时返回 `userVars.ONBOARDING_INVITE_TEAM_PENDING`，否则前端会自行跳过邀请页，与服务端状态不一致。
+- **平台配置**：新增 `AUTH_RATE_LIMITER`，按 IP 和归一化邮箱分别限制每分钟 20 次认证尝试；每天 UTC 03:00 清理过期 session、refresh token 和登录 token 使用记录。限制使用 Cloudflare 的 [Rate Limiting 绑定](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)，它是每个 Cloudflare 位置的近似限制。
+- **冷启动修正**：真实 `wrangler dev` 发现阶段 2 使用的共享包打包 chunk 会在全局作用域生成 ACTOR 选项 UUID，workerd 拒绝启动。Worker 的普通共享依赖改用 source alias 以便裁剪；复合类型定义通过单独 alias 在 DO 的 `blockConcurrencyWhile` 内懒加载，之后才执行迁移。事务内部仍无 `await`，没有修改共享包或旧服务端。
+- **验证**：新增 18 个 workerd 测试，覆盖完整前端 query、注册登录、邀请加入和角色、引导返回、激活重试、登录 token 并发重放与过期、cookie/CSRF、Bearer 撤销、密码错误、限流和签名用途隔离。直接 `tsgo`、Nx lint 和完整 Worker 测试通过；测试使用 `--skip-nx-cache`。本机 Nx 的依赖任务 `twenty-shared:generateBarrels` 在 Node 26 下挂起，因此 lint/test 使用 `--excludeTaskDependencies`，复用现有 shared 构建和 lint 插件；`wrangler dev` 真实冷启动另行通过。
+- **浏览器验收**：使用原有前端构建，注册 `stage3-browser@example.com`、创建 workspace、填写资料、从邀请页返回资料页再继续、跳过邀请，确认服务端 `onboardingStatus: COMPLETED`。通过设置里的 Logout 登出并用邮箱密码重新登录。前端零改动；主记录界面所需的元数据和对象权限仍在阶段 4 实现。
+- **本地启动**：使用仓库要求的 Node 26，在 `packages/twenty-worker/.dev.vars` 配置随机 `APP_SECRET`（文件已被忽略），先运行 `wrangler d1 migrations apply CORE_DB --local`，再运行 `wrangler dev`。验收使用独立的 `.wrangler/stage3-acceptance` 本地存储，迁移和 dev 都传相同的 `--persist-to`；未部署远程资源。
 
 ### 阶段 4：元数据读取 API 与应用启动
 

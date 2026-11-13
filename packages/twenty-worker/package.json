@@ -8,6 +8,10 @@
     "cf-typegen": "wrangler types --include-runtime=false"
   },
   "dependencies": {
+    "@sniptt/guards": "0.2.0",
+    "bcryptjs": "3.0.2",
+    "graphql": "16.14.2",
+    "graphql-yoga": "5.24.6",
     "hono": "~4.13.17",
     "twenty-shared": "workspace:*"
   },

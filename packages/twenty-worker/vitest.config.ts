@@ -1,13 +1,34 @@
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
 
 import { cloudflareTest } from '@cloudflare/vitest-plugin';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [cloudflareTest({ wrangler: { configPath: './wrangler.jsonc' } })],
+  plugins: [
+    {
+      name: 'graphql-sdl',
+      load: (id) =>
+        id.endsWith('.graphql')
+          ? `export default ${JSON.stringify(readFileSync(id, 'utf8'))}`
+          : undefined,
+    },
+    cloudflareTest({
+      wrangler: { configPath: './wrangler.jsonc' },
+      miniflare: {
+        bindings: {
+          APP_SECRET: 'test-app-secret-for-worker-integration-tests',
+        },
+      },
+    }),
+  ],
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`,
+      'twenty-shared/composite-type-definitions': path.resolve(
+        __dirname,
+        '../twenty-shared/dist/types.mjs',
+      ),
     },
   },
   test: {

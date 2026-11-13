@@ -1,4 +1,12 @@
 import { DurableObject } from 'cloudflare:workers';
+import { initializeRecordIndexTypes } from '@/workspace/metadata/ddl/record-index-ddl.util';
+
+import { type WorkspaceMemberInput } from '@/workspace/lifecycle/types/workspace-member-input.type';
+import {
+  activateWorkspaceRecords,
+  addWorkspaceMember,
+  getWorkspaceMember,
+} from '@/workspace/lifecycle/workspace-members.util';
 
 import { createField } from '@/workspace/metadata/operations/create-field.operation';
 import { createObject } from '@/workspace/metadata/operations/create-object.operation';
@@ -32,6 +40,7 @@ import {
 } from '@/workspace/metadata/types/object-metadata-inputs.type';
 import { runWorkspaceMigrations } from '@/workspace/migrations/run-workspace-migrations.util';
 import { WORKSPACE_MIGRATIONS } from '@/workspace/migrations/workspace-migrations.constant';
+import standardMetadata from '@/workspace/seed/standard-metadata.json';
 
 // One instance per workspace, addressed with WORKSPACE.idFromName(workspaceId).
 export class WorkspaceDurableObject extends DurableObject<Env> {
@@ -41,12 +50,79 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     super(ctx, env);
 
     void ctx.blockConcurrencyWhile(async () => {
+      await initializeRecordIndexTypes();
       runWorkspaceMigrations(ctx.storage, WORKSPACE_MIGRATIONS);
     });
   }
 
   ping(): string {
     return 'pong';
+  }
+
+  activateWorkspace(input: WorkspaceMemberInput) {
+    return activateWorkspaceRecords(this.ctx.storage, input);
+  }
+
+  addWorkspaceMember(input: WorkspaceMemberInput) {
+    return this.ctx.storage.transactionSync(() =>
+      addWorkspaceMember(this.ctx.storage.sql, input, false),
+    );
+  }
+
+  getWorkspaceAuthData(
+    input: Pick<WorkspaceMemberInput, 'workspaceMemberId' | 'userWorkspaceId'>,
+  ) {
+    const store = new MetadataStore(this.ctx.storage.sql);
+    const roles = store
+      .findMany('roleTarget', { userWorkspaceId: input.userWorkspaceId })
+      .map((target) => store.findById('role', target.roleId));
+    const member = getWorkspaceMember(this.ctx.storage.sql, input);
+
+    return {
+      member: member ? { ...member, roles } : null,
+      roles,
+      featureFlags: store.findMany('featureFlag'),
+      defaultRole: store.findMany('role', {
+        universalIdentifier: standardMetadata.defaultRoleUniversalIdentifier,
+      })[0],
+    };
+  }
+
+  updateWorkspaceMemberProfile(
+    workspaceMemberId: string,
+    update: Record<
+      string,
+      string | number | { firstName: string; lastName: string }
+    >,
+  ) {
+    const allowedColumns = new Set([
+      'name',
+      'jobTitle',
+      'colorScheme',
+      'uiScale',
+      'openRecordIn',
+      'locale',
+      'timeZone',
+      'dateFormat',
+      'timeFormat',
+      'calendarStartDay',
+      'numberFormat',
+    ]);
+    const entries = Object.entries(update);
+    if (entries.some(([name]) => !allowedColumns.has(name)))
+      throw new Error('Unsupported profile setting');
+    if (entries.length === 0) return;
+
+    this.ctx.storage.transactionSync(() => {
+      this.ctx.storage.sql.exec(
+        `UPDATE "rec_workspaceMember" SET ${entries.map(([name]) => `"${name}" = ?`).join(', ')}, "updatedAt" = ? WHERE "id" = ? AND "deletedAt" IS NULL`,
+        ...entries.map(([, value]) =>
+          typeof value === 'object' ? JSON.stringify(value) : value,
+        ),
+        new Date().toISOString(),
+        workspaceMemberId,
+      );
+    });
   }
 
   getCollectionHashes(): MetadataCollectionHash[] {

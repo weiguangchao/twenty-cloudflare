@@ -1,6 +1,6 @@
 import {
   FieldMetadataType,
-  compositeTypeDefinitions,
+  type compositeTypeDefinitions as CompositeTypeDefinitions,
 } from 'twenty-shared/types';
 
 import { computeFieldColumn } from '@/workspace/metadata/ddl/compute-field-column.util';
@@ -10,6 +10,13 @@ import {
   type IndexMetadataRow,
 } from '@/workspace/metadata/types/metadata-row.type';
 import { computeRecordTableName } from '@/workspace/metadata/utils/compute-record-table-name.util';
+
+let compositeTypeDefinitions: typeof CompositeTypeDefinitions;
+
+export const initializeRecordIndexTypes = async () => {
+  ({ compositeTypeDefinitions } =
+    await import('twenty-shared/composite-type-definitions'));
+};
 
 const jsonPathExpression = (columnName: string, subFieldName: string) =>
   `("${columnName}" ->> '$.${subFieldName}')`;
