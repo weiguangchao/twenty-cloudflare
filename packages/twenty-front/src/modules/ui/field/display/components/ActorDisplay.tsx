@@ -1,4 +1,4 @@
-import { AppChip } from '@/applications/components/AppChip';
+import { AppChip } from '@/ui/field/display/application/components/AppChip';
 import { type FieldActorValue } from '@/object-record/record-field/ui/types/FieldMetadata';
 import { getChipLabel } from '@/ui/field/display/utils/getChipLabel';
 

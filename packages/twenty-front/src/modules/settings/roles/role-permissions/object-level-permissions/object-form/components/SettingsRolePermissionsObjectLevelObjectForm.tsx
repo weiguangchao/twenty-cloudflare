@@ -1,6 +1,4 @@
 import { NavigationButton } from '@/ui/input/components/NavigationButton';
-import { getCoreAgentBreadcrumbLinks } from '@/object-core/agents/utils/getCoreAgentBreadcrumbLinks';
-import { getCoreAgentLink } from '@/object-core/agents/utils/getCoreAgentLink';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { useObjectMetadataItemById } from '@/object-metadata/hooks/useObjectMetadataItemById';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
@@ -11,7 +9,7 @@ import { settingsDraftRoleFamilyState } from '@/settings/roles/states/settingsDr
 import { SettingsPageLayout } from '@/settings/components/layout/SettingsPageLayout';
 import { SettingsWizardStepBar } from '@/settings/components/layout/SettingsWizardStepBar';
 import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { SettingsPath } from 'twenty-shared/types';
 import {
@@ -21,12 +19,8 @@ import {
   mapRLSOperandToRecordFilterOperand,
 } from 'twenty-shared/utils';
 import { themeCssVariables } from 'twenty-ui/theme';
-import { useQuery } from '@apollo/client/react';
 import { checkIfBillingEntitlementIsEnabledOnWorkspace } from '@/workspace/utils/checkIfBillingEntitlementIsEnabledOnWorkspace';
-import {
-  BillingEntitlementKey,
-  FindOneAgentDocument,
-} from '~/generated-metadata/graphql';
+import { BillingEntitlementKey } from '~/generated-metadata/graphql';
 import { useLingui } from '@lingui/react/macro';
 
 type SettingsRolePermissionsObjectLevelObjectFormProps = {
@@ -39,9 +33,7 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
   objectMetadataId,
 }: SettingsRolePermissionsObjectLevelObjectFormProps) => {
   const { t } = useLingui();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const fromAgentId = searchParams.get('fromAgent');
 
   const currentWorkspace = useAtomStateValue(currentWorkspaceState);
 
@@ -49,11 +41,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
     settingsDraftRoleFamilyState,
     roleId,
   );
-
-  const { data: agentData } = useQuery(FindOneAgentDocument, {
-    variables: { id: fromAgentId || '' },
-    skip: !fromAgentId,
-  });
 
   const objectMetadata = useObjectMetadataItemById({
     objectId: objectMetadataId,
@@ -70,49 +57,37 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
   const objectLabelSingular = objectMetadataItem.labelSingular;
   const objectLabelPlural = objectMetadataItem.labelPlural;
 
-  const agent = agentData?.findOneAgent;
+  const breadcrumbLinks = [
+    {
+      children: t`Workspace`,
+      href: getSettingsPath(SettingsPath.General),
+    },
+    {
+      children: t`Members`,
+      href: getSettingsPath(SettingsPath.WorkspaceMembersPage),
+    },
+    {
+      children: t`Roles`,
+      href: getSettingsPath(SettingsPath.Roles),
+    },
+    {
+      children: settingsDraftRole.label,
+      href: getSettingsPath(SettingsPath.RoleDetail, {
+        roleId,
+      }),
+    },
+    {
+      children: t`Permissions · ${objectLabelSingular}`,
+    },
+  ];
 
-  const breadcrumbLinks =
-    fromAgentId && isDefined(agent)
-      ? getCoreAgentBreadcrumbLinks([
-          { children: agent.label, href: getCoreAgentLink(agent.id) },
-          { children: t`Permissions · ${objectLabelSingular}` },
-        ])
-      : [
-          {
-            children: t`Workspace`,
-            href: getSettingsPath(SettingsPath.General),
-          },
-          {
-            children: t`Members`,
-            href: getSettingsPath(SettingsPath.WorkspaceMembersPage),
-          },
-          {
-            children: t`Roles`,
-            href: getSettingsPath(SettingsPath.Roles),
-          },
-          {
-            children: settingsDraftRole.label,
-            href: getSettingsPath(SettingsPath.RoleDetail, {
-              roleId,
-            }),
-          },
-          {
-            children: t`Permissions · ${objectLabelSingular}`,
-          },
-        ];
-
-  const finishButtonPath =
-    fromAgentId && isDefined(agent)
-      ? getCoreAgentLink(agent.id)
-      : getSettingsPath(SettingsPath.RoleDetail, { roleId });
+  const finishButtonPath = getSettingsPath(SettingsPath.RoleDetail, { roleId });
 
   const previousStepPath = `${getSettingsPath(SettingsPath.RoleAddObjectLevel, {
     roleId,
-  })}${fromAgentId ? `?fromAgent=${fromAgentId}` : ''}`;
+  })}`;
 
-  const headerTitle =
-    fromAgentId && isDefined(agent) ? agent.label : settingsDraftRole.label;
+  const headerTitle = settingsDraftRole.label;
 
   const objectPredicates =
     settingsDraftRole.rowLevelPermissionPredicates?.filter(

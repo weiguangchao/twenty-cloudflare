@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react';
 import { Provider as JotaiProvider } from 'jotai';
 import { type ReactNode } from 'react';
 import { SidePanelPages } from 'twenty-shared/types';
-
 import { useSidePanelExpandTarget } from '@/side-panel/hooks/useSidePanelExpandTarget';
 import {
   type SidePanelNavigationStackItem,
@@ -12,12 +11,6 @@ import { type NonPageLayoutPurposeBuiltSidePanelPage } from '@/side-panel/types/
 import { type SidePanelExpandTarget } from '@/side-panel/types/SidePanelExpandTarget';
 import { jotaiStore } from '@/ui/utilities/state/jotai/jotaiStore';
 import { IconDotsVertical } from 'twenty-ui/icon';
-
-const mockAskAiExpandTarget: SidePanelExpandTarget = {
-  label: 'Expand chat',
-  hasExpandShortcut: true,
-  expand: jest.fn(),
-};
 
 let mockRecordExpandTarget: SidePanelExpandTarget | null = null;
 
@@ -46,13 +39,6 @@ jest.mock('twenty-ui/utilities', () => ({
   ...jest.requireActual('twenty-ui/utilities'),
   useIsMobile: () => mockIsMobile,
 }));
-
-jest.mock(
-  '@/side-panel/pages/ask-ai/hooks/useExpandAskAiSidePanelPage',
-  () => ({
-    useExpandAskAiSidePanelPage: () => mockAskAiExpandTarget,
-  }),
-);
 
 jest.mock('@/side-panel/routing/hooks/useExpandRecordSidePanelPage', () => ({
   useExpandRecordSidePanelPage: () => mockRecordExpandTarget,
@@ -117,12 +103,6 @@ describe('useSidePanelExpandTarget', () => {
     mockIsMobile = false;
     mockRecordExpandTarget = RECORD_EXPAND_TARGET;
     jest.clearAllMocks();
-  });
-
-  it('should return the ask ai target when the ask ai page is open', () => {
-    const { result } = renderExpandTarget(SidePanelPages.AskAI);
-
-    expect(result.current).toBe(mockAskAiExpandTarget);
   });
 
   it('should return the record target when a hosted record page is open', () => {

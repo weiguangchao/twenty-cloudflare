@@ -7,7 +7,6 @@ import { isCreatingWorkspaceState } from '@/auth/states/isCreatingWorkspaceState
 import { OnboardingStepAnimatedItem } from '@/onboarding/components/OnboardingStepAnimatedItem';
 import { ONBOARDING_FREE_CREDITS_DEFAULT_VALUE } from '@/onboarding/constants/OnboardingFreeCreditsDefaultValue';
 import { useSetCurrentWorkspaceOnboardingFreeCredits } from '@/onboarding/hooks/useSetCurrentWorkspaceOnboardingFreeCredits';
-import { useSetNextOnboardingStatus } from '@/onboarding/hooks/useSetNextOnboardingStatus';
 import { onboardingActivationFailedState } from '@/onboarding/states/onboardingActivationFailedState';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
@@ -42,7 +41,6 @@ const StyledButtonContainer = styled.div`
 export const WorkspaceActivation = () => {
   const { t } = useLingui();
   const { enqueueToast } = useToast();
-  const setNextOnboardingStatus = useSetNextOnboardingStatus();
   const { loadCurrentUser } = useLoadCurrentUser();
   const [activateWorkspace, { loading: isActivating }] = useMutation(
     ActivateWorkspaceDocument,
@@ -77,7 +75,6 @@ export const WorkspaceActivation = () => {
 
       setIsAppEffectRedirectEnabled(false);
       await loadCurrentUser();
-      setNextOnboardingStatus({ stepHistoryEffect: 'leaveUnchanged' });
       setIsCreatingWorkspace(false);
       setIsAppEffectRedirectEnabled(true);
     } catch (error) {
@@ -94,7 +91,6 @@ export const WorkspaceActivation = () => {
     setOnboardingActivationFailed,
     setIsAppEffectRedirectEnabled,
     setIsCreatingWorkspace,
-    setNextOnboardingStatus,
   ]);
 
   // Guard the one-shot trigger with a ref, not state: a ref mutation is

@@ -1,4 +1,4 @@
-import { type MediaSessionMediaType } from 'twenty-front-component-renderer';
+export type MediaSessionMediaType = 'audio' | 'video';
 
 export type MediaAccessSession = {
   id: string;

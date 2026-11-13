@@ -42,9 +42,6 @@ describe('workspace route objects', () => {
     );
 
     expect(panelRoutes.map(({ path }) => path)).toEqual([
-      AppPath.WorkflowIndexPage,
-      '/objects/workflows',
-      AppPath.WorkflowCoreShowPage,
       AppPath.RecordIndexPage,
       AppPath.RecordShowPage,
       SETTINGS_ROOT_PATH,
@@ -80,7 +77,9 @@ describe('workspace route objects', () => {
       SettingsProtectedRouteWrapper,
     );
     expect(matchRoutes(panelRoutes, '/settings/billing')).toBeNull();
-    expect(matchRoutes(mainRoutes, '/settings/billing')).not.toBeNull();
+    expect(
+      matchRoutes(mainRoutes, '/settings/billing')?.at(-1)?.route.path,
+    ).toBe('*');
   });
 
   it.each([
@@ -155,19 +154,16 @@ describe('workspace route objects', () => {
     ).toBe(false);
   });
 
-  it('allows the core workflow show page to expand', () => {
-    expect(
-      isWorkspaceLocationExpandableFromSidePanel(
-        createWorkspaceRouteObjects({}),
-        '/workflow/core-workflow-id',
-      ),
-    ).toBe(true);
-  });
-
-  it('routes the legacy workflows index to a redirect, not the record index', () => {
-    const [match] =
-      matchRoutes(createWorkspaceRouteObjects({}), '/objects/workflows') ?? [];
-
-    expect(match?.route.path).toBe('/objects/workflows');
+  it.each([
+    '/workflow/id',
+    '/chat/id',
+    '/settings/ai',
+    '/settings/applications',
+    '/settings/billing',
+  ])('does not expose a removed feature at %s', (path) => {
+    const matches = matchRoutes(createWorkspaceRouteObjects({}), path);
+    expect(matches?.every(({ route }) => route.path === '*') ?? true).toBe(
+      true,
+    );
   });
 });

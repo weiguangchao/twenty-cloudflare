@@ -1,5 +1,4 @@
 import { NodeViewWrapper, type NodeViewProps } from '@tiptap/react';
-
 import { SettingsValidationRuleFieldChip } from '@/validation-rules/components/SettingsValidationRuleFieldChip';
 
 type SettingsValidationRuleFieldNodeViewProps = NodeViewProps;

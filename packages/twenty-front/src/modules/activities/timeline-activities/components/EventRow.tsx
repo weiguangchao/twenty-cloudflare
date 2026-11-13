@@ -2,12 +2,9 @@ import { styled } from '@linaria/react';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useContext } from 'react';
 import { TimelineActivityContext } from '@/activities/timeline-activities/contexts/TimelineActivityContext';
-
 import { TIMELINE_ICON_SLOT_SIZE } from '@/activities/timeline-activities/constants/TimelineIconSlotSize';
 import { EventIconDynamicComponent } from '@/activities/timeline-activities/rows/components/EventIconDynamicComponent';
 import { EventRowDynamicComponent } from '@/activities/timeline-activities/rows/components/EventRowDynamicComponent';
-import { getStandardTimelineActivityRenderer } from '@/activities/timeline-activities/rows/components/StandardTimelineActivityRenderer';
-import { type TimelineActivityRenderer } from '@/activities/timeline-activities/rows/components/TimelineActivityRenderer';
 import { type TimelineActivity } from '@/activities/timeline-activities/types/TimelineActivity';
 import { useTimelineActivityTypes } from '@/activities/timeline-activities/hooks/useTimelineActivityTypes';
 import { getTimelineActivityAction } from '@/activities/timeline-activities/utils/getTimelineActivityAction';
@@ -22,7 +19,6 @@ import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAto
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { themeCssVariables } from 'twenty-ui/theme';
 import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
-import { frontComponentsSelector } from '@/front-components/states/frontComponentsSelector';
 import { isDefined } from 'twenty-shared/utils';
 
 const StyledTimelineItemContainer = styled.div`
@@ -80,24 +76,6 @@ type EventRowProps = {
   event: TimelineActivity;
 };
 
-const getTimelineActivityRenderer = ({
-  standardRenderer,
-  frontComponentId,
-}: {
-  standardRenderer: ReturnType<typeof getStandardTimelineActivityRenderer>;
-  frontComponentId: string | null;
-}): TimelineActivityRenderer | null => {
-  if (isDefined(standardRenderer)) {
-    return { type: 'standard', Component: standardRenderer };
-  }
-
-  if (isDefined(frontComponentId)) {
-    return { type: 'frontComponent', frontComponentId };
-  }
-
-  return null;
-};
-
 export const EventRow = ({
   isLastEvent,
   event,
@@ -114,7 +92,6 @@ export const EventRow = ({
   const recordStore = useAtomFamilyStateValue(recordStoreFamilyState, recordId);
 
   const { timelineActivityTypeMaps } = useTimelineActivityTypes();
-  const frontComponents = useAtomStateValue(frontComponentsSelector);
 
   const { objectMetadataItems } = useObjectMetadataItems();
 
@@ -122,22 +99,6 @@ export const EventRow = ({
     event,
     timelineActivityTypeMaps,
   );
-
-  const rendererUniversalIdentifier =
-    timelineActivityType?.frontComponentUniversalIdentifier;
-  const standardRenderer = getStandardTimelineActivityRenderer(
-    rendererUniversalIdentifier,
-  );
-  const frontComponentId = isDefined(rendererUniversalIdentifier)
-    ? (frontComponents.find(
-        (frontComponent) =>
-          frontComponent.universalIdentifier === rendererUniversalIdentifier,
-      )?.id ?? null)
-    : null;
-  const renderer = getTimelineActivityRenderer({
-    standardRenderer,
-    frontComponentId,
-  });
 
   const timelineActivityAction = getTimelineActivityAction(
     event,
@@ -192,7 +153,7 @@ export const EventRow = ({
             event={event}
             eventAction={timelineActivityAction}
             eventTypeLabel={timelineActivityType?.label}
-            renderer={renderer}
+            renderer={null}
             mainObjectMetadataItem={mainObjectMetadataItem}
             linkedObjectMetadataItem={linkedObjectMetadataItem}
             happensAt={event.happensAt}

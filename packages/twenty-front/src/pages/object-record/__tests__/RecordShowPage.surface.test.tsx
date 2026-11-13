@@ -23,15 +23,6 @@ jest.mock('react-router-dom', () => ({
   Navigate: ({ to }: { to: string }) => <div data-testid="navigate">{to}</div>,
 }));
 
-jest.mock('@/object-core/utils/findCoreObjectShowPage', () => ({
-  findCoreObjectShowPage: (objectNameSingular: string) =>
-    objectNameSingular === 'workflow'
-      ? ({ objectRecordId }: { objectRecordId: string }) => (
-          <div data-testid="core-object-show-page">{objectRecordId}</div>
-        )
-      : undefined,
-}));
-
 jest.mock('@/object-record/record-show/hooks/useRecordShowPage', () => ({
   useRecordShowPage: () => ({
     objectNameSingular: 'person',
@@ -139,33 +130,6 @@ describe('RecordShowPage workspace surface composition', () => {
       loading: false,
       error: undefined,
     };
-  });
-
-  it('delegates core-owned records through the generic core show page', () => {
-    mockParameters = {
-      objectNameSingular: 'workflow',
-      objectRecordId: 'workspace-workflow-1',
-    };
-
-    render(<RecordShowPage />);
-
-    expect(screen.getByTestId('core-object-show-page')).toHaveTextContent(
-      'workspace-workflow-1',
-    );
-    expect(screen.queryByTestId('record-renderer')).not.toBeInTheDocument();
-  });
-
-  it('sends a chat record to the chat page', () => {
-    mockObjectMetadataItems = [{ nameSingular: 'agentChatThread' }];
-    mockParameters = {
-      objectNameSingular: 'agentChatThread',
-      objectRecordId: 'chat-1',
-    };
-
-    render(<RecordShowPage />);
-
-    expect(screen.getByTestId('navigate')).toHaveTextContent('/chat/chat-1');
-    expect(screen.queryByTestId('record-renderer')).not.toBeInTheDocument();
   });
 
   it('keeps the existing main-page chrome and canonical renderer', () => {

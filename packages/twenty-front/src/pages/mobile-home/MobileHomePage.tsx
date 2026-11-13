@@ -1,8 +1,5 @@
-import { GettingStartedSidebarCard } from '@/getting-started/components/GettingStartedSidebarCard';
-import { MobileHomeAiChatSection } from '@/ai/components/MobileHomeAiChatSection';
 import { MainNavigationDrawerNavigationContent } from '@/navigation/components/MainNavigationDrawerNavigationContent';
 import { useDefaultHomePagePath } from '@/navigation/hooks/useDefaultHomePagePath';
-import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
 import { MultiWorkspaceDropdownButton } from '@/navigation/components/MultiWorkspaceDropdown/MultiWorkspaceDropdownButton';
 import { NavigationDrawerFixedContent } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerFixedContent';
 import { NavigationDrawerScrollableContent } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerScrollableContent';
@@ -10,7 +7,6 @@ import { useIsMobile } from 'twenty-ui/utilities';
 import { styled } from '@linaria/react';
 import { Navigate } from 'react-router-dom';
 import { themeCssVariables } from 'twenty-ui/theme';
-import { PermissionFlagType } from '~/generated-metadata/graphql';
 
 const StyledContainer = styled.div`
   box-sizing: border-box;
@@ -32,7 +28,6 @@ const StyledSections = styled.div`
 export const MobileHomePage = () => {
   const isMobile = useIsMobile();
   const { defaultHomePagePath } = useDefaultHomePagePath();
-  const hasAiPermission = useHasPermissionFlag(PermissionFlagType.AI);
 
   // Desktop keeps the drawer, so the page has nothing to show there.
   if (!isMobile) {
@@ -48,8 +43,6 @@ export const MobileHomePage = () => {
       <NavigationDrawerScrollableContent>
         <StyledSections>
           <MainNavigationDrawerNavigationContent />
-          <GettingStartedSidebarCard />
-          {hasAiPermission && <MobileHomeAiChatSection />}
         </StyledSections>
       </NavigationDrawerScrollableContent>
     </StyledContainer>

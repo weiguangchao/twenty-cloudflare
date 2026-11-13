@@ -74,8 +74,7 @@ export const CaptchaProviderScriptLoaderEffect = () => {
         refreshInterval = setInterval(requestFreshCaptchaToken, 110 * 1000);
         break;
       case CaptchaDriverType.TURNSTILE:
-        // Cloudflare Turnstile tokens expire after 500 seconds, refresh at 480 seconds
-        refreshInterval = setInterval(requestFreshCaptchaToken, 480 * 1000);
+        refreshInterval = setInterval(requestFreshCaptchaToken, 240 * 1000);
         break;
       default:
         // Note: hCaptcha has a callback system for expiration that we're not implementing now

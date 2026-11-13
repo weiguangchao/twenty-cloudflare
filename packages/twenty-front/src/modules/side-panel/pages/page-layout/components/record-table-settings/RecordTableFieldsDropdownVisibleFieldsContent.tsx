@@ -1,7 +1,7 @@
 import { RECORD_TABLE_FIELDS_DROPDOWN_PAGE } from '@/side-panel/pages/page-layout/components/record-table-settings/constants/RecordTableFieldsDropdownPage';
 import { ChartSettingsDropdownSection } from '@/side-panel/pages/page-layout/components/chart-settings/ChartSettingsDropdownSection';
 import { DraggableListRow } from '@/ui/layout/draggable-list/components/DraggableListRow';
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { useGetFieldMetadataItemByIdOrThrow } from '@/object-metadata/hooks/useGetFieldMetadataItemById';
 import { useObjectMetadataItemById } from '@/object-metadata/hooks/useObjectMetadataItemById';
 import { getLabelIdentifierFieldMetadataItem } from '@/object-metadata/utils/getLabelIdentifierFieldMetadataItem';

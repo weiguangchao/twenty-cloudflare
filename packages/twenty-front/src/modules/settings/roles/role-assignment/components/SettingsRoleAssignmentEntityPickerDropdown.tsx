@@ -1,12 +1,10 @@
 import { useLingui } from '@lingui/react/macro';
 import { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { useGetIsMetadataItemCustom } from '@/object-metadata/hooks/useGetIsMetadataItemCustom';
 import { Dropdown } from 'twenty-ui/components/navigation';
 import { type FlatAgent } from '@/metadata-store/types/FlatAgent';
 import {
   type ApiKeyForRole,
-  FindManyAgentsDocument,
   GetApiKeysDocument,
 } from '~/generated-metadata/graphql';
 import { normalizeSearchText } from 'twenty-ui/utilities';
@@ -20,59 +18,20 @@ type SettingsRoleAssignmentEntityPickerDropdownProps = {
 };
 
 export const SettingsRoleAssignmentEntityPickerDropdown = ({
-  entityType,
   excludedIds,
   onSelect,
 }: SettingsRoleAssignmentEntityPickerDropdownProps) => {
   const [searchFilter, setSearchFilter] = useState('');
   const { t } = useLingui();
-  const getIsMetadataItemCustom = useGetIsMetadataItemCustom();
 
-  const isAgent = entityType === 'agent';
-  const shouldShowSystemAgents = searchFilter !== '';
-
-  const { data: agentsData, loading: agentsLoading } = useQuery(
-    FindManyAgentsDocument,
-    {
-      skip: !isAgent,
-    },
-  );
-  const { data: apiKeysData, loading: apiKeysLoading } = useQuery(
-    GetApiKeysDocument,
-    {
-      skip: isAgent,
-    },
-  );
-
-  const loading = isAgent ? agentsLoading : apiKeysLoading;
-
-  const entities = useMemo(() => {
-    return ((isAgent
-      ? agentsData?.findManyAgents.filter(
-          (agent) =>
-            getIsMetadataItemCustom(agent) &&
-            (!agent.isSystem || shouldShowSystemAgents),
-        )
-      : apiKeysData?.apiKeys) || []) as EntityData[];
-  }, [
-    isAgent,
-    agentsData?.findManyAgents,
-    apiKeysData?.apiKeys,
-    shouldShowSystemAgents,
-    getIsMetadataItemCustom,
-  ]);
-
-  const placeholder = isAgent ? t`Search agents` : t`Search API keys`;
-
-  const getEmptyStateMessage = () => {
-    if (searchFilter !== '') {
-      return isAgent
-        ? t`No agents match your search`
-        : t`No API keys match your search`;
-    }
-    return isAgent ? t`No agents available` : t`No API keys available`;
-  };
-
+  const { data, loading } = useQuery(GetApiKeysDocument);
+  const entities: ApiKeyForRole[] = (data?.apiKeys ?? []).map((entity) => ({
+    ...entity,
+    __typename: 'ApiKeyForRole',
+  }));
+  const placeholder = t`Search API keys`;
+  const getEmptyStateMessage = () =>
+    searchFilter ? t`No API keys match your search` : t`No API keys available`;
   const filteredEntities = useMemo(() => {
     const searchTerm = normalizeSearchText(searchFilter);
     return entities.filter((entity) => {
@@ -82,18 +41,9 @@ export const SettingsRoleAssignmentEntityPickerDropdown = ({
         return false;
       }
 
-      if (isAgent) {
-        const agent = entity as FlatAgent;
-        return (
-          normalizeSearchText(agent.name).includes(searchTerm) ||
-          normalizeSearchText(agent.label).includes(searchTerm)
-        );
-      }
-      return normalizeSearchText((entity as ApiKeyForRole).name).includes(
-        searchTerm,
-      );
+      return normalizeSearchText(entity.name).includes(searchTerm);
     });
-  }, [entities, searchFilter, excludedIds, isAgent]);
+  }, [entities, searchFilter, excludedIds]);
 
   return (
     <>
@@ -115,7 +65,7 @@ export const SettingsRoleAssignmentEntityPickerDropdown = ({
               key={entity.id}
               onClick={() => onSelect(entity)}
             >
-              {isAgent ? (entity as FlatAgent).label : entity.name}
+              {entity.name}
             </Dropdown.ActionItem>
           ))}
       </Dropdown.Section>

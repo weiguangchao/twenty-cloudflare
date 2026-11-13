@@ -1,10 +1,6 @@
 import { useIsMobile } from 'twenty-ui/utilities';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SettingsPath } from 'twenty-shared/types';
-
-import { useReturnFromExpandedAiChat } from '@/ai/hooks/useReturnFromExpandedAiChat';
-import { useSwitchToNewAiChat } from '@/ai/hooks/useSwitchToNewAiChat';
-import { getExpandedAiChatReturnLocation } from '@/ai/utils/getExpandedAiChatReturnLocation';
 import { useActiveNavigationDrawerMode } from '@/navigation/hooks/useActiveNavigationDrawerMode';
 import { useDefaultHomePagePath } from '@/navigation/hooks/useDefaultHomePagePath';
 import { useIsSettingsDrawer } from '@/navigation/hooks/useIsSettingsDrawer';
@@ -22,18 +18,15 @@ import { navigationMemorizedUrlState } from '@/ui/navigation/states/navigationMe
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
 import { useNavigateSettings } from '~/hooks/useNavigateSettings';
-import { isAiModePath } from '~/utils/isAiModePath';
 
 export const useSwitchNavigationDrawerMode = () => {
   const isMobile = useIsMobile();
-  const location = useLocation();
   const navigate = useNavigate();
   const navigateSettings = useNavigateSettings();
 
   const activeNavigationDrawerMode = useActiveNavigationDrawerMode();
   const isSettingsDrawer = useIsSettingsDrawer();
   const isSettingsPage = useIsSettingsPage();
-  const isAiModePage = isAiModePath(location.pathname);
 
   const navigationMemorizedUrl = useAtomStateValue(navigationMemorizedUrlState);
   const navigationDrawerExpandedMemorized = useAtomStateValue(
@@ -50,17 +43,6 @@ export const useSwitchNavigationDrawerMode = () => {
   );
 
   const { defaultHomePagePath } = useDefaultHomePagePath();
-  const { switchToNewChat } = useSwitchToNewAiChat({
-    shouldOpenInFullPage: true,
-  });
-  const returnFromExpandedAiChat = useReturnFromExpandedAiChat({
-    reopenSidePanel: false,
-    destinationPath: getNavigationDrawerHomeDestination({
-      memorizedUrl: getExpandedAiChatReturnLocation(location.state),
-      defaultHomePagePath,
-    }),
-  });
-
   const switchToNavigationMenu = () => {
     setNavigationDrawerActiveTab(NAVIGATION_DRAWER_TABS.NAVIGATION_MENU);
 
@@ -78,19 +60,8 @@ export const useSwitchNavigationDrawerMode = () => {
       );
       return;
     }
-
-    if (isAiModePage) {
-      returnFromExpandedAiChat();
-    }
   };
 
-  const switchToAiChat = () => {
-    setCurrentMobileNavigationDrawer('main');
-    setNavigationDrawerActiveTab(NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY);
-    switchToNewChat();
-  };
-
-  // AI mode also lists chat history beside other pages, so only the chat and inbox pages make a click a no-op.
   const switchNavigationDrawerMode = (mode: NavigationDrawerActiveTab) => {
     switch (mode) {
       case NAVIGATION_DRAWER_TABS.NAVIGATION_MENU:
@@ -100,12 +71,6 @@ export const useSwitchNavigationDrawerMode = () => {
           return;
         }
         switchToNavigationMenu();
-        break;
-      case NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY:
-        if (isAiModePage) {
-          return;
-        }
-        switchToAiChat();
         break;
       case NAVIGATION_DRAWER_TABS.SETTINGS:
         // The mobile settings drawer can outlive its route (browser back), so check the page, not the drawer.

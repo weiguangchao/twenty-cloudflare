@@ -1,10 +1,6 @@
-import { isDefined } from 'twenty-shared/utils';
-
 import { type CommandMenuContextType } from '@/command-menu-item/contexts/CommandMenuContext';
 import { useCurrentCommandMenuContextApi } from '@/command-menu-item/hooks/useCurrentCommandMenuContextApi';
-
 import { CommandMenuContextProviderContent } from './CommandMenuContextProviderContent';
-import { CommandMenuContextProviderWithWorkflowEnrichment } from './CommandMenuContextProviderWithWorkflowEnrichment';
 
 type CommandMenuContextProviderProps = {
   displayType: CommandMenuContextType['displayType'];
@@ -20,28 +16,6 @@ export const CommandMenuContextProvider = ({
   isInPreviewMode = false,
 }: CommandMenuContextProviderProps) => {
   const commandMenuContextApi = useCurrentCommandMenuContextApi();
-
-  const isWorkflow = commandMenuContextApi.coreObjectName === 'workflow';
-
-  const selectedWorkflowRecordIds = isWorkflow
-    ? commandMenuContextApi.selectedRecords
-        .map((record) => record.id)
-        .filter(isDefined)
-    : [];
-
-  if (selectedWorkflowRecordIds.length > 0) {
-    return (
-      <CommandMenuContextProviderWithWorkflowEnrichment
-        displayType={displayType}
-        containerType={containerType}
-        commandMenuContextApi={commandMenuContextApi}
-        selectedWorkflowRecordIds={selectedWorkflowRecordIds}
-        isInPreviewMode={isInPreviewMode}
-      >
-        {children}
-      </CommandMenuContextProviderWithWorkflowEnrichment>
-    );
-  }
 
   return (
     <CommandMenuContextProviderContent

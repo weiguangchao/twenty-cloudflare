@@ -1,4 +1,3 @@
-import { useOpenEmailInAppOrFallback } from '@/activities/emails/hooks/useOpenEmailInAppOrFallback';
 import { FieldContext } from '@/object-record/record-field/ui/contexts/FieldContext';
 import {
   type FieldEmailsValue,
@@ -23,8 +22,6 @@ export const useGetSecondaryFieldButton = () => {
   const { copyToClipboard } = useCopyToClipboard();
 
   const isEmailField = isFieldEmails(fieldDefinition);
-
-  const { openEmail } = useOpenEmailInAppOrFallback();
 
   const fieldValue = useRecordFieldValue<
     FieldPhonesValue | FieldEmailsValue | FieldLinksValue | undefined
@@ -80,7 +77,7 @@ export const useGetSecondaryFieldButton = () => {
       copyToClipboard(email, t`Email copied to clipboard`);
     };
     openInAppOnClick = () => {
-      openEmail(email);
+      openUrlInNewTab(`mailto:${email}`);
     };
   }
 

@@ -16,9 +16,7 @@ import {
 import { Field } from 'twenty-ui/primitives/input';
 import { Card } from 'twenty-ui/primitives/surfaces';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { FORM_FIELD_PLACEHOLDER_STYLES } from '@/ui/input/constants/FormFieldPlaceholderStyles';
-import { SettingsValidationRuleAskAiButton } from '@/validation-rules/components/SettingsValidationRuleAskAiButton';
 import { SettingsValidationRuleHelperPanel } from '@/validation-rules/components/SettingsValidationRuleHelperPanel';
 import { VALIDATION_RULE_HIGHLIGHT_COLORS } from '@/validation-rules/constants/ValidationRuleHighlightColors';
 import { ValidationRuleExpressionExtension } from '@/validation-rules/extensions/ValidationRuleExpressionExtension';
@@ -273,9 +271,7 @@ export const SettingsValidationRuleExpressionEditor = ({
         <Field.Root>
           <StyledEditor hasError={isDefined(errorMessage)}>
             <EditorContent editor={editor} />
-            <StyledAskAiButtonContainer>
-              <SettingsValidationRuleAskAiButton />
-            </StyledAskAiButtonContainer>
+            <StyledAskAiButtonContainer></StyledAskAiButtonContainer>
           </StyledEditor>
           {isDefined(errorMessage) && (
             <Field.Error match role="alert">

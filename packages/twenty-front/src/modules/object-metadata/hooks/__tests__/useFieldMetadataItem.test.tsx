@@ -3,7 +3,11 @@ import { act } from 'react';
 
 import { useFieldMetadataItem } from '@/object-metadata/hooks/useFieldMetadataItem';
 import { type FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
-import { FieldMetadataType, RelationType } from '~/generated-metadata/graphql';
+import {
+  FieldMetadataType,
+  RelationType,
+  GetCurrentUserDocument as GET_CURRENT_USER,
+} from '~/generated-metadata/graphql';
 
 import {
   FIELD_METADATA_ID,
@@ -20,7 +24,6 @@ import {
   responseData as findManyObjectMetadataItemsResponseData,
 } from '@/object-metadata/hooks/__mocks__/useFindManyObjectMetadataItems';
 import { jestExpectSuccessfulMetadataRequestResult } from '@/object-metadata/hooks/__tests__/utils/jest-expect-metadata-request-status.util';
-import { GET_CURRENT_USER } from '@/users/graphql/queries/getCurrentUser';
 import { mockedUserData } from '~/testing/mock-data/users';
 
 jest.mock('@/object-metadata/hooks/useUpdateOneFieldMetadataItem', () => ({

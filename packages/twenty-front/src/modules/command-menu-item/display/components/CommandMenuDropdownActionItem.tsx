@@ -1,6 +1,6 @@
-import { AppMenuItemIcon } from '@/applications/components/AppMenuItemIcon';
-import { useApplicationChipData } from '@/applications/hooks/useApplicationChipData';
-import { useIsThirdPartyApplication } from '@/applications/hooks/useIsThirdPartyApplication';
+import { AppMenuItemIcon } from '@/ui/field/display/application/components/AppMenuItemIcon';
+import { useApplicationChipData } from '@/ui/field/display/application/hooks/useApplicationChipData';
+import { useIsThirdPartyApplication } from '@/ui/field/display/application/hooks/useIsThirdPartyApplication';
 import { CommandListItemLoader } from '@/command-menu-item/display/components/CommandListItemLoader';
 import { useCommandMenuItemDisplay } from '@/command-menu-item/display/hooks/useCommandMenuItemDisplay';
 import { type CommandMenuItemDefinition } from '@/command-menu-item/types/CommandMenuItemDefinition';

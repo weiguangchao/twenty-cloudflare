@@ -1,4 +1,4 @@
-import { AppChip } from '@/applications/components/AppChip';
+import { AppChip } from '@/ui/field/display/application/components/AppChip';
 import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersState';
 import { type RoleWithPartialMembers } from '@/settings/roles/types/RoleWithPartialMembers';
 import { TableCell } from '@/ui/layout/table/components/TableCell';

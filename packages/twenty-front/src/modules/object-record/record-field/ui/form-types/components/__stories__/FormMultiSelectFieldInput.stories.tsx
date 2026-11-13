@@ -2,7 +2,6 @@ import { FormMultiSelectFieldInput } from '@/object-record/record-field/ui/form-
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { Input } from 'twenty-ui/primitives/input';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormMultiSelectFieldInput> = {
@@ -10,7 +9,7 @@ const meta: Meta<typeof FormMultiSelectFieldInput> = {
   component: FormMultiSelectFieldInput,
   args: { onChange: fn() },
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

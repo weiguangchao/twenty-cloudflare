@@ -1,6 +1,4 @@
 import { MemoryRouterAppNavigatorProvider } from '~/testing/components/MemoryRouterAppNavigatorProvider';
-import { useReturnFromExpandedAiChat } from '@/ai/hooks/useReturnFromExpandedAiChat';
-import { useSwitchToNewAiChat } from '@/ai/hooks/useSwitchToNewAiChat';
 import { useDefaultHomePagePath } from '@/navigation/hooks/useDefaultHomePagePath';
 import { useSwitchNavigationDrawerMode } from '@/navigation/hooks/useSwitchNavigationDrawerMode';
 import { currentMobileNavigationDrawerState } from '@/navigation/states/currentMobileNavigationDrawerState';
@@ -14,9 +12,6 @@ import { act, renderHook } from '@testing-library/react';
 import { createStore, Provider } from 'jotai';
 import { type ReactNode } from 'react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
-
-jest.mock('@/ai/hooks/useReturnFromExpandedAiChat');
-jest.mock('@/ai/hooks/useSwitchToNewAiChat');
 jest.mock('@/navigation/hooks/useDefaultHomePagePath');
 jest.mock('twenty-ui/utilities', () => ({
   ...jest.requireActual('twenty-ui/utilities'),
@@ -26,18 +21,11 @@ jest.mock('twenty-ui/utilities', () => ({
 jest.mock('@/side-panel/hooks/useSidePanelMenu', () => ({
   useSidePanelMenu: () => ({ closeSidePanelMenu: jest.fn() }),
 }));
-jest.mock('@/ai/hooks/useSelectAiChatThread', () => ({
-  useSelectAiChatThread: () => ({ selectAiChatThread: jest.fn() }),
-}));
-jest.mock('@/side-panel/hooks/useOpenAskAiPageInSidePanel', () => ({
-  useOpenAskAiPageInSidePanel: () => ({ openAskAiPage: jest.fn() }),
-}));
 
 const DEFAULT_HOME_PAGE_PATH = '/objects/companies';
 const AI_CHAT_PATH = '/chat/20202020-0687-4c41-b707-ed1bfca972a7';
 
 const mockSwitchToNewChat = jest.fn();
-const mockReturnFromExpandedAiChat = jest.fn();
 
 const renderSwitchNavigationDrawerMode = ({
   pathname,
@@ -82,13 +70,6 @@ describe('useSwitchNavigationDrawerMode', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorage.clear();
-
-    jest.mocked(useSwitchToNewAiChat).mockReturnValue({
-      switchToNewChat: mockSwitchToNewChat,
-    });
-    jest
-      .mocked(useReturnFromExpandedAiChat)
-      .mockReturnValue(mockReturnFromExpandedAiChat);
     jest.mocked(useDefaultHomePagePath).mockReturnValue({
       defaultHomePagePath: DEFAULT_HOME_PAGE_PATH,
     });
@@ -113,69 +94,6 @@ describe('useSwitchNavigationDrawerMode', () => {
     expect(store.get(navigationDrawerActiveTabState.atom)).toBe(
       NAVIGATION_DRAWER_TABS.NAVIGATION_MENU,
     );
-  });
-
-  it('leaves settings for the default home page when it was opened from the chat', () => {
-    const { result } = renderSwitchNavigationDrawerMode({
-      pathname: '/settings/profile',
-      memorizedUrl: AI_CHAT_PATH,
-    });
-
-    act(() =>
-      result.current.switchNavigationDrawerMode(
-        NAVIGATION_DRAWER_TABS.NAVIGATION_MENU,
-      ),
-    );
-
-    expect(result.current.location.pathname).toBe(DEFAULT_HOME_PAGE_PATH);
-  });
-
-  it('returns from the chat page without navigating itself', () => {
-    const { result, store } = renderSwitchNavigationDrawerMode({
-      pathname: AI_CHAT_PATH,
-    });
-
-    act(() =>
-      result.current.switchNavigationDrawerMode(
-        NAVIGATION_DRAWER_TABS.NAVIGATION_MENU,
-      ),
-    );
-
-    expect(mockReturnFromExpandedAiChat).toHaveBeenCalled();
-    expect(store.get(navigationDrawerActiveTabState.atom)).toBe(
-      NAVIGATION_DRAWER_TABS.NAVIGATION_MENU,
-    );
-  });
-
-  it('opens the chat page from the settings mode', () => {
-    const { result, store } = renderSwitchNavigationDrawerMode({
-      pathname: '/settings/profile',
-    });
-
-    act(() =>
-      result.current.switchNavigationDrawerMode(
-        NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY,
-      ),
-    );
-
-    expect(mockSwitchToNewChat).toHaveBeenCalled();
-    expect(store.get(navigationDrawerActiveTabState.atom)).toBe(
-      NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY,
-    );
-  });
-
-  it('opens the chat page when the chat history is listed on another page', () => {
-    const { result } = renderSwitchNavigationDrawerMode({
-      pathname: '/objects/people',
-    });
-
-    act(() =>
-      result.current.switchNavigationDrawerMode(
-        NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY,
-      ),
-    );
-
-    expect(mockSwitchToNewChat).toHaveBeenCalled();
   });
 
   it.each([AI_CHAT_PATH, '/inbox'])(
@@ -246,39 +164,6 @@ describe('useSwitchNavigationDrawerMode', () => {
       expect(store.get(isNavigationDrawerExpandedState.atom)).toBe(isExpanded);
     },
   );
-
-  it('stays collapsed through Home → Settings → AI → Home', () => {
-    jest.mocked(useSwitchToNewAiChat).mockImplementation(
-      jest.requireActual<{
-        useSwitchToNewAiChat: typeof useSwitchToNewAiChat;
-      }>('@/ai/hooks/useSwitchToNewAiChat').useSwitchToNewAiChat,
-    );
-    jest.mocked(useReturnFromExpandedAiChat).mockImplementation(
-      jest.requireActual<{
-        useReturnFromExpandedAiChat: typeof useReturnFromExpandedAiChat;
-      }>('@/ai/hooks/useReturnFromExpandedAiChat').useReturnFromExpandedAiChat,
-    );
-    const { result, store } = renderSwitchNavigationDrawerMode({
-      pathname: DEFAULT_HOME_PAGE_PATH,
-    });
-    act(() => store.set(isNavigationDrawerExpandedState.atom, false));
-
-    expect(result.current.location.pathname).toBe(DEFAULT_HOME_PAGE_PATH);
-    expect(store.get(isNavigationDrawerExpandedState.atom)).toBe(false);
-
-    for (const [mode, pathname] of [
-      [NAVIGATION_DRAWER_TABS.SETTINGS, '/settings/profile'],
-      [NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY, '/chat'],
-      [NAVIGATION_DRAWER_TABS.NAVIGATION_MENU, DEFAULT_HOME_PAGE_PATH],
-    ] as const) {
-      window.history.replaceState(null, '', result.current.location.pathname);
-      act(() => result.current.switchNavigationDrawerMode(mode));
-
-      expect(result.current.location.pathname).toBe(pathname);
-      expect(store.get(isNavigationDrawerExpandedState.atom)).toBe(false);
-    }
-    window.history.replaceState(null, '', '/');
-  });
 
   it('opens the settings drawer on mobile even when it was closed', () => {
     jest.mocked(useIsMobile).mockReturnValue(true);

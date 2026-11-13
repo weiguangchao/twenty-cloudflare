@@ -1,10 +1,3 @@
-jest.mock(
-  '@/onboarding/effect-components/WorkspaceSetupChatSidePanelEffect',
-  () => ({
-    WorkspaceSetupChatSidePanelEffect: () => null,
-  }),
-);
-
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { useEffect } from 'react';
 import {
@@ -51,10 +44,6 @@ jest.mock('@/side-panel/components/SidePanelForDesktop', () => ({
 
 jest.mock('@/command-menu/components/CommandMenuForMobile', () => ({
   CommandMenuForMobile: () => null,
-}));
-
-jest.mock('@/log-console/components/LogConsole', () => ({
-  LogConsole: () => null,
 }));
 
 jest.mock('@/side-panel/routing/components/SidePanelPathUrlSyncEffect', () => ({

@@ -1,4 +1,4 @@
-import { AppChip } from '@/applications/components/AppChip';
+import { AppChip } from '@/ui/field/display/application/components/AppChip';
 import { Avatar, Chip } from 'twenty-ui/primitives/data-display';
 import { isDefined } from 'twenty-shared/utils';
 import { useLingui } from '@lingui/react/macro';

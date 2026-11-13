@@ -1,8 +1,6 @@
 import { lazy, useMemo } from 'react';
-
 import { createBrowserRouter } from 'react-router-dom';
 import { AppPath } from 'twenty-shared/types';
-
 import { LazyRoute } from '@/app/components/LazyRoute';
 import { WorkspaceAppProviders } from '@/app/components/WorkspaceAppProviders';
 import { WorkspaceRouteObjectsProvider } from '@/app/routing/components/WorkspaceRouteObjectsProvider';
@@ -35,12 +33,6 @@ const PasswordReset = lazy(() =>
   })),
 );
 
-const Authorize = lazy(() =>
-  import('~/pages/auth/Authorize').then((module) => ({
-    default: module.Authorize,
-  })),
-);
-
 const WorkspaceActivation = lazyWithPreload(() =>
   import('~/pages/onboarding/WorkspaceActivation').then((module) => ({
     default: module.WorkspaceActivation,
@@ -53,43 +45,16 @@ const CreateProfile = lazyWithPreload(() =>
   })),
 );
 
-const SyncEmails = lazyWithPreload(() =>
-  import('~/pages/onboarding/SyncEmails').then((module) => ({
-    default: module.SyncEmails,
-  })),
-);
-
 const InviteTeam = lazyWithPreload(() =>
   import('~/pages/onboarding/InviteTeam').then((module) => ({
     default: module.InviteTeam,
   })),
 );
 
-const ChooseYourPlan = lazyWithPreload(() =>
-  import('~/pages/onboarding/ChooseYourPlan').then((module) => ({
-    default: module.ChooseYourPlan,
-  })),
-);
-
-const PaymentSuccess = lazy(() =>
-  import('~/pages/onboarding/PaymentSuccess').then((module) => ({
-    default: module.PaymentSuccess,
-  })),
-);
-
-const BookCall = lazyWithPreload(() =>
-  import('~/pages/onboarding/BookCall').then((module) => ({
-    default: module.BookCall,
-  })),
-);
-
 const preloadOnboardingPages = () => {
   WorkspaceActivation.preload();
   CreateProfile.preload();
-  SyncEmails.preload();
   InviteTeam.preload();
-  BookCall.preload();
-  ChooseYourPlan.preload();
 
   return null;
 };
@@ -142,14 +107,6 @@ const createWorkspaceAppRouter = ({
                   element: (
                     <LazyRoute fallback={null}>
                       <PasswordReset />
-                    </LazyRoute>
-                  ),
-                },
-                {
-                  path: AppPath.PlanRequiredSuccess,
-                  element: (
-                    <LazyRoute fallback={<OnboardingPageLoader />}>
-                      <PaymentSuccess />
                     </LazyRoute>
                   ),
                 },
@@ -208,14 +165,6 @@ const createWorkspaceAppRouter = ({
                       ),
                     },
                     {
-                      path: AppPath.SyncEmails,
-                      element: (
-                        <LazyRoute fallback={<OnboardingStepPageLoader />}>
-                          <SyncEmails />
-                        </LazyRoute>
-                      ),
-                    },
-                    {
                       path: AppPath.InviteTeam,
                       element: (
                         <LazyRoute fallback={<OnboardingStepPageLoader />}>
@@ -223,31 +172,7 @@ const createWorkspaceAppRouter = ({
                         </LazyRoute>
                       ),
                     },
-                    {
-                      path: AppPath.BookCall,
-                      element: (
-                        <LazyRoute fallback={<OnboardingStepPageLoader />}>
-                          <BookCall />
-                        </LazyRoute>
-                      ),
-                    },
-                    {
-                      path: AppPath.PlanRequired,
-                      element: (
-                        <LazyRoute fallback={<OnboardingStepPageLoader />}>
-                          <ChooseYourPlan />
-                        </LazyRoute>
-                      ),
-                    },
                   ],
-                },
-                {
-                  path: AppPath.Authorize,
-                  element: (
-                    <LazyRoute>
-                      <Authorize />
-                    </LazyRoute>
-                  ),
                 },
               ],
             },

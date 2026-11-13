@@ -1,4 +1,3 @@
-import { DeleteCoreWorkflowsCommand } from '@/object-core/workflows/components/DeleteCoreWorkflowsCommand';
 import { type RecordGqlOperationFilter } from 'twenty-shared/types';
 import { HeadlessEngineCommandWrapperEffect } from '@/command-menu-item/engine-command/components/HeadlessEngineCommandWrapperEffect';
 import { useHeadlessCommandContextApi } from '@/command-menu-item/engine-command/hooks/useHeadlessCommandContextApi';
@@ -81,11 +80,4 @@ const DeleteWorkspaceRecordsCommand = () => {
   return <HeadlessEngineCommandWrapperEffect execute={handleExecute} />;
 };
 
-export const DeleteRecordsCommand = () => {
-  const { coreObjectName } = useHeadlessCommandContextApi();
-  return coreObjectName === 'workflow' ? (
-    <DeleteCoreWorkflowsCommand />
-  ) : (
-    <DeleteWorkspaceRecordsCommand />
-  );
-};
+export const DeleteRecordsCommand = DeleteWorkspaceRecordsCommand;

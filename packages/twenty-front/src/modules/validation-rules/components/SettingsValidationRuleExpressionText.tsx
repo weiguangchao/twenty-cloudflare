@@ -1,7 +1,6 @@
 import { styled } from '@linaria/react';
 import { type ReactNode } from 'react';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { VALIDATION_RULE_HIGHLIGHT_COLORS } from '@/validation-rules/constants/ValidationRuleHighlightColors';
 import { type ValidationRuleExpressionHighlightKind } from '@/validation-rules/types/ValidationRuleExpressionHighlight';
 import { computeValidationRuleExpressionHighlights } from '@/validation-rules/utils/computeValidationRuleExpressionHighlights';

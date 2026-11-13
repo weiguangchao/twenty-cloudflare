@@ -4,7 +4,6 @@ import { isDefined } from 'twenty-shared/utils';
 import { ListItem } from 'twenty-ui/primitives/navigation';
 import { useIcons } from 'twenty-ui/icon/provider';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { SettingsValidationRuleHelperDetails } from '@/validation-rules/components/SettingsValidationRuleHelperDetails';
 import { type ValidationRuleEditorField } from '@/validation-rules/types/ValidationRuleEditorField';
 import { type ValidationRuleHelperItem } from '@/validation-rules/types/ValidationRuleHelperItem';

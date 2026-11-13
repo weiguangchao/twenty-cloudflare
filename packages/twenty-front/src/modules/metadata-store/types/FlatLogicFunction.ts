@@ -1,3 +1,2 @@
-import { type LogicFunction } from '@/logic-functions/types/LogicFunction';
-
+import { type LogicFunction } from '~/generated-metadata/graphql';
 export type FlatLogicFunction = LogicFunction;

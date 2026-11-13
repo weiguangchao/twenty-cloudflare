@@ -1,5 +1,4 @@
 import { NavigationButton } from '@/ui/input/components/NavigationButton';
-
 import { SettingsPageLayout } from '@/settings/components/layout/SettingsPageLayout';
 import { SettingsTabBar } from '@/settings/components/layout/SettingsTabBar';
 import { useSettingsActiveTabId } from '@/settings/components/layout/useSettingsActiveTabId';
@@ -17,21 +16,9 @@ import { useLingui } from '@lingui/react/macro';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
 import { Section } from 'twenty-ui/components/layout';
-import {
-  IconApi,
-  IconApps,
-  IconPlus,
-  IconSparkle2,
-  IconTerminal2,
-  IconWebhook,
-} from 'twenty-ui/icon';
+import { IconApi, IconPlus, IconSparkle2, IconWebhook } from 'twenty-ui/icon';
 import { themeCssVariables } from 'twenty-ui/theme';
 import { useIsMobile } from 'twenty-ui/utilities';
-import AppsCoverDark from '~/pages/settings/applications/assets/cover-dark.png';
-import AppsCoverLight from '~/pages/settings/applications/assets/cover-light.png';
-import { SettingsDevelopersClaimErrorTabEffect } from '~/pages/settings/developers/components/SettingsDevelopersClaimErrorTabEffect';
-import { SettingsDevelopersAppsTab } from '~/pages/settings/developers/tabs/SettingsDevelopersAppsTab';
-import { SettingsDevelopersCliTab } from '~/pages/settings/developers/tabs/SettingsDevelopersCliTab';
 
 type TabKey =
   (typeof SETTINGS_DEVELOPERS_TABS.TABS_IDS)[keyof typeof SETTINGS_DEVELOPERS_TABS.TABS_IDS];
@@ -66,16 +53,6 @@ export const SettingsDevelopers = () => {
       title: t`Webhooks`,
       Icon: IconWebhook,
     },
-    {
-      id: SETTINGS_DEVELOPERS_TABS.TABS_IDS.APPS,
-      title: t`Apps`,
-      Icon: IconApps,
-    },
-    {
-      id: SETTINGS_DEVELOPERS_TABS.TABS_IDS.CLI,
-      title: t`CLI`,
-      Icon: IconTerminal2,
-    },
   ];
 
   const activeTab: TabKey =
@@ -83,9 +60,6 @@ export const SettingsDevelopers = () => {
       SETTINGS_DEVELOPERS_TABS.COMPONENT_INSTANCE_ID,
       tabs.map((tab) => tab.id),
     ) as TabKey) ?? SETTINGS_DEVELOPERS_TABS.TABS_IDS.API;
-
-  const isAppsTab = activeTab === SETTINGS_DEVELOPERS_TABS.TABS_IDS.APPS;
-  const isCliTab = activeTab === SETTINGS_DEVELOPERS_TABS.TABS_IDS.CLI;
 
   return (
     <SettingsPageLayout
@@ -105,29 +79,21 @@ export const SettingsDevelopers = () => {
         { children: t`Developers` },
       ]}
     >
-      <SettingsDevelopersClaimErrorTabEffect
-        tabListId={SETTINGS_DEVELOPERS_TABS.COMPONENT_INSTANCE_ID}
-        appsTabId={SETTINGS_DEVELOPERS_TABS.TABS_IDS.APPS}
-      />
       <SettingsPageContainer>
         <Section.Root>
           <SettingsDiscoveryHeroCard
-            lightSrc={isAppsTab ? AppsCoverLight : PlaygroundCoverLight}
-            darkSrc={isAppsTab ? AppsCoverDark : PlaygroundCoverDark}
+            lightSrc={PlaygroundCoverLight}
+            darkSrc={PlaygroundCoverDark}
             instanceIdPrefix={SETTINGS_DEVELOPERS_HERO_INSTANCE_ID_PREFIX}
-            tabs={
-              isAppsTab || isCliTab
-                ? []
-                : [
-                    {
-                      id: 'api_webhook_walkthrough',
-                      title: t`Walkthrough`,
-                      Icon: IconSparkle2,
-                      vimeoId: '1217967646',
-                      hasSound: true,
-                    },
-                  ]
-            }
+            tabs={[
+              {
+                id: 'api_webhook_walkthrough',
+                title: t`Walkthrough`,
+                Icon: IconSparkle2,
+                vimeoId: '1217967646',
+                hasSound: true,
+              },
+            ]}
             playButtonAriaLabel={t`Watch API demo`}
           />
         </Section.Root>
@@ -183,10 +149,6 @@ export const SettingsDevelopers = () => {
             </Section.Root>
           </StyledTabContent>
         )}
-
-        {isAppsTab && <SettingsDevelopersAppsTab />}
-
-        {isCliTab && <SettingsDevelopersCliTab />}
       </SettingsPageContainer>
     </SettingsPageLayout>
   );

@@ -1,6 +1,6 @@
 import { type CommandMenuItemDefinition } from '@/command-menu-item/types/CommandMenuItemDefinition';
-import { AppMenuItem } from '@/applications/components/AppMenuItem';
-import { useIsThirdPartyApplication } from '@/applications/hooks/useIsThirdPartyApplication';
+import { AppMenuItem } from '@/ui/field/display/application/components/AppMenuItem';
+import { useIsThirdPartyApplication } from '@/ui/field/display/application/hooks/useIsThirdPartyApplication';
 import { CommandMenuContext } from '@/command-menu-item/contexts/CommandMenuContext';
 import { CommandMenuItemButtonHotkeyEffect } from '@/command-menu-item/display/components/CommandMenuItemButtonHotkeyEffect';
 import { CommandListItemLoader } from '@/command-menu-item/display/components/CommandListItemLoader';

@@ -1,27 +1,19 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 module.exports = {
-  schema:
-    (process.env.REACT_APP_SERVER_BASE_URL ?? 'http://localhost:3000') +
-    '/graphql',
+  schema: '../twenty-worker/contract/worker-core-schema.graphql',
   documents: [
-    './src/modules/workflow/**/graphql/**/*.{ts,tsx}',
-    './src/modules/object-core/**/graphql/**/*.{ts,tsx}',
-    './src/modules/activities/emails/graphql/queries/**/*.{ts,tsx}',
-    './src/modules/activities/emails/graphql/operation-signatures/**/*.{ts,tsx}',
-    './src/modules/activities/calendar/graphql/queries/**/*.{ts,tsx}',
     './src/modules/command-menu/graphql/**/*.{ts,tsx}',
-    './src/modules/ai/graphql/mutations/answerToolCall.ts',
 
     '!./src/**/*.test.{ts,tsx}',
     '!./src/**/*.stories.{ts,tsx}',
     '!./src/**/__mocks__/*.ts',
   ],
+  ignoreNoDocuments: true,
   overwrite: true,
   config: {
     defaultScalarType: 'any',
     scalars: {
       DateTime: 'string',
+      UUID: 'string',
     },
     namingConvention: { enumValues: 'keep' },
     enumType: 'native',

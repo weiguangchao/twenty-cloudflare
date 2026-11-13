@@ -1,0 +1,4860 @@
+"""A UUID scalar type"""
+scalar UUID
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+Date custom scalar type, as a string in format yyyy-MM-dd (ex: 2025-12-31), we don't signify time nor timezone for DATE.
+"""
+scalar Date
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""A custom scalar that represents a cursor for pagination"""
+scalar Cursor
+
+type PageInfo {
+  startCursor: ConnectionCursor
+  endCursor: ConnectionCursor
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+"""Cursor for paging through collections"""
+scalar ConnectionCursor
+
+"""This enum is used to specify the order of results"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+
+  """Ascending order, nulls last"""
+  AscNullsLast
+
+  """Descending order, nulls first"""
+  DescNullsFirst
+
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+
+input GroupByDateGranularityInput {
+  """
+  Date granularity (e.g. day, month, quarter, year, week, day of the week, quarter of the year, month of the year)
+  """
+  granularity: DateGranularityEnum
+
+  """
+  First day of the week (only applicable when granularity is WEEK). Defaults to MONDAY if not specified.
+  """
+  weekStartDay: FirstDayOfTheWeek
+
+  """
+  Timezone used to compute the aggregate value and in which is expressed the granular period, for example a day in UTC-12 is not the same period as a day in UTC+3, the requester needs to precise this otherwise the server will assume a timezone and the requester cannot know in which timezone the aggregate values are computed.
+  """
+  timeZone: String
+}
+
+"""
+Date granularity (e.g. day, month, quarter, year, week, day of the week, quarter of the year, month of the year)
+"""
+enum DateGranularityEnum {
+  DAY
+  MONTH
+  QUARTER
+  YEAR
+  WEEK
+  DAY_OF_THE_WEEK
+  MONTH_OF_THE_YEAR
+  QUARTER_OF_THE_YEAR
+  NONE
+}
+
+"""First day of the week (MONDAY, SUNDAY, SATURDAY)"""
+enum FirstDayOfTheWeek {
+  MONDAY
+  SUNDAY
+  SATURDAY
+}
+
+input OrderByDateGranularityInput {
+  orderBy: OrderByDirection
+  granularity: DateGranularityEnum
+}
+
+input UUIDFilter {
+  eq: UUID
+  gt: UUID
+  gte: UUID
+  in: [UUID]
+  lt: UUID
+  lte: UUID
+  neq: UUID
+  is: FilterIs
+}
+
+"""This enum to filter by nullability"""
+enum FilterIs {
+  """Nulish values"""
+  NULL
+
+  """Non-nulish values"""
+  NOT_NULL
+}
+
+input DateTimeFilter {
+  eq: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  neq: DateTime
+  is: FilterIs
+  gtField: String
+  gteField: String
+  ltField: String
+  lteField: String
+}
+
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  neq: String
+  startsWith: String
+  endsWith: String
+
+  """Pattern match with % wildcard (e.g. %value%)"""
+  like: String
+
+  """Case-insensitive match with % wildcard (e.g. %value%)"""
+  ilike: String
+  regex: String
+  iregex: String
+  is: FilterIs
+}
+
+"""A custom scalar type for PostgreSQL tsvector fields"""
+scalar TSVector
+
+input TSVectorFilter {
+  search: String
+}
+
+type FullName {
+  firstName: String
+  lastName: String
+}
+
+input FullNameFilterInput {
+  firstName: StringFilter
+  lastName: StringFilter
+}
+
+input FullNameOrderByInput {
+  firstName: OrderByDirection
+  lastName: OrderByDirection
+}
+
+input FullNameGroupByInput {
+  firstName: Boolean
+  lastName: Boolean
+}
+
+input FullNameCreateInput {
+  firstName: String
+  lastName: String
+}
+
+input FullNameUpdateInput {
+  firstName: String
+  lastName: String
+}
+
+type Actor {
+  source: ActorSourceEnum!
+  workspaceMemberId: UUID
+  name: String!
+  context: ActorContext
+}
+
+enum ActorSourceEnum {
+  """email"""
+  EMAIL
+
+  """calendar"""
+  CALENDAR
+
+  """workflow"""
+  WORKFLOW
+
+  """agent"""
+  AGENT
+
+  """api"""
+  API
+
+  """import"""
+  IMPORT
+
+  """manual"""
+  MANUAL
+
+  """system"""
+  SYSTEM
+
+  """webhook"""
+  WEBHOOK
+
+  """application"""
+  APPLICATION
+}
+
+type ActorContext {
+  provider: String
+  applicationId: String
+}
+
+input ActorFilterInput {
+  source: ActorSourceEnumFilter
+  workspaceMemberId: UUIDFilter
+  name: StringFilter
+  context: RawJsonFilter
+}
+
+input ActorSourceEnumFilter {
+  eq: ActorSourceEnum
+  neq: ActorSourceEnum
+  in: [ActorSourceEnum]
+  containsAny: [ActorSourceEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: ActorSourceEnum
+  gte: ActorSourceEnum
+  lt: ActorSourceEnum
+  lte: ActorSourceEnum
+}
+
+input RawJsonFilter {
+  is: FilterIs
+
+  """Pattern match with % wildcard (e.g. %value%)"""
+  like: String
+
+  """Case-insensitive pattern match with % wildcard (e.g. %value%)"""
+  ilike: String
+}
+
+input ActorOrderByInput {
+  source: OrderByDirection
+  workspaceMemberId: OrderByDirection
+  name: OrderByDirection
+  context: OrderByDirection
+}
+
+input ActorGroupByInput {
+  source: Boolean
+  workspaceMemberId: Boolean
+  name: Boolean
+}
+
+input ActorCreateInput {
+  source: ActorSourceEnum!
+  context: ActorContextInput
+}
+
+input ActorContextInput {
+  provider: String
+}
+
+input ActorUpdateInput {
+  source: ActorSourceEnum
+  context: ActorContextInput
+}
+
+"""A custom scalar type for representing record position in a list"""
+scalar Position
+
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  neq: Float
+  is: FilterIs
+  gtField: String
+  gteField: String
+  ltField: String
+  lteField: String
+}
+
+type Currency {
+  amountMicros: BigFloat
+  currencyCode: String
+}
+
+"""A custom scalar type for representing big floating point numbers"""
+scalar BigFloat
+
+input CurrencyFilterInput {
+  amountMicros: BigFloatFilter
+  currencyCode: StringFilter
+}
+
+input BigFloatFilter {
+  eq: BigFloat
+  gt: BigFloat
+  gte: BigFloat
+  in: [BigFloat!]
+  lt: BigFloat
+  lte: BigFloat
+  neq: BigFloat
+  is: FilterIs
+  gtField: String
+  gteField: String
+  ltField: String
+  lteField: String
+}
+
+input CurrencyOrderByInput {
+  amountMicros: OrderByDirection
+  currencyCode: OrderByDirection
+}
+
+input CurrencyGroupByInput {
+  amountMicros: Boolean
+  currencyCode: Boolean
+}
+
+input CurrencyCreateInput {
+  amountMicros: BigFloat
+  currencyCode: String
+}
+
+input CurrencyUpdateInput {
+  amountMicros: BigFloat
+  currencyCode: String
+}
+
+type Emails {
+  primaryEmail: String
+  additionalEmails: [String!]
+}
+
+input EmailsFilterInput {
+  primaryEmail: StringFilter
+  additionalEmails: RawJsonFilter
+}
+
+input EmailsOrderByInput {
+  primaryEmail: OrderByDirection
+  additionalEmails: OrderByDirection
+}
+
+input EmailsGroupByInput {
+  primaryEmail: Boolean
+}
+
+input EmailsCreateInput {
+  primaryEmail: String
+  additionalEmails: [String!]
+}
+
+input EmailsUpdateInput {
+  primaryEmail: String
+  additionalEmails: [String!]
+}
+
+type Phones {
+  primaryPhoneNumber: String
+  primaryPhoneCountryCode: String
+  primaryPhoneCallingCode: String
+  additionalPhones: [AdditionalPhone!]
+}
+
+type AdditionalPhone {
+  number: String
+  callingCode: String
+  countryCode: String
+}
+
+input PhonesFilterInput {
+  primaryPhoneNumber: StringFilter
+  primaryPhoneCountryCode: StringFilter
+  primaryPhoneCallingCode: StringFilter
+  additionalPhones: RawJsonFilter
+}
+
+input PhonesOrderByInput {
+  primaryPhoneNumber: OrderByDirection
+  primaryPhoneCountryCode: OrderByDirection
+  primaryPhoneCallingCode: OrderByDirection
+  additionalPhones: OrderByDirection
+}
+
+input PhonesGroupByInput {
+  primaryPhoneNumber: Boolean
+  primaryPhoneCountryCode: Boolean
+  primaryPhoneCallingCode: Boolean
+}
+
+input PhonesCreateInput {
+  primaryPhoneNumber: String
+  primaryPhoneCountryCode: String
+  primaryPhoneCallingCode: String
+  additionalPhones: [AdditionalPhoneInput!]
+}
+
+input AdditionalPhoneInput {
+  number: String
+  callingCode: String
+  countryCode: String
+}
+
+input PhonesUpdateInput {
+  primaryPhoneNumber: String
+  primaryPhoneCountryCode: String
+  primaryPhoneCallingCode: String
+  additionalPhones: [AdditionalPhoneInput!]
+}
+
+type FileObject {
+  fileId: UUID!
+  label: String!
+  extension: String
+  url: String
+}
+
+input FileItemInput {
+  fileId: UUID!
+  label: String!
+}
+
+type Links {
+  primaryLinkLabel: String
+  primaryLinkUrl: String
+  secondaryLinks: [SecondaryLink!]
+}
+
+type SecondaryLink {
+  label: String
+  url: String
+}
+
+input LinksFilterInput {
+  primaryLinkLabel: StringFilter
+  primaryLinkUrl: StringFilter
+  secondaryLinks: RawJsonFilter
+}
+
+input LinksOrderByInput {
+  primaryLinkLabel: OrderByDirection
+  primaryLinkUrl: OrderByDirection
+  secondaryLinks: OrderByDirection
+}
+
+input LinksGroupByInput {
+  primaryLinkLabel: Boolean
+  primaryLinkUrl: Boolean
+}
+
+input LinksCreateInput {
+  primaryLinkLabel: String
+  primaryLinkUrl: String
+  secondaryLinks: [SecondaryLinkInput!]
+}
+
+input SecondaryLinkInput {
+  label: String
+  url: String
+}
+
+input LinksUpdateInput {
+  primaryLinkLabel: String
+  primaryLinkUrl: String
+  secondaryLinks: [SecondaryLinkInput!]
+}
+
+type Address {
+  addressStreet1: String
+  addressStreet2: String
+  addressCity: String
+  addressPostcode: String
+  addressState: String
+  addressCountry: String
+  addressLat: BigFloat
+  addressLng: BigFloat
+}
+
+input AddressFilterInput {
+  addressStreet1: StringFilter
+  addressStreet2: StringFilter
+  addressCity: StringFilter
+  addressPostcode: StringFilter
+  addressState: StringFilter
+  addressCountry: StringFilter
+  addressLat: BigFloatFilter
+  addressLng: BigFloatFilter
+}
+
+input AddressOrderByInput {
+  addressStreet1: OrderByDirection
+  addressStreet2: OrderByDirection
+  addressCity: OrderByDirection
+  addressPostcode: OrderByDirection
+  addressState: OrderByDirection
+  addressCountry: OrderByDirection
+  addressLat: OrderByDirection
+  addressLng: OrderByDirection
+}
+
+input AddressGroupByInput {
+  addressStreet1: Boolean
+  addressStreet2: Boolean
+  addressCity: Boolean
+  addressPostcode: Boolean
+  addressState: Boolean
+  addressCountry: Boolean
+  addressLat: Boolean
+  addressLng: Boolean
+}
+
+input AddressCreateInput {
+  addressStreet1: String
+  addressStreet2: String
+  addressCity: String
+  addressPostcode: String
+  addressState: String
+  addressCountry: String
+  addressLat: BigFloat
+  addressLng: BigFloat
+}
+
+input AddressUpdateInput {
+  addressStreet1: String
+  addressStreet2: String
+  addressCity: String
+  addressPostcode: String
+  addressState: String
+  addressCountry: String
+  addressLat: BigFloat
+  addressLng: BigFloat
+}
+
+type RichText {
+  blocknote: String @deprecated(reason: "Use markdown or tiptap instead. This value is cleared whenever the field is written in another format.")
+  markdown: String
+  tiptap: String
+}
+
+input RichTextFilterInput {
+  markdown: StringFilter
+  tiptap: StringFilter
+}
+
+input RichTextOrderByInput {
+  blocknote: OrderByDirection
+  markdown: OrderByDirection
+  tiptap: OrderByDirection
+}
+
+input RichTextGroupByInput {
+  blocknote: Boolean
+  markdown: Boolean
+  tiptap: Boolean
+}
+
+input RichTextCreateInput {
+  markdown: String
+  tiptap: String
+  blocknote: String
+}
+
+input RichTextUpdateInput {
+  markdown: String
+  tiptap: String
+  blocknote: String
+}
+
+type SearchRecord {
+  recordId: UUID!
+  objectNameSingular: String!
+  objectLabelSingular: String!
+  label: String!
+  imageUrl: String
+  tsRankCD: Float!
+  tsRank: Float!
+}
+
+type SearchResultEdge {
+  node: SearchRecord!
+  cursor: String!
+}
+
+type SearchResultPageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+type SearchResultConnection {
+  edges: [SearchResultEdge!]!
+  pageInfo: SearchResultPageInfo!
+}
+
+input ObjectRecordFilterInput {
+  and: [ObjectRecordFilterInput!]
+  or: [ObjectRecordFilterInput!]
+  not: ObjectRecordFilterInput
+  id: UUIDFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  deletedAt: DateTimeFilter
+}
+
+enum WorkspaceMemberDateFormatEnum {
+  SYSTEM
+  MONTH_FIRST
+  DAY_FIRST
+  YEAR_FIRST
+}
+
+input WorkspaceMemberDateFormatEnumFilter {
+  eq: WorkspaceMemberDateFormatEnum
+  neq: WorkspaceMemberDateFormatEnum
+  in: [WorkspaceMemberDateFormatEnum]
+  containsAny: [WorkspaceMemberDateFormatEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: WorkspaceMemberDateFormatEnum
+  gte: WorkspaceMemberDateFormatEnum
+  lt: WorkspaceMemberDateFormatEnum
+  lte: WorkspaceMemberDateFormatEnum
+}
+
+enum WorkspaceMemberTimeFormatEnum {
+  SYSTEM
+  HOUR_24
+  HOUR_12
+}
+
+input WorkspaceMemberTimeFormatEnumFilter {
+  eq: WorkspaceMemberTimeFormatEnum
+  neq: WorkspaceMemberTimeFormatEnum
+  in: [WorkspaceMemberTimeFormatEnum]
+  containsAny: [WorkspaceMemberTimeFormatEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: WorkspaceMemberTimeFormatEnum
+  gte: WorkspaceMemberTimeFormatEnum
+  lt: WorkspaceMemberTimeFormatEnum
+  lte: WorkspaceMemberTimeFormatEnum
+}
+
+enum WorkspaceMemberNumberFormatEnum {
+  SYSTEM
+  COMMAS_AND_DOT
+  SPACES_AND_COMMA
+  DOTS_AND_COMMA
+  APOSTROPHE_AND_DOT
+}
+
+input WorkspaceMemberNumberFormatEnumFilter {
+  eq: WorkspaceMemberNumberFormatEnum
+  neq: WorkspaceMemberNumberFormatEnum
+  in: [WorkspaceMemberNumberFormatEnum]
+  containsAny: [WorkspaceMemberNumberFormatEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: WorkspaceMemberNumberFormatEnum
+  gte: WorkspaceMemberNumberFormatEnum
+  lt: WorkspaceMemberNumberFormatEnum
+  lte: WorkspaceMemberNumberFormatEnum
+}
+
+type WorkspaceMember {
+  openRecordIn: String
+  searchVector: TSVector
+  locale: String
+  id: UUID!
+  name: FullName
+  updatedBy: Actor!
+  updatedAt: DateTime!
+  dateFormat: WorkspaceMemberDateFormatEnum
+  accountOwnerForCompanies(first: Int, last: Int, offset: Int, before: String, after: String, filter: CompanyFilterInput, orderBy: [CompanyOrderByInput]): CompanyConnection
+  userId: UUID
+  uiScale: String
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  colorScheme: String
+  timeZone: String
+  timeFormat: WorkspaceMemberTimeFormatEnum
+  userEmail: String
+  jobTitle: String
+  deletedAt: DateTime
+  ownedOpportunities(first: Int, last: Int, offset: Int, before: String, after: String, filter: OpportunityFilterInput, orderBy: [OpportunityOrderByInput]): OpportunityConnection
+  createdBy: Actor!
+  position: Position!
+  createdAt: DateTime!
+  numberFormat: WorkspaceMemberNumberFormatEnum
+  assignedTasks(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskFilterInput, orderBy: [TaskOrderByInput]): TaskConnection
+  avatarUrl: String
+  calendarStartDay: Float
+}
+
+type WorkspaceMemberEdge {
+  node: WorkspaceMember!
+  cursor: Cursor!
+}
+
+type WorkspaceMemberConnection {
+  totalCount: Int
+  countUniqueValuesOpenRecordIn: Int
+  countEmptyOpenRecordIn: Int
+  countNotEmptyOpenRecordIn: Int
+  percentageEmptyOpenRecordIn: Float
+  percentageNotEmptyOpenRecordIn: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesLocale: Int
+  countEmptyLocale: Int
+  countNotEmptyLocale: Int
+  percentageEmptyLocale: Float
+  percentageNotEmptyLocale: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesDateFormat: Int
+  countEmptyDateFormat: Int
+  countNotEmptyDateFormat: Int
+  percentageEmptyDateFormat: Float
+  percentageNotEmptyDateFormat: Float
+  countUniqueValuesUserId: Int
+  countEmptyUserId: Int
+  countNotEmptyUserId: Int
+  percentageEmptyUserId: Float
+  percentageNotEmptyUserId: Float
+  countUniqueValuesUiScale: Int
+  countEmptyUiScale: Int
+  countNotEmptyUiScale: Int
+  percentageEmptyUiScale: Float
+  percentageNotEmptyUiScale: Float
+  countUniqueValuesColorScheme: Int
+  countEmptyColorScheme: Int
+  countNotEmptyColorScheme: Int
+  percentageEmptyColorScheme: Float
+  percentageNotEmptyColorScheme: Float
+  countUniqueValuesTimeZone: Int
+  countEmptyTimeZone: Int
+  countNotEmptyTimeZone: Int
+  percentageEmptyTimeZone: Float
+  percentageNotEmptyTimeZone: Float
+  countUniqueValuesTimeFormat: Int
+  countEmptyTimeFormat: Int
+  countNotEmptyTimeFormat: Int
+  percentageEmptyTimeFormat: Float
+  percentageNotEmptyTimeFormat: Float
+  countUniqueValuesUserEmail: Int
+  countEmptyUserEmail: Int
+  countNotEmptyUserEmail: Int
+  percentageEmptyUserEmail: Float
+  percentageNotEmptyUserEmail: Float
+  countUniqueValuesJobTitle: Int
+  countEmptyJobTitle: Int
+  countNotEmptyJobTitle: Int
+  percentageEmptyJobTitle: Float
+  percentageNotEmptyJobTitle: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesNumberFormat: Int
+  countEmptyNumberFormat: Int
+  countNotEmptyNumberFormat: Int
+  percentageEmptyNumberFormat: Float
+  percentageNotEmptyNumberFormat: Float
+  countUniqueValuesAvatarUrl: Int
+  countEmptyAvatarUrl: Int
+  countNotEmptyAvatarUrl: Int
+  percentageEmptyAvatarUrl: Float
+  percentageNotEmptyAvatarUrl: Float
+  countUniqueValuesCalendarStartDay: Int
+  countEmptyCalendarStartDay: Int
+  countNotEmptyCalendarStartDay: Int
+  percentageEmptyCalendarStartDay: Float
+  percentageNotEmptyCalendarStartDay: Float
+  minCalendarStartDay: Float
+  maxCalendarStartDay: Float
+  avgCalendarStartDay: Float
+  sumCalendarStartDay: Float
+  edges: [WorkspaceMemberEdge!]!
+  pageInfo: PageInfo!
+}
+
+type WorkspaceMemberGroupByConnection {
+  totalCount: Int
+  countUniqueValuesOpenRecordIn: Int
+  countEmptyOpenRecordIn: Int
+  countNotEmptyOpenRecordIn: Int
+  percentageEmptyOpenRecordIn: Float
+  percentageNotEmptyOpenRecordIn: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesLocale: Int
+  countEmptyLocale: Int
+  countNotEmptyLocale: Int
+  percentageEmptyLocale: Float
+  percentageNotEmptyLocale: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesDateFormat: Int
+  countEmptyDateFormat: Int
+  countNotEmptyDateFormat: Int
+  percentageEmptyDateFormat: Float
+  percentageNotEmptyDateFormat: Float
+  countUniqueValuesUserId: Int
+  countEmptyUserId: Int
+  countNotEmptyUserId: Int
+  percentageEmptyUserId: Float
+  percentageNotEmptyUserId: Float
+  countUniqueValuesUiScale: Int
+  countEmptyUiScale: Int
+  countNotEmptyUiScale: Int
+  percentageEmptyUiScale: Float
+  percentageNotEmptyUiScale: Float
+  countUniqueValuesColorScheme: Int
+  countEmptyColorScheme: Int
+  countNotEmptyColorScheme: Int
+  percentageEmptyColorScheme: Float
+  percentageNotEmptyColorScheme: Float
+  countUniqueValuesTimeZone: Int
+  countEmptyTimeZone: Int
+  countNotEmptyTimeZone: Int
+  percentageEmptyTimeZone: Float
+  percentageNotEmptyTimeZone: Float
+  countUniqueValuesTimeFormat: Int
+  countEmptyTimeFormat: Int
+  countNotEmptyTimeFormat: Int
+  percentageEmptyTimeFormat: Float
+  percentageNotEmptyTimeFormat: Float
+  countUniqueValuesUserEmail: Int
+  countEmptyUserEmail: Int
+  countNotEmptyUserEmail: Int
+  percentageEmptyUserEmail: Float
+  percentageNotEmptyUserEmail: Float
+  countUniqueValuesJobTitle: Int
+  countEmptyJobTitle: Int
+  countNotEmptyJobTitle: Int
+  percentageEmptyJobTitle: Float
+  percentageNotEmptyJobTitle: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesNumberFormat: Int
+  countEmptyNumberFormat: Int
+  countNotEmptyNumberFormat: Int
+  percentageEmptyNumberFormat: Float
+  percentageNotEmptyNumberFormat: Float
+  countUniqueValuesAvatarUrl: Int
+  countEmptyAvatarUrl: Int
+  countNotEmptyAvatarUrl: Int
+  percentageEmptyAvatarUrl: Float
+  percentageNotEmptyAvatarUrl: Float
+  countUniqueValuesCalendarStartDay: Int
+  countEmptyCalendarStartDay: Int
+  countNotEmptyCalendarStartDay: Int
+  percentageEmptyCalendarStartDay: Float
+  percentageNotEmptyCalendarStartDay: Float
+  minCalendarStartDay: Float
+  maxCalendarStartDay: Float
+  avgCalendarStartDay: Float
+  sumCalendarStartDay: Float
+  edges: [WorkspaceMemberEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input WorkspaceMemberFilterInput {
+  openRecordIn: StringFilter
+  searchVector: TSVectorFilter
+  locale: StringFilter
+  id: UUIDFilter
+  name: FullNameFilterInput
+  updatedBy: ActorFilterInput
+  updatedAt: DateTimeFilter
+  dateFormat: WorkspaceMemberDateFormatEnumFilter
+  userId: UUIDFilter
+  uiScale: StringFilter
+  colorScheme: StringFilter
+  timeZone: StringFilter
+  timeFormat: WorkspaceMemberTimeFormatEnumFilter
+  userEmail: StringFilter
+  jobTitle: StringFilter
+  deletedAt: DateTimeFilter
+  createdBy: ActorFilterInput
+  position: FloatFilter
+  createdAt: DateTimeFilter
+  numberFormat: WorkspaceMemberNumberFormatEnumFilter
+  avatarUrl: StringFilter
+  calendarStartDay: FloatFilter
+  and: [WorkspaceMemberFilterInput]
+  or: [WorkspaceMemberFilterInput]
+  not: WorkspaceMemberFilterInput
+}
+
+input WorkspaceMemberOrderByInput {
+  openRecordIn: OrderByDirection
+  searchVector: OrderByDirection
+  locale: OrderByDirection
+  id: OrderByDirection
+  name: FullNameOrderByInput
+  updatedBy: ActorOrderByInput
+  updatedAt: OrderByDirection
+  dateFormat: OrderByDirection
+  userId: OrderByDirection
+  uiScale: OrderByDirection
+  colorScheme: OrderByDirection
+  timeZone: OrderByDirection
+  timeFormat: OrderByDirection
+  userEmail: OrderByDirection
+  jobTitle: OrderByDirection
+  deletedAt: OrderByDirection
+  createdBy: ActorOrderByInput
+  position: OrderByDirection
+  createdAt: OrderByDirection
+  numberFormat: OrderByDirection
+  avatarUrl: OrderByDirection
+  calendarStartDay: OrderByDirection
+}
+
+input WorkspaceMemberGroupByInput {
+  openRecordIn: Boolean
+  locale: Boolean
+  name: FullNameGroupByInput
+  updatedBy: ActorGroupByInput
+  updatedAt: GroupByDateGranularityInput
+  dateFormat: Boolean
+  userId: Boolean
+  uiScale: Boolean
+  colorScheme: Boolean
+  timeZone: Boolean
+  timeFormat: Boolean
+  userEmail: Boolean
+  jobTitle: Boolean
+  createdBy: ActorGroupByInput
+  createdAt: GroupByDateGranularityInput
+  numberFormat: Boolean
+  avatarUrl: Boolean
+  calendarStartDay: Boolean
+}
+
+input WorkspaceMemberOrderByWithGroupByInput {
+  aggregate: WorkspaceMemberOrderByWithGroupByAggregateInput
+  openRecordIn: OrderByDirection
+  searchVector: OrderByDirection
+  locale: OrderByDirection
+  id: OrderByDirection
+  name: FullNameOrderByInput
+  updatedBy: ActorOrderByInput
+  updatedAt: OrderByDateGranularityInput
+  dateFormat: OrderByDirection
+  userId: OrderByDirection
+  uiScale: OrderByDirection
+  colorScheme: OrderByDirection
+  timeZone: OrderByDirection
+  timeFormat: OrderByDirection
+  userEmail: OrderByDirection
+  jobTitle: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  createdBy: ActorOrderByInput
+  position: OrderByDirection
+  createdAt: OrderByDateGranularityInput
+  numberFormat: OrderByDirection
+  avatarUrl: OrderByDirection
+  calendarStartDay: OrderByDirection
+}
+
+input WorkspaceMemberOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesOpenRecordIn: OrderByDirection
+  countEmptyOpenRecordIn: OrderByDirection
+  countNotEmptyOpenRecordIn: OrderByDirection
+  percentageEmptyOpenRecordIn: OrderByDirection
+  percentageNotEmptyOpenRecordIn: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesLocale: OrderByDirection
+  countEmptyLocale: OrderByDirection
+  countNotEmptyLocale: OrderByDirection
+  percentageEmptyLocale: OrderByDirection
+  percentageNotEmptyLocale: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesName: OrderByDirection
+  countEmptyName: OrderByDirection
+  countNotEmptyName: OrderByDirection
+  percentageEmptyName: OrderByDirection
+  percentageNotEmptyName: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesDateFormat: OrderByDirection
+  countEmptyDateFormat: OrderByDirection
+  countNotEmptyDateFormat: OrderByDirection
+  percentageEmptyDateFormat: OrderByDirection
+  percentageNotEmptyDateFormat: OrderByDirection
+  countUniqueValuesUserId: OrderByDirection
+  countEmptyUserId: OrderByDirection
+  countNotEmptyUserId: OrderByDirection
+  percentageEmptyUserId: OrderByDirection
+  percentageNotEmptyUserId: OrderByDirection
+  countUniqueValuesUiScale: OrderByDirection
+  countEmptyUiScale: OrderByDirection
+  countNotEmptyUiScale: OrderByDirection
+  percentageEmptyUiScale: OrderByDirection
+  percentageNotEmptyUiScale: OrderByDirection
+  countUniqueValuesColorScheme: OrderByDirection
+  countEmptyColorScheme: OrderByDirection
+  countNotEmptyColorScheme: OrderByDirection
+  percentageEmptyColorScheme: OrderByDirection
+  percentageNotEmptyColorScheme: OrderByDirection
+  countUniqueValuesTimeZone: OrderByDirection
+  countEmptyTimeZone: OrderByDirection
+  countNotEmptyTimeZone: OrderByDirection
+  percentageEmptyTimeZone: OrderByDirection
+  percentageNotEmptyTimeZone: OrderByDirection
+  countUniqueValuesTimeFormat: OrderByDirection
+  countEmptyTimeFormat: OrderByDirection
+  countNotEmptyTimeFormat: OrderByDirection
+  percentageEmptyTimeFormat: OrderByDirection
+  percentageNotEmptyTimeFormat: OrderByDirection
+  countUniqueValuesUserEmail: OrderByDirection
+  countEmptyUserEmail: OrderByDirection
+  countNotEmptyUserEmail: OrderByDirection
+  percentageEmptyUserEmail: OrderByDirection
+  percentageNotEmptyUserEmail: OrderByDirection
+  countUniqueValuesJobTitle: OrderByDirection
+  countEmptyJobTitle: OrderByDirection
+  countNotEmptyJobTitle: OrderByDirection
+  percentageEmptyJobTitle: OrderByDirection
+  percentageNotEmptyJobTitle: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesNumberFormat: OrderByDirection
+  countEmptyNumberFormat: OrderByDirection
+  countNotEmptyNumberFormat: OrderByDirection
+  percentageEmptyNumberFormat: OrderByDirection
+  percentageNotEmptyNumberFormat: OrderByDirection
+  countUniqueValuesAvatarUrl: OrderByDirection
+  countEmptyAvatarUrl: OrderByDirection
+  countNotEmptyAvatarUrl: OrderByDirection
+  percentageEmptyAvatarUrl: OrderByDirection
+  percentageNotEmptyAvatarUrl: OrderByDirection
+  countUniqueValuesCalendarStartDay: OrderByDirection
+  countEmptyCalendarStartDay: OrderByDirection
+  countNotEmptyCalendarStartDay: OrderByDirection
+  percentageEmptyCalendarStartDay: OrderByDirection
+  percentageNotEmptyCalendarStartDay: OrderByDirection
+  minCalendarStartDay: OrderByDirection
+  maxCalendarStartDay: OrderByDirection
+  avgCalendarStartDay: OrderByDirection
+  sumCalendarStartDay: OrderByDirection
+}
+
+input WorkspaceMemberCreateInput {
+  openRecordIn: String
+  searchVector: TSVector
+  locale: String
+  id: ID
+  name: FullNameCreateInput
+  updatedBy: ActorCreateInput
+  updatedAt: DateTime
+  dateFormat: WorkspaceMemberDateFormatEnum
+  userId: UUID
+  uiScale: String
+  colorScheme: String
+  timeZone: String
+  timeFormat: WorkspaceMemberTimeFormatEnum
+  userEmail: String
+  jobTitle: String
+  deletedAt: DateTime
+  createdBy: ActorCreateInput
+  position: Position
+  createdAt: DateTime
+  numberFormat: WorkspaceMemberNumberFormatEnum
+  avatarUrl: String
+  calendarStartDay: Float
+}
+
+input WorkspaceMemberUpdateInput {
+  openRecordIn: String
+  searchVector: TSVector
+  locale: String
+  id: ID
+  name: FullNameUpdateInput
+  updatedBy: ActorUpdateInput
+  updatedAt: DateTime
+  dateFormat: WorkspaceMemberDateFormatEnum
+  userId: UUID
+  uiScale: String
+  colorScheme: String
+  timeZone: String
+  timeFormat: WorkspaceMemberTimeFormatEnum
+  userEmail: String
+  jobTitle: String
+  deletedAt: DateTime
+  createdBy: ActorUpdateInput
+  position: Position
+  createdAt: DateTime
+  numberFormat: WorkspaceMemberNumberFormatEnum
+  avatarUrl: String
+  calendarStartDay: Float
+}
+
+input WorkspaceMemberWhereUniqueInput {
+  id: ID
+  userEmail: String
+}
+
+input WorkspaceMemberConnectInput {
+  where: WorkspaceMemberWhereUniqueInput
+}
+
+input WorkspaceMemberRelationInput {
+  connect: WorkspaceMemberConnectInput
+  create: WorkspaceMemberCreateInput
+  disconnect: Boolean
+}
+
+type TimelineActivity {
+  targetPersonId: ID
+  targetPerson: Person
+  updatedBy: Actor!
+  linkedRecordCachedName: String
+  deletedAt: DateTime
+  workspaceMemberId: ID
+  workspaceMember: WorkspaceMember
+  properties: JSON
+  linkedObjectMetadataId: UUID
+  targetCompanyId: ID
+  targetCompany: Company
+  targetTaskId: ID
+  targetTask: Task
+  createdAt: DateTime!
+  createdBy: Actor!
+  timelineActivityTypeSnapshot: JSON
+  searchVector: TSVector
+  timelineActivityTypeId: UUID
+  position: Position!
+  updatedAt: DateTime!
+  targetOpportunityId: ID
+  targetOpportunity: Opportunity
+  happensAt: DateTime
+  id: UUID!
+  targetNoteId: ID
+  targetNote: Note
+  linkedRecordId: UUID
+}
+
+type TimelineActivityEdge {
+  node: TimelineActivity!
+  cursor: Cursor!
+}
+
+type TimelineActivityConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesLinkedRecordCachedName: Int
+  countEmptyLinkedRecordCachedName: Int
+  countNotEmptyLinkedRecordCachedName: Int
+  percentageEmptyLinkedRecordCachedName: Float
+  percentageNotEmptyLinkedRecordCachedName: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesProperties: Int
+  countEmptyProperties: Int
+  countNotEmptyProperties: Int
+  percentageEmptyProperties: Float
+  percentageNotEmptyProperties: Float
+  countUniqueValuesLinkedObjectMetadataId: Int
+  countEmptyLinkedObjectMetadataId: Int
+  countNotEmptyLinkedObjectMetadataId: Int
+  percentageEmptyLinkedObjectMetadataId: Float
+  percentageNotEmptyLinkedObjectMetadataId: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesTimelineActivityTypeSnapshot: Int
+  countEmptyTimelineActivityTypeSnapshot: Int
+  countNotEmptyTimelineActivityTypeSnapshot: Int
+  percentageEmptyTimelineActivityTypeSnapshot: Float
+  percentageNotEmptyTimelineActivityTypeSnapshot: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesTimelineActivityTypeId: Int
+  countEmptyTimelineActivityTypeId: Int
+  countNotEmptyTimelineActivityTypeId: Int
+  percentageEmptyTimelineActivityTypeId: Float
+  percentageNotEmptyTimelineActivityTypeId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesHappensAt: Int
+  countEmptyHappensAt: Int
+  countNotEmptyHappensAt: Int
+  percentageEmptyHappensAt: Float
+  percentageNotEmptyHappensAt: Float
+  minHappensAt: DateTime
+  maxHappensAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesLinkedRecordId: Int
+  countEmptyLinkedRecordId: Int
+  countNotEmptyLinkedRecordId: Int
+  percentageEmptyLinkedRecordId: Float
+  percentageNotEmptyLinkedRecordId: Float
+  edges: [TimelineActivityEdge!]!
+  pageInfo: PageInfo!
+}
+
+type TimelineActivityGroupByConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesLinkedRecordCachedName: Int
+  countEmptyLinkedRecordCachedName: Int
+  countNotEmptyLinkedRecordCachedName: Int
+  percentageEmptyLinkedRecordCachedName: Float
+  percentageNotEmptyLinkedRecordCachedName: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesProperties: Int
+  countEmptyProperties: Int
+  countNotEmptyProperties: Int
+  percentageEmptyProperties: Float
+  percentageNotEmptyProperties: Float
+  countUniqueValuesLinkedObjectMetadataId: Int
+  countEmptyLinkedObjectMetadataId: Int
+  countNotEmptyLinkedObjectMetadataId: Int
+  percentageEmptyLinkedObjectMetadataId: Float
+  percentageNotEmptyLinkedObjectMetadataId: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesTimelineActivityTypeSnapshot: Int
+  countEmptyTimelineActivityTypeSnapshot: Int
+  countNotEmptyTimelineActivityTypeSnapshot: Int
+  percentageEmptyTimelineActivityTypeSnapshot: Float
+  percentageNotEmptyTimelineActivityTypeSnapshot: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesTimelineActivityTypeId: Int
+  countEmptyTimelineActivityTypeId: Int
+  countNotEmptyTimelineActivityTypeId: Int
+  percentageEmptyTimelineActivityTypeId: Float
+  percentageNotEmptyTimelineActivityTypeId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesHappensAt: Int
+  countEmptyHappensAt: Int
+  countNotEmptyHappensAt: Int
+  percentageEmptyHappensAt: Float
+  percentageNotEmptyHappensAt: Float
+  minHappensAt: DateTime
+  maxHappensAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesLinkedRecordId: Int
+  countEmptyLinkedRecordId: Int
+  countNotEmptyLinkedRecordId: Int
+  percentageEmptyLinkedRecordId: Float
+  percentageNotEmptyLinkedRecordId: Float
+  edges: [TimelineActivityEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input TimelineActivityFilterInput {
+  targetPersonId: UUIDFilter
+  targetPerson: PersonFilterInput
+  updatedBy: ActorFilterInput
+  linkedRecordCachedName: StringFilter
+  deletedAt: DateTimeFilter
+  workspaceMemberId: UUIDFilter
+  workspaceMember: WorkspaceMemberFilterInput
+  properties: RawJsonFilter
+  linkedObjectMetadataId: UUIDFilter
+  targetCompanyId: UUIDFilter
+  targetCompany: CompanyFilterInput
+  targetTaskId: UUIDFilter
+  targetTask: TaskFilterInput
+  createdAt: DateTimeFilter
+  createdBy: ActorFilterInput
+  timelineActivityTypeSnapshot: RawJsonFilter
+  searchVector: TSVectorFilter
+  timelineActivityTypeId: UUIDFilter
+  position: FloatFilter
+  updatedAt: DateTimeFilter
+  targetOpportunityId: UUIDFilter
+  targetOpportunity: OpportunityFilterInput
+  happensAt: DateTimeFilter
+  id: UUIDFilter
+  targetNoteId: UUIDFilter
+  targetNote: NoteFilterInput
+  linkedRecordId: UUIDFilter
+  and: [TimelineActivityFilterInput]
+  or: [TimelineActivityFilterInput]
+  not: TimelineActivityFilterInput
+}
+
+input TimelineActivityOrderByInput {
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByInput
+  updatedBy: ActorOrderByInput
+  linkedRecordCachedName: OrderByDirection
+  deletedAt: OrderByDirection
+  workspaceMemberId: OrderByDirection
+  workspaceMember: WorkspaceMemberOrderByInput
+  properties: OrderByDirection
+  linkedObjectMetadataId: OrderByDirection
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByInput
+  targetTaskId: OrderByDirection
+  targetTask: TaskOrderByInput
+  createdAt: OrderByDirection
+  createdBy: ActorOrderByInput
+  timelineActivityTypeSnapshot: OrderByDirection
+  searchVector: OrderByDirection
+  timelineActivityTypeId: OrderByDirection
+  position: OrderByDirection
+  updatedAt: OrderByDirection
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByInput
+  happensAt: OrderByDirection
+  id: OrderByDirection
+  targetNoteId: OrderByDirection
+  targetNote: NoteOrderByInput
+  linkedRecordId: OrderByDirection
+}
+
+input TimelineActivityGroupByInput {
+  targetPerson: PersonGroupByInput
+  updatedBy: ActorGroupByInput
+  linkedRecordCachedName: Boolean
+  workspaceMember: WorkspaceMemberGroupByInput
+  linkedObjectMetadataId: Boolean
+  targetCompany: CompanyGroupByInput
+  targetTask: TaskGroupByInput
+  createdAt: GroupByDateGranularityInput
+  createdBy: ActorGroupByInput
+  timelineActivityTypeId: Boolean
+  updatedAt: GroupByDateGranularityInput
+  targetOpportunity: OpportunityGroupByInput
+  happensAt: GroupByDateGranularityInput
+  targetNote: NoteGroupByInput
+  linkedRecordId: Boolean
+}
+
+input TimelineActivityOrderByWithGroupByInput {
+  aggregate: TimelineActivityOrderByWithGroupByAggregateInput
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByWithGroupByInput
+  updatedBy: ActorOrderByInput
+  linkedRecordCachedName: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  workspaceMemberId: OrderByDirection
+  workspaceMember: WorkspaceMemberOrderByWithGroupByInput
+  properties: OrderByDirection
+  linkedObjectMetadataId: OrderByDirection
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByWithGroupByInput
+  targetTaskId: OrderByDirection
+  targetTask: TaskOrderByWithGroupByInput
+  createdAt: OrderByDateGranularityInput
+  createdBy: ActorOrderByInput
+  timelineActivityTypeSnapshot: OrderByDirection
+  searchVector: OrderByDirection
+  timelineActivityTypeId: OrderByDirection
+  position: OrderByDirection
+  updatedAt: OrderByDateGranularityInput
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByWithGroupByInput
+  happensAt: OrderByDateGranularityInput
+  id: OrderByDirection
+  targetNoteId: OrderByDirection
+  targetNote: NoteOrderByWithGroupByInput
+  linkedRecordId: OrderByDirection
+}
+
+input TimelineActivityOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesLinkedRecordCachedName: OrderByDirection
+  countEmptyLinkedRecordCachedName: OrderByDirection
+  countNotEmptyLinkedRecordCachedName: OrderByDirection
+  percentageEmptyLinkedRecordCachedName: OrderByDirection
+  percentageNotEmptyLinkedRecordCachedName: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesProperties: OrderByDirection
+  countEmptyProperties: OrderByDirection
+  countNotEmptyProperties: OrderByDirection
+  percentageEmptyProperties: OrderByDirection
+  percentageNotEmptyProperties: OrderByDirection
+  countUniqueValuesLinkedObjectMetadataId: OrderByDirection
+  countEmptyLinkedObjectMetadataId: OrderByDirection
+  countNotEmptyLinkedObjectMetadataId: OrderByDirection
+  percentageEmptyLinkedObjectMetadataId: OrderByDirection
+  percentageNotEmptyLinkedObjectMetadataId: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesTimelineActivityTypeSnapshot: OrderByDirection
+  countEmptyTimelineActivityTypeSnapshot: OrderByDirection
+  countNotEmptyTimelineActivityTypeSnapshot: OrderByDirection
+  percentageEmptyTimelineActivityTypeSnapshot: OrderByDirection
+  percentageNotEmptyTimelineActivityTypeSnapshot: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesTimelineActivityTypeId: OrderByDirection
+  countEmptyTimelineActivityTypeId: OrderByDirection
+  countNotEmptyTimelineActivityTypeId: OrderByDirection
+  percentageEmptyTimelineActivityTypeId: OrderByDirection
+  percentageNotEmptyTimelineActivityTypeId: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesHappensAt: OrderByDirection
+  countEmptyHappensAt: OrderByDirection
+  countNotEmptyHappensAt: OrderByDirection
+  percentageEmptyHappensAt: OrderByDirection
+  percentageNotEmptyHappensAt: OrderByDirection
+  minHappensAt: OrderByDirection
+  maxHappensAt: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesLinkedRecordId: OrderByDirection
+  countEmptyLinkedRecordId: OrderByDirection
+  countNotEmptyLinkedRecordId: OrderByDirection
+  percentageEmptyLinkedRecordId: OrderByDirection
+  percentageNotEmptyLinkedRecordId: OrderByDirection
+}
+
+input TimelineActivityCreateInput {
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  updatedBy: ActorCreateInput
+  linkedRecordCachedName: String
+  deletedAt: DateTime
+  workspaceMemberId: ID
+  workspaceMember: WorkspaceMemberRelationInput
+  properties: JSON
+  linkedObjectMetadataId: UUID
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  targetTaskId: ID
+  targetTask: TaskRelationInput
+  createdAt: DateTime
+  createdBy: ActorCreateInput
+  timelineActivityTypeSnapshot: JSON
+  searchVector: TSVector
+  timelineActivityTypeId: UUID
+  position: Position
+  updatedAt: DateTime
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  happensAt: DateTime
+  id: ID
+  targetNoteId: ID
+  targetNote: NoteRelationInput
+  linkedRecordId: UUID
+}
+
+input TimelineActivityUpdateInput {
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  updatedBy: ActorUpdateInput
+  linkedRecordCachedName: String
+  deletedAt: DateTime
+  workspaceMemberId: ID
+  workspaceMember: WorkspaceMemberRelationInput
+  properties: JSON
+  linkedObjectMetadataId: UUID
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  targetTaskId: ID
+  targetTask: TaskRelationInput
+  createdAt: DateTime
+  createdBy: ActorUpdateInput
+  timelineActivityTypeSnapshot: JSON
+  searchVector: TSVector
+  timelineActivityTypeId: UUID
+  position: Position
+  updatedAt: DateTime
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  happensAt: DateTime
+  id: ID
+  targetNoteId: ID
+  targetNote: NoteRelationInput
+  linkedRecordId: UUID
+}
+
+input TimelineActivityWhereUniqueInput {
+  id: ID
+}
+
+input TimelineActivityConnectInput {
+  where: TimelineActivityWhereUniqueInput
+}
+
+input TimelineActivityRelationInput {
+  connect: TimelineActivityConnectInput
+  create: TimelineActivityCreateInput
+  disconnect: Boolean
+}
+
+enum OpportunityStageEnum {
+  NEW
+  SCREENING
+  MEETING
+  PROPOSAL
+  CUSTOMER
+}
+
+input OpportunityStageEnumFilter {
+  eq: OpportunityStageEnum
+  neq: OpportunityStageEnum
+  in: [OpportunityStageEnum]
+  containsAny: [OpportunityStageEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: OpportunityStageEnum
+  gte: OpportunityStageEnum
+  lt: OpportunityStageEnum
+  lte: OpportunityStageEnum
+}
+
+type Opportunity {
+  ownerId: ID
+  owner: WorkspaceMember
+  amount: Currency
+  id: UUID!
+  searchVector: TSVector
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  updatedAt: DateTime!
+  companyId: ID
+  company: Company
+  noteTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByInput]): NoteTargetConnection
+  updatedBy: Actor!
+  name: String
+  closeDate: DateTime
+  createdBy: Actor!
+  taskTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByInput]): TaskTargetConnection
+  createdAt: DateTime!
+  position: Position!
+  stage: OpportunityStageEnum
+  deletedAt: DateTime
+  pointOfContactId: ID
+  pointOfContact: Person
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+}
+
+type OpportunityEdge {
+  node: Opportunity!
+  cursor: Cursor!
+}
+
+type OpportunityConnection {
+  totalCount: Int
+  countUniqueValuesAmount: Int
+  countEmptyAmount: Int
+  countNotEmptyAmount: Int
+  percentageEmptyAmount: Float
+  percentageNotEmptyAmount: Float
+  minAmountAmountMicros: Float
+  maxAmountAmountMicros: Float
+  avgAmountAmountMicros: Float
+  sumAmountAmountMicros: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesCloseDate: Int
+  countEmptyCloseDate: Int
+  countNotEmptyCloseDate: Int
+  percentageEmptyCloseDate: Float
+  percentageNotEmptyCloseDate: Float
+  minCloseDate: DateTime
+  maxCloseDate: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesStage: Int
+  countEmptyStage: Int
+  countNotEmptyStage: Int
+  percentageEmptyStage: Float
+  percentageNotEmptyStage: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  edges: [OpportunityEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OpportunityGroupByConnection {
+  totalCount: Int
+  countUniqueValuesAmount: Int
+  countEmptyAmount: Int
+  countNotEmptyAmount: Int
+  percentageEmptyAmount: Float
+  percentageNotEmptyAmount: Float
+  minAmountAmountMicros: Float
+  maxAmountAmountMicros: Float
+  avgAmountAmountMicros: Float
+  sumAmountAmountMicros: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesCloseDate: Int
+  countEmptyCloseDate: Int
+  countNotEmptyCloseDate: Int
+  percentageEmptyCloseDate: Float
+  percentageNotEmptyCloseDate: Float
+  minCloseDate: DateTime
+  maxCloseDate: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesStage: Int
+  countEmptyStage: Int
+  countNotEmptyStage: Int
+  percentageEmptyStage: Float
+  percentageNotEmptyStage: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  edges: [OpportunityEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input OpportunityFilterInput {
+  ownerId: UUIDFilter
+  owner: WorkspaceMemberFilterInput
+  amount: CurrencyFilterInput
+  id: UUIDFilter
+  searchVector: TSVectorFilter
+  updatedAt: DateTimeFilter
+  companyId: UUIDFilter
+  company: CompanyFilterInput
+  updatedBy: ActorFilterInput
+  name: StringFilter
+  closeDate: DateTimeFilter
+  createdBy: ActorFilterInput
+  createdAt: DateTimeFilter
+  position: FloatFilter
+  stage: OpportunityStageEnumFilter
+  deletedAt: DateTimeFilter
+  pointOfContactId: UUIDFilter
+  pointOfContact: PersonFilterInput
+  and: [OpportunityFilterInput]
+  or: [OpportunityFilterInput]
+  not: OpportunityFilterInput
+}
+
+input OpportunityOrderByInput {
+  ownerId: OrderByDirection
+  owner: WorkspaceMemberOrderByInput
+  amount: CurrencyOrderByInput
+  id: OrderByDirection
+  searchVector: OrderByDirection
+  updatedAt: OrderByDirection
+  companyId: OrderByDirection
+  company: CompanyOrderByInput
+  updatedBy: ActorOrderByInput
+  name: OrderByDirection
+  closeDate: OrderByDirection
+  createdBy: ActorOrderByInput
+  createdAt: OrderByDirection
+  position: OrderByDirection
+  stage: OrderByDirection
+  deletedAt: OrderByDirection
+  pointOfContactId: OrderByDirection
+  pointOfContact: PersonOrderByInput
+}
+
+input OpportunityGroupByInput {
+  owner: WorkspaceMemberGroupByInput
+  amount: CurrencyGroupByInput
+  updatedAt: GroupByDateGranularityInput
+  company: CompanyGroupByInput
+  updatedBy: ActorGroupByInput
+  name: Boolean
+  closeDate: GroupByDateGranularityInput
+  createdBy: ActorGroupByInput
+  createdAt: GroupByDateGranularityInput
+  stage: Boolean
+  pointOfContact: PersonGroupByInput
+}
+
+input OpportunityOrderByWithGroupByInput {
+  aggregate: OpportunityOrderByWithGroupByAggregateInput
+  ownerId: OrderByDirection
+  owner: WorkspaceMemberOrderByWithGroupByInput
+  amount: CurrencyOrderByInput
+  id: OrderByDirection
+  searchVector: OrderByDirection
+  updatedAt: OrderByDateGranularityInput
+  companyId: OrderByDirection
+  company: CompanyOrderByWithGroupByInput
+  updatedBy: ActorOrderByInput
+  name: OrderByDirection
+  closeDate: OrderByDateGranularityInput
+  createdBy: ActorOrderByInput
+  createdAt: OrderByDateGranularityInput
+  position: OrderByDirection
+  stage: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  pointOfContactId: OrderByDirection
+  pointOfContact: PersonOrderByWithGroupByInput
+}
+
+input OpportunityOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesAmount: OrderByDirection
+  countEmptyAmount: OrderByDirection
+  countNotEmptyAmount: OrderByDirection
+  percentageEmptyAmount: OrderByDirection
+  percentageNotEmptyAmount: OrderByDirection
+  minAmountAmountMicros: OrderByDirection
+  maxAmountAmountMicros: OrderByDirection
+  avgAmountAmountMicros: OrderByDirection
+  sumAmountAmountMicros: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesName: OrderByDirection
+  countEmptyName: OrderByDirection
+  countNotEmptyName: OrderByDirection
+  percentageEmptyName: OrderByDirection
+  percentageNotEmptyName: OrderByDirection
+  countUniqueValuesCloseDate: OrderByDirection
+  countEmptyCloseDate: OrderByDirection
+  countNotEmptyCloseDate: OrderByDirection
+  percentageEmptyCloseDate: OrderByDirection
+  percentageNotEmptyCloseDate: OrderByDirection
+  minCloseDate: OrderByDirection
+  maxCloseDate: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesStage: OrderByDirection
+  countEmptyStage: OrderByDirection
+  countNotEmptyStage: OrderByDirection
+  percentageEmptyStage: OrderByDirection
+  percentageNotEmptyStage: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+}
+
+input OpportunityCreateInput {
+  ownerId: ID
+  owner: WorkspaceMemberRelationInput
+  amount: CurrencyCreateInput
+  id: ID
+  searchVector: TSVector
+  updatedAt: DateTime
+  companyId: ID
+  company: CompanyRelationInput
+  updatedBy: ActorCreateInput
+  name: String
+  closeDate: DateTime
+  createdBy: ActorCreateInput
+  createdAt: DateTime
+  position: Position
+  stage: OpportunityStageEnum
+  deletedAt: DateTime
+  pointOfContactId: ID
+  pointOfContact: PersonRelationInput
+}
+
+input OpportunityUpdateInput {
+  ownerId: ID
+  owner: WorkspaceMemberRelationInput
+  amount: CurrencyUpdateInput
+  id: ID
+  searchVector: TSVector
+  updatedAt: DateTime
+  companyId: ID
+  company: CompanyRelationInput
+  updatedBy: ActorUpdateInput
+  name: String
+  closeDate: DateTime
+  createdBy: ActorUpdateInput
+  createdAt: DateTime
+  position: Position
+  stage: OpportunityStageEnum
+  deletedAt: DateTime
+  pointOfContactId: ID
+  pointOfContact: PersonRelationInput
+}
+
+input OpportunityWhereUniqueInput {
+  id: ID
+}
+
+input OpportunityConnectInput {
+  where: OpportunityWhereUniqueInput
+}
+
+input OpportunityRelationInput {
+  connect: OpportunityConnectInput
+  create: OpportunityCreateInput
+  disconnect: Boolean
+}
+
+input PersonEmailsWhereInput {
+  primaryEmail: String
+}
+
+type Person {
+  jobTitle: String
+  updatedBy: Actor!
+  createdAt: DateTime!
+  id: UUID!
+  deletedAt: DateTime
+  emails: Emails
+  avatarUrl: String
+  phones: Phones
+  avatarFile: [FileObject]
+  name: FullName
+  linkedinLink: Links
+  createdBy: Actor!
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  updatedAt: DateTime!
+  noteTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByInput]): NoteTargetConnection
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+  searchVector: TSVector
+  taskTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByInput]): TaskTargetConnection
+  position: Position!
+  pointOfContactForOpportunities(first: Int, last: Int, offset: Int, before: String, after: String, filter: OpportunityFilterInput, orderBy: [OpportunityOrderByInput]): OpportunityConnection
+  companyId: ID
+  company: Company
+}
+
+type PersonEdge {
+  node: Person!
+  cursor: Cursor!
+}
+
+type PersonConnection {
+  totalCount: Int
+  countUniqueValuesJobTitle: Int
+  countEmptyJobTitle: Int
+  countNotEmptyJobTitle: Int
+  percentageEmptyJobTitle: Float
+  percentageNotEmptyJobTitle: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesEmails: Int
+  countEmptyEmails: Int
+  countNotEmptyEmails: Int
+  percentageEmptyEmails: Float
+  percentageNotEmptyEmails: Float
+  countUniqueValuesAvatarUrl: Int
+  countEmptyAvatarUrl: Int
+  countNotEmptyAvatarUrl: Int
+  percentageEmptyAvatarUrl: Float
+  percentageNotEmptyAvatarUrl: Float
+  countUniqueValuesPhones: Int
+  countEmptyPhones: Int
+  countNotEmptyPhones: Int
+  percentageEmptyPhones: Float
+  percentageNotEmptyPhones: Float
+  countUniqueValuesAvatarFile: Int
+  countEmptyAvatarFile: Int
+  countNotEmptyAvatarFile: Int
+  percentageEmptyAvatarFile: Float
+  percentageNotEmptyAvatarFile: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesLinkedinLink: Int
+  countEmptyLinkedinLink: Int
+  countNotEmptyLinkedinLink: Int
+  percentageEmptyLinkedinLink: Float
+  percentageNotEmptyLinkedinLink: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [PersonEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PersonGroupByConnection {
+  totalCount: Int
+  countUniqueValuesJobTitle: Int
+  countEmptyJobTitle: Int
+  countNotEmptyJobTitle: Int
+  percentageEmptyJobTitle: Float
+  percentageNotEmptyJobTitle: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesEmails: Int
+  countEmptyEmails: Int
+  countNotEmptyEmails: Int
+  percentageEmptyEmails: Float
+  percentageNotEmptyEmails: Float
+  countUniqueValuesAvatarUrl: Int
+  countEmptyAvatarUrl: Int
+  countNotEmptyAvatarUrl: Int
+  percentageEmptyAvatarUrl: Float
+  percentageNotEmptyAvatarUrl: Float
+  countUniqueValuesPhones: Int
+  countEmptyPhones: Int
+  countNotEmptyPhones: Int
+  percentageEmptyPhones: Float
+  percentageNotEmptyPhones: Float
+  countUniqueValuesAvatarFile: Int
+  countEmptyAvatarFile: Int
+  countNotEmptyAvatarFile: Int
+  percentageEmptyAvatarFile: Float
+  percentageNotEmptyAvatarFile: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesLinkedinLink: Int
+  countEmptyLinkedinLink: Int
+  countNotEmptyLinkedinLink: Int
+  percentageEmptyLinkedinLink: Float
+  percentageNotEmptyLinkedinLink: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [PersonEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input PersonFilterInput {
+  jobTitle: StringFilter
+  updatedBy: ActorFilterInput
+  createdAt: DateTimeFilter
+  id: UUIDFilter
+  deletedAt: DateTimeFilter
+  emails: EmailsFilterInput
+  avatarUrl: StringFilter
+  phones: PhonesFilterInput
+  avatarFile: RawJsonFilter
+  name: FullNameFilterInput
+  linkedinLink: LinksFilterInput
+  createdBy: ActorFilterInput
+  updatedAt: DateTimeFilter
+  searchVector: TSVectorFilter
+  position: FloatFilter
+  companyId: UUIDFilter
+  company: CompanyFilterInput
+  and: [PersonFilterInput]
+  or: [PersonFilterInput]
+  not: PersonFilterInput
+}
+
+input PersonOrderByInput {
+  jobTitle: OrderByDirection
+  updatedBy: ActorOrderByInput
+  createdAt: OrderByDirection
+  id: OrderByDirection
+  deletedAt: OrderByDirection
+  emails: EmailsOrderByInput
+  avatarUrl: OrderByDirection
+  phones: PhonesOrderByInput
+  avatarFile: OrderByDirection
+  name: FullNameOrderByInput
+  linkedinLink: LinksOrderByInput
+  createdBy: ActorOrderByInput
+  updatedAt: OrderByDirection
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  companyId: OrderByDirection
+  company: CompanyOrderByInput
+}
+
+input PersonGroupByInput {
+  jobTitle: Boolean
+  updatedBy: ActorGroupByInput
+  createdAt: GroupByDateGranularityInput
+  emails: EmailsGroupByInput
+  avatarUrl: Boolean
+  phones: PhonesGroupByInput
+  name: FullNameGroupByInput
+  linkedinLink: LinksGroupByInput
+  createdBy: ActorGroupByInput
+  updatedAt: GroupByDateGranularityInput
+  company: CompanyGroupByInput
+}
+
+input PersonOrderByWithGroupByInput {
+  aggregate: PersonOrderByWithGroupByAggregateInput
+  jobTitle: OrderByDirection
+  updatedBy: ActorOrderByInput
+  createdAt: OrderByDateGranularityInput
+  id: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  emails: EmailsOrderByInput
+  avatarUrl: OrderByDirection
+  phones: PhonesOrderByInput
+  avatarFile: OrderByDirection
+  name: FullNameOrderByInput
+  linkedinLink: LinksOrderByInput
+  createdBy: ActorOrderByInput
+  updatedAt: OrderByDateGranularityInput
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  companyId: OrderByDirection
+  company: CompanyOrderByWithGroupByInput
+}
+
+input PersonOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesJobTitle: OrderByDirection
+  countEmptyJobTitle: OrderByDirection
+  countNotEmptyJobTitle: OrderByDirection
+  percentageEmptyJobTitle: OrderByDirection
+  percentageNotEmptyJobTitle: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesEmails: OrderByDirection
+  countEmptyEmails: OrderByDirection
+  countNotEmptyEmails: OrderByDirection
+  percentageEmptyEmails: OrderByDirection
+  percentageNotEmptyEmails: OrderByDirection
+  countUniqueValuesAvatarUrl: OrderByDirection
+  countEmptyAvatarUrl: OrderByDirection
+  countNotEmptyAvatarUrl: OrderByDirection
+  percentageEmptyAvatarUrl: OrderByDirection
+  percentageNotEmptyAvatarUrl: OrderByDirection
+  countUniqueValuesPhones: OrderByDirection
+  countEmptyPhones: OrderByDirection
+  countNotEmptyPhones: OrderByDirection
+  percentageEmptyPhones: OrderByDirection
+  percentageNotEmptyPhones: OrderByDirection
+  countUniqueValuesAvatarFile: OrderByDirection
+  countEmptyAvatarFile: OrderByDirection
+  countNotEmptyAvatarFile: OrderByDirection
+  percentageEmptyAvatarFile: OrderByDirection
+  percentageNotEmptyAvatarFile: OrderByDirection
+  countUniqueValuesName: OrderByDirection
+  countEmptyName: OrderByDirection
+  countNotEmptyName: OrderByDirection
+  percentageEmptyName: OrderByDirection
+  percentageNotEmptyName: OrderByDirection
+  countUniqueValuesLinkedinLink: OrderByDirection
+  countEmptyLinkedinLink: OrderByDirection
+  countNotEmptyLinkedinLink: OrderByDirection
+  percentageEmptyLinkedinLink: OrderByDirection
+  percentageNotEmptyLinkedinLink: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+}
+
+input PersonCreateInput {
+  jobTitle: String
+  updatedBy: ActorCreateInput
+  createdAt: DateTime
+  id: ID
+  deletedAt: DateTime
+  emails: EmailsCreateInput
+  avatarUrl: String
+  phones: PhonesCreateInput
+  avatarFile: [FileItemInput]
+  name: FullNameCreateInput
+  linkedinLink: LinksCreateInput
+  createdBy: ActorCreateInput
+  updatedAt: DateTime
+  searchVector: TSVector
+  position: Position
+  companyId: ID
+  company: CompanyRelationInput
+}
+
+input PersonUpdateInput {
+  jobTitle: String
+  updatedBy: ActorUpdateInput
+  createdAt: DateTime
+  id: ID
+  deletedAt: DateTime
+  emails: EmailsUpdateInput
+  avatarUrl: String
+  phones: PhonesUpdateInput
+  avatarFile: [FileItemInput]
+  name: FullNameUpdateInput
+  linkedinLink: LinksUpdateInput
+  createdBy: ActorUpdateInput
+  updatedAt: DateTime
+  searchVector: TSVector
+  position: Position
+  companyId: ID
+  company: CompanyRelationInput
+}
+
+input PersonWhereUniqueInput {
+  id: ID
+  emails: PersonEmailsWhereInput
+}
+
+input PersonConnectInput {
+  where: PersonWhereUniqueInput
+}
+
+input PersonRelationInput {
+  connect: PersonConnectInput
+  create: PersonCreateInput
+  disconnect: Boolean
+}
+
+type TaskTarget {
+  targetCompanyId: ID
+  targetCompany: Company
+  createdAt: DateTime!
+  createdBy: Actor!
+  id: UUID!
+  searchVector: TSVector
+  targetOpportunityId: ID
+  targetOpportunity: Opportunity
+  updatedAt: DateTime!
+  deletedAt: DateTime
+  updatedBy: Actor!
+  position: Position!
+  targetPersonId: ID
+  targetPerson: Person
+  taskId: ID
+  task: Task
+}
+
+type TaskTargetEdge {
+  node: TaskTarget!
+  cursor: Cursor!
+}
+
+type TaskTargetConnection {
+  totalCount: Int
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [TaskTargetEdge!]!
+  pageInfo: PageInfo!
+}
+
+type TaskTargetGroupByConnection {
+  totalCount: Int
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [TaskTargetEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input TaskTargetFilterInput {
+  targetCompanyId: UUIDFilter
+  targetCompany: CompanyFilterInput
+  createdAt: DateTimeFilter
+  createdBy: ActorFilterInput
+  id: UUIDFilter
+  searchVector: TSVectorFilter
+  targetOpportunityId: UUIDFilter
+  targetOpportunity: OpportunityFilterInput
+  updatedAt: DateTimeFilter
+  deletedAt: DateTimeFilter
+  updatedBy: ActorFilterInput
+  position: FloatFilter
+  targetPersonId: UUIDFilter
+  targetPerson: PersonFilterInput
+  taskId: UUIDFilter
+  task: TaskFilterInput
+  and: [TaskTargetFilterInput]
+  or: [TaskTargetFilterInput]
+  not: TaskTargetFilterInput
+}
+
+input TaskTargetOrderByInput {
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByInput
+  createdAt: OrderByDirection
+  createdBy: ActorOrderByInput
+  id: OrderByDirection
+  searchVector: OrderByDirection
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByInput
+  updatedAt: OrderByDirection
+  deletedAt: OrderByDirection
+  updatedBy: ActorOrderByInput
+  position: OrderByDirection
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByInput
+  taskId: OrderByDirection
+  task: TaskOrderByInput
+}
+
+input TaskTargetGroupByInput {
+  targetCompany: CompanyGroupByInput
+  createdAt: GroupByDateGranularityInput
+  createdBy: ActorGroupByInput
+  targetOpportunity: OpportunityGroupByInput
+  updatedAt: GroupByDateGranularityInput
+  updatedBy: ActorGroupByInput
+  targetPerson: PersonGroupByInput
+  task: TaskGroupByInput
+}
+
+input TaskTargetOrderByWithGroupByInput {
+  aggregate: TaskTargetOrderByWithGroupByAggregateInput
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByWithGroupByInput
+  createdAt: OrderByDateGranularityInput
+  createdBy: ActorOrderByInput
+  id: OrderByDirection
+  searchVector: OrderByDirection
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByWithGroupByInput
+  updatedAt: OrderByDateGranularityInput
+  deletedAt: OrderByDateGranularityInput
+  updatedBy: ActorOrderByInput
+  position: OrderByDirection
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByWithGroupByInput
+  taskId: OrderByDirection
+  task: TaskOrderByWithGroupByInput
+}
+
+input TaskTargetOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+}
+
+input TaskTargetCreateInput {
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  createdAt: DateTime
+  createdBy: ActorCreateInput
+  id: ID
+  searchVector: TSVector
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  updatedAt: DateTime
+  deletedAt: DateTime
+  updatedBy: ActorCreateInput
+  position: Position
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  taskId: ID
+  task: TaskRelationInput
+}
+
+input TaskTargetUpdateInput {
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  createdAt: DateTime
+  createdBy: ActorUpdateInput
+  id: ID
+  searchVector: TSVector
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  updatedAt: DateTime
+  deletedAt: DateTime
+  updatedBy: ActorUpdateInput
+  position: Position
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  taskId: ID
+  task: TaskRelationInput
+}
+
+input TaskTargetWhereUniqueInput {
+  id: ID
+}
+
+input TaskTargetConnectInput {
+  where: TaskTargetWhereUniqueInput
+}
+
+input TaskTargetRelationInput {
+  connect: TaskTargetConnectInput
+  create: TaskTargetCreateInput
+  disconnect: Boolean
+}
+
+type NoteTarget {
+  updatedAt: DateTime!
+  targetCompanyId: ID
+  targetCompany: Company
+  noteId: ID
+  note: Note
+  createdBy: Actor!
+  targetOpportunityId: ID
+  targetOpportunity: Opportunity
+  updatedBy: Actor!
+  searchVector: TSVector
+  deletedAt: DateTime
+  createdAt: DateTime!
+  targetPersonId: ID
+  targetPerson: Person
+  id: UUID!
+  position: Position!
+}
+
+type NoteTargetEdge {
+  node: NoteTarget!
+  cursor: Cursor!
+}
+
+type NoteTargetConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [NoteTargetEdge!]!
+  pageInfo: PageInfo!
+}
+
+type NoteTargetGroupByConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  edges: [NoteTargetEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input NoteTargetFilterInput {
+  updatedAt: DateTimeFilter
+  targetCompanyId: UUIDFilter
+  targetCompany: CompanyFilterInput
+  noteId: UUIDFilter
+  note: NoteFilterInput
+  createdBy: ActorFilterInput
+  targetOpportunityId: UUIDFilter
+  targetOpportunity: OpportunityFilterInput
+  updatedBy: ActorFilterInput
+  searchVector: TSVectorFilter
+  deletedAt: DateTimeFilter
+  createdAt: DateTimeFilter
+  targetPersonId: UUIDFilter
+  targetPerson: PersonFilterInput
+  id: UUIDFilter
+  position: FloatFilter
+  and: [NoteTargetFilterInput]
+  or: [NoteTargetFilterInput]
+  not: NoteTargetFilterInput
+}
+
+input NoteTargetOrderByInput {
+  updatedAt: OrderByDirection
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByInput
+  noteId: OrderByDirection
+  note: NoteOrderByInput
+  createdBy: ActorOrderByInput
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByInput
+  updatedBy: ActorOrderByInput
+  searchVector: OrderByDirection
+  deletedAt: OrderByDirection
+  createdAt: OrderByDirection
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByInput
+  id: OrderByDirection
+  position: OrderByDirection
+}
+
+input NoteTargetGroupByInput {
+  updatedAt: GroupByDateGranularityInput
+  targetCompany: CompanyGroupByInput
+  note: NoteGroupByInput
+  createdBy: ActorGroupByInput
+  targetOpportunity: OpportunityGroupByInput
+  updatedBy: ActorGroupByInput
+  createdAt: GroupByDateGranularityInput
+  targetPerson: PersonGroupByInput
+}
+
+input NoteTargetOrderByWithGroupByInput {
+  aggregate: NoteTargetOrderByWithGroupByAggregateInput
+  updatedAt: OrderByDateGranularityInput
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByWithGroupByInput
+  noteId: OrderByDirection
+  note: NoteOrderByWithGroupByInput
+  createdBy: ActorOrderByInput
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByWithGroupByInput
+  updatedBy: ActorOrderByInput
+  searchVector: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  createdAt: OrderByDateGranularityInput
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByWithGroupByInput
+  id: OrderByDirection
+  position: OrderByDirection
+}
+
+input NoteTargetOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+}
+
+input NoteTargetCreateInput {
+  updatedAt: DateTime
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  noteId: ID
+  note: NoteRelationInput
+  createdBy: ActorCreateInput
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  updatedBy: ActorCreateInput
+  searchVector: TSVector
+  deletedAt: DateTime
+  createdAt: DateTime
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  id: ID
+  position: Position
+}
+
+input NoteTargetUpdateInput {
+  updatedAt: DateTime
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  noteId: ID
+  note: NoteRelationInput
+  createdBy: ActorUpdateInput
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  updatedBy: ActorUpdateInput
+  searchVector: TSVector
+  deletedAt: DateTime
+  createdAt: DateTime
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  id: ID
+  position: Position
+}
+
+input NoteTargetWhereUniqueInput {
+  id: ID
+}
+
+input NoteTargetConnectInput {
+  where: NoteTargetWhereUniqueInput
+}
+
+input NoteTargetRelationInput {
+  connect: NoteTargetConnectInput
+  create: NoteTargetCreateInput
+  disconnect: Boolean
+}
+
+input CompanyDomainNameWhereInput {
+  primaryLinkUrl: String
+}
+
+type Company {
+  deletedAt: DateTime
+  updatedBy: Actor!
+  people(first: Int, last: Int, offset: Int, before: String, after: String, filter: PersonFilterInput, orderBy: [PersonOrderByInput]): PersonConnection
+  id: UUID!
+  name: String
+  updatedAt: DateTime!
+  opportunities(first: Int, last: Int, offset: Int, before: String, after: String, filter: OpportunityFilterInput, orderBy: [OpportunityOrderByInput]): OpportunityConnection
+  address: Address
+  taskTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByInput]): TaskTargetConnection
+  accountOwnerId: ID
+  accountOwner: WorkspaceMember
+  createdAt: DateTime!
+  searchVector: TSVector
+  position: Position!
+  domainName: Links
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+  linkedinLink: Links
+  noteTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByInput]): NoteTargetConnection
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  annualRevenue: Currency
+  createdBy: Actor!
+}
+
+type CompanyEdge {
+  node: Company!
+  cursor: Cursor!
+}
+
+type CompanyConnection {
+  totalCount: Int
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesAddress: Int
+  countEmptyAddress: Int
+  countNotEmptyAddress: Int
+  percentageEmptyAddress: Float
+  percentageNotEmptyAddress: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesDomainName: Int
+  countEmptyDomainName: Int
+  countNotEmptyDomainName: Int
+  percentageEmptyDomainName: Float
+  percentageNotEmptyDomainName: Float
+  countUniqueValuesLinkedinLink: Int
+  countEmptyLinkedinLink: Int
+  countNotEmptyLinkedinLink: Int
+  percentageEmptyLinkedinLink: Float
+  percentageNotEmptyLinkedinLink: Float
+  countUniqueValuesAnnualRevenue: Int
+  countEmptyAnnualRevenue: Int
+  countNotEmptyAnnualRevenue: Int
+  percentageEmptyAnnualRevenue: Float
+  percentageNotEmptyAnnualRevenue: Float
+  minAnnualRevenueAmountMicros: Float
+  maxAnnualRevenueAmountMicros: Float
+  avgAnnualRevenueAmountMicros: Float
+  sumAnnualRevenueAmountMicros: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  edges: [CompanyEdge!]!
+  pageInfo: PageInfo!
+}
+
+type CompanyGroupByConnection {
+  totalCount: Int
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesAddress: Int
+  countEmptyAddress: Int
+  countNotEmptyAddress: Int
+  percentageEmptyAddress: Float
+  percentageNotEmptyAddress: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesDomainName: Int
+  countEmptyDomainName: Int
+  countNotEmptyDomainName: Int
+  percentageEmptyDomainName: Float
+  percentageNotEmptyDomainName: Float
+  countUniqueValuesLinkedinLink: Int
+  countEmptyLinkedinLink: Int
+  countNotEmptyLinkedinLink: Int
+  percentageEmptyLinkedinLink: Float
+  percentageNotEmptyLinkedinLink: Float
+  countUniqueValuesAnnualRevenue: Int
+  countEmptyAnnualRevenue: Int
+  countNotEmptyAnnualRevenue: Int
+  percentageEmptyAnnualRevenue: Float
+  percentageNotEmptyAnnualRevenue: Float
+  minAnnualRevenueAmountMicros: Float
+  maxAnnualRevenueAmountMicros: Float
+  avgAnnualRevenueAmountMicros: Float
+  sumAnnualRevenueAmountMicros: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  edges: [CompanyEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input CompanyFilterInput {
+  deletedAt: DateTimeFilter
+  updatedBy: ActorFilterInput
+  id: UUIDFilter
+  name: StringFilter
+  updatedAt: DateTimeFilter
+  address: AddressFilterInput
+  accountOwnerId: UUIDFilter
+  accountOwner: WorkspaceMemberFilterInput
+  createdAt: DateTimeFilter
+  searchVector: TSVectorFilter
+  position: FloatFilter
+  domainName: LinksFilterInput
+  linkedinLink: LinksFilterInput
+  annualRevenue: CurrencyFilterInput
+  createdBy: ActorFilterInput
+  and: [CompanyFilterInput]
+  or: [CompanyFilterInput]
+  not: CompanyFilterInput
+}
+
+input CompanyOrderByInput {
+  deletedAt: OrderByDirection
+  updatedBy: ActorOrderByInput
+  id: OrderByDirection
+  name: OrderByDirection
+  updatedAt: OrderByDirection
+  address: AddressOrderByInput
+  accountOwnerId: OrderByDirection
+  accountOwner: WorkspaceMemberOrderByInput
+  createdAt: OrderByDirection
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  domainName: LinksOrderByInput
+  linkedinLink: LinksOrderByInput
+  annualRevenue: CurrencyOrderByInput
+  createdBy: ActorOrderByInput
+}
+
+input CompanyGroupByInput {
+  updatedBy: ActorGroupByInput
+  name: Boolean
+  updatedAt: GroupByDateGranularityInput
+  address: AddressGroupByInput
+  accountOwner: WorkspaceMemberGroupByInput
+  createdAt: GroupByDateGranularityInput
+  domainName: LinksGroupByInput
+  linkedinLink: LinksGroupByInput
+  annualRevenue: CurrencyGroupByInput
+  createdBy: ActorGroupByInput
+}
+
+input CompanyOrderByWithGroupByInput {
+  aggregate: CompanyOrderByWithGroupByAggregateInput
+  deletedAt: OrderByDateGranularityInput
+  updatedBy: ActorOrderByInput
+  id: OrderByDirection
+  name: OrderByDirection
+  updatedAt: OrderByDateGranularityInput
+  address: AddressOrderByInput
+  accountOwnerId: OrderByDirection
+  accountOwner: WorkspaceMemberOrderByWithGroupByInput
+  createdAt: OrderByDateGranularityInput
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  domainName: LinksOrderByInput
+  linkedinLink: LinksOrderByInput
+  annualRevenue: CurrencyOrderByInput
+  createdBy: ActorOrderByInput
+}
+
+input CompanyOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesName: OrderByDirection
+  countEmptyName: OrderByDirection
+  countNotEmptyName: OrderByDirection
+  percentageEmptyName: OrderByDirection
+  percentageNotEmptyName: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesAddress: OrderByDirection
+  countEmptyAddress: OrderByDirection
+  countNotEmptyAddress: OrderByDirection
+  percentageEmptyAddress: OrderByDirection
+  percentageNotEmptyAddress: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesDomainName: OrderByDirection
+  countEmptyDomainName: OrderByDirection
+  countNotEmptyDomainName: OrderByDirection
+  percentageEmptyDomainName: OrderByDirection
+  percentageNotEmptyDomainName: OrderByDirection
+  countUniqueValuesLinkedinLink: OrderByDirection
+  countEmptyLinkedinLink: OrderByDirection
+  countNotEmptyLinkedinLink: OrderByDirection
+  percentageEmptyLinkedinLink: OrderByDirection
+  percentageNotEmptyLinkedinLink: OrderByDirection
+  countUniqueValuesAnnualRevenue: OrderByDirection
+  countEmptyAnnualRevenue: OrderByDirection
+  countNotEmptyAnnualRevenue: OrderByDirection
+  percentageEmptyAnnualRevenue: OrderByDirection
+  percentageNotEmptyAnnualRevenue: OrderByDirection
+  minAnnualRevenueAmountMicros: OrderByDirection
+  maxAnnualRevenueAmountMicros: OrderByDirection
+  avgAnnualRevenueAmountMicros: OrderByDirection
+  sumAnnualRevenueAmountMicros: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+}
+
+input CompanyCreateInput {
+  deletedAt: DateTime
+  updatedBy: ActorCreateInput
+  id: ID
+  name: String
+  updatedAt: DateTime
+  address: AddressCreateInput
+  accountOwnerId: ID
+  accountOwner: WorkspaceMemberRelationInput
+  createdAt: DateTime
+  searchVector: TSVector
+  position: Position
+  domainName: LinksCreateInput
+  linkedinLink: LinksCreateInput
+  annualRevenue: CurrencyCreateInput
+  createdBy: ActorCreateInput
+}
+
+input CompanyUpdateInput {
+  deletedAt: DateTime
+  updatedBy: ActorUpdateInput
+  id: ID
+  name: String
+  updatedAt: DateTime
+  address: AddressUpdateInput
+  accountOwnerId: ID
+  accountOwner: WorkspaceMemberRelationInput
+  createdAt: DateTime
+  searchVector: TSVector
+  position: Position
+  domainName: LinksUpdateInput
+  linkedinLink: LinksUpdateInput
+  annualRevenue: CurrencyUpdateInput
+  createdBy: ActorUpdateInput
+}
+
+input CompanyWhereUniqueInput {
+  id: ID
+  domainName: CompanyDomainNameWhereInput
+}
+
+input CompanyConnectInput {
+  where: CompanyWhereUniqueInput
+}
+
+input CompanyRelationInput {
+  connect: CompanyConnectInput
+  create: CompanyCreateInput
+  disconnect: Boolean
+}
+
+enum TaskStatusEnum {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+input TaskStatusEnumFilter {
+  eq: TaskStatusEnum
+  neq: TaskStatusEnum
+  in: [TaskStatusEnum]
+  containsAny: [TaskStatusEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: TaskStatusEnum
+  gte: TaskStatusEnum
+  lt: TaskStatusEnum
+  lte: TaskStatusEnum
+}
+
+type Task {
+  createdAt: DateTime!
+  updatedBy: Actor!
+  createdBy: Actor!
+  assigneeId: ID
+  assignee: WorkspaceMember
+  bodyV2: RichText
+  taskTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByInput]): TaskTargetConnection
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  title: String
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+  deletedAt: DateTime
+  dueAt: DateTime
+  searchVector: TSVector
+  position: Position!
+  id: UUID!
+  updatedAt: DateTime!
+  status: TaskStatusEnum
+}
+
+type TaskEdge {
+  node: Task!
+  cursor: Cursor!
+}
+
+type TaskConnection {
+  totalCount: Int
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesBodyV2: Int
+  countEmptyBodyV2: Int
+  countNotEmptyBodyV2: Int
+  percentageEmptyBodyV2: Float
+  percentageNotEmptyBodyV2: Float
+  countUniqueValuesTitle: Int
+  countEmptyTitle: Int
+  countNotEmptyTitle: Int
+  percentageEmptyTitle: Float
+  percentageNotEmptyTitle: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesDueAt: Int
+  countEmptyDueAt: Int
+  countNotEmptyDueAt: Int
+  percentageEmptyDueAt: Float
+  percentageNotEmptyDueAt: Float
+  minDueAt: DateTime
+  maxDueAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesStatus: Int
+  countEmptyStatus: Int
+  countNotEmptyStatus: Int
+  percentageEmptyStatus: Float
+  percentageNotEmptyStatus: Float
+  edges: [TaskEdge!]!
+  pageInfo: PageInfo!
+}
+
+type TaskGroupByConnection {
+  totalCount: Int
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesBodyV2: Int
+  countEmptyBodyV2: Int
+  countNotEmptyBodyV2: Int
+  percentageEmptyBodyV2: Float
+  percentageNotEmptyBodyV2: Float
+  countUniqueValuesTitle: Int
+  countEmptyTitle: Int
+  countNotEmptyTitle: Int
+  percentageEmptyTitle: Float
+  percentageNotEmptyTitle: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesDueAt: Int
+  countEmptyDueAt: Int
+  countNotEmptyDueAt: Int
+  percentageEmptyDueAt: Float
+  percentageNotEmptyDueAt: Float
+  minDueAt: DateTime
+  maxDueAt: DateTime
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesStatus: Int
+  countEmptyStatus: Int
+  countNotEmptyStatus: Int
+  percentageEmptyStatus: Float
+  percentageNotEmptyStatus: Float
+  edges: [TaskEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input TaskFilterInput {
+  createdAt: DateTimeFilter
+  updatedBy: ActorFilterInput
+  createdBy: ActorFilterInput
+  assigneeId: UUIDFilter
+  assignee: WorkspaceMemberFilterInput
+  bodyV2: RichTextFilterInput
+  title: StringFilter
+  deletedAt: DateTimeFilter
+  dueAt: DateTimeFilter
+  searchVector: TSVectorFilter
+  position: FloatFilter
+  id: UUIDFilter
+  updatedAt: DateTimeFilter
+  status: TaskStatusEnumFilter
+  and: [TaskFilterInput]
+  or: [TaskFilterInput]
+  not: TaskFilterInput
+}
+
+input TaskOrderByInput {
+  createdAt: OrderByDirection
+  updatedBy: ActorOrderByInput
+  createdBy: ActorOrderByInput
+  assigneeId: OrderByDirection
+  assignee: WorkspaceMemberOrderByInput
+  bodyV2: RichTextOrderByInput
+  title: OrderByDirection
+  deletedAt: OrderByDirection
+  dueAt: OrderByDirection
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  id: OrderByDirection
+  updatedAt: OrderByDirection
+  status: OrderByDirection
+}
+
+input TaskGroupByInput {
+  createdAt: GroupByDateGranularityInput
+  updatedBy: ActorGroupByInput
+  createdBy: ActorGroupByInput
+  assignee: WorkspaceMemberGroupByInput
+  bodyV2: RichTextGroupByInput
+  title: Boolean
+  dueAt: GroupByDateGranularityInput
+  updatedAt: GroupByDateGranularityInput
+  status: Boolean
+}
+
+input TaskOrderByWithGroupByInput {
+  aggregate: TaskOrderByWithGroupByAggregateInput
+  createdAt: OrderByDateGranularityInput
+  updatedBy: ActorOrderByInput
+  createdBy: ActorOrderByInput
+  assigneeId: OrderByDirection
+  assignee: WorkspaceMemberOrderByWithGroupByInput
+  bodyV2: RichTextOrderByInput
+  title: OrderByDirection
+  deletedAt: OrderByDateGranularityInput
+  dueAt: OrderByDateGranularityInput
+  searchVector: OrderByDirection
+  position: OrderByDirection
+  id: OrderByDirection
+  updatedAt: OrderByDateGranularityInput
+  status: OrderByDirection
+}
+
+input TaskOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesBodyV2: OrderByDirection
+  countEmptyBodyV2: OrderByDirection
+  countNotEmptyBodyV2: OrderByDirection
+  percentageEmptyBodyV2: OrderByDirection
+  percentageNotEmptyBodyV2: OrderByDirection
+  countUniqueValuesTitle: OrderByDirection
+  countEmptyTitle: OrderByDirection
+  countNotEmptyTitle: OrderByDirection
+  percentageEmptyTitle: OrderByDirection
+  percentageNotEmptyTitle: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesDueAt: OrderByDirection
+  countEmptyDueAt: OrderByDirection
+  countNotEmptyDueAt: OrderByDirection
+  percentageEmptyDueAt: OrderByDirection
+  percentageNotEmptyDueAt: OrderByDirection
+  minDueAt: OrderByDirection
+  maxDueAt: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesStatus: OrderByDirection
+  countEmptyStatus: OrderByDirection
+  countNotEmptyStatus: OrderByDirection
+  percentageEmptyStatus: OrderByDirection
+  percentageNotEmptyStatus: OrderByDirection
+}
+
+input TaskCreateInput {
+  createdAt: DateTime
+  updatedBy: ActorCreateInput
+  createdBy: ActorCreateInput
+  assigneeId: ID
+  assignee: WorkspaceMemberRelationInput
+  bodyV2: RichTextCreateInput
+  title: String
+  deletedAt: DateTime
+  dueAt: DateTime
+  searchVector: TSVector
+  position: Position
+  id: ID
+  updatedAt: DateTime
+  status: TaskStatusEnum
+}
+
+input TaskUpdateInput {
+  createdAt: DateTime
+  updatedBy: ActorUpdateInput
+  createdBy: ActorUpdateInput
+  assigneeId: ID
+  assignee: WorkspaceMemberRelationInput
+  bodyV2: RichTextUpdateInput
+  title: String
+  deletedAt: DateTime
+  dueAt: DateTime
+  searchVector: TSVector
+  position: Position
+  id: ID
+  updatedAt: DateTime
+  status: TaskStatusEnum
+}
+
+input TaskWhereUniqueInput {
+  id: ID
+}
+
+input TaskConnectInput {
+  where: TaskWhereUniqueInput
+}
+
+input TaskRelationInput {
+  connect: TaskConnectInput
+  create: TaskCreateInput
+  disconnect: Boolean
+}
+
+enum AttachmentFileCategoryEnum {
+  ARCHIVE
+  AUDIO
+  IMAGE
+  PRESENTATION
+  SPREADSHEET
+  TEXT_DOCUMENT
+  VIDEO
+  OTHER
+}
+
+input AttachmentFileCategoryEnumFilter {
+  eq: AttachmentFileCategoryEnum
+  neq: AttachmentFileCategoryEnum
+  in: [AttachmentFileCategoryEnum]
+  containsAny: [AttachmentFileCategoryEnum]
+  is: FilterIs
+  isEmptyArray: Boolean
+  gt: AttachmentFileCategoryEnum
+  gte: AttachmentFileCategoryEnum
+  lt: AttachmentFileCategoryEnum
+  lte: AttachmentFileCategoryEnum
+}
+
+type Attachment {
+  updatedAt: DateTime!
+  createdBy: Actor!
+  file: [FileObject]
+  targetTaskId: ID
+  targetTask: Task
+  deletedAt: DateTime
+  targetPersonId: ID
+  targetPerson: Person
+  name: String
+  targetCompanyId: ID
+  targetCompany: Company
+  id: UUID!
+  position: Position!
+  updatedBy: Actor!
+  targetOpportunityId: ID
+  targetOpportunity: Opportunity
+  searchVector: TSVector
+  fullPath: String
+  targetNoteId: ID
+  targetNote: Note
+  createdAt: DateTime!
+  fileCategory: AttachmentFileCategoryEnum
+}
+
+type AttachmentEdge {
+  node: Attachment!
+  cursor: Cursor!
+}
+
+type AttachmentConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesFile: Int
+  countEmptyFile: Int
+  countNotEmptyFile: Int
+  percentageEmptyFile: Float
+  percentageNotEmptyFile: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesFullPath: Int
+  countEmptyFullPath: Int
+  countNotEmptyFullPath: Int
+  percentageEmptyFullPath: Float
+  percentageNotEmptyFullPath: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesFileCategory: Int
+  countEmptyFileCategory: Int
+  countNotEmptyFileCategory: Int
+  percentageEmptyFileCategory: Float
+  percentageNotEmptyFileCategory: Float
+  edges: [AttachmentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type AttachmentGroupByConnection {
+  totalCount: Int
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesFile: Int
+  countEmptyFile: Int
+  countNotEmptyFile: Int
+  percentageEmptyFile: Float
+  percentageNotEmptyFile: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  countUniqueValuesName: Int
+  countEmptyName: Int
+  countNotEmptyName: Int
+  percentageEmptyName: Float
+  percentageNotEmptyName: Float
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesFullPath: Int
+  countEmptyFullPath: Int
+  countNotEmptyFullPath: Int
+  percentageEmptyFullPath: Float
+  percentageNotEmptyFullPath: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesFileCategory: Int
+  countEmptyFileCategory: Int
+  countNotEmptyFileCategory: Int
+  percentageEmptyFileCategory: Float
+  percentageNotEmptyFileCategory: Float
+  edges: [AttachmentEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input AttachmentFilterInput {
+  updatedAt: DateTimeFilter
+  createdBy: ActorFilterInput
+  file: RawJsonFilter
+  targetTaskId: UUIDFilter
+  targetTask: TaskFilterInput
+  deletedAt: DateTimeFilter
+  targetPersonId: UUIDFilter
+  targetPerson: PersonFilterInput
+  name: StringFilter
+  targetCompanyId: UUIDFilter
+  targetCompany: CompanyFilterInput
+  id: UUIDFilter
+  position: FloatFilter
+  updatedBy: ActorFilterInput
+  targetOpportunityId: UUIDFilter
+  targetOpportunity: OpportunityFilterInput
+  searchVector: TSVectorFilter
+  fullPath: StringFilter
+  targetNoteId: UUIDFilter
+  targetNote: NoteFilterInput
+  createdAt: DateTimeFilter
+  fileCategory: AttachmentFileCategoryEnumFilter
+  and: [AttachmentFilterInput]
+  or: [AttachmentFilterInput]
+  not: AttachmentFilterInput
+}
+
+input AttachmentOrderByInput {
+  updatedAt: OrderByDirection
+  createdBy: ActorOrderByInput
+  file: OrderByDirection
+  targetTaskId: OrderByDirection
+  targetTask: TaskOrderByInput
+  deletedAt: OrderByDirection
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByInput
+  name: OrderByDirection
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByInput
+  id: OrderByDirection
+  position: OrderByDirection
+  updatedBy: ActorOrderByInput
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByInput
+  searchVector: OrderByDirection
+  fullPath: OrderByDirection
+  targetNoteId: OrderByDirection
+  targetNote: NoteOrderByInput
+  createdAt: OrderByDirection
+  fileCategory: OrderByDirection
+}
+
+input AttachmentGroupByInput {
+  updatedAt: GroupByDateGranularityInput
+  createdBy: ActorGroupByInput
+  targetTask: TaskGroupByInput
+  targetPerson: PersonGroupByInput
+  name: Boolean
+  targetCompany: CompanyGroupByInput
+  updatedBy: ActorGroupByInput
+  targetOpportunity: OpportunityGroupByInput
+  fullPath: Boolean
+  targetNote: NoteGroupByInput
+  createdAt: GroupByDateGranularityInput
+  fileCategory: Boolean
+}
+
+input AttachmentOrderByWithGroupByInput {
+  aggregate: AttachmentOrderByWithGroupByAggregateInput
+  updatedAt: OrderByDateGranularityInput
+  createdBy: ActorOrderByInput
+  file: OrderByDirection
+  targetTaskId: OrderByDirection
+  targetTask: TaskOrderByWithGroupByInput
+  deletedAt: OrderByDateGranularityInput
+  targetPersonId: OrderByDirection
+  targetPerson: PersonOrderByWithGroupByInput
+  name: OrderByDirection
+  targetCompanyId: OrderByDirection
+  targetCompany: CompanyOrderByWithGroupByInput
+  id: OrderByDirection
+  position: OrderByDirection
+  updatedBy: ActorOrderByInput
+  targetOpportunityId: OrderByDirection
+  targetOpportunity: OpportunityOrderByWithGroupByInput
+  searchVector: OrderByDirection
+  fullPath: OrderByDirection
+  targetNoteId: OrderByDirection
+  targetNote: NoteOrderByWithGroupByInput
+  createdAt: OrderByDateGranularityInput
+  fileCategory: OrderByDirection
+}
+
+input AttachmentOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesFile: OrderByDirection
+  countEmptyFile: OrderByDirection
+  countNotEmptyFile: OrderByDirection
+  percentageEmptyFile: OrderByDirection
+  percentageNotEmptyFile: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+  countUniqueValuesName: OrderByDirection
+  countEmptyName: OrderByDirection
+  countNotEmptyName: OrderByDirection
+  percentageEmptyName: OrderByDirection
+  percentageNotEmptyName: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesFullPath: OrderByDirection
+  countEmptyFullPath: OrderByDirection
+  countNotEmptyFullPath: OrderByDirection
+  percentageEmptyFullPath: OrderByDirection
+  percentageNotEmptyFullPath: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesFileCategory: OrderByDirection
+  countEmptyFileCategory: OrderByDirection
+  countNotEmptyFileCategory: OrderByDirection
+  percentageEmptyFileCategory: OrderByDirection
+  percentageNotEmptyFileCategory: OrderByDirection
+}
+
+input AttachmentCreateInput {
+  updatedAt: DateTime
+  createdBy: ActorCreateInput
+  file: [FileItemInput]
+  targetTaskId: ID
+  targetTask: TaskRelationInput
+  deletedAt: DateTime
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  name: String
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  id: ID
+  position: Position
+  updatedBy: ActorCreateInput
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  searchVector: TSVector
+  fullPath: String
+  targetNoteId: ID
+  targetNote: NoteRelationInput
+  createdAt: DateTime
+  fileCategory: AttachmentFileCategoryEnum
+}
+
+input AttachmentUpdateInput {
+  updatedAt: DateTime
+  createdBy: ActorUpdateInput
+  file: [FileItemInput]
+  targetTaskId: ID
+  targetTask: TaskRelationInput
+  deletedAt: DateTime
+  targetPersonId: ID
+  targetPerson: PersonRelationInput
+  name: String
+  targetCompanyId: ID
+  targetCompany: CompanyRelationInput
+  id: ID
+  position: Position
+  updatedBy: ActorUpdateInput
+  targetOpportunityId: ID
+  targetOpportunity: OpportunityRelationInput
+  searchVector: TSVector
+  fullPath: String
+  targetNoteId: ID
+  targetNote: NoteRelationInput
+  createdAt: DateTime
+  fileCategory: AttachmentFileCategoryEnum
+}
+
+input AttachmentWhereUniqueInput {
+  id: ID
+}
+
+input AttachmentConnectInput {
+  where: AttachmentWhereUniqueInput
+}
+
+input AttachmentRelationInput {
+  connect: AttachmentConnectInput
+  create: AttachmentCreateInput
+  disconnect: Boolean
+}
+
+type Note {
+  searchVector: TSVector
+  createdAt: DateTime!
+  updatedBy: Actor!
+  updatedAt: DateTime!
+  id: UUID!
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  title: String
+  position: Position!
+  noteTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByInput]): NoteTargetConnection
+  createdBy: Actor!
+  bodyV2: RichText
+  deletedAt: DateTime
+}
+
+type NoteEdge {
+  node: Note!
+  cursor: Cursor!
+}
+
+type NoteConnection {
+  totalCount: Int
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesTitle: Int
+  countEmptyTitle: Int
+  countNotEmptyTitle: Int
+  percentageEmptyTitle: Float
+  percentageNotEmptyTitle: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesBodyV2: Int
+  countEmptyBodyV2: Int
+  countNotEmptyBodyV2: Int
+  percentageEmptyBodyV2: Float
+  percentageNotEmptyBodyV2: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  edges: [NoteEdge!]!
+  pageInfo: PageInfo!
+}
+
+type NoteGroupByConnection {
+  totalCount: Int
+  countUniqueValuesSearchVector: Int
+  countEmptySearchVector: Int
+  countNotEmptySearchVector: Int
+  percentageEmptySearchVector: Float
+  percentageNotEmptySearchVector: Float
+  countUniqueValuesCreatedAt: Int
+  countEmptyCreatedAt: Int
+  countNotEmptyCreatedAt: Int
+  percentageEmptyCreatedAt: Float
+  percentageNotEmptyCreatedAt: Float
+  minCreatedAt: DateTime
+  maxCreatedAt: DateTime
+  countUniqueValuesUpdatedBy: Int
+  countEmptyUpdatedBy: Int
+  countNotEmptyUpdatedBy: Int
+  percentageEmptyUpdatedBy: Float
+  percentageNotEmptyUpdatedBy: Float
+  countUniqueValuesUpdatedAt: Int
+  countEmptyUpdatedAt: Int
+  countNotEmptyUpdatedAt: Int
+  percentageEmptyUpdatedAt: Float
+  percentageNotEmptyUpdatedAt: Float
+  minUpdatedAt: DateTime
+  maxUpdatedAt: DateTime
+  countUniqueValuesId: Int
+  countEmptyId: Int
+  countNotEmptyId: Int
+  percentageEmptyId: Float
+  percentageNotEmptyId: Float
+  countUniqueValuesTitle: Int
+  countEmptyTitle: Int
+  countNotEmptyTitle: Int
+  percentageEmptyTitle: Float
+  percentageNotEmptyTitle: Float
+  countUniqueValuesPosition: Int
+  countEmptyPosition: Int
+  countNotEmptyPosition: Int
+  percentageEmptyPosition: Float
+  percentageNotEmptyPosition: Float
+  countUniqueValuesCreatedBy: Int
+  countEmptyCreatedBy: Int
+  countNotEmptyCreatedBy: Int
+  percentageEmptyCreatedBy: Float
+  percentageNotEmptyCreatedBy: Float
+  countUniqueValuesBodyV2: Int
+  countEmptyBodyV2: Int
+  countNotEmptyBodyV2: Int
+  percentageEmptyBodyV2: Float
+  percentageNotEmptyBodyV2: Float
+  countUniqueValuesDeletedAt: Int
+  countEmptyDeletedAt: Int
+  countNotEmptyDeletedAt: Int
+  percentageEmptyDeletedAt: Float
+  percentageNotEmptyDeletedAt: Float
+  minDeletedAt: DateTime
+  maxDeletedAt: DateTime
+  edges: [NoteEdge!]!
+  pageInfo: PageInfo!
+  groupByDimensionValues: JSON!
+}
+
+input NoteFilterInput {
+  searchVector: TSVectorFilter
+  createdAt: DateTimeFilter
+  updatedBy: ActorFilterInput
+  updatedAt: DateTimeFilter
+  id: UUIDFilter
+  title: StringFilter
+  position: FloatFilter
+  createdBy: ActorFilterInput
+  bodyV2: RichTextFilterInput
+  deletedAt: DateTimeFilter
+  and: [NoteFilterInput]
+  or: [NoteFilterInput]
+  not: NoteFilterInput
+}
+
+input NoteOrderByInput {
+  searchVector: OrderByDirection
+  createdAt: OrderByDirection
+  updatedBy: ActorOrderByInput
+  updatedAt: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  position: OrderByDirection
+  createdBy: ActorOrderByInput
+  bodyV2: RichTextOrderByInput
+  deletedAt: OrderByDirection
+}
+
+input NoteGroupByInput {
+  createdAt: GroupByDateGranularityInput
+  updatedBy: ActorGroupByInput
+  updatedAt: GroupByDateGranularityInput
+  title: Boolean
+  createdBy: ActorGroupByInput
+  bodyV2: RichTextGroupByInput
+}
+
+input NoteOrderByWithGroupByInput {
+  aggregate: NoteOrderByWithGroupByAggregateInput
+  searchVector: OrderByDirection
+  createdAt: OrderByDateGranularityInput
+  updatedBy: ActorOrderByInput
+  updatedAt: OrderByDateGranularityInput
+  id: OrderByDirection
+  title: OrderByDirection
+  position: OrderByDirection
+  createdBy: ActorOrderByInput
+  bodyV2: RichTextOrderByInput
+  deletedAt: OrderByDateGranularityInput
+}
+
+input NoteOrderByWithGroupByAggregateInput {
+  totalCount: OrderByDirection
+  countUniqueValuesSearchVector: OrderByDirection
+  countEmptySearchVector: OrderByDirection
+  countNotEmptySearchVector: OrderByDirection
+  percentageEmptySearchVector: OrderByDirection
+  percentageNotEmptySearchVector: OrderByDirection
+  countUniqueValuesCreatedAt: OrderByDirection
+  countEmptyCreatedAt: OrderByDirection
+  countNotEmptyCreatedAt: OrderByDirection
+  percentageEmptyCreatedAt: OrderByDirection
+  percentageNotEmptyCreatedAt: OrderByDirection
+  minCreatedAt: OrderByDirection
+  maxCreatedAt: OrderByDirection
+  countUniqueValuesUpdatedBy: OrderByDirection
+  countEmptyUpdatedBy: OrderByDirection
+  countNotEmptyUpdatedBy: OrderByDirection
+  percentageEmptyUpdatedBy: OrderByDirection
+  percentageNotEmptyUpdatedBy: OrderByDirection
+  countUniqueValuesUpdatedAt: OrderByDirection
+  countEmptyUpdatedAt: OrderByDirection
+  countNotEmptyUpdatedAt: OrderByDirection
+  percentageEmptyUpdatedAt: OrderByDirection
+  percentageNotEmptyUpdatedAt: OrderByDirection
+  minUpdatedAt: OrderByDirection
+  maxUpdatedAt: OrderByDirection
+  countUniqueValuesId: OrderByDirection
+  countEmptyId: OrderByDirection
+  countNotEmptyId: OrderByDirection
+  percentageEmptyId: OrderByDirection
+  percentageNotEmptyId: OrderByDirection
+  countUniqueValuesTitle: OrderByDirection
+  countEmptyTitle: OrderByDirection
+  countNotEmptyTitle: OrderByDirection
+  percentageEmptyTitle: OrderByDirection
+  percentageNotEmptyTitle: OrderByDirection
+  countUniqueValuesPosition: OrderByDirection
+  countEmptyPosition: OrderByDirection
+  countNotEmptyPosition: OrderByDirection
+  percentageEmptyPosition: OrderByDirection
+  percentageNotEmptyPosition: OrderByDirection
+  countUniqueValuesCreatedBy: OrderByDirection
+  countEmptyCreatedBy: OrderByDirection
+  countNotEmptyCreatedBy: OrderByDirection
+  percentageEmptyCreatedBy: OrderByDirection
+  percentageNotEmptyCreatedBy: OrderByDirection
+  countUniqueValuesBodyV2: OrderByDirection
+  countEmptyBodyV2: OrderByDirection
+  countNotEmptyBodyV2: OrderByDirection
+  percentageEmptyBodyV2: OrderByDirection
+  percentageNotEmptyBodyV2: OrderByDirection
+  countUniqueValuesDeletedAt: OrderByDirection
+  countEmptyDeletedAt: OrderByDirection
+  countNotEmptyDeletedAt: OrderByDirection
+  percentageEmptyDeletedAt: OrderByDirection
+  percentageNotEmptyDeletedAt: OrderByDirection
+  minDeletedAt: OrderByDirection
+  maxDeletedAt: OrderByDirection
+}
+
+input NoteCreateInput {
+  searchVector: TSVector
+  createdAt: DateTime
+  updatedBy: ActorCreateInput
+  updatedAt: DateTime
+  id: ID
+  title: String
+  position: Position
+  createdBy: ActorCreateInput
+  bodyV2: RichTextCreateInput
+  deletedAt: DateTime
+}
+
+input NoteUpdateInput {
+  searchVector: TSVector
+  createdAt: DateTime
+  updatedBy: ActorUpdateInput
+  updatedAt: DateTime
+  id: ID
+  title: String
+  position: Position
+  createdBy: ActorUpdateInput
+  bodyV2: RichTextUpdateInput
+  deletedAt: DateTime
+}
+
+input NoteWhereUniqueInput {
+  id: ID
+}
+
+input NoteConnectInput {
+  where: NoteWhereUniqueInput
+}
+
+input NoteRelationInput {
+  connect: NoteConnectInput
+  create: NoteCreateInput
+  disconnect: Boolean
+}
+
+type Query {
+  search(searchInput: String!, limit: Int!, after: String, excludedObjectNameSingulars: [String!], includedObjectNameSingulars: [String!], filter: ObjectRecordFilterInput): SearchResultConnection!
+  workspaceMembers(first: Int, last: Int, offset: Int, before: String, after: String, filter: WorkspaceMemberFilterInput, orderBy: [WorkspaceMemberOrderByInput]): WorkspaceMemberConnection
+  workspaceMember(filter: WorkspaceMemberFilterInput!): WorkspaceMember
+  workspaceMemberDuplicates(ids: [UUID], data: [WorkspaceMemberCreateInput]): [WorkspaceMemberConnection!]
+  workspaceMembersGroupBy(groupBy: [WorkspaceMemberGroupByInput!]!, filter: WorkspaceMemberFilterInput, orderBy: [WorkspaceMemberOrderByWithGroupByInput], orderByForRecords: [WorkspaceMemberOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [WorkspaceMemberGroupByConnection!]
+  timelineActivities(first: Int, last: Int, offset: Int, before: String, after: String, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByInput]): TimelineActivityConnection
+  timelineActivity(filter: TimelineActivityFilterInput!): TimelineActivity
+  timelineActivityDuplicates(ids: [UUID], data: [TimelineActivityCreateInput]): [TimelineActivityConnection!]
+  timelineActivitiesGroupBy(groupBy: [TimelineActivityGroupByInput!]!, filter: TimelineActivityFilterInput, orderBy: [TimelineActivityOrderByWithGroupByInput], orderByForRecords: [TimelineActivityOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [TimelineActivityGroupByConnection!]
+  opportunities(first: Int, last: Int, offset: Int, before: String, after: String, filter: OpportunityFilterInput, orderBy: [OpportunityOrderByInput]): OpportunityConnection
+  opportunity(filter: OpportunityFilterInput!): Opportunity
+  opportunityDuplicates(ids: [UUID], data: [OpportunityCreateInput]): [OpportunityConnection!]
+  opportunitiesGroupBy(groupBy: [OpportunityGroupByInput!]!, filter: OpportunityFilterInput, orderBy: [OpportunityOrderByWithGroupByInput], orderByForRecords: [OpportunityOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [OpportunityGroupByConnection!]
+  people(first: Int, last: Int, offset: Int, before: String, after: String, filter: PersonFilterInput, orderBy: [PersonOrderByInput]): PersonConnection
+  person(filter: PersonFilterInput!): Person
+  personDuplicates(ids: [UUID], data: [PersonCreateInput]): [PersonConnection!]
+  peopleGroupBy(groupBy: [PersonGroupByInput!]!, filter: PersonFilterInput, orderBy: [PersonOrderByWithGroupByInput], orderByForRecords: [PersonOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [PersonGroupByConnection!]
+  taskTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByInput]): TaskTargetConnection
+  taskTarget(filter: TaskTargetFilterInput!): TaskTarget
+  taskTargetDuplicates(ids: [UUID], data: [TaskTargetCreateInput]): [TaskTargetConnection!]
+  taskTargetsGroupBy(groupBy: [TaskTargetGroupByInput!]!, filter: TaskTargetFilterInput, orderBy: [TaskTargetOrderByWithGroupByInput], orderByForRecords: [TaskTargetOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [TaskTargetGroupByConnection!]
+  noteTargets(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByInput]): NoteTargetConnection
+  noteTarget(filter: NoteTargetFilterInput!): NoteTarget
+  noteTargetDuplicates(ids: [UUID], data: [NoteTargetCreateInput]): [NoteTargetConnection!]
+  noteTargetsGroupBy(groupBy: [NoteTargetGroupByInput!]!, filter: NoteTargetFilterInput, orderBy: [NoteTargetOrderByWithGroupByInput], orderByForRecords: [NoteTargetOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [NoteTargetGroupByConnection!]
+  companies(first: Int, last: Int, offset: Int, before: String, after: String, filter: CompanyFilterInput, orderBy: [CompanyOrderByInput]): CompanyConnection
+  company(filter: CompanyFilterInput!): Company
+  companyDuplicates(ids: [UUID], data: [CompanyCreateInput]): [CompanyConnection!]
+  companiesGroupBy(groupBy: [CompanyGroupByInput!]!, filter: CompanyFilterInput, orderBy: [CompanyOrderByWithGroupByInput], orderByForRecords: [CompanyOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [CompanyGroupByConnection!]
+  tasks(first: Int, last: Int, offset: Int, before: String, after: String, filter: TaskFilterInput, orderBy: [TaskOrderByInput]): TaskConnection
+  task(filter: TaskFilterInput!): Task
+  taskDuplicates(ids: [UUID], data: [TaskCreateInput]): [TaskConnection!]
+  tasksGroupBy(groupBy: [TaskGroupByInput!]!, filter: TaskFilterInput, orderBy: [TaskOrderByWithGroupByInput], orderByForRecords: [TaskOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [TaskGroupByConnection!]
+  attachments(first: Int, last: Int, offset: Int, before: String, after: String, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByInput]): AttachmentConnection
+  attachment(filter: AttachmentFilterInput!): Attachment
+  attachmentDuplicates(ids: [UUID], data: [AttachmentCreateInput]): [AttachmentConnection!]
+  attachmentsGroupBy(groupBy: [AttachmentGroupByInput!]!, filter: AttachmentFilterInput, orderBy: [AttachmentOrderByWithGroupByInput], orderByForRecords: [AttachmentOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [AttachmentGroupByConnection!]
+  notes(first: Int, last: Int, offset: Int, before: String, after: String, filter: NoteFilterInput, orderBy: [NoteOrderByInput]): NoteConnection
+  note(filter: NoteFilterInput!): Note
+  noteDuplicates(ids: [UUID], data: [NoteCreateInput]): [NoteConnection!]
+  notesGroupBy(groupBy: [NoteGroupByInput!]!, filter: NoteFilterInput, orderBy: [NoteOrderByWithGroupByInput], orderByForRecords: [NoteOrderByInput], viewId: UUID, limit: Int, offsetForRecords: Int): [NoteGroupByConnection!]
+}
+
+type Mutation {
+  createWorkspaceMember(data: WorkspaceMemberCreateInput!, upsert: Boolean): WorkspaceMember
+  createWorkspaceMembers(data: [WorkspaceMemberCreateInput!]!, upsert: Boolean): [WorkspaceMember!]
+  updateWorkspaceMember(id: UUID!, data: WorkspaceMemberUpdateInput!): WorkspaceMember
+  updateWorkspaceMembers(filter: WorkspaceMemberFilterInput!, data: WorkspaceMemberUpdateInput!): [WorkspaceMember!]
+  deleteWorkspaceMember(id: UUID!): WorkspaceMember
+  deleteWorkspaceMembers(filter: WorkspaceMemberFilterInput!): [WorkspaceMember!]
+  destroyWorkspaceMember(id: UUID!): WorkspaceMember
+  destroyWorkspaceMembers(filter: WorkspaceMemberFilterInput!): [WorkspaceMember!]
+  restoreWorkspaceMember(id: UUID!): WorkspaceMember
+  restoreWorkspaceMembers(filter: WorkspaceMemberFilterInput!): [WorkspaceMember!]
+  mergeWorkspaceMembers(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): WorkspaceMember
+  createTimelineActivity(data: TimelineActivityCreateInput!, upsert: Boolean): TimelineActivity
+  createTimelineActivities(data: [TimelineActivityCreateInput!]!, upsert: Boolean): [TimelineActivity!]
+  updateTimelineActivity(id: UUID!, data: TimelineActivityUpdateInput!): TimelineActivity
+  updateTimelineActivities(filter: TimelineActivityFilterInput!, data: TimelineActivityUpdateInput!): [TimelineActivity!]
+  deleteTimelineActivity(id: UUID!): TimelineActivity
+  deleteTimelineActivities(filter: TimelineActivityFilterInput!): [TimelineActivity!]
+  destroyTimelineActivity(id: UUID!): TimelineActivity
+  destroyTimelineActivities(filter: TimelineActivityFilterInput!): [TimelineActivity!]
+  restoreTimelineActivity(id: UUID!): TimelineActivity
+  restoreTimelineActivities(filter: TimelineActivityFilterInput!): [TimelineActivity!]
+  mergeTimelineActivities(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): TimelineActivity
+  createOpportunity(data: OpportunityCreateInput!, upsert: Boolean): Opportunity
+  createOpportunities(data: [OpportunityCreateInput!]!, upsert: Boolean): [Opportunity!]
+  updateOpportunity(id: UUID!, data: OpportunityUpdateInput!): Opportunity
+  updateOpportunities(filter: OpportunityFilterInput!, data: OpportunityUpdateInput!): [Opportunity!]
+  deleteOpportunity(id: UUID!): Opportunity
+  deleteOpportunities(filter: OpportunityFilterInput!): [Opportunity!]
+  destroyOpportunity(id: UUID!): Opportunity
+  destroyOpportunities(filter: OpportunityFilterInput!): [Opportunity!]
+  restoreOpportunity(id: UUID!): Opportunity
+  restoreOpportunities(filter: OpportunityFilterInput!): [Opportunity!]
+  mergeOpportunities(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Opportunity
+  createPerson(data: PersonCreateInput!, upsert: Boolean): Person
+  createPeople(data: [PersonCreateInput!]!, upsert: Boolean): [Person!]
+  updatePerson(id: UUID!, data: PersonUpdateInput!): Person
+  updatePeople(filter: PersonFilterInput!, data: PersonUpdateInput!): [Person!]
+  deletePerson(id: UUID!): Person
+  deletePeople(filter: PersonFilterInput!): [Person!]
+  destroyPerson(id: UUID!): Person
+  destroyPeople(filter: PersonFilterInput!): [Person!]
+  restorePerson(id: UUID!): Person
+  restorePeople(filter: PersonFilterInput!): [Person!]
+  mergePeople(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Person
+  createTaskTarget(data: TaskTargetCreateInput!, upsert: Boolean): TaskTarget
+  createTaskTargets(data: [TaskTargetCreateInput!]!, upsert: Boolean): [TaskTarget!]
+  updateTaskTarget(id: UUID!, data: TaskTargetUpdateInput!): TaskTarget
+  updateTaskTargets(filter: TaskTargetFilterInput!, data: TaskTargetUpdateInput!): [TaskTarget!]
+  deleteTaskTarget(id: UUID!): TaskTarget
+  deleteTaskTargets(filter: TaskTargetFilterInput!): [TaskTarget!]
+  destroyTaskTarget(id: UUID!): TaskTarget
+  destroyTaskTargets(filter: TaskTargetFilterInput!): [TaskTarget!]
+  restoreTaskTarget(id: UUID!): TaskTarget
+  restoreTaskTargets(filter: TaskTargetFilterInput!): [TaskTarget!]
+  mergeTaskTargets(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): TaskTarget
+  createNoteTarget(data: NoteTargetCreateInput!, upsert: Boolean): NoteTarget
+  createNoteTargets(data: [NoteTargetCreateInput!]!, upsert: Boolean): [NoteTarget!]
+  updateNoteTarget(id: UUID!, data: NoteTargetUpdateInput!): NoteTarget
+  updateNoteTargets(filter: NoteTargetFilterInput!, data: NoteTargetUpdateInput!): [NoteTarget!]
+  deleteNoteTarget(id: UUID!): NoteTarget
+  deleteNoteTargets(filter: NoteTargetFilterInput!): [NoteTarget!]
+  destroyNoteTarget(id: UUID!): NoteTarget
+  destroyNoteTargets(filter: NoteTargetFilterInput!): [NoteTarget!]
+  restoreNoteTarget(id: UUID!): NoteTarget
+  restoreNoteTargets(filter: NoteTargetFilterInput!): [NoteTarget!]
+  mergeNoteTargets(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): NoteTarget
+  createCompany(data: CompanyCreateInput!, upsert: Boolean): Company
+  createCompanies(data: [CompanyCreateInput!]!, upsert: Boolean): [Company!]
+  updateCompany(id: UUID!, data: CompanyUpdateInput!): Company
+  updateCompanies(filter: CompanyFilterInput!, data: CompanyUpdateInput!): [Company!]
+  deleteCompany(id: UUID!): Company
+  deleteCompanies(filter: CompanyFilterInput!): [Company!]
+  destroyCompany(id: UUID!): Company
+  destroyCompanies(filter: CompanyFilterInput!): [Company!]
+  restoreCompany(id: UUID!): Company
+  restoreCompanies(filter: CompanyFilterInput!): [Company!]
+  mergeCompanies(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Company
+  createTask(data: TaskCreateInput!, upsert: Boolean): Task
+  createTasks(data: [TaskCreateInput!]!, upsert: Boolean): [Task!]
+  updateTask(id: UUID!, data: TaskUpdateInput!): Task
+  updateTasks(filter: TaskFilterInput!, data: TaskUpdateInput!): [Task!]
+  deleteTask(id: UUID!): Task
+  deleteTasks(filter: TaskFilterInput!): [Task!]
+  destroyTask(id: UUID!): Task
+  destroyTasks(filter: TaskFilterInput!): [Task!]
+  restoreTask(id: UUID!): Task
+  restoreTasks(filter: TaskFilterInput!): [Task!]
+  mergeTasks(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Task
+  createAttachment(data: AttachmentCreateInput!, upsert: Boolean): Attachment
+  createAttachments(data: [AttachmentCreateInput!]!, upsert: Boolean): [Attachment!]
+  updateAttachment(id: UUID!, data: AttachmentUpdateInput!): Attachment
+  updateAttachments(filter: AttachmentFilterInput!, data: AttachmentUpdateInput!): [Attachment!]
+  deleteAttachment(id: UUID!): Attachment
+  deleteAttachments(filter: AttachmentFilterInput!): [Attachment!]
+  destroyAttachment(id: UUID!): Attachment
+  destroyAttachments(filter: AttachmentFilterInput!): [Attachment!]
+  restoreAttachment(id: UUID!): Attachment
+  restoreAttachments(filter: AttachmentFilterInput!): [Attachment!]
+  mergeAttachments(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Attachment
+  createNote(data: NoteCreateInput!, upsert: Boolean): Note
+  createNotes(data: [NoteCreateInput!]!, upsert: Boolean): [Note!]
+  updateNote(id: UUID!, data: NoteUpdateInput!): Note
+  updateNotes(filter: NoteFilterInput!, data: NoteUpdateInput!): [Note!]
+  deleteNote(id: UUID!): Note
+  deleteNotes(filter: NoteFilterInput!): [Note!]
+  destroyNote(id: UUID!): Note
+  destroyNotes(filter: NoteFilterInput!): [Note!]
+  restoreNote(id: UUID!): Note
+  restoreNotes(filter: NoteFilterInput!): [Note!]
+  mergeNotes(ids: [UUID!]!, conflictPriorityIndex: Int!, dryRun: Boolean): Note
+}

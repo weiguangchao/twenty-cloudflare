@@ -17,7 +17,6 @@ import { useIcons } from 'twenty-ui/icon/provider';
 import { Status } from 'twenty-ui/primitives/data-display';
 import { Card, Tooltip } from 'twenty-ui/primitives/surfaces';
 import { themeCssVariables, useTheme } from 'twenty-ui/theme';
-
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
 import { RecordChip } from '@/object-record/components/RecordChip';

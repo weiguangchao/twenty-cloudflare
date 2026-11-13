@@ -7,7 +7,6 @@ import { Section } from 'twenty-ui/components/layout';
 import { IconArchive, IconArchiveOff, IconTrash } from 'twenty-ui/icon';
 import { Button } from 'twenty-ui/primitives/input';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
 import { ConfirmationDialog } from '@/ui/layout/dialog/components/ConfirmationDialog';

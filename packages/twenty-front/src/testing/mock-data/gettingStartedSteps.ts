@@ -1,10 +1,10 @@
 import {
-  type GettingStartedProgressQuery,
+  type Query,
   GettingStartedStepActionKey,
   GettingStartedStepKind,
 } from '~/generated-metadata/graphql';
 
-export const mockGettingStartedStepDefinitions: GettingStartedProgressQuery['gettingStartedProgress']['steps'] =
+export const mockGettingStartedStepDefinitions: Query['gettingStartedProgress']['steps'] =
   [
     {
       __typename: 'GettingStartedStepDefinition',

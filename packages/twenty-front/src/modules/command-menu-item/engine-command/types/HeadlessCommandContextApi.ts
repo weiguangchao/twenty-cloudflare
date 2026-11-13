@@ -1,14 +1,12 @@
 import { type ContextStoreTargetedRecordsRule } from '@/context-store/states/contextStoreTargetedRecordsRuleComponentState';
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
 import { type ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { type WorkflowTrigger } from '@/workflow/types/Workflow';
 import {
   type CommandMenuCoreObjectName,
   type Nullable,
   type RecordGqlOperationFilter,
 } from 'twenty-shared/types';
 import {
-  type CommandMenuItemAvailabilityType,
   type EngineComponentKey,
   type CommandMenuItemPayload,
 } from '~/generated-metadata/graphql';
@@ -30,23 +28,4 @@ export type HeadlessEngineCommandContextApi = {
   isInSidePanel?: boolean;
 };
 
-export type HeadlessFrontComponentCommandContextApi =
-  HeadlessEngineCommandContextApi & {
-    frontComponentId: string;
-  };
-
-export type HeadlessTriggerWorkflowVersionCommandContextApi =
-  HeadlessEngineCommandContextApi & {
-    workflowId: string;
-    workflowVersionId: string;
-    coreWorkflowId?: string;
-    coreWorkflowVersionId?: string;
-    trigger: WorkflowTrigger | null;
-    availabilityType: CommandMenuItemAvailabilityType;
-    availabilityObjectMetadataId?: string | null;
-  };
-
-export type HeadlessCommandContextApi =
-  | HeadlessEngineCommandContextApi
-  | HeadlessFrontComponentCommandContextApi
-  | HeadlessTriggerWorkflowVersionCommandContextApi;
+export type HeadlessCommandContextApi = HeadlessEngineCommandContextApi;

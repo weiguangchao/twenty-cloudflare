@@ -2,7 +2,6 @@ import { PageLayoutVerticalList } from '@/page-layout/components/PageLayoutVerti
 import { PageLayoutWidgetViewportContext } from '@/page-layout/contexts/PageLayoutWidgetViewportContext';
 import { makeWidget as makePageLayoutWidget } from '@/page-layout/testing/pageLayoutDraftFixtures';
 import { type PageLayoutWidget } from '@/page-layout/types/PageLayoutWidget';
-import { WorkflowDiagramAllowPageScrollContext } from '@/workflow/workflow-diagram/contexts/WorkflowDiagramAllowPageScrollContext';
 import { render, screen } from '@testing-library/react';
 import { type ReactNode, useContext } from 'react';
 import {
@@ -32,12 +31,10 @@ jest.mock('@/page-layout/hooks/useIsSideColumnContext', () => ({
 
 jest.mock('@/page-layout/widgets/components/WidgetRenderer', () => ({
   WidgetRenderer: ({ widget }: { widget: PageLayoutWidget }) => {
-    const allowPageScroll = useContext(WorkflowDiagramAllowPageScrollContext);
     const fillsViewport = useContext(PageLayoutWidgetViewportContext);
 
     return (
       <div
-        data-allow-page-scroll={String(allowPageScroll)}
         data-fills-viewport={String(fillsViewport)}
         data-testid={widget.id}
       />
@@ -388,70 +385,6 @@ describe('PageLayoutVerticalList', () => {
 
     expect(screen.getByTestId('front-component-sortable-cell')).toHaveAttribute(
       'data-fill',
-      'false',
-    );
-  });
-
-  it('keeps the wheel on a workflow canvas that is alone in its tab', () => {
-    render(
-      <PageLayoutVerticalList
-        isInEditMode={false}
-        widgets={[makeWidget('workflow', WidgetType.WORKFLOW)]}
-      />,
-    );
-
-    expect(screen.getByTestId('workflow')).toHaveAttribute(
-      'data-allow-page-scroll',
-      'false',
-    );
-  });
-
-  it('lets the page scroll over a workflow canvas that shares its tab', () => {
-    render(
-      <PageLayoutVerticalList
-        isInEditMode={false}
-        widgets={[
-          makeWidget('fields', WidgetType.FIELDS),
-          makeWidget('workflow', WidgetType.WORKFLOW),
-        ]}
-      />,
-    );
-
-    expect(screen.getByTestId('workflow')).toHaveAttribute(
-      'data-allow-page-scroll',
-      'true',
-    );
-  });
-
-  it('lets the page scroll over a workflow in a multi-widget Canvas tab', () => {
-    mockLayoutMode = PageLayoutTabLayoutMode.CANVAS;
-
-    render(
-      <PageLayoutVerticalList
-        isInEditMode={false}
-        widgets={[
-          makeWidget('fields', WidgetType.FIELDS),
-          makeWidget('workflow', WidgetType.WORKFLOW),
-        ]}
-      />,
-    );
-
-    expect(screen.getByTestId('workflow')).toHaveAttribute(
-      'data-allow-page-scroll',
-      'true',
-    );
-  });
-
-  it('keeps page scroll disabled when the list cannot scroll', () => {
-    render(
-      <PageLayoutVerticalList
-        isInEditMode={false}
-        widgets={[makeWidget('fields', WidgetType.FIELDS)]}
-      />,
-    );
-
-    expect(screen.getByTestId('fields')).toHaveAttribute(
-      'data-allow-page-scroll',
       'false',
     );
   });

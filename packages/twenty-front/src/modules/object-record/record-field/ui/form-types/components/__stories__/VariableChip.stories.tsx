@@ -1,13 +1,12 @@
 import { VariableChip } from '@/object-record/record-field/ui/form-types/components/VariableChip';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof VariableChip> = {
   title: 'UI/Data/Field/Form/Input/VariableChip',
   component: VariableChip,
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

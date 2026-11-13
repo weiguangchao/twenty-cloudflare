@@ -1,4 +1,3 @@
-import { useSwitchToNewAiChat } from '@/ai/hooks/useSwitchToNewAiChat';
 import { useMobileNavigationBarItems } from '@/navigation/hooks/useMobileNavigationBarItems';
 import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
 import { i18n } from '@lingui/core';
@@ -7,8 +6,6 @@ import { act, renderHook } from '@testing-library/react';
 import { createStore, Provider } from 'jotai';
 import { type ReactNode } from 'react';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
-
-jest.mock('@/ai/hooks/useSwitchToNewAiChat');
 jest.mock('@/settings/roles/hooks/useHasPermissionFlag');
 
 jest.mock('@/object-metadata/hooks/useFilteredObjectMetadataItems', () => ({
@@ -26,8 +23,6 @@ jest.mock('@/side-panel/hooks/useOpenRecordsSearchPageInSidePanel', () => ({
 jest.mock('@/side-panel/hooks/useSidePanelMenu', () => ({
   useSidePanelMenu: () => ({ closeSidePanelMenu: jest.fn() }),
 }));
-
-const mockSwitchToNewChat = jest.fn();
 
 const renderMobileNavigationBarItems = (
   pathname: string,
@@ -68,24 +63,9 @@ describe('useMobileNavigationBarItems', () => {
     localStorage.clear();
 
     jest.mocked(useHasPermissionFlag).mockReturnValue(true);
-    jest.mocked(useSwitchToNewAiChat).mockReturnValue({
-      switchToNewChat: mockSwitchToNewChat,
-    });
   });
 
-  it('offers home, search and a new chat', () => {
-    const { result } = renderMobileNavigationBarItems('/objects/people');
-
-    expect(result.current.items.map(({ name }) => name)).toEqual([
-      'home',
-      'search',
-      'newAiChat',
-    ]);
-  });
-
-  it('drops the new chat when the workspace has no AI permission', () => {
-    jest.mocked(useHasPermissionFlag).mockReturnValue(false);
-
+  it('offers home and search', () => {
     const { result } = renderMobileNavigationBarItems('/objects/people');
 
     expect(result.current.items.map(({ name }) => name)).toEqual([
@@ -102,14 +82,6 @@ describe('useMobileNavigationBarItems', () => {
       renderMobileNavigationBarItems('/objects/people').result.current
         .activeItemName,
     ).toBe('');
-  });
-
-  it('starts a new chat from the chat item', () => {
-    const { result } = renderMobileNavigationBarItems('/objects/people');
-
-    act(() => tapItem(result, 'newAiChat'));
-
-    expect(mockSwitchToNewChat).toHaveBeenCalledTimes(1);
   });
 
   it('replaces the settings entry it leaves so back does not return to it', () => {

@@ -13,11 +13,7 @@ import { NAVIGATION_DRAWER_CLICK_OUTSIDE_ID } from '@/ui/navigation/navigation-d
 import { currentFocusIdSelector } from '@/ui/utilities/focus/states/currentFocusIdSelector';
 import { useListenClickOutside } from '@/ui/utilities/pointer-event/hooks/useListenClickOutside';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
-import { WORKFLOW_DIAGRAM_CREATE_STEP_NODE_CLICK_OUTSIDE_ID } from '@/workflow/workflow-diagram/constants/WorkflowDiagramCreateStepNodeClickOutsideId';
-import { WORKFLOW_DIAGRAM_STEP_NODE_BASE_CLICK_OUTSIDE_ID } from '@/workflow/workflow-diagram/constants/WorkflowDiagramStepNodeClickOutsideId';
-import { WORKFLOW_DIAGRAM_EDGE_OPTIONS_CLICK_OUTSIDE_ID } from '@/workflow/workflow-diagram/workflow-edges/constants/WorkflowDiagramEdgeOptionsClickOutsideId';
 import { useStore } from 'jotai';
-
 import { LINK_CHIP_CLICK_OUTSIDE_ID } from '@/ui/navigation/link/constants/LinkChipClickOutsideId';
 import { styled } from '@linaria/react';
 import { motion } from 'framer-motion';
@@ -81,9 +77,6 @@ export const CommandMenuOpenContainer = ({
       RECORD_CHIP_CLICK_OUTSIDE_ID,
       SLASH_MENU_DROPDOWN_CLICK_OUTSIDE_ID,
       MENTION_MENU_DROPDOWN_CLICK_OUTSIDE_ID,
-      WORKFLOW_DIAGRAM_STEP_NODE_BASE_CLICK_OUTSIDE_ID,
-      WORKFLOW_DIAGRAM_EDGE_OPTIONS_CLICK_OUTSIDE_ID,
-      WORKFLOW_DIAGRAM_CREATE_STEP_NODE_CLICK_OUTSIDE_ID,
     ],
   });
 

@@ -1,7 +1,6 @@
 import { COMMAND_MENU_ITEM_SECTIONS_IN_DISPLAY_ORDER } from '@/command-menu-item/constants/CommandMenuItemSectionsInDisplayOrder';
 import { COMMAND_MENU_ASK_AI_FALLBACK_ITEM_ID } from '@/command-menu-item/constants/CommandMenuAskAiFallbackItemId';
 import { CommandMenuContext } from '@/command-menu-item/contexts/CommandMenuContext';
-import { CommandMenuAskAiFallbackItem } from '@/command-menu-item/display/components/CommandMenuAskAiFallbackItem';
 import { CommandMenuItemRenderer } from '@/command-menu-item/display/components/CommandMenuItemRenderer';
 import { CommandMenuItemSectionGroup } from '@/command-menu-item/display/components/CommandMenuItemSectionGroup';
 import { useCommandMenuAppActions } from '@/command-menu-item/display/hooks/useCommandMenuAppActions';
@@ -13,9 +12,6 @@ import { type CommandMenuItemSection } from '@/command-menu-item/types/CommandMe
 import { groupCommandMenuItems } from '@/command-menu-item/utils/groupCommandMenuItems';
 import { groupCommandMenuItemsBySection } from '@/command-menu-item/utils/groupCommandMenuItemsBySection';
 import { CommandMenuItem } from '@/command-menu/components/CommandMenuItem';
-import { CoreObjectsCommands } from '@/object-core/commands/components/CoreObjectsCommands';
-import { useCoreObjectsCommands } from '@/object-core/commands/hooks/useCoreObjectsCommands';
-import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
 import { SidePanelList } from '@/side-panel/components/SidePanelList';
 import { useSidePanelMenu } from '@/side-panel/hooks/useSidePanelMenu';
 import { useFilterCommandMenuItemsWithSidePanelSearch } from '@/side-panel/pages/root/hooks/useFilterCommandMenuItemsWithSidePanelSearch';
@@ -38,10 +34,7 @@ import {
   IconTable,
   type IconComponent,
 } from 'twenty-ui/icon';
-import {
-  CommandMenuItemAvailabilityType,
-  PermissionFlagType,
-} from '~/generated-metadata/graphql';
+import { CommandMenuItemAvailabilityType } from '~/generated-metadata/graphql';
 
 const SECTION_ICONS: Record<CommandMenuItemSection, IconComponent> = {
   SELECTION: IconCheckbox,
@@ -64,18 +57,11 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
   const { commandMenuItems, commandMenuContextApi } =
     useContext(CommandMenuContext);
 
-  const {
-    coreObjectCommandIds,
-    coreSelectionCommandIds,
-    coreSelectionSectionContext,
-  } = useCoreObjectsCommands();
-
   const selectionSectionContext = useCommandMenuItemSelectionSectionContext();
   const currentViewSectionContext =
     useCommandMenuItemCurrentViewSectionContext();
   const objectSectionContext = useCommandMenuItemObjectSectionContext();
   const workspaceSectionContext = useCommandMenuItemWorkspaceSectionContext();
-  const hasAiPermission = useHasPermissionFlag(PermissionFlagType.AI);
 
   const { filterCommandMenuItemsWithSidePanelSearch } =
     useFilterCommandMenuItemsWithSidePanelSearch({
@@ -144,7 +130,7 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
   const getSectionContext = (section: CommandMenuItemSection) => {
     switch (section) {
       case 'SELECTION':
-        return coreSelectionSectionContext ?? selectionSectionContext;
+        return selectionSectionContext;
       case 'CURRENT_VIEW':
         return currentViewSectionContext;
       case 'THIS_OBJECT':
@@ -161,26 +147,19 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
 
   const getSectionExtraItemIds = (section: CommandMenuItemSection) => {
     if (section === 'THIS_OBJECT') {
-      return [
-        ...coreObjectCommandIds,
-        ...getSectionAppActions(section).map((item) => item.id),
-      ];
+      return [...getSectionAppActions(section).map((item) => item.id)];
     }
 
     if (section === 'SELECTION') {
-      return coreSelectionCommandIds;
+      return [];
     }
 
     return getSectionAppActions(section).map((item) => item.id);
   };
 
-  const hasNoMatchingItems =
-    !matchingItems.length &&
-    appActions.length === 0 &&
-    coreObjectCommandIds.length === 0 &&
-    coreSelectionCommandIds.length === 0;
+  const hasNoMatchingItems = !matchingItems.length && appActions.length === 0;
 
-  const shouldDisplayAskAiFallbackItem = isSearchActive && hasAiPermission;
+  const shouldDisplayAskAiFallbackItem = false;
 
   const shouldDisplayFallbackItems =
     hasNoMatchingItems &&
@@ -227,11 +206,7 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
             {sectionCommandMenuItems.map((item) => (
               <CommandMenuItemRenderer item={item} key={item.id} />
             ))}
-            {((section === 'THIS_OBJECT' && coreObjectCommandIds.length > 0) ||
-              (section === 'SELECTION' &&
-                coreSelectionCommandIds.length > 0)) && (
-              <CoreObjectsCommands section={section} />
-            )}
+
             {getSectionAppActions(section).map((item) => {
               const handleClick = () => {
                 item.onClick();
@@ -265,9 +240,6 @@ export const SidePanelCommandMenuItemDisplayPage = () => {
           }
           Icon={IconLifebuoy}
         >
-          {shouldDisplayAskAiFallbackItem && (
-            <CommandMenuAskAiFallbackItem prompt={trimmedSidePanelSearch} />
-          )}
           {fallbackCommandMenuItems.map((item) => (
             <CommandMenuItemRenderer item={item} key={item.id} />
           ))}

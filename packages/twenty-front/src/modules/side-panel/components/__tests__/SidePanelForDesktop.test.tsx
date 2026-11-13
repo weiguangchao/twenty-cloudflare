@@ -3,7 +3,6 @@ import { I18nProvider } from '@lingui/react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { Provider as JotaiProvider } from 'jotai';
 import { type ReactNode } from 'react';
-
 import { SidePanelForDesktop } from '@/side-panel/components/SidePanelForDesktop';
 import { isSidePanelClosingState } from '@/side-panel/states/isSidePanelClosingState';
 import { isSidePanelOpenedState } from '@/side-panel/states/isSidePanelOpenedState';
@@ -13,19 +12,6 @@ import {
 } from '@/ui/utilities/state/jotai/jotaiStore';
 
 const sidePanelCloseAnimationCompleteCleanupMock = jest.fn();
-
-let capturedOnContinueChatFromFullWidth: (() => void) | undefined;
-
-jest.mock('@/side-panel/components/SidePanelAskAiHandoffEffect', () => ({
-  SidePanelAskAiHandoffEffect: ({
-    onContinueChatFromFullWidth,
-  }: {
-    onContinueChatFromFullWidth: () => void;
-  }) => {
-    capturedOnContinueChatFromFullWidth = onContinueChatFromFullWidth;
-    return null;
-  },
-}));
 
 jest.mock('framer-motion', () => ({
   useReducedMotion: () => false,
@@ -64,30 +50,21 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
   </I18nProvider>
 );
 
-const startHandoffShrink = () => {
-  act(() => {
-    capturedOnContinueChatFromFullWidth?.();
-  });
-};
-
 describe('SidePanelForDesktop', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     resetJotaiStore();
-    capturedOnContinueChatFromFullWidth = undefined;
     sidePanelCloseAnimationCompleteCleanupMock.mockImplementation(() => {
       jotaiStore.set(isSidePanelClosingState.atom, false);
     });
   });
 
-  it('should keep the content mounted while closing after a handoff entrance', () => {
+  it('keeps the content mounted while closing', () => {
     jotaiStore.set(isSidePanelOpenedState.atom, true);
 
     const { queryByTestId } = render(<SidePanelForDesktop />, {
       wrapper: Wrapper,
     });
-
-    startHandoffShrink();
 
     expect(queryByTestId('side-panel-content')).toBeInTheDocument();
 
@@ -98,57 +75,7 @@ describe('SidePanelForDesktop', () => {
     expect(queryByTestId('side-panel-content')).toBeInTheDocument();
   });
 
-  it('should shrink from full width when the handoff continues the chat', () => {
-    jotaiStore.set(isSidePanelOpenedState.atom, true);
-
-    const { container } = render(<SidePanelForDesktop />, { wrapper: Wrapper });
-
-    const wrapperElement = container.querySelector('[data-side-panel]');
-
-    if (wrapperElement === null) {
-      throw new Error('side panel wrapper not found');
-    }
-
-    expect(wrapperElement).toHaveAttribute(
-      'data-shrink-from-full-width',
-      'false',
-    );
-
-    startHandoffShrink();
-
-    expect(wrapperElement).toHaveAttribute(
-      'data-shrink-from-full-width',
-      'true',
-    );
-  });
-
-  it('should stop shrinking from full width once the entrance animation ends', () => {
-    jotaiStore.set(isSidePanelOpenedState.atom, true);
-
-    const { container } = render(<SidePanelForDesktop />, { wrapper: Wrapper });
-
-    const wrapperElement = container.querySelector('[data-side-panel]');
-
-    if (wrapperElement === null) {
-      throw new Error('side panel wrapper not found');
-    }
-
-    startHandoffShrink();
-
-    expect(wrapperElement).toHaveAttribute(
-      'data-shrink-from-full-width',
-      'true',
-    );
-
-    fireEvent.animationEnd(wrapperElement);
-
-    expect(wrapperElement).toHaveAttribute(
-      'data-shrink-from-full-width',
-      'false',
-    );
-  });
-
-  it('should complete the close lifecycle when closed while the entrance animation is still running', () => {
+  it('completes the close lifecycle after the closing transition', () => {
     jotaiStore.set(isSidePanelOpenedState.atom, true);
 
     const { container, queryByTestId } = render(<SidePanelForDesktop />, {
@@ -161,20 +88,17 @@ describe('SidePanelForDesktop', () => {
       throw new Error('side panel wrapper not found');
     }
 
-    startHandoffShrink();
-
     act(() => {
       jotaiStore.set(isSidePanelOpenedState.atom, false);
       jotaiStore.set(isSidePanelClosingState.atom, true);
     });
 
-    fireEvent.animationEnd(wrapperElement);
-
+    fireEvent.transitionEnd(wrapperElement);
     expect(sidePanelCloseAnimationCompleteCleanupMock).toHaveBeenCalled();
     expect(queryByTestId('side-panel-content')).not.toBeInTheDocument();
   });
 
-  it('should run the close cleanup once when both the animation and the transition end', () => {
+  it('runs the close cleanup once when the transition ends', () => {
     jotaiStore.set(isSidePanelOpenedState.atom, true);
 
     const { container } = render(<SidePanelForDesktop />, { wrapper: Wrapper });
@@ -185,14 +109,11 @@ describe('SidePanelForDesktop', () => {
       throw new Error('side panel wrapper not found');
     }
 
-    startHandoffShrink();
-
     act(() => {
       jotaiStore.set(isSidePanelOpenedState.atom, false);
       jotaiStore.set(isSidePanelClosingState.atom, true);
     });
 
-    fireEvent.animationEnd(wrapperElement);
     fireEvent.transitionEnd(wrapperElement);
 
     expect(sidePanelCloseAnimationCompleteCleanupMock).toHaveBeenCalledTimes(1);
@@ -203,9 +124,8 @@ describe('SidePanelForDesktop', () => {
 
     const { container } = render(<SidePanelForDesktop />, { wrapper: Wrapper });
 
-    expect(container.querySelector('[data-side-panel]')).toHaveAttribute(
+    expect(container.querySelector('[data-side-panel]')).not.toHaveAttribute(
       'data-shrink-from-full-width',
-      'false',
     );
   });
 });

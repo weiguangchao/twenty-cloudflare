@@ -1,6 +1,4 @@
-import { GettingStartedSidebarCard } from '@/getting-started/components/GettingStartedSidebarCard';
 import { useIsSettingsDrawer } from '@/navigation/hooks/useIsSettingsDrawer';
-
 import { MainNavigationDrawerContent } from '@/navigation/components/MainNavigationDrawerContent';
 import { MainNavigationDrawerModeSwitcher } from '@/navigation/components/MainNavigationDrawerModeSwitcher';
 import { NavigationDrawerHeader } from '@/navigation/components/NavigationDrawerHeader';
@@ -41,7 +39,6 @@ export const AppNavigationDrawer = ({
           <MainNavigationDrawerContent />
         )}
       </NavigationDrawerModeTransition>
-      {!isSettingsDrawer && <GettingStartedSidebarCard />}
     </NavigationDrawer>
   );
 };

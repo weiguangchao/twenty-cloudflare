@@ -11,7 +11,6 @@ import {
 } from 'storybook/test';
 import { TIPTAP_DOCUMENT_SCHEMA_VERSION } from 'twenty-shared/utils';
 import { getUserDevice } from 'twenty-ui/utilities';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const serializeDocument = (content: JSONContent[]) =>
@@ -26,7 +25,7 @@ const meta: Meta<typeof FormRichTextFieldInput> = {
   component: FormRichTextFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

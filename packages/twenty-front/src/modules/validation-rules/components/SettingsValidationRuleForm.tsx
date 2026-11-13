@@ -5,7 +5,6 @@ import { Section } from 'twenty-ui/components/layout';
 import { IconAddressBook } from 'twenty-ui/icon';
 import { useIcons } from 'twenty-ui/icon/provider';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
 import { SettingsDataModelPreviewFormCard } from '@/settings/data-model/components/SettingsDataModelPreviewFormCard';
 import { Select } from '@/ui/input/components/Select';

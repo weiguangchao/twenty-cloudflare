@@ -6,9 +6,7 @@ import { getLabelIdentifierFieldMetadataItem } from '@/object-metadata/utils/get
 import { useOpenNewRecordTitleCell } from '@/object-record/record-title-cell/hooks/useOpenNewRecordTitleCell';
 import { newRecordTitleCellToOpenState } from '@/object-record/record-title-cell/states/newRecordTitleCellToOpenState';
 import { setRecordPageActiveTabId } from '@/page-layout/utils/setRecordPageActiveTabId';
-import { AppPath, StandardObjectNameSingular } from 'twenty-shared/types';
-
-import { useRunWorkflowRunOpeningInSidePanelEffects } from '@/workflow/hooks/useRunWorkflowRunOpeningInSidePanelEffects';
+import { AppPath } from 'twenty-shared/types';
 import { t } from '@lingui/core/macro';
 import { useStore } from 'jotai';
 import { useCallback } from 'react';
@@ -22,8 +20,6 @@ export const useOpenRecordInSidePanel = () => {
 
   const { closeSidePanelMenu } = useSidePanelMenu();
   const { openRoutedPageInSidePanel } = useOpenRoutedPageInSidePanel();
-  const { runWorkflowRunOpeningInSidePanelEffects } =
-    useRunWorkflowRunOpeningInSidePanelEffects();
   const { openNewRecordTitleCell } = useOpenNewRecordTitleCell();
 
   const isMobile = useIsMobile();
@@ -143,13 +139,6 @@ export const useOpenRecordInSidePanel = () => {
         return null;
       }
 
-      if (objectNameSingular === StandardObjectNameSingular.WorkflowRun) {
-        runWorkflowRunOpeningInSidePanelEffects({
-          objectMetadataItem,
-          recordId,
-        });
-      }
-
       if (isNewRecord) {
         const labelIdentifierField =
           getLabelIdentifierFieldMetadataItem(objectMetadataItem);
@@ -171,7 +160,6 @@ export const useOpenRecordInSidePanel = () => {
       navigate,
       openNewRecordTitleCell,
       openRoutedPageInSidePanel,
-      runWorkflowRunOpeningInSidePanelEffects,
       store,
     ],
   );

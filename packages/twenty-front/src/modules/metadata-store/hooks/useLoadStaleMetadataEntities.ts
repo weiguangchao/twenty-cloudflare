@@ -15,8 +15,6 @@ import {
   FindAllRecordFormPageLayoutsDocument,
   FindFieldsWidgetViewsDocument,
   FindTableWidgetViewsDocument,
-  FindManyFrontComponentsDocument,
-  FindManyLogicFunctionsDocument,
   FindManyNavigationMenuItemsDocument,
   type ObjectMetadataItemsQuery,
   ViewType,
@@ -177,26 +175,6 @@ export const useLoadStaleMetadataEntities = () => {
         );
       }
 
-      if (staleEntityKeys.includes('logicFunctions')) {
-        fetchPromises.push(
-          client
-            .query({
-              query: FindManyLogicFunctionsDocument,
-              fetchPolicy: 'network-only',
-            })
-            .then((result) => {
-              if (!isDefined(result.data?.findManyLogicFunctions)) {
-                return;
-              }
-
-              replaceDraft(
-                'logicFunctions',
-                result.data.findManyLogicFunctions,
-              );
-            }),
-        );
-      }
-
       if (staleEntityKeys.includes('navigationMenuItems')) {
         fetchPromises.push(
           client
@@ -234,23 +212,12 @@ export const useLoadStaleMetadataEntities = () => {
         );
       }
 
-      if (staleEntityKeys.includes('frontComponents')) {
-        fetchPromises.push(
-          client
-            .query({
-              query: FindManyFrontComponentsDocument,
-              fetchPolicy: 'network-only',
-            })
-            .then((result) => {
-              if (!isDefined(result.data?.frontComponents)) {
-                return;
-              }
-
-              replaceDraft('frontComponents', result.data.frontComponents);
-            }),
-        );
+      if (staleEntityKeys.includes('logicFunctions')) {
+        replaceDraft('logicFunctions', []);
       }
-
+      if (staleEntityKeys.includes('frontComponents')) {
+        replaceDraft('frontComponents', []);
+      }
       const settledFetches = await Promise.allSettled(fetchPromises);
 
       applyChanges();

@@ -1,5 +1,5 @@
 import { DraggableListRow } from '@/ui/layout/draggable-list/components/DraggableListRow';
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { useGetFieldMetadataItemByIdOrThrow } from '@/object-metadata/hooks/useGetFieldMetadataItemById';
 import { getLabelIdentifierFieldMetadataItem } from '@/object-metadata/utils/getLabelIdentifierFieldMetadataItem';
 import { useObjectOptionsForBoard } from '@/object-record/object-options-dropdown/hooks/useObjectOptionsForBoard';

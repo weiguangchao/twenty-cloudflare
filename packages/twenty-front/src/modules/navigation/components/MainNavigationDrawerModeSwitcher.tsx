@@ -2,11 +2,8 @@ import { NAVIGATION_DRAWER_COLLAPSED_BUTTON_SIZE } from '@/ui/navigation/navigat
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Badge } from 'twenty-ui/primitives/data-display';
 import { Tooltip } from 'twenty-ui/primitives/surfaces';
 import { useTheme, themeCssVariables } from 'twenty-ui/theme';
-
-import { useAgentChatOpenThreadsSummary } from '@/ai/hooks/useAgentChatOpenThreadsSummary';
 import { isLayoutCustomizationModeEnabledState } from '@/layout-customization/states/isLayoutCustomizationModeEnabledState';
 import { useActiveNavigationDrawerMode } from '@/navigation/hooks/useActiveNavigationDrawerMode';
 import { useIsNavigationDrawerContentExpanded } from '@/ui/navigation/navigation-drawer/hooks/useIsNavigationDrawerContentExpanded';
@@ -18,11 +15,7 @@ import {
   NAVIGATION_DRAWER_TABS,
 } from '@/ui/navigation/states/navigationDrawerTabs';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
-import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
-import { FeatureFlagKey } from '~/generated-metadata/graphql';
 import { useIsMobile } from 'twenty-ui/utilities';
-
-const MAX_DISPLAYED_UNREAD_COUNT = 99;
 
 // Expanded, the row matches the page card header so their borders read as one line.
 const StyledSwitcher = styled.div<{ isExpanded: boolean }>`
@@ -120,13 +113,6 @@ const StyledModeLabelBase = styled.span`
 
 const StyledModeLabel = motion.create(StyledModeLabelBase);
 
-const StyledUnreadBadge = styled.span`
-  pointer-events: none;
-  position: absolute;
-  right: calc(-1 * ${themeCssVariables.spacing['1.5']});
-  top: calc(-1 * ${themeCssVariables.spacing['1.5']});
-`;
-
 export const MainNavigationDrawerModeSwitcher = () => {
   const { t } = useLingui();
   const theme = useTheme();
@@ -140,19 +126,13 @@ export const MainNavigationDrawerModeSwitcher = () => {
   const activeNavigationDrawerMode = useActiveNavigationDrawerMode();
   const { switchNavigationDrawerMode } = useSwitchNavigationDrawerMode();
   const shouldReduceMotion = useReducedMotion();
-  const { unreadOpenThreadCount } = useAgentChatOpenThreadsSummary();
-  const isAiChatInboxEnabled = useIsFeatureEnabled(
-    FeatureFlagKey.IS_AI_CHAT_INBOX_ENABLED,
-  );
 
   const getDisabledModeTooltip = (mode: NavigationDrawerActiveTab) => {
     if (mode === NAVIGATION_DRAWER_TABS.SETTINGS) {
       return t`Finish editing the layout to open Settings`;
     }
 
-    return isAiChatInboxEnabled
-      ? t`Finish editing the layout to open Inbox`
-      : t`Finish editing the layout to open AI`;
+    return t`Finish editing the layout to open Settings`;
   };
 
   if (modes.length === 0) {
@@ -169,12 +149,7 @@ export const MainNavigationDrawerModeSwitcher = () => {
     >
       {modes.map(({ Icon, label, mode }) => {
         const isActive = mode === activeNavigationDrawerMode;
-        // Inside the inbox, its Open item already shows what is unread
-        const isUnread =
-          isAiChatInboxEnabled &&
-          mode === NAVIGATION_DRAWER_TABS.AI_CHAT_HISTORY &&
-          unreadOpenThreadCount > 0 &&
-          !isActive;
+
         const isDisabled =
           mode !== NAVIGATION_DRAWER_TABS.NAVIGATION_MENU &&
           isLayoutCustomizationModeEnabled;
@@ -192,9 +167,7 @@ export const MainNavigationDrawerModeSwitcher = () => {
               type="button"
               isActive={isActive}
               isExpanded={isExpanded}
-              aria-label={
-                isUnread ? t`${label}, ${unreadOpenThreadCount} unread` : label
-              }
+              aria-label={label}
               aria-current={isActive || undefined}
               aria-disabled={isDisabled}
               onClick={() => {
@@ -207,19 +180,6 @@ export const MainNavigationDrawerModeSwitcher = () => {
             >
               <StyledModeIcon>
                 <Icon size={theme.icon.size.md} />
-                {isUnread && (
-                  <Badge
-                    render={<StyledUnreadBadge />}
-                    aria-hidden="true"
-                    size="xs"
-                    color="red"
-                    shape={unreadOpenThreadCount < 10 ? 'circle' : 'pill'}
-                  >
-                    {unreadOpenThreadCount > MAX_DISPLAYED_UNREAD_COUNT
-                      ? `${MAX_DISPLAYED_UNREAD_COUNT}+`
-                      : unreadOpenThreadCount}
-                  </Badge>
-                )}
               </StyledModeIcon>
               <StyledModeLabel
                 initial={false}

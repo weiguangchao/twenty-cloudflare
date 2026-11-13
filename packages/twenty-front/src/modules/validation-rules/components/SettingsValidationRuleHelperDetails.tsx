@@ -4,7 +4,6 @@ import { isDefined } from 'twenty-shared/utils';
 import { useIcons } from 'twenty-ui/icon/provider';
 import { Tag } from 'twenty-ui/primitives/data-display';
 import { themeCssVariables, useTheme } from 'twenty-ui/theme';
-
 import { getSettingsFieldTypeConfig } from '@/settings/data-model/utils/getSettingsFieldTypeConfig';
 import { isFieldTypeSupportedInSettings } from '@/settings/data-model/utils/isFieldTypeSupportedInSettings';
 import { SettingsValidationRuleExampleExpression } from '@/validation-rules/components/SettingsValidationRuleExampleExpression';

@@ -1,7 +1,6 @@
 import { FormFullNameFieldInput } from '@/object-record/record-field/ui/form-types/components/FormFullNameFieldInput';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormFullNameFieldInput> = {
@@ -9,7 +8,7 @@ const meta: Meta<typeof FormFullNameFieldInput> = {
   component: FormFullNameFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

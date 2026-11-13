@@ -1,6 +1,5 @@
 import { useUpsertRowLevelPermissionPredicatesMutation } from '@/settings/roles/graphql/hooks/useUpsertRowLevelPermissionPredicatesMutation';
 import { GET_ROLES } from '@/settings/roles/graphql/queries/getRolesQuery';
-import { useUpdateAgentRole } from '@/settings/roles/hooks/useUpdateAgentRole';
 import { useUpdateApiKeyRole } from '@/settings/roles/hooks/useUpdateApiKeyRole';
 import { useUpdateWorkspaceMemberRole } from '@/settings/roles/hooks/useUpdateWorkspaceMemberRole';
 import { useRemoveFieldPermissionInDraftRole } from '@/settings/roles/role-permissions/object-level-permissions/field-permissions/hooks/useRemoveFieldPermissionInDraftRole';
@@ -58,7 +57,6 @@ export const useSaveDraftRoleToDB = ({
   const [upsertRowLevelPermissionPredicates] =
     useUpsertRowLevelPermissionPredicatesMutation();
   const { addWorkspaceMembersToRole } = useUpdateWorkspaceMemberRole(roleId);
-  const { addAgentsToRole } = useUpdateAgentRole(roleId);
   const { addApiKeysToRole } = useUpdateApiKeyRole(roleId);
 
   const settingsPersistedRole = useAtomFamilyStateValue(
@@ -442,16 +440,6 @@ export const useSaveDraftRoleToDB = ({
         workspaceMemberIds: settingsDraftRole.workspaceMembers.map(
           (member) => member.id,
         ),
-      });
-    }
-
-    if (
-      isDefined(dirtyFields.agents) &&
-      settingsDraftRole.canBeAssignedToAgents
-    ) {
-      await addAgentsToRole({
-        roleId: targetRoleId,
-        agentIds: settingsDraftRole.agents.map((agent) => agent.id),
       });
     }
 

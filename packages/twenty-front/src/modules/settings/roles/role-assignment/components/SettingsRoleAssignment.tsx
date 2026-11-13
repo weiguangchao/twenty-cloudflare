@@ -1,6 +1,5 @@
 import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersState';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
-import { useUpdateAgentRole } from '@/settings/roles/hooks/useUpdateAgentRole';
 import { useUpdateApiKeyRole } from '@/settings/roles/hooks/useUpdateApiKeyRole';
 import { useUpdateWorkspaceMemberRole } from '@/settings/roles/hooks/useUpdateWorkspaceMemberRole';
 import { RoleAssignmentSection } from '@/settings/roles/role-assignment/components/RoleAssignmentSection';
@@ -20,7 +19,6 @@ import { useQuery } from '@apollo/client/react';
 import { type FlatAgent } from '@/metadata-store/types/FlatAgent';
 import {
   type ApiKeyForRole,
-  FindManyAgentsDocument,
   GetApiKeysDocument,
 } from '~/generated-metadata/graphql';
 import { useNavigateSettings } from '~/hooks/useNavigateSettings';
@@ -50,13 +48,8 @@ export const SettingsRoleAssignment = ({
     updateWorkspaceMemberRoleDraftState,
   } = useUpdateWorkspaceMemberRole(roleId);
 
-  const { addAgentToRoleAndUpdateState, updateAgentRoleDraftState } =
-    useUpdateAgentRole(roleId);
-
   const { addApiKeyToRoleAndUpdateState, updateApiKeyRoleDraftState } =
     useUpdateApiKeyRole(roleId);
-
-  const { data: agentsData } = useQuery(FindManyAgentsDocument);
   const { data: apiKeysData } = useQuery(GetApiKeysDocument);
 
   const { openDialog, closeDialog } = useDialog();
@@ -108,11 +101,6 @@ export const SettingsRoleAssignment = ({
             workspaceMemberId: selectedRoleTarget.id,
           });
           break;
-        case 'agent':
-          await addAgentToRoleAndUpdateState({
-            agentId: selectedRoleTarget.id,
-          });
-          break;
         case 'apiKey':
           await addApiKeyToRoleAndUpdateState({
             apiKeyId: selectedRoleTarget.id,
@@ -138,20 +126,6 @@ export const SettingsRoleAssignment = ({
               userId: member.userId,
               avatarUrl: member.avatarUrl,
             },
-          });
-          break;
-        }
-        case 'agent': {
-          const agent = agentsData?.findManyAgents.find(
-            (agent) => agent.id === selectedRoleTarget.id,
-          );
-
-          if (!agent) {
-            throw new Error(doNotTranslate('Agent not found'));
-          }
-
-          updateAgentRoleDraftState({
-            agent,
           });
           break;
         }
@@ -207,25 +181,27 @@ export const SettingsRoleAssignment = ({
 
   return (
     <>
-      {Object.keys(ROLE_TARGET_CONFIG).map((roleTargetType) => (
-        <RoleAssignmentSection
-          key={roleTargetType}
-          roleTargetType={roleTargetType as keyof typeof ROLE_TARGET_CONFIG}
-          roleId={roleId}
-          settingsDraftRole={settingsDraftRole}
-          currentWorkspaceMember={
-            roleTargetType === 'member'
-              ? currentWorkspaceMember || undefined
-              : undefined
-          }
-          onSelect={handleSelectEntity}
-          allWorkspaceMembersHaveThisRole={
-            roleTargetType === 'member'
-              ? allWorkspaceMembersHaveThisRole
-              : false
-          }
-        />
-      ))}
+      {Object.keys(ROLE_TARGET_CONFIG)
+        .filter((type) => type !== 'agent')
+        .map((roleTargetType) => (
+          <RoleAssignmentSection
+            key={roleTargetType}
+            roleTargetType={roleTargetType as keyof typeof ROLE_TARGET_CONFIG}
+            roleId={roleId}
+            settingsDraftRole={settingsDraftRole}
+            currentWorkspaceMember={
+              roleTargetType === 'member'
+                ? currentWorkspaceMember || undefined
+                : undefined
+            }
+            onSelect={handleSelectEntity}
+            allWorkspaceMembersHaveThisRole={
+              roleTargetType === 'member'
+                ? allWorkspaceMembersHaveThisRole
+                : false
+            }
+          />
+        ))}
 
       {selectedRoleTarget && (
         <SettingsRoleAssignmentConfirmationModal

@@ -1,14 +1,9 @@
 import { isDefined } from 'twenty-shared/utils';
-
-import { SidePanelAskAiInfo } from '@/side-panel/components/SidePanelAskAiInfo';
 import { SidePanelMultipleRecordsInfo } from '@/side-panel/components/SidePanelMultipleRecordsInfo';
 import { HeaderIdentifier } from '@/ui/layout/page/components/HeaderIdentifier';
 import { SidePanelPageLayoutInfo } from '@/side-panel/components/SidePanelPageLayoutInfo';
-import { SidePanelSendCampaignInfo } from '@/side-panel/components/SidePanelSendCampaignInfo';
-import { SidePanelWorkflowStepInfo } from '@/side-panel/components/SidePanelWorkflowStepInfo';
 import { SidePanelPages } from 'twenty-shared/types';
 import { useTheme } from 'twenty-ui/theme';
-
 import { type SidePanelContextChipProps } from '@/side-panel/types/SidePanelContextChipProps';
 
 type SidePanelPageInfoProps = {
@@ -20,23 +15,6 @@ export const SidePanelPageInfo = ({ pageChip }: SidePanelPageInfoProps) => {
 
   if (!isDefined(pageChip)) {
     return null;
-  }
-
-  const isWorkflowStepPage = pageChip.page?.page
-    ? [
-        SidePanelPages.WorkflowStepEdit,
-        SidePanelPages.WorkflowStepView,
-        SidePanelPages.WorkflowRunStepView,
-      ].includes(pageChip.page?.page)
-    : false;
-
-  if (isWorkflowStepPage && isDefined(pageChip.page?.pageId)) {
-    return (
-      <SidePanelWorkflowStepInfo
-        key={pageChip.page.pageId}
-        sidePanelPageInstanceId={pageChip.page.pageId}
-      />
-    );
   }
 
   const pageLayoutSidePanelTarget = pageChip.page?.pageLayoutSidePanelTarget;
@@ -58,23 +36,6 @@ export const SidePanelPageInfo = ({ pageChip }: SidePanelPageInfoProps) => {
         sidePanelPageInstanceId={pageChip.page.pageId}
       />
     );
-  }
-
-  const isSendCampaignPage =
-    pageChip.page?.page === SidePanelPages.SendCampaign;
-
-  if (isSendCampaignPage && isDefined(pageChip.page?.pageId)) {
-    return (
-      <SidePanelSendCampaignInfo
-        sidePanelPageInstanceId={pageChip.page.pageId}
-      />
-    );
-  }
-
-  const isAskAiPage = pageChip.page?.page === SidePanelPages.AskAI;
-
-  if (isAskAiPage) {
-    return <SidePanelAskAiInfo />;
   }
 
   const shouldShowPageIcon = pageChip.page?.page

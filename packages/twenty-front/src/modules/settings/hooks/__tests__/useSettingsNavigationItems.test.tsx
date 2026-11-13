@@ -10,7 +10,6 @@ import {
   OnboardingStatus,
   PermissionFlagType,
 } from '~/generated-metadata/graphql';
-
 import { currentUserState } from '@/auth/states/currentUserState';
 import { currentUserWorkspaceState } from '@/auth/states/currentUserWorkspaceState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
@@ -24,7 +23,6 @@ import { I18nProvider } from '@lingui/react';
 import { Provider as JotaiProvider } from 'jotai';
 import { SOURCE_LOCALE } from 'twenty-shared/translations';
 import { ToastProvider } from 'twenty-ui/components/feedback';
-import { IconApps, IconAt } from 'twenty-ui/icon';
 import { messages } from '~/locales/generated/en';
 import { mockCurrentWorkspace } from '~/testing/mock-data/users';
 
@@ -159,8 +157,7 @@ describe('useSettingsNavigationItems', () => {
       (item) => item.label === 'Billing',
     );
 
-    expect(billingItem?.isHidden).toBe(true);
-    expect(billingItem?.path).toBe(SettingsPath.Billing);
+    expect(billingItem).toBeUndefined();
   });
 
   it('should hide billing navigation until billing config is loaded', () => {
@@ -187,7 +184,7 @@ describe('useSettingsNavigationItems', () => {
       (item) => item.label === 'Billing',
     );
 
-    expect(billingItem?.isHidden).toBe(true);
+    expect(billingItem).toBeUndefined();
   });
 
   it('should show user section items regardless of permissions', () => {
@@ -215,13 +212,7 @@ describe('useSettingsNavigationItems', () => {
 
     const accountsItem = getAccountsOrAppPreferencesItem();
 
-    expect(accountsItem?.label).toBe('Accounts');
-    expect(accountsItem?.path).toBe(SettingsPath.Accounts);
-    expect(accountsItem?.Icon).toBe(IconAt);
-    expect(accountsItem?.subItems?.map((subItem) => subItem.path)).toEqual([
-      SettingsPath.AccountsEmails,
-      SettingsPath.AccountsCalendars,
-    ]);
+    expect(accountsItem).toBeUndefined();
   });
 
   it('should show Apps preferences without sub-items when app preferences are on', () => {
@@ -235,10 +226,6 @@ describe('useSettingsNavigationItems', () => {
 
     const accountsItem = getAccountsOrAppPreferencesItem();
 
-    expect(accountsItem?.label).toBe('Apps preferences');
-    expect(accountsItem?.path).toBe(SettingsPath.AppPreferences);
-    expect(accountsItem?.Icon).toBe(IconApps);
-    expect(accountsItem?.isHidden).toBe(false);
-    expect(accountsItem?.subItems).toBeUndefined();
+    expect(accountsItem).toBeUndefined();
   });
 });

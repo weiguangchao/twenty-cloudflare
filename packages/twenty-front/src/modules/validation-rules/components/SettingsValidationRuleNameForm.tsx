@@ -2,7 +2,6 @@ import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { isNonEmptyString } from '@sniptt/guards';
 import { themeCssVariables } from 'twenty-ui/theme';
-
 import { IconPicker } from '@/ui/input/components/IconPicker';
 import { SettingsTextInput } from '@/ui/input/components/SettingsTextInput';
 import { TextArea } from '@/ui/input/components/TextArea';

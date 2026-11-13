@@ -1,4 +1,4 @@
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { useFieldMetadataItemById } from '@/object-metadata/hooks/useFieldMetadataItemById';
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { type FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';

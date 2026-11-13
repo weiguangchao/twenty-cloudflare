@@ -1,15 +1,12 @@
-import { getWorkspaceAiDataPolicy } from '@/ai/utils/getWorkspaceAiDataPolicy';
 import { currentUserState } from '@/auth/states/currentUserState';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { isCurrentUserLoadedState } from '@/auth/states/isCurrentUserLoadedState';
 import { sentryConfigState } from '@/client-config/states/sentryConfigState';
 import { DEFAULT_SENTRY_TRACES_SAMPLE_RATE } from '@/error-handler/constants/DefaultSentryTracesSampleRate';
-import { SENTRY_REPLAY_IGNORE_MUTATIONS_ATTRIBUTE } from '@/error-handler/constants/SentryReplayIgnoreMutationsAttribute';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useEffect, useState } from 'react';
 import { isNonEmptyString } from '@sniptt/guards';
-import { isAiContentRecordingAllowed } from 'twenty-shared/ai';
 import { isDefined } from 'twenty-shared/utils';
 import { REACT_APP_SERVER_BASE_URL } from '~/config';
 
@@ -102,50 +99,8 @@ export const SentryInitEffect = () => {
       }
     };
 
-    const syncSessionReplayWithSharing = async () => {
-      if (
-        !isSentryInitialized ||
-        !isCurrentUserLoaded ||
-        !isDefined(currentWorkspace)
-      ) {
-        return;
-      }
-
-      const { addIntegration, getReplay, replayIntegration } =
-        await import('@sentry/react');
-
-      if (
-        !isAiContentRecordingAllowed(getWorkspaceAiDataPolicy(currentWorkspace))
-      ) {
-        await getReplay()?.stop();
-
-        return;
-      }
-
-      const replay = getReplay();
-
-      if (!isDefined(replay)) {
-        addIntegration(
-          replayIntegration({
-            _experiments: {
-              ignoreMutations: [
-                `[${SENTRY_REPLAY_IGNORE_MUTATIONS_ATTRIBUTE}]`,
-              ],
-            },
-          }),
-        );
-
-        return;
-      }
-
-      if (!isDefined(replay.getReplayId())) {
-        replay.startBuffering();
-      }
-    };
-
     initializeSentry();
     updateSentryUser();
-    syncSessionReplayWithSharing();
   }, [
     sentryConfig,
     isSentryInitialized,

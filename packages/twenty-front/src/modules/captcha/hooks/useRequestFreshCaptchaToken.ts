@@ -1,4 +1,5 @@
 import { captchaTokenState } from '@/captcha/states/captchaTokenState';
+import { captchaWidgetIdState } from '@/captcha/states/captchaWidgetIdState';
 import { isRequestingCaptchaTokenState } from '@/captcha/states/isRequestingCaptchaTokenState';
 import { isCaptchaRequiredForPath } from '@/captcha/utils/isCaptchaRequiredForPath';
 import { captchaState } from '@/client-config/states/captchaState';
@@ -30,7 +31,6 @@ export const useRequestFreshCaptchaToken = () => {
 
     setIsRequestingCaptchaToken(true);
 
-    let captchaWidget: any;
     switch (captcha.provider) {
       case CaptchaDriverType.GOOGLE_RECAPTCHA:
         window.grecaptcha
@@ -42,16 +42,29 @@ export const useRequestFreshCaptchaToken = () => {
             setIsRequestingCaptchaToken(false);
           });
         break;
-      case CaptchaDriverType.TURNSTILE:
-        captchaWidget = window.turnstile.render('#captcha-widget', {
+      case CaptchaDriverType.TURNSTILE: {
+        const previousWidgetId = store.get(captchaWidgetIdState.atom);
+        if (isDefined(previousWidgetId)) {
+          window.turnstile.remove(previousWidgetId);
+        }
+        setCaptchaToken(undefined);
+        const widgetId: string = window.turnstile.render('#captcha-widget', {
           sitekey: captcha.siteKey,
-        });
-        window.turnstile.execute(captchaWidget, {
+          execution: 'execute',
           callback: (token: string) => {
             setCaptchaToken(token);
             setIsRequestingCaptchaToken(false);
           },
+          'expired-callback': () => setCaptchaToken(undefined),
+          'error-callback': () => {
+            setCaptchaToken(undefined);
+            setIsRequestingCaptchaToken(false);
+          },
         });
+        store.set(captchaWidgetIdState.atom, widgetId);
+        window.turnstile.execute(widgetId);
+        break;
+      }
     }
   }, [setCaptchaToken, setIsRequestingCaptchaToken, store]);
 

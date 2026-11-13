@@ -3,15 +3,8 @@ import { SettingsRolePermissionsObjectsSection } from '@/settings/roles/role-per
 import { SettingsRolePermissionsSettingsSection } from '@/settings/roles/role-permissions/permission-flags/components/SettingsRolePermissionsSettingsSection';
 import { SettingsRolePermissionsToolSection } from '@/settings/roles/role-permissions/permission-flags/components/SettingsRolePermissionsToolSection';
 import { SettingsRoleDraftSyncEffect } from '@/settings/roles/role/components/SettingsRoleDraftSyncEffect';
-import { SettingsRolePermissionsAgentChatChannelsSection } from '@/settings/roles/role-permissions/agent-chat-channels/components/SettingsRolePermissionsAgentChatChannelsSection';
-import { settingsDraftRoleFamilyState } from '@/settings/roles/states/settingsDraftRoleFamilyState';
-import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
-import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { styled } from '@linaria/react';
-import { isDefined } from 'twenty-shared/utils';
 import { themeCssVariables } from 'twenty-ui/theme';
-
-import { FeatureFlagKey } from '~/generated-metadata/graphql';
 
 const StyledRolePermissionsContainer = styled.div`
   display: flex;
@@ -30,19 +23,6 @@ export const SettingsRolePermissions = ({
   isEditable,
   fromAgentId,
 }: SettingsRolePermissionsProps) => {
-  const isAiChatInboxEnabled = useIsFeatureEnabled(
-    FeatureFlagKey.IS_AI_CHAT_INBOX_ENABLED,
-  );
-  const settingsDraftRole = useAtomFamilyStateValue(
-    settingsDraftRoleFamilyState,
-    roleId,
-  );
-
-  const shouldShowAgentChatChannelsSection =
-    isAiChatInboxEnabled &&
-    settingsDraftRole.canBeAssignedToUsers &&
-    !isDefined(fromAgentId);
-
   return (
     <StyledRolePermissionsContainer>
       <SettingsRoleDraftSyncEffect roleId={roleId} />
@@ -63,12 +43,6 @@ export const SettingsRolePermissions = ({
         roleId={roleId}
         isEditable={isEditable}
       />
-      {shouldShowAgentChatChannelsSection && (
-        <SettingsRolePermissionsAgentChatChannelsSection
-          roleId={roleId}
-          isEditable={isEditable}
-        />
-      )}
     </StyledRolePermissionsContainer>
   );
 };

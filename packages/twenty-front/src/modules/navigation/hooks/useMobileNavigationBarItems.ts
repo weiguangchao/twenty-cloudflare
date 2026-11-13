@@ -1,11 +1,9 @@
-import { useSwitchToNewAiChat } from '@/ai/hooks/useSwitchToNewAiChat';
 import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { contextStoreCurrentObjectMetadataItemIdComponentState } from '@/context-store/states/contextStoreCurrentObjectMetadataItemIdComponentState';
 import { useIsSettingsDrawer } from '@/navigation/hooks/useIsSettingsDrawer';
 import { useIsSettingsPage } from '@/navigation/hooks/useIsSettingsPage';
 import { currentMobileNavigationDrawerState } from '@/navigation/states/currentMobileNavigationDrawerState';
 import { useFilteredObjectMetadataItems } from '@/object-metadata/hooks/useFilteredObjectMetadataItems';
-import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
 import { useOpenRecordsSearchPageInSidePanel } from '@/side-panel/hooks/useOpenRecordsSearchPageInSidePanel';
 import { useSidePanelMenu } from '@/side-panel/hooks/useSidePanelMenu';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
@@ -15,15 +13,9 @@ import { useLingui } from '@lingui/react/macro';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppPath } from 'twenty-shared/types';
 import { isDefined } from 'twenty-shared/utils';
-import {
-  type IconComponent,
-  IconHome,
-  IconMessageCirclePlus,
-  IconSearch,
-} from 'twenty-ui/icon';
-import { PermissionFlagType } from '~/generated-metadata/graphql';
+import { type IconComponent, IconHome, IconSearch } from 'twenty-ui/icon';
 
-type MobileNavigationBarItemName = 'home' | 'search' | 'newAiChat';
+type MobileNavigationBarItemName = 'home' | 'search';
 
 type MobileNavigationBarItem = {
   name: MobileNavigationBarItemName;
@@ -41,12 +33,10 @@ export const useMobileNavigationBarItems = (): {
   const { pathname } = useLocation();
   const { closeSidePanelMenu } = useSidePanelMenu();
   const { openRecordsSearchPage } = useOpenRecordsSearchPageInSidePanel();
-  const { switchToNewChat } = useSwitchToNewAiChat();
   const isSettingsPage = useIsSettingsPage();
   const isSettingsDrawer = useIsSettingsDrawer();
   const { alphaSortedActiveNonSystemObjectMetadataItems } =
     useFilteredObjectMetadataItems();
-  const hasAiPermission = useHasPermissionFlag(PermissionFlagType.AI);
 
   const setContextStoreCurrentObjectMetadataItemId = useSetAtomComponentState(
     contextStoreCurrentObjectMetadataItemIdComponentState,
@@ -104,20 +94,6 @@ export const useMobileNavigationBarItems = (): {
           openRecordsSearchPage();
         },
       },
-      ...(hasAiPermission
-        ? [
-            {
-              name: 'newAiChat' as const,
-              label: t`New AI chat`,
-              Icon: IconMessageCirclePlus,
-              onClick: () => {
-                closeSidePanelMenu();
-                closeSettingsDrawer();
-                switchToNewChat();
-              },
-            },
-          ]
-        : []),
     ],
   };
 };

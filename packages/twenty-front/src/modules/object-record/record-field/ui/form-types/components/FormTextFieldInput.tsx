@@ -5,7 +5,7 @@ import { TextVariableEditor } from '@/object-record/record-field/ui/form-types/c
 import { useTextVariableEditor } from '@/object-record/record-field/ui/form-types/hooks/useTextVariableEditor';
 import { type VariablePickerComponent } from '@/ui/input/types/VariablePickerComponent';
 import { Field } from 'twenty-ui/primitives/input';
-import { parseEditorContent } from '@/workflow/workflow-variables/utils/parseEditorContent';
+import { parseEditorContent } from '@/advanced-text-editor/utils/parseEditorContent';
 import { useId } from 'react';
 import { isDefined } from 'twenty-shared/utils';
 import { doNotTranslate } from 'twenty-shared/i18n';

@@ -1,6 +1,6 @@
 import { useAuth } from '@/auth/hooks/useAuth';
 import { useSignInWithGoogle } from '@/auth/sign-in-up/hooks/useSignInWithGoogle';
-import { BILLING_CHECKOUT_SESSION_DEFAULT_VALUE } from '@/settings/billing/constants/BillingCheckoutSessionDefaultValue';
+import { BILLING_CHECKOUT_SESSION_DEFAULT_VALUE } from '@/auth/constants/BillingCheckoutSessionDefaultValue';
 import { renderHook } from '@testing-library/react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { getJestMetadataAndApolloMocksWrapper } from '~/testing/jest/getJestMetadataAndApolloMocksWrapper';

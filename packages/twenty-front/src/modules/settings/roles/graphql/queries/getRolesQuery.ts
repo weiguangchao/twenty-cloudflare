@@ -1,4 +1,4 @@
-import { AGENT_FRAGMENT } from '@/ai/graphql/fragments/agentFragment';
+import { AGENT_FRAGMENT } from '@/settings/roles/graphql/fragments/roleAgentFragment';
 import { API_KEY_FOR_ROLE_FRAGMENT } from '@/settings/roles/graphql/fragments/apiKeyForRoleFragment';
 import { FIELD_PERMISSION_FRAGMENT } from '@/settings/roles/graphql/fragments/fieldPermissionFragment';
 import { OBJECT_PERMISSION_FRAGMENT } from '@/settings/roles/graphql/fragments/objectPermissionFragment';

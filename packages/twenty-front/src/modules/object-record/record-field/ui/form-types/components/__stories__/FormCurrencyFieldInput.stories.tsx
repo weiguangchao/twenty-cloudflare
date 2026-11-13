@@ -3,7 +3,6 @@ import { type FieldCurrencyValue } from '@/object-record/record-field/ui/types/F
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { CurrencyCode } from 'twenty-shared/constants';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormCurrencyFieldInput> = {
@@ -11,7 +10,7 @@ const meta: Meta<typeof FormCurrencyFieldInput> = {
   component: FormCurrencyFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

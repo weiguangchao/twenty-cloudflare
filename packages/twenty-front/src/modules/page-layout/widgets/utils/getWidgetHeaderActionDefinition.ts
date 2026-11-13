@@ -1,10 +1,5 @@
 import { type PageLayoutWidget } from '@/page-layout/types/PageLayoutWidget';
-import { WidgetActionCallRecordingSummary } from '@/page-layout/widgets/call-recording-summary/components/WidgetActionCallRecordingSummary';
-import { WidgetActionCallRecordingTranscript } from '@/page-layout/widgets/call-recording-transcript/components/WidgetActionCallRecordingTranscript';
-import { WidgetActionChatThreadCreate } from '@/page-layout/widgets/chat-threads/components/WidgetActionChatThreadCreate';
 import { WidgetFieldActions } from '@/page-layout/widgets/components/WidgetFieldActions';
-import { WidgetActionCalendar } from '@/page-layout/widgets/calendar/components/WidgetActionCalendar';
-import { WidgetActionMessages } from '@/page-layout/widgets/messages/components/WidgetActionMessages';
 import { WidgetActionFileAttach } from '@/page-layout/widgets/files/components/WidgetActionFileAttach';
 import { WidgetActionNoteCreate } from '@/page-layout/widgets/notes/components/WidgetActionNoteCreate';
 import { WidgetActionTaskCreate } from '@/page-layout/widgets/tasks/components/WidgetActionTaskCreate';
@@ -32,15 +27,10 @@ const widgetHeaderActionComponentByWidgetType: Partial<
   Record<WidgetType, ComponentType<WidgetHeaderActionComponentProps>>
 > = {
   [WidgetType.FIELD]: WidgetFieldActions,
-  [WidgetType.CALENDAR]: WidgetActionCalendar,
-  [WidgetType.EMAILS]: WidgetActionMessages,
   [WidgetType.TASKS]: WidgetActionTaskCreate,
   [WidgetType.NOTES]: WidgetActionNoteCreate,
   [WidgetType.FILES]: WidgetActionFileAttach,
-  [WidgetType.CHAT_THREADS]: WidgetActionChatThreadCreate,
   [WidgetType.TIMELINE]: WidgetActionTimeline,
-  [WidgetType.CALL_RECORDING_SUMMARY]: WidgetActionCallRecordingSummary,
-  [WidgetType.CALL_RECORDING_TRANSCRIPT]: WidgetActionCallRecordingTranscript,
 };
 
 export const getWidgetHeaderActionDefinition = (

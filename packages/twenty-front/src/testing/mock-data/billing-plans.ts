@@ -1,4 +1,5 @@
-import type { ListPlansQuery } from '~/generated-metadata/graphql';
+import type { Query } from '~/generated-metadata/graphql';
+type ListPlansQuery = { listPlans: Query['listPlans'] };
 
 export const mockBillingPlans = {
   listPlans: [

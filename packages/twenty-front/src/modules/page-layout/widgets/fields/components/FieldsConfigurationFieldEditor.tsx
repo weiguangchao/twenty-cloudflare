@@ -1,5 +1,5 @@
 import { DraggableListRow } from '@/ui/layout/draggable-list/components/DraggableListRow';
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { type FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { type FieldsConfigurationFieldItem } from '@/page-layout/types/FieldsConfiguration';
 import { LightIconButton } from 'twenty-ui/components/input';

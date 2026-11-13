@@ -1,3 +1,4 @@
+import { captchaWidgetIdState } from '@/captcha/states/captchaWidgetIdState';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { type ReactNode } from 'react';
 import { Provider as JotaiProvider } from 'jotai';
@@ -22,12 +23,14 @@ describe('useRequestFreshCaptchaToken', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jotaiStore.set(captchaWidgetIdState.atom, undefined);
 
     window.grecaptcha = {
       execute: mockGrecaptchaExecute,
     };
 
     window.turnstile = {
+      remove: jest.fn(),
       render: mockTurnstileRender,
       execute: mockTurnstileExecute,
     };
@@ -39,6 +42,7 @@ describe('useRequestFreshCaptchaToken', () => {
     });
 
     mockTurnstileRender.mockImplementation((_selector, _options) => {
+      _options.callback('turnstile-token');
       return 'turnstile-widget-id';
     });
 
@@ -118,11 +122,13 @@ describe('useRequestFreshCaptchaToken', () => {
       await result.current.requestFreshCaptchaToken();
     });
 
-    expect(mockTurnstileRender).toHaveBeenCalledWith('#captcha-widget', {
-      sitekey: 'turnstile-site-key',
-    });
-    expect(mockTurnstileExecute).toHaveBeenCalledWith('turnstile-widget-id', {
-      callback: expect.any(Function),
-    });
+    expect(mockTurnstileRender).toHaveBeenCalledWith(
+      '#captcha-widget',
+      expect.objectContaining({
+        sitekey: 'turnstile-site-key',
+        execution: 'execute',
+      }),
+    );
+    expect(mockTurnstileExecute).toHaveBeenCalledWith('turnstile-widget-id');
   });
 });

@@ -6,7 +6,6 @@ import { type PageLayoutWidgetListDropData } from '@/page-layout/types/PageLayou
 import { canVerticalListAcceptWidgetDrag } from '@/page-layout/utils/canVerticalListAcceptWidgetDrag';
 import { isViewportFillingWidget } from '@/page-layout/widgets/utils/isViewportFillingWidget';
 import { DragDropItemDropTarget } from '@/ui/utilities/drag-and-drop/components/DragDropItemDropTarget';
-import { WorkflowDiagramAllowPageScrollContext } from '@/workflow/workflow-diagram/contexts/WorkflowDiagramAllowPageScrollContext';
 import { type Draggable } from '@dnd-kit/abstract';
 import { pointerIntersection } from '@dnd-kit/collision';
 import { useDroppable } from '@dnd-kit/react';
@@ -101,11 +100,6 @@ export const PageLayoutVerticalList = ({
     !isInEditMode &&
     !isInPinnedTab;
 
-  // A viewport-filling slot is exactly one viewport tall, so the list only
-  // overflows when something else shares it. Widgets that capture the wheel
-  // (workflow canvases) must keep it when there is no page scroll to reach.
-  const hasPageScroll = isInEditMode || widgets.length > 1;
-
   const firstViewportFillingWidgetIndex = widgets.findIndex(
     isViewportFillingWidget,
   );
@@ -141,44 +135,42 @@ export const PageLayoutVerticalList = ({
       isSideColumnContext={isSideColumnContext}
       shouldUseWhiteBackground={!isInPinnedTab || isMobile}
     >
-      <WorkflowDiagramAllowPageScrollContext.Provider value={hasPageScroll}>
-        {isInEditMode && isDefined(leadingElement) && (
-          <StyledHeader>{leadingElement}</StyledHeader>
-        )}
-        {widgets.map((widget, index) => (
-          <Fragment key={widget.id}>
-            {isInEditMode &&
-              index > 0 &&
-              (!hasViewportFillingWidget ||
-                index <= firstViewportFillingWidgetIndex) &&
-              renderWidgetSeparator?.(widget)}
-            <PageLayoutVerticalListWidgetSlot
-              canAcceptWidgetDrag={canAcceptWidgetDrag}
-              index={index}
-              isInEditMode={isInEditMode}
-              fillsViewport={
-                isLegacyCanvasViewport ||
-                (layoutMode === PageLayoutTabLayoutMode.VERTICAL_LIST &&
-                  isViewportFillingWidget(widget))
-              }
-              shouldShowDivider={isSideColumnContext}
-              tabId={tabId}
-              widget={widget}
-            />
-          </Fragment>
-        ))}
-        {isInEditMode && !hasViewportFillingWidget && (
-          <StyledDropTarget ref={endDropZoneRef}>
-            <DragDropItemDropTarget
-              index={widgets.length}
-              droppableId={tabId}
-              orientation="horizontal"
-              compact
-            />
-            {trailingElement}
-          </StyledDropTarget>
-        )}
-      </WorkflowDiagramAllowPageScrollContext.Provider>
+      {isInEditMode && isDefined(leadingElement) && (
+        <StyledHeader>{leadingElement}</StyledHeader>
+      )}
+      {widgets.map((widget, index) => (
+        <Fragment key={widget.id}>
+          {isInEditMode &&
+            index > 0 &&
+            (!hasViewportFillingWidget ||
+              index <= firstViewportFillingWidgetIndex) &&
+            renderWidgetSeparator?.(widget)}
+          <PageLayoutVerticalListWidgetSlot
+            canAcceptWidgetDrag={canAcceptWidgetDrag}
+            index={index}
+            isInEditMode={isInEditMode}
+            fillsViewport={
+              isLegacyCanvasViewport ||
+              (layoutMode === PageLayoutTabLayoutMode.VERTICAL_LIST &&
+                isViewportFillingWidget(widget))
+            }
+            shouldShowDivider={isSideColumnContext}
+            tabId={tabId}
+            widget={widget}
+          />
+        </Fragment>
+      ))}
+      {isInEditMode && !hasViewportFillingWidget && (
+        <StyledDropTarget ref={endDropZoneRef}>
+          <DragDropItemDropTarget
+            index={widgets.length}
+            droppableId={tabId}
+            orientation="horizontal"
+            compact
+          />
+          {trailingElement}
+        </StyledDropTarget>
+      )}
     </StyledVerticalListContainer>
   );
 };

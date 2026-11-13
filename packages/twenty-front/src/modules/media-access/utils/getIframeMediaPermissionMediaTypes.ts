@@ -1,4 +1,4 @@
-import { type MediaSessionMediaType } from 'twenty-front-component-renderer';
+import { type MediaSessionMediaType } from '@/media-access/types/MediaAccessSession';
 import { type IframeMediaPermission } from 'twenty-shared/types';
 
 export const getIframeMediaPermissionMediaTypes = (

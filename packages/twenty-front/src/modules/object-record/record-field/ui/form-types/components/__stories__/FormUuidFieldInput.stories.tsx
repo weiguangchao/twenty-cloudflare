@@ -1,7 +1,6 @@
 import { FormUuidFieldInput } from '@/object-record/record-field/ui/form-types/components/FormUuidFieldInput';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormUuidFieldInput> = {
@@ -9,7 +8,7 @@ const meta: Meta<typeof FormUuidFieldInput> = {
   component: FormUuidFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 export default meta;
 

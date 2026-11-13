@@ -1,5 +1,4 @@
 import { isDefined, isValidationRuleReservedName } from 'twenty-shared/utils';
-
 import { SettingsValidationRuleExpressionText } from '@/validation-rules/components/SettingsValidationRuleExpressionText';
 import { SettingsValidationRuleFieldChip } from '@/validation-rules/components/SettingsValidationRuleFieldChip';
 import { type ValidationRuleEditorField } from '@/validation-rules/types/ValidationRuleEditorField';

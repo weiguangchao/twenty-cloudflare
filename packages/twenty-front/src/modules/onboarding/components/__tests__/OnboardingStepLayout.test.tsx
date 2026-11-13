@@ -25,13 +25,6 @@ import {
   mockedUserData,
 } from '~/testing/mock-data/users';
 
-jest.mock(
-  '@/onboarding/effect-components/PrefetchPlanRequiredStepEffect',
-  () => ({
-    PrefetchPlanRequiredStepEffect: () => null,
-  }),
-);
-
 jest.mock('@/onboarding/components/OnboardingTransitionOutlet', () => ({
   OnboardingTransitionOutlet: () => null,
 }));

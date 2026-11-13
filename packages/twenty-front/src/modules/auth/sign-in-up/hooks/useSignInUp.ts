@@ -1,3 +1,4 @@
+import { useRequestFreshCaptchaToken } from '@/captcha/hooks/useRequestFreshCaptchaToken';
 import { useCallback, useState } from 'react';
 import { type SubmitHandler, type UseFormReturn } from 'react-hook-form';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
@@ -62,6 +63,7 @@ export const useSignInUp = (form: UseFormReturn<Form>) => {
   } = useAuth();
 
   const { readCaptchaToken } = useReadCaptchaToken();
+  const { requestFreshCaptchaToken } = useRequestFreshCaptchaToken();
 
   const { buildSearchParamsFromUrlSyncedStates } =
     useBuildSearchParamsFromUrlSyncedStates();
@@ -183,12 +185,14 @@ export const useSignInUp = (form: UseFormReturn<Form>) => {
           verifyEmailRedirectPath,
         });
       } catch (error: unknown) {
+        void requestFreshCaptchaToken();
         enqueueToast(getToastOptionsFromError({ error }));
       }
     },
     [
       isCaptchaReady,
       readCaptchaToken,
+      requestFreshCaptchaToken,
       signInUpMode,
       isInviteMode,
       signInWithCredentialsInWorkspace,

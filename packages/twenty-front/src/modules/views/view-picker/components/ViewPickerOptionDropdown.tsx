@@ -1,5 +1,5 @@
 import { Dropdown } from 'twenty-ui/components/navigation';
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { useCreateManyNavigationMenuItems } from '@/navigation-menu-item/common/hooks/useCreateManyNavigationMenuItems';
 import { useDeleteManyNavigationMenuItems } from '@/navigation-menu-item/common/hooks/useDeleteManyNavigationMenuItems';
 import { getNextUserFavoritePosition } from '@/navigation-menu-item/common/utils/getNextUserFavoritePosition';

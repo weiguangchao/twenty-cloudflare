@@ -17,8 +17,6 @@ import { useSelectableList } from '@/ui/layout/selectable-list/hooks/useSelectab
 import { getShowPageTabListComponentId } from '@/ui/layout/show-page/utils/getShowPageTabListComponentId';
 import { emitSidePanelCloseEvent } from '@/ui/layout/side-panel/utils/emitSidePanelCloseEvent';
 import { activeTabIdComponentState } from '@/ui/layout/tab-list/states/activeTabIdComponentState';
-import { WORKFLOW_LOGIC_FUNCTION_TAB_LIST_COMPONENT_ID } from '@/workflow/workflow-steps/workflow-actions/code-action/constants/WorkflowLogicFunctionTabListComponentId';
-import { WorkflowLogicFunctionTabId } from '@/workflow/workflow-steps/workflow-actions/code-action/types/WorkflowLogicFunctionTabId';
 import { useStore } from 'jotai';
 import { useCallback } from 'react';
 import { StandardObjectNameSingular } from 'twenty-shared/types';
@@ -99,12 +97,6 @@ export const useSidePanelCloseAnimationCompleteCleanup = () => {
         emitSidePanelCloseEvent();
       }
       store.set(isSidePanelClosingState.atom, false);
-      store.set(
-        activeTabIdComponentState.atomFamily({
-          instanceId: WORKFLOW_LOGIC_FUNCTION_TAB_LIST_COMPONENT_ID,
-        }),
-        WorkflowLogicFunctionTabId.CODE,
-      );
 
       for (const [pageId, morphItems] of morphItemsByPage) {
         store.set(

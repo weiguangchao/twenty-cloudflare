@@ -4,7 +4,6 @@ import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
 import { FormPhoneFieldInput } from '@/object-record/record-field/ui/form-types/components/FormPhoneFieldInput';
 import { type FieldPhonesValue } from '@/object-record/record-field/ui/types/FieldMetadata';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormPhoneFieldInput> = {
@@ -12,7 +11,7 @@ const meta: Meta<typeof FormPhoneFieldInput> = {
   component: FormPhoneFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;

@@ -1,5 +1,3 @@
-import { useComposeCalendarEventRelatedRecordAction } from '@/activities/calendar/hooks/useComposeCalendarEventRelatedRecordAction';
-import { useComposeEmailRelatedRecordAction } from '@/activities/emails/hooks/useComposeEmailRelatedRecordAction';
 import { useAttachFileRelatedRecordAction } from '@/activities/files/hooks/useAttachFileRelatedRecordAction';
 import { useCreateActivityRelatedRecordAction } from '@/activities/hooks/useCreateActivityRelatedRecordAction';
 import { type ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
@@ -27,9 +25,6 @@ export const useRelatedRecordActions = ({
     targetRecord,
     onUploadComplete: onFileUploadComplete,
   });
-  const emailAction = useComposeEmailRelatedRecordAction({ targetRecord });
-  const calendarEventAction =
-    useComposeCalendarEventRelatedRecordAction(targetRecord);
 
-  return [taskAction, noteAction, fileAction, emailAction, calendarEventAction];
+  return [taskAction, noteAction, fileAction];
 };

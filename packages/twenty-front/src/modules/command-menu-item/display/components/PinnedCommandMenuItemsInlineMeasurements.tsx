@@ -5,7 +5,7 @@ import { getPinnedCommandMenuItemWidthKey } from '@/command-menu-item/display/ut
 import { interpolateCommandMenuItemFields } from '@/command-menu-item/display/utils/interpolateCommandMenuItemFields';
 import { CommandMenuButton } from '@/command-menu/components/CommandMenuButton';
 import { NodeDimension } from '@/ui/utilities/dimensions/components/NodeDimension';
-import { COMMAND_MENU_DEFAULT_ICON } from '@/workflow/workflow-trigger/constants/CommandMenuDefaultIcon';
+import { COMMAND_MENU_DEFAULT_ICON } from '@/command-menu-item/constants/CommandMenuDefaultIcon';
 import { styled } from '@linaria/react';
 import { Fragment, useContext } from 'react';
 import { isDefined } from 'twenty-shared/utils';

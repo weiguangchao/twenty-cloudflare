@@ -1,4 +1,3 @@
-import { useHiddenWorkspaceWorkflowRunRelationFields } from '@/object-core/workflows/hooks/useHiddenWorkspaceWorkflowRunRelationFields';
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
 import { type WidgetVisibilityContext } from '@/page-layout/types/WidgetVisibilityContext';
 import { buildWidgetVisibilityContext } from '@/page-layout/utils/buildWidgetVisibilityContext';
@@ -21,12 +20,6 @@ export const useWidgetVisibilityContext = (): WidgetVisibilityContext => {
     targetRecordIdentifier?.id ?? '',
   );
 
-  // TODO: remove with the workspace workflow and workflowVersion objects once the core migration owns them.
-  const hiddenFieldMetadataIdsOrNames =
-    useHiddenWorkspaceWorkflowRunRelationFields(
-      targetRecordIdentifier?.targetObjectNameSingular,
-    );
-
   return useMemo(
     () => ({
       ...buildWidgetVisibilityContext({
@@ -35,14 +28,7 @@ export const useWidgetVisibilityContext = (): WidgetVisibilityContext => {
         targetRecord: isDefined(recordStore) ? recordStore : undefined,
         featureFlags,
       }),
-      hiddenFieldMetadataIdsOrNames,
     }),
-    [
-      isMobile,
-      isInSidePanel,
-      recordStore,
-      hiddenFieldMetadataIdsOrNames,
-      featureFlags,
-    ],
+    [isMobile, isInSidePanel, recordStore, featureFlags],
   );
 };

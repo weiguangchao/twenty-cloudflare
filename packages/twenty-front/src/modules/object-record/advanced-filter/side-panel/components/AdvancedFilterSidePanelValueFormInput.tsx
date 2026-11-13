@@ -25,7 +25,6 @@ import { useAtomComponentSelectorValue } from '@/ui/utilities/state/jotai/hooks/
 import { useAtomFamilySelectorValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilySelectorValue';
 import { useAtomComponentStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomComponentStateValue';
 import { stringifyRelativeDateFilter } from '@/views/view-filter-value/utils/stringifyRelativeDateFilter';
-import { WORKFLOW_TIMEZONE } from '@/workflow/constants/WorkflowTimeZone';
 import { isObject, isString } from '@sniptt/guards';
 import { useContext } from 'react';
 import {
@@ -240,7 +239,7 @@ export const AdvancedFilterSidePanelValueFormInput = ({
   }
 
   const shouldUseUTCTimeZone = isWorkflowFindRecords === true;
-  const timeZone = shouldUseUTCTimeZone ? WORKFLOW_TIMEZONE : undefined;
+  const timeZone = shouldUseUTCTimeZone ? 'UTC' : undefined;
 
   return (
     <FormFieldInput

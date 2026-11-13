@@ -1,9 +1,7 @@
-import { HeadlessEngineCommandWrapperEffect } from '@/command-menu-item/engine-command/components/HeadlessEngineCommandWrapperEffect';
 import { useHeadlessCommandContextApi } from '@/command-menu-item/engine-command/hooks/useHeadlessCommandContextApi';
 import { CreateGlobalRecordCommand } from '@/command-menu-item/engine-command/record/no-selection/components/CreateGlobalRecordCommand';
 import { CreateNewIndexRecordNoSelectionRecordCommand } from '@/command-menu-item/engine-command/record/no-selection/components/CreateNewIndexRecordNoSelectionRecordCommand';
 import { getRecordCreationCommandType } from '@/command-menu-item/engine-command/record/no-selection/utils/getRecordCreationCommandType';
-import { useCreateCoreWorkflow } from '@/object-core/workflows/hooks/useCreateCoreWorkflow';
 import { objectMetadataItemsSelector } from '@/object-metadata/states/objectMetadataItemsSelector';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { isDefined } from 'twenty-shared/utils';
@@ -22,7 +20,6 @@ export const CreateNewRecordCommand = () => {
         (item) => item.id === creationTargetObjectMetadataId,
       )
     : contextObjectMetadataItem;
-  const { createCoreWorkflow } = useCreateCoreWorkflow();
 
   if (!isDefined(objectMetadataItem)) {
     throw new Error(
@@ -37,10 +34,6 @@ export const CreateNewRecordCommand = () => {
     hasAnySoftDeleteFilterOnView,
     creationTargetObjectMetadataId,
   });
-
-  if (commandType === 'workflow') {
-    return <HeadlessEngineCommandWrapperEffect execute={createCoreWorkflow} />;
-  }
 
   return commandType === 'global' ? (
     <CreateGlobalRecordCommand objectMetadataItem={objectMetadataItem} />

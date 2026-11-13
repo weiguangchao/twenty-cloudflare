@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { Fragment, Slice } from '@tiptap/pm/model';
 import type { Editor } from '@tiptap/react';
 
-import { parseEditorContent } from '@/workflow/workflow-variables/utils/parseEditorContent';
+import { parseEditorContent } from '@/advanced-text-editor/utils/parseEditorContent';
 import { useTextVariableEditor } from '@/object-record/record-field/ui/form-types/hooks/useTextVariableEditor';
 
 const mockPasteEvent = (text: string) =>

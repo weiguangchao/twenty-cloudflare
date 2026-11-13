@@ -1,6 +1,6 @@
 import { DraggableListRow } from '@/ui/layout/draggable-list/components/DraggableListRow';
-import { AppMenuItemIcon } from '@/applications/components/AppMenuItemIcon';
-import { ApplicationStackIcon } from '@/applications/components/ApplicationStackIcon';
+import { AppMenuItemIcon } from '@/ui/field/display/application/components/AppMenuItemIcon';
+import { ApplicationStackIcon } from '@/ui/field/display/application/components/ApplicationStackIcon';
 import { CommandMenuItemEditRecordSelectionDropdown } from '@/command-menu-item/edit/components/CommandMenuItemEditRecordSelectionDropdown';
 import { CommandMenuItemOptionsDropdown } from '@/command-menu-item/edit/components/CommandMenuItemOptionsDropdown';
 import { useEditableCommandMenuItems } from '@/command-menu-item/edit/hooks/useEditableCommandMenuItems';

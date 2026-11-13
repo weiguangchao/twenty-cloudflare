@@ -3,7 +3,6 @@ import { styled } from '@linaria/react';
 import { useIcons } from 'twenty-ui/icon/provider';
 import { Chip } from 'twenty-ui/primitives/data-display';
 import { themeCssVariables, useTheme } from 'twenty-ui/theme';
-
 import { type ValidationRuleFieldNodeAttributes } from '@/validation-rules/types/ValidationRuleFieldNodeAttributes';
 
 const StyledWrapper = styled.span`

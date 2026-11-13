@@ -17,7 +17,7 @@ export const CaptchaProvider = React.memo(
       <>
         {isCaptchaRequired && (
           <>
-            <div id="captcha-widget" data-size="invisible"></div>
+            <div id="captcha-widget"></div>
             <CaptchaProviderScriptLoaderEffect />
           </>
         )}

@@ -1,6 +1,5 @@
 import { TemplateVariableWithFallbackTag } from '@/advanced-text-editor/extensions/variable-tag/TemplateVariableWithFallbackTag';
 import { getInitialEditorContent } from '@/advanced-text-editor/utils/getInitialEditorContent';
-import { WorkflowVariableTag } from '@/workflow/workflow-variables/extensions/WorkflowVariableTag';
 import Document from '@tiptap/extension-document';
 import HardBreak from '@tiptap/extension-hard-break';
 import Paragraph from '@tiptap/extension-paragraph';
@@ -8,7 +7,6 @@ import Text from '@tiptap/extension-text';
 import { Placeholder } from '@tiptap/extensions/placeholder';
 import { UndoRedo } from '@tiptap/extensions/undo-redo';
 import { Slice } from '@tiptap/pm/model';
-
 import { type Editor, useEditor } from '@tiptap/react';
 import { useEffect } from 'react';
 import { isDefined, parseJson } from 'twenty-shared/utils';
@@ -45,10 +43,6 @@ export const useTextVariableEditor = ({
   ariaLabel,
   enableTemplateVariableFallback = false,
 }: UseTextVariableEditorProps) => {
-  const variableTagExtension = enableTemplateVariableFallback
-    ? TemplateVariableWithFallbackTag
-    : WorkflowVariableTag;
-
   const editor = useEditor({
     extensions: [
       Document,
@@ -57,7 +51,9 @@ export const useTextVariableEditor = ({
       Placeholder.configure({
         placeholder,
       }),
-      variableTagExtension,
+      ...(enableTemplateVariableFallback
+        ? [TemplateVariableWithFallbackTag]
+        : []),
       ...(multiline
         ? [
             HardBreak.configure({
@@ -68,7 +64,7 @@ export const useTextVariableEditor = ({
       UndoRedo,
     ],
     content: isDefined(defaultValue)
-      ? getInitialEditorContent(defaultValue)
+      ? getInitialEditorContent(defaultValue, enableTemplateVariableFallback)
       : undefined,
     editable: !readonly,
     onUpdate: ({ editor }) => {
@@ -113,7 +109,10 @@ export const useTextVariableEditor = ({
             ? JSON.stringify(parsedJson, null, 2)
             : JSON.stringify(parsedJson);
           const docNode = schema.nodeFromJSON(
-            getInitialEditorContent(formattedJson),
+            getInitialEditorContent(
+              formattedJson,
+              enableTemplateVariableFallback,
+            ),
           );
           const inlineContent = docNode.firstChild?.content;
 
@@ -135,7 +134,7 @@ export const useTextVariableEditor = ({
           isSingleLinePasteWithVariableTags
         ) {
           const docNode = schema.nodeFromJSON(
-            getInitialEditorContent(plainText),
+            getInitialEditorContent(plainText, enableTemplateVariableFallback),
           );
           const inlineContent = docNode.firstChild?.content;
 

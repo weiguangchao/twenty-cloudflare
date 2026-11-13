@@ -2,7 +2,6 @@ import { FormRawJsonFieldInput } from '@/object-record/record-field/ui/form-type
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { getUserDevice } from 'twenty-ui/utilities';
-import { WorkflowStepDecorator } from '~/testing/decorators/WorkflowStepDecorator';
 import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormRawJsonFieldInput> = {
@@ -10,7 +9,7 @@ const meta: Meta<typeof FormRawJsonFieldInput> = {
   component: FormRawJsonFieldInput,
   args: {},
   argTypes: {},
-  decorators: [WorkflowStepDecorator],
+  decorators: [],
 };
 
 export default meta;
