@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { buildClientConfig } from '@/http/build-client-config.util';
 import { cleanupExpiredCredentials } from '@/auth/session.service';
 import { handleMetadataRequest } from '@/metadata-api/metadata-api';
-import { handleShellRecordRequest } from '@/http/handle-shell-record-request.util';
+import { handleRecordRequest } from '@/http/handle-record-request.util';
 
 export { WorkspaceDurableObject } from '@/workspace/workspace.durable-object';
 
@@ -20,7 +20,7 @@ app.all('/metadata', (context) =>
 );
 
 app.post('/graphql', (context) =>
-  handleShellRecordRequest(context.req.raw, context.env),
+  handleRecordRequest(context.req.raw, context.env),
 );
 
 // Only API prefixes reach the Worker (assets.run_worker_first), so anything

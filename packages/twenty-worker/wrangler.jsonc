@@ -9,6 +9,7 @@
   "alias": {
     "twenty-shared/utils": "../twenty-shared/src/utils/index.ts",
     "twenty-shared/types": "../twenty-shared/src/types/index.ts",
+    "twenty-shared/constants": "../twenty-shared/src/constants/index.ts",
     "twenty-shared/metadata": "../twenty-shared/src/metadata/index.ts",
     "twenty-shared/composite-type-definitions": "../twenty-shared/dist/types.mjs",
   },

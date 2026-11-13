@@ -1,4 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
+import { GraphQLError } from 'graphql';
 import { initializeRecordIndexTypes } from '@/workspace/metadata/ddl/record-index-ddl.util';
 
 import { type WorkspaceMemberInput } from '@/workspace/lifecycle/types/workspace-member-input.type';
@@ -48,11 +49,25 @@ import {
   type MetadataReadTables,
 } from '@/workspace/metadata/read/types/metadata-read-model.type';
 import { getWorkspaceApplications } from '@/workspace/metadata/read/workspace-applications.util';
-import { executeShellRecordQuery } from '@/workspace/record-api/execute-shell-record-query.util';
+import {
+  attachRecordResolvers,
+  executeRecordQuery,
+} from '@/workspace/record-api/execute-record-query.util';
+import { createRecordCatalog } from '@/workspace/record-api/record-catalog.util';
+import { buildRecordSchema } from '@/workspace/record-api/schema/build-record-schema.util';
+import {
+  type RecordCatalog,
+  type RecordQueryIdentity,
+  type RecordQueryInput,
+} from '@/workspace/record-api/types/record-query.type';
+import { apiError } from '@/shared/errors/api-error.util';
 
 // One instance per workspace, addressed with WORKSPACE.idFromName(workspaceId).
 export class WorkspaceDurableObject extends DurableObject<Env> {
   private metadataSnapshot: MetadataSnapshot | undefined;
+  private recordModel:
+    | { catalog: RecordCatalog; schema: ReturnType<typeof buildRecordSchema> }
+    | undefined;
   private metadataReadTables:
     | { version: string; tables: MetadataReadTables }
     | undefined;
@@ -132,19 +147,36 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     };
   }
 
-  executeShellRecordQuery(
-    input: {
-      query: string;
-      variables?: Record<string, unknown>;
-      operationName?: string;
-    },
-    memberships: { workspaceMemberId: string; userWorkspaceId: string }[],
-  ) {
-    return this.ctx.storage.transactionSync(() =>
-      executeShellRecordQuery(input, {
-        members: this.getWorkspaceMembers(memberships),
-      }),
-    );
+  executeRecordQuery(input: RecordQueryInput, identity: RecordQueryIdentity) {
+    try {
+      return this.ctx.storage.transactionSync(() => {
+        const member = getWorkspaceMember(this.ctx.storage.sql, identity);
+        if (!member || member.userId !== identity.userId)
+          throw apiError('Workspace access denied', 'FORBIDDEN');
+        const permissions = buildPermissionContext(
+          new MetadataStore(this.ctx.storage.sql),
+          identity.userWorkspaceId,
+        );
+        if (!permissions.roleIds.length)
+          throw apiError('Workspace access denied', 'FORBIDDEN');
+        const snapshot = this.getMetadataSnapshot();
+        if (this.recordModel?.catalog.version !== snapshot.version) {
+          const catalog = createRecordCatalog(snapshot);
+          const schema = buildRecordSchema(catalog);
+          attachRecordResolvers(schema);
+          this.recordModel = { catalog, schema };
+        }
+        return executeRecordQuery(input, {
+          ...this.recordModel,
+          sql: this.ctx.storage.sql,
+          permissions,
+        });
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
+    }
   }
 
   updateWorkspaceMemberProfile(

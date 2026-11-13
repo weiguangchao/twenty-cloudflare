@@ -2,21 +2,20 @@ import { isPlainObject } from 'twenty-shared/utils';
 import { GraphQLError } from 'graphql';
 
 import { createMetadataContext } from '@/metadata-api/create-metadata-context.util';
-import { apiError } from '@/shared/errors/api-error.util';
+import { apiError, unauthenticated } from '@/shared/errors/api-error.util';
 import { cookieSessionOriginError } from '@/http/cookie-session-origin-error.util';
 
-export const handleShellRecordRequest = async (request: Request, env: Env) => {
+export const handleRecordRequest = async (request: Request, env: Env) => {
   const originError = cookieSessionOriginError(request);
   if (originError) return originError;
   try {
     const context = createMetadataContext(env, request, new Headers());
-    const { workspace, permissions } = await context.requireMetadata();
-    if (
-      !permissions.objectRecordsPermissions.some(
-        (permission) => permission.canReadAllRecords,
-      )
-    )
-      throw apiError('Permission denied', 'FORBIDDEN');
+    const auth = await context.requireAuth();
+    if (!auth.workspaceId || !auth.userWorkspaceId || !auth.workspaceMemberId)
+      throw unauthenticated('A workspace session is required');
+    const workspace = await context.store.workspaceById(auth.workspaceId);
+    if (!workspace || workspace.activationStatus !== 'ACTIVE')
+      throw apiError('Workspace is not active', 'FORBIDDEN');
     const body: unknown = await request.json();
     if (
       !isPlainObject(body) ||
@@ -29,22 +28,18 @@ export const handleShellRecordRequest = async (request: Request, env: Env) => {
         !isPlainObject(body.variables))
     )
       throw apiError('Invalid GraphQL request');
-    const memberships = await context.store.membershipsForWorkspace(
-      workspace.id,
+    const result = await context.workspace(workspace.id).executeRecordQuery(
+      {
+        query: body.query,
+        variables: body.variables as Record<string, unknown> | undefined,
+        operationName: body.operationName as string | undefined,
+      },
+      {
+        userId: auth.userId,
+        workspaceMemberId: auth.workspaceMemberId,
+        userWorkspaceId: auth.userWorkspaceId,
+      },
     );
-    const result = await context
-      .workspace(workspace.id)
-      .executeShellRecordQuery(
-        {
-          query: body.query,
-          variables: body.variables as Record<string, unknown> | undefined,
-          operationName: body.operationName as string | undefined,
-        },
-        memberships.map((member) => ({
-          workspaceMemberId: member.workspaceMemberId,
-          userWorkspaceId: member.id,
-        })),
-      );
     return new Response(result, {
       headers: {
         'content-type': 'application/json',
@@ -62,7 +57,7 @@ export const handleShellRecordRequest = async (request: Request, env: Env) => {
         { errors: [apiError('Invalid record request')] },
         { status: 400 },
       );
-    console.error('Failed to execute shell record query', error);
+    console.error('Failed to execute record query', error);
     return Response.json(
       { errors: [apiError('Unable to load records', 'INTERNAL_SERVER_ERROR')] },
       { status: 500 },

@@ -5,6 +5,10 @@ import manyMembers from '../../contract/fixtures/members-roles/017-FindManyWorks
 import oneMember from '../../contract/fixtures/members-roles/052-FindOneWorkspaceMember.json';
 import companies from '../../contract/fixtures/auth-signup-onboarding/042-FindManyCompanies.json';
 import {
+  projectRecordQuery,
+  standardRecordSchema,
+} from '../utils/project-record-query.util';
+import {
   client,
   clearCoreTestDatabase,
   ORIGIN,
@@ -15,6 +19,7 @@ import {
 } from '../utils/auth-test.util';
 
 const connection = client();
+const schema = standardRecordSchema();
 
 const recordsRequest = async <TData = Record<string, unknown>>(
   query: string,
@@ -29,7 +34,10 @@ const recordsRequest = async <TData = Record<string, unknown>>(
       origin,
       cookie: connection.cookie,
     },
-    body: JSON.stringify({ query, variables }),
+    body: JSON.stringify({
+      query: projectRecordQuery(query, schema),
+      variables,
+    }),
   });
   return { response, result: (await response.json()) as Result<TData> };
 };
@@ -71,7 +79,7 @@ it('reads member settings fields through the captured record API contracts', asy
   });
 });
 
-it('filters and pages members, while core CRM records remain empty until stage 5', async () => {
+it('filters and pages members and reads demo CRM records', async () => {
   const absent = await recordsRequest<{
     workspaceMembers: { totalCount: number; edges: unknown[] };
   }>(manyMembers.query, {
@@ -100,7 +108,7 @@ it('filters and pages members, while core CRM records remain empty until stage 5
     { limit: 60 },
   );
   expect(records.result.errors).toBeUndefined();
-  expect(records.result.data!.companies.edges).toEqual([]);
+  expect(records.result.data!.companies.edges).toHaveLength(5);
 });
 
 it('authenticates shell queries, rejects cross-origin requests, and blocks record mutations', async () => {

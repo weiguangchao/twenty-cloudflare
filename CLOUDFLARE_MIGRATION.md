@@ -24,7 +24,7 @@
 | 2 | Workspace DO：元数据存储与 DDL 引擎 | 1 | 完成 |
 | 3 | 认证、会话与 workspace 生命周期 | 1 | 完成 |
 | 4 | 元数据读取 API 与应用启动 | 2、3 | 完成 |
-| 5 | 记录查询引擎（读） | 4 | 未开始 |
+| 5 | 记录查询引擎（读） | 4 | 完成 |
 | 6 | 记录写入与副作用 | 5 | 未开始 |
 | 7 | 搜索 | 6 | 未开始 |
 | 8 | 元数据写入 API 与视图 | 4 | 未开始 |
@@ -600,7 +600,7 @@ npx nx test twenty-worker
 
 ### 阶段 5：记录查询引擎（读）
 
-**目标**：`/graphql` 的全部读操作。这是整个项目技术风险最高的阶段。
+**目标**：`/graphql` 的记录读操作；全局 `search` 在阶段 7 实现。这是整个项目技术风险最高的阶段。
 
 **任务**
 
@@ -635,6 +635,21 @@ npx nx test twenty-worker
 - 阶段 0 的读操作 fixture 逐个重放，响应结构一致。
 - 每个筛选操作符、每种字段类型的排序都有单元测试。
 - 1 万条记录的表上，列表首屏查询的 DO 内耗时有记录在案。
+
+**实施记录**
+
+- **入口与执行**：删除阶段 4 的 shell 查询实现，`/graphql` 在 Worker 验证 session、活动 workspace 和 CSRF 后，将请求与当前身份通过 RPC 交给 DO，原样返回 JSON。DO 再检查成员记录、当前角色，并在 `transactionSync` 内同步完成 schema 缓存、GraphQL 校验和全部 SQL；没有事务内外部 IO 或 `await`。权限错误在 DO 序列化，跨 RPC 后仍保留 GraphQL code。
+- **动态 schema**：从当前元数据快照生成标准/自定义对象、复合类型、枚举、筛选、排序、连接、聚合、分组和 duplicates 输入输出，按 snapshot version 缓存；字段改名、删除、停用及对象改名会重建。仅复用采集 SDL 中不依赖 workspace 的标量和复合类型定义，不再构建整份旧 workspace schema。记录 mutation 仍返回 `NOT_IMPLEMENTED`，阶段 6 补齐。
+- **筛选与排序**：实现 6.5 的操作符、字段间比较、关系筛选、复合 JSON 子字段和隐式 AND。`regex`、`iregex` 明确返回 `BAD_USER_INPUT`。文本包含查询用 `instr`，复杂 `%`/`_` 和反斜线转义用递归匹配，避开 SQLite 的 50 字节 LIKE 限制；startsWith/endsWith 按字面量匹配。`IN` 和数组成员列表统一绑定一个 JSON 参数；所有查询检查 100 个绑定参数和 100,000 字节 SQL 限制。排序支持四种空值顺序、复合字段、关联字段和元数据选项顺序。
+- **分页与软删除**：支持 first/last、after/before、offset，默认最多 200 条，嵌套关联默认 60 条，始终追加 id 打破排序平局。游标使用旧代码的 base64url JSON，保存原始 SQL 排序值，避免结果里的空字符串/空数组转换破坏 NULL 边界。核对旧 `checkForDeletedAtFilter` 后，仅穿透 and/or/not 检查当前对象的 deletedAt；关联筛选里的 deletedAt 不扩大主对象查询范围。
+- **选择集与关联**：解析别名、fragment 和 include/skip，只读取投影、排序游标和关联需要的列。多对一按目标 ID 批量查，一对多用 `ROW_NUMBER() OVER (PARTITION BY ...)` 和分组聚合，使每个父记录有独立的页和 totalCount，支持多层、morph 目标及被软删除关联。20 个父记录各有 3 条子记录、每组取 1 条再展开公司时，总共执行 5 条 SQL。用独立的选择结果存储避免别名与物理列或连接字段重名。
+- **聚合、分组与去重**：聚合基于完整筛选结果，不受记录分页影响；空集合的 totalCount 为 0，其余聚合为 null，百分比返回 0–1。实现数值、日期、货币、rating、布尔及空值/唯一值聚合。看板支持 SELECT 选项顺序、每组记录分页和聚合排序；支持数组拆组、多维度、关联和全部日期粒度，按记录所在年份计算时区偏移及夏令时区间。duplicates 使用元数据 duplicateCriteria，按旧实现忽略长度小于 3 的候选值，支持已有 ID 和新建输入，并独立读取匹配所需字段。
+- **结果与权限**：JSON 列解析为对象/数组，布尔转换，复合字段补齐旧契约中的空字符串和空数组默认值。记录投影、筛选、排序、关系展开、聚合、分组和去重读取接入 `PermissionContext`；当前仍使用阶段 4 的临时角色策略，阶段 10 实现真实角色/字段权限。列表 searchVector 筛选先按搜索字段用 instr 匹配，FTS5 和全局 search 留在阶段 7。
+- **契约重放**：重放 365 条阶段 0 成功读取请求，覆盖标准对象、成员、时间线、备注任务、附件、自定义 initiative、关联和看板。测试从采集响应组合记录快照，导入采集的自定义元数据，移除范围外关联选择；改名前的 Project 请求按最终名称 Initiative 重放。比较保留选择的响应结构及值类型，ID、时间、历史写入状态和旧服务返回的 typename 不作字面量比较。全局 Search、范围外对象和原本失败的权限请求不计入这 365 条；错误与隔离另有行为测试。前端零改动，服务端参考包零改动。
+- **万条数据性能**：本机 Node 26/workerd，10,000 条 company、按 position 排序取 60 条，含 totalCount、游标、域名和 pageInfo。独立运行 DO 内首次 84 ms，随后 5 次为 5、6、5、5、5 ms；含测试 RPC 的往返为 122 ms 和 6–7 ms。最终全量测试并发下首次 203 ms、随后 6、11、6、6、6 ms，往返 235 ms 和 10–60 ms。包含 schema 冷构建与权限检查；这是本地墙钟时间，不是生产 CPU 指标。测试通过 reporter 输出实测值，不设依赖机器速度的耗时断言。
+- **浏览器验收**：本地 wrangler 配合原前端构建，验证 5 家公司、100 个人员和 6 个商机；人员从 60 条滚动加载余下 40 条，按 Job Title 筛到 95 条、姓名降序首条正确；Brian Chesky 详情显示字段和 Airbnb 关联；By Stage 看板显示五列、卡片和金额汇总。无 GraphQL 错误、页面异常或失败的 API 请求。使用从阶段 4 本地数据复制的独立 `.wrangler/stage5-acceptance`，验收用的额外 95 个人员只写入该本地库；未部署远程资源。
+- **运行边界**：新增 `twenty-shared/constants` 的 source alias，避免 Wrangler 从 shared dist 引入模块顶层随机数初始化而冷启动失败。记录写入、保存视图筛选排序、文件 URL 签名、全局搜索和实时广播仍由后续对应阶段实现。
+- **检查结果**：新增 440 项 workerd 测试（365 条契约重放、75 项行为和性能测试），最终 27 个测试文件、596 项测试全部通过，Nx 耗时 32.1 秒。直接 `tsgo` 和 Nx lint 通过；lint 为 0 warnings/0 errors，格式检查通过。lint/test 使用 `--skip-nx-cache --excludeTaskDependencies`，沿用阶段 3 的本机 shared 依赖任务绕行方式。
 
 ### 阶段 6：记录写入与副作用
 

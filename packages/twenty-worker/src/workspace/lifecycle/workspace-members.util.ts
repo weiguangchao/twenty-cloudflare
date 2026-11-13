@@ -76,6 +76,7 @@ export const getWorkspaceMember = (
   return {
     ...record,
     id: record.id as string,
+    userId: record.userId as string,
     createdBy: record.createdBy
       ? (JSON.parse(record.createdBy as string) as Record<string, JsonValue>)
       : null,
