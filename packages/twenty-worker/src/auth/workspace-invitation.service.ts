@@ -129,6 +129,7 @@ export const acceptWorkspaceInvitation = async (
     password: string;
     locale?: string | null;
     workspacePersonalInviteToken: string;
+    captchaToken?: string | null;
   },
 ) => {
   const { invitation, workspace } = await invitationFromToken(

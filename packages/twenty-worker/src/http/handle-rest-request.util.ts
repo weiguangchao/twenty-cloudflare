@@ -1,3 +1,4 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { GraphQLError } from 'graphql';
 
 import { authenticateRecordRequest } from '@/integrations/authenticate-record-request.util';
@@ -14,9 +15,7 @@ export const handleRestRequest = async (request: Request, env: Env) => {
     );
     const url = new URL(request.url);
     const result = JSON.parse(
-      await env.WORKSPACE.get(
-        env.WORKSPACE.idFromName(workspaceId),
-      ).executeRestRequest(
+      await getWorkspaceStub(env, workspaceId).executeRestRequest(
         JSON.stringify({
           method: request.method,
           path: url.pathname.slice('/rest/'.length).split('/').filter(Boolean),

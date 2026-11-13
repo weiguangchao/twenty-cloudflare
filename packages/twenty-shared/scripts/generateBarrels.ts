@@ -1,8 +1,7 @@
-import prettier from '@prettier/sync';
+import prettier, { type Options } from 'prettier';
 import * as fs from 'fs';
 import { globSync } from 'glob';
 import path from 'path';
-import { type Options } from 'prettier';
 import slash from 'slash';
 import ts from 'typescript';
 
@@ -19,11 +18,11 @@ const NX_PROJECT_CONFIGURATION_PATH = path.join(
   NX_PROJECT_CONFIGURATION_FILENAME,
 );
 
-const prettierConfigFile = prettier.resolveConfigFile();
+const prettierConfigFile = await prettier.resolveConfigFile();
 if (prettierConfigFile == null) {
   throw new Error('Prettier config file not found');
 }
-const prettierConfiguration = prettier.resolveConfig(prettierConfigFile);
+const prettierConfiguration = await prettier.resolveConfig(prettierConfigFile);
 const prettierFormat = (str: string, parser: Options['parser']) =>
   prettier.format(str, {
     ...prettierConfiguration,
@@ -34,7 +33,7 @@ type createTypeScriptFileArgs = {
   content: string;
   filename: string;
 };
-const createTypeScriptFile = ({
+const createTypeScriptFile = async ({
   content,
   path: filePath,
   filename,
@@ -49,7 +48,7 @@ const createTypeScriptFile = ({
  *                              |___/
  */
 `;
-  const formattedContent = prettierFormat(
+  const formattedContent = await prettierFormat(
     `${header}\n${content}\n`,
     'typescript',
   );
@@ -149,9 +148,9 @@ type WriteInJsonFileArgs = {
   content: JsonUpdate;
   file: string;
 };
-const updateJsonFile = ({ content, file }: WriteInJsonFileArgs) => {
+const updateJsonFile = async ({ content, file }: WriteInJsonFileArgs) => {
   const updatedJsonFile = JSON.stringify(content);
-  const formattedContent = prettier.format(updatedJsonFile, {
+  const formattedContent = await prettier.format(updatedJsonFile, {
     ...prettierConfiguration,
     filepath: file,
   });
@@ -162,7 +161,7 @@ const writeInPackageJson = (update: JsonUpdate) => {
   const rawJsonFile = fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8');
   const initialJsonFile = JSON.parse(rawJsonFile);
 
-  updateJsonFile({
+  return updateJsonFile({
     file: PACKAGE_JSON_PATH,
     content: {
       ...initialJsonFile,
@@ -175,7 +174,7 @@ const updateNxProjectConfigurationBuildOutputs = (outputs: JsonUpdate) => {
   const rawJsonFile = fs.readFileSync(NX_PROJECT_CONFIGURATION_PATH, 'utf-8');
   const initialJsonFile = JSON.parse(rawJsonFile);
 
-  updateJsonFile({
+  return updateJsonFile({
     file: NX_PROJECT_CONFIGURATION_PATH,
     content: {
       ...initialJsonFile,
@@ -486,7 +485,7 @@ const retrieveExportsByBarrel = (barrelDirectories: string[]) => {
   });
 };
 
-const main = () => {
+const main = async () => {
   const moduleDirectories = getSubDirectoryPaths(SRC_PATH);
   const exportsByBarrel = retrieveExportsByBarrel(moduleDirectories);
   const moduleIndexFiles = generateModuleIndexFiles(exportsByBarrel);
@@ -495,8 +494,8 @@ const main = () => {
   const nxBuildOutputsPath =
     computeProjectNxBuildOutputsPath(moduleDirectories);
 
-  updateNxProjectConfigurationBuildOutputs(nxBuildOutputsPath);
-  writeInPackageJson(packageJsonConfig);
-  moduleIndexFiles.forEach(createTypeScriptFile);
+  await updateNxProjectConfigurationBuildOutputs(nxBuildOutputsPath);
+  await writeInPackageJson(packageJsonConfig);
+  await Promise.all(moduleIndexFiles.map(createTypeScriptFile));
 };
-main();
+await main();

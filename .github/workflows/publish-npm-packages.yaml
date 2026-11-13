@@ -3,7 +3,7 @@ run-name: ${{ github.ref_name }}
 
 on:
   push:
-    tags: ["npm-release/*"]
+    tags: ['npm-release/*']
 
 permissions:
   contents: read
@@ -46,8 +46,7 @@ jobs:
             .source_sha == $sha and (.dry_run | type == "boolean")
             and (.version | type == "string" and test("^[0-9]+[.][0-9]+[.][0-9]+([+-][0-9A-Za-z.-]+)*$"))
             and (.dist_tag | type == "string" and test("^[a-zA-Z][a-zA-Z0-9._-]*$"))
-            and (.packages == "twenty-client-sdk twenty-ui twenty-sdk twenty"
-              or .packages == "twenty-ui" or .packages == "twenty")
+            and (.packages == "twenty-ui")
             and ((.stage_only // false) | type == "boolean")
             and (.staging_version == null)
             and (if .stage_only == true then .dry_run == false else true end)
@@ -124,7 +123,6 @@ jobs:
         run: |
           for package in $PACKAGES; do
             directory="packages/$package"
-            if [[ "$package" == twenty ]]; then directory=packages/twenty-cli; fi
             jq -e --arg name "$package" --arg version "$VERSION" \
               '.name == $name and .version == $version' "$directory/package.json" > /dev/null
           done
@@ -141,7 +139,7 @@ jobs:
           corepack enable
           yarn install --immutable
           projects=$(jq -rn --arg packages "$PACKAGES" \
-            '$packages | split(" ") | map(if . == "twenty" then "twenty-cli" else . end) | join(",")')
+            '$packages | split(" ") | join(",")')
           yarn nx run-many --target=build --projects="$projects" --skip-nx-cache
           for package in $PACKAGES; do
             yarn workspace "$package" pack --dry-run
@@ -150,8 +148,6 @@ jobs:
       - name: Stage validation packages without publishing
         if: env.STAGE_ONLY == 'true'
         run: |
-          # This test stages the SDK before it is publicly available to the CLI's release-readiness check,
-          # so the CLI's prepublish is skipped. Same pack and npm signer as the real publish below.
           for package in $PACKAGES; do
             tarball="$RUNNER_TEMP/$package-$VERSION.tgz"
             yarn workspace "$package" pack --out "$tarball"
@@ -162,36 +158,15 @@ jobs:
       - name: Publish packages with provenance
         if: env.DRY_RUN == 'false' && env.STAGE_ONLY != 'true'
         run: |
-          # Template lockfiles resolve the released libraries from npm.
-          published_libraries=""
           for package in $PACKAGES; do
-            if [[ "$package" == twenty ]]; then
-              for dependency in $published_libraries; do
-                for attempt in $(seq 1 60); do
-                  if npm view "$dependency@$VERSION" version > /dev/null 2>&1; then break; fi
-                  if [[ "$attempt" == 60 ]]; then
-                    echo "::error::$dependency@$VERSION was not served within ten minutes"
-                    exit 1
-                  fi
-                  sleep 10
-                done
-              done
-            fi
-
             if curl --fail --silent --show-error "https://registry.npmjs.org/$package/$VERSION" > /dev/null; then
               echo "$package@$VERSION already published; skipping"
             else
               # Yarn signs with a 5 s Sigstore timeout, so a slow Rekor write makes its retry hit a 409 on
               # the entry it just created. npm's signer waits up to fetch-timeout; Yarn still packs, to
-              # resolve workspace: ranges, and pack skips prepublish, so the CLI's runs here.
-              if [[ "$package" == twenty ]]; then
-                yarn workspace twenty run prepublish
-              fi
+              # resolve workspace: ranges.
               tarball="$RUNNER_TEMP/$package-$VERSION.tgz"
               yarn workspace "$package" pack --out "$tarball"
               npm publish "$tarball" --provenance --tag "$DIST_TAG" --access public
-            fi
-            if [[ "$package" != twenty ]]; then
-              published_libraries="$published_libraries $package"
             fi
           done

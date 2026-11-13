@@ -2,10 +2,8 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "twenty-worker",
   "main": "src/index.ts",
-  // Newest date the workerd bundled with wrangler 4.151 accepts.
   "compatibility_date": "2026-10-12",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  // Shared's bundled chunks evaluate UUID defaults at startup; source modules can be tree-shaken.
   "alias": {
     "twenty-shared/application": "../twenty-shared/src/application/index.ts",
     "twenty-shared/utils": "../twenty-shared/src/utils/index.ts",
@@ -15,22 +13,38 @@
     "twenty-shared/translations": "../twenty-shared/src/translations/index.ts",
     "twenty-shared/composite-type-definitions": "../twenty-shared/dist/types.mjs",
   },
-  "secrets": { "required": ["APP_SECRET"] },
+  "secrets": {
+    "required": ["APP_SECRET"],
+  },
   "ratelimits": [
     {
       "name": "AUTH_RATE_LIMITER",
       "namespace_id": "1001",
-      "simple": { "limit": 20, "period": 60 },
+      "simple": {
+        "limit": 20,
+        "period": 60,
+      },
     },
   ],
-  "triggers": { "crons": ["*/5 * * * *"] },
-  "send_email": [{ "name": "EMAIL" }],
-  "rules": [{ "type": "Text", "globs": ["**/*.graphql"], "fallthrough": true }],
+  "triggers": {
+    "crons": ["*/5 * * * *"],
+  },
+  "send_email": [
+    {
+      "name": "EMAIL",
+    },
+  ],
+  "rules": [
+    {
+      "type": "Text",
+      "globs": ["**/*.graphql"],
+      "fallthrough": true,
+    },
+  ],
   "assets": {
     "directory": "../twenty-front/build",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    // Mirrors ApiPath in twenty-shared; test/wrangler-config.spec.ts keeps them in sync.
     "run_worker_first": [
       "/admin-panel",
       "/admin-panel/*",
@@ -94,7 +108,11 @@
   ],
   "queues": {
     "consumers": [
-      { "queue": "twenty-jobs", "max_batch_size": 10, "max_retries": 5 },
+      {
+        "queue": "twenty-jobs",
+        "max_batch_size": 10,
+        "max_retries": 5,
+      },
     ],
     "producers": [
       {
@@ -118,10 +136,138 @@
     },
   ],
   "dev": {
-    // The front's vite dev server proxies ApiPath prefixes to port 3000.
     "port": 3000,
   },
   "observability": {
     "enabled": true,
+    "head_sampling_rate": 1,
+  },
+  "workers_dev": true,
+  "vars": {
+    "MAINTENANCE_MODE": "false",
+  },
+  "env": {
+    "dev": {
+      "name": "twenty-crm-dev",
+      "workers_dev": true,
+      "vars": {
+        "MAINTENANCE_MODE": "false",
+      },
+      "d1_databases": [
+        {
+          "binding": "CORE_DB",
+          "database_name": "twenty-core-dev",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+          "migrations_dir": "migrations",
+        },
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "twenty-files-dev",
+        },
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "twenty-jobs-dev",
+          },
+        ],
+        "consumers": [
+          {
+            "queue": "twenty-jobs-dev",
+            "max_batch_size": 10,
+            "max_retries": 5,
+          },
+        ],
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "WORKSPACE",
+            "class_name": "WorkspaceDurableObject",
+          },
+        ],
+      },
+      "ratelimits": [
+        {
+          "name": "AUTH_RATE_LIMITER",
+          "namespace_id": "1001",
+          "simple": {
+            "limit": 20,
+            "period": 60,
+          },
+        },
+      ],
+      "send_email": [],
+      "triggers": {
+        "crons": ["*/5 * * * *"],
+      },
+      "secrets": {
+        "required": ["APP_SECRET"],
+      },
+    },
+    "production": {
+      "name": "twenty-crm-production",
+      "workers_dev": true,
+      "vars": {
+        "MAINTENANCE_MODE": "false",
+      },
+      "d1_databases": [
+        {
+          "binding": "CORE_DB",
+          "database_name": "twenty-core-production",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+          "migrations_dir": "migrations",
+        },
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "twenty-files-production",
+        },
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "twenty-jobs-production",
+          },
+        ],
+        "consumers": [
+          {
+            "queue": "twenty-jobs-production",
+            "max_batch_size": 10,
+            "max_retries": 5,
+          },
+        ],
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "WORKSPACE",
+            "class_name": "WorkspaceDurableObject",
+          },
+        ],
+      },
+      "ratelimits": [
+        {
+          "name": "AUTH_RATE_LIMITER",
+          "namespace_id": "1001",
+          "simple": {
+            "limit": 20,
+            "period": 60,
+          },
+        },
+      ],
+      "send_email": [],
+      "triggers": {
+        "crons": ["*/5 * * * *"],
+      },
+      "secrets": {
+        "required": ["APP_SECRET"],
+      },
+    },
   },
 }

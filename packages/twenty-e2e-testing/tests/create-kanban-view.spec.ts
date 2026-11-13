@@ -3,7 +3,7 @@ test.describe.serial('Create Kanban View', () => {
   // Unique per run: serial-group retries re-create the field, and a duplicate label blocks the form.
   const industryLabel = `Industry ${Date.now()}`;
   test('Create Industry Select Field', async ({ page }) => {
-    await page.getByRole('button', { name: 'Settings', exact: true }).click();
+    await page.goto('/settings/objects');
     await page.getByRole('link', { name: 'Data model' }).click();
     await page.getByRole('link', { name: 'Opportunities' }).click();
     await expect(page.getByRole('link', { name: 'New Field' })).toBeVisible();
@@ -31,7 +31,7 @@ test.describe.serial('Create Kanban View', () => {
   });
 
   test('Create Kanban View from Industry Select Field', async ({ page }) => {
-    await page.getByRole('link', { name: 'Opportunities' }).click();
+    await page.goto('/objects/opportunities');
     await page.getByRole('button', { name: /By Stage/ }).click();
     await page.getByText('Add view').click();
     await page.getByRole('textbox').press('ControlOrMeta+a');

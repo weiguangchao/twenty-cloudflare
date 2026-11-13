@@ -1,4 +1,5 @@
-import { createYoga } from 'graphql-yoga';
+import { createYoga, type Plugin } from 'graphql-yoga';
+import { logEvent, logOperationName } from '@/observability/log-event.util';
 
 import { cookieSessionOriginError } from '@/http/cookie-session-origin-error.util';
 import { buildMetadataSchema } from '@/metadata-api/metadata-schema.util';
@@ -15,6 +16,32 @@ const createMetadataApi = () =>
     landingPage: false,
     cors: false,
     maskedErrors: true,
+    plugins: [
+      {
+        onExecute: ({ args }) => {
+          const startedAt = performance.now();
+          return {
+            onExecuteDone: ({ result }) => {
+              const context = args.contextValue as MetadataContext;
+              const hasErrors =
+                'errors' in result && Boolean(result.errors?.length);
+              logEvent(
+                {
+                  event: 'metadata_operation',
+                  requestId:
+                    context.request.headers.get('x-request-id') ?? undefined,
+                  workspaceId: context.telemetry.workspaceId,
+                  operation: logOperationName(args.operationName),
+                  durationMs: Math.round(performance.now() - startedAt),
+                  ...(hasErrors ? { errorCode: 'GRAPHQL_ERROR' } : {}),
+                },
+                hasErrors ? 'error' : 'info',
+              );
+            },
+          };
+        },
+      } satisfies Plugin<MetadataContext>,
+    ],
     context: ({ request, env, responseHeaders }) =>
       createMetadataContext(env, request, responseHeaders),
   });

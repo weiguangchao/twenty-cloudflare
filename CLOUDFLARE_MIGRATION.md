@@ -945,6 +945,14 @@ npx nx test twenty-worker
 - 恢复演练成功并有记录。
 - 仓库里没有对已删除包的引用，`yarn install` 和全量类型检查通过。
 
+**阶段 13 执行记录（2026-11-13）**
+
+- 清理清单已确认并执行：删除 12 个专用包的 21,121 个已跟踪文件，SDK/renderer 在解除运行时引用后删除；删除范围外前端路由、模块和专用测试，保留核心 CRM。前端清理单独提交为 `ce42d9912c7`。详见 `packages/twenty-worker/STAGE13_CLEANUP.md`。
+- 核心与 metadata codegen 已指向 Worker schema；新增 core SDL 导出和真实 workspace schema 一致性检查。E2E 使用独立临时存储启动 Wrangler，通过 UI 建立账号/工作区，验证记录、Kanban、邀请和登录跳转。
+- 新增 dev/production 资源配置、亚太区位置提示、资源创建/部署脚本、稳定 secrets 管理、生产注册 Turnstile、结构化日志、每日 DO 容量日志及阈值事件、维护模式和受独立 token 保护的恢复操作入口。根架构文档、开发命令与 CI 已适配 Worker。
+- **云端验收暂缓**：只读账号预检发现 R2 未启用（错误 10042），需求方随后明确决定暂缓远程部署。未创建或修改远程 D1、R2、Queue、Worker 或 Turnstile 资源。生产从零部署、CI 实际运行、云端恢复演练及外部告警通知目的地仍待验收，不能将本阶段视为生产上线完成。恢复手册和演练脚本已备齐；D1 免费计划 Time Travel 为 7 天，付费计划为 30 天，DO 为 30 天。
+- 完整本地验证结果和后续验收条件记录在 `packages/twenty-worker/STAGE13_VALIDATION.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
+
 ## 9. 风险、未决事项与记录
 
 ### 风险
@@ -964,7 +972,7 @@ npx nx test twenty-worker
 1. 单 workspace 还是多 workspace 部署（当前默认单 workspace）。
 2. 阶段 12 三项已确认并实现；待提供发信域名及 Google/Microsoft 应用配置以做真实集成验收。
 3. 未接入发信域名前密码重置不可投递；本地仅模拟发信。
-4. 阶段 13 删除旧代码的范围，需要需求方确认清单。
+4. 阶段 13 清理清单已于 2026-11-13 获确认并执行；远程部署由需求方暂缓，待恢复后完成 workers.dev 验收和云端恢复演练。
 
 ### 前端改动记录
 

@@ -1,0 +1,87 @@
+{
+  "baseCommit": "40835fd23af6752ead1074f281e9d2335164c8e7",
+  "packageDirectories": [
+    {
+      "directory": "packages/twenty-server",
+      "trackedFiles": 14276,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-docker",
+      "trackedFiles": 116,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-apps",
+      "trackedFiles": 3580,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-zapier",
+      "trackedFiles": 29,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-companion",
+      "trackedFiles": 150,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-agent-skills",
+      "trackedFiles": 58,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-claude-skills",
+      "trackedFiles": 3,
+      "conditional": false
+    },
+    {
+      "directory": "packages/create-twenty-app",
+      "trackedFiles": 12,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-cli",
+      "trackedFiles": 758,
+      "conditional": false
+    },
+    {
+      "directory": "packages/twenty-front-component-renderer",
+      "trackedFiles": 1732,
+      "conditional": true
+    },
+    {
+      "directory": "packages/twenty-sdk",
+      "trackedFiles": 290,
+      "conditional": true
+    },
+    {
+      "directory": "packages/twenty-client-sdk",
+      "trackedFiles": 117,
+      "conditional": true
+    }
+  ],
+  "frontendFeatureRoots": [
+    "src/modules/ai",
+    "src/modules/workflow",
+    "src/modules/marketplace",
+    "src/modules/logic-functions",
+    "src/modules/front-components",
+    "src/modules/applications",
+    "src/modules/settings/admin-panel"
+  ],
+  "requiresConfirmation": false,
+  "approval": {
+    "date": "2026-11-13",
+    "decision": "确认按清单全部清理",
+    "deployment": "workers.dev"
+  },
+  "execution": {
+    "date": "2026-11-13",
+    "packageFilesDeleted": 21121,
+    "frontendTrackedFilesDeleted": 4116,
+    "runtimeWorkspaceReferencesRemoved": true,
+    "remoteDeployment": "deferred by user"
+  }
+}

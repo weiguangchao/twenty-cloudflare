@@ -29,11 +29,8 @@ jobs:
         yarn.lock
         packages/twenty-front/**
         packages/twenty-oxlint-rules/**
-        packages/twenty-front-component-renderer/**
         packages/twenty-ui/**
         packages/twenty-shared/**
-        packages/twenty-sdk/**
-        !packages/twenty-sdk/package.json
   front-sb-build:
     needs: changed-files-check
     if: >-
@@ -188,8 +185,8 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest-8-cores
     env:
-      NODE_OPTIONS: "--max-old-space-size=10240"
-      ANALYZE: "true"
+      NODE_OPTIONS: '--max-old-space-size=10240'
+      ANALYZE: 'true'
     steps:
       - name: Fetch custom Github Actions and base branch history
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1

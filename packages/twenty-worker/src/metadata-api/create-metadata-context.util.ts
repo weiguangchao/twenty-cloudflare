@@ -1,3 +1,4 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { authenticateRequest } from '@/auth/session.service';
 import { type AuthContext } from '@/auth/types/auth-context.type';
 import { CoreStore } from '@/core-db/core-store';
@@ -19,14 +20,19 @@ export const createMetadataContext = (
       >
     | undefined;
   const store = new CoreStore(env.CORE_DB);
+  const telemetry: { workspaceId?: string } = {};
   const requireAuth = () =>
-    (authentication ??= authenticateRequest(request, env));
+    (authentication ??= authenticateRequest(request, env).then((auth) => {
+      telemetry.workspaceId = auth.workspaceId ?? undefined;
+      return auth;
+    }));
 
   return {
     env,
     request,
     responseHeaders,
     store,
+    telemetry,
     requireAuth,
     requireMetadata: () =>
       (metadata ??= loadWorkspaceMetadata(env, store, requireAuth())),
@@ -42,8 +48,9 @@ export const createMetadataContext = (
           store,
           requireAuth(),
         ));
-        const rows = await env.WORKSPACE.get(
-          env.WORKSPACE.idFromName(data.workspace.id),
+        const rows = await getWorkspaceStub(
+          env,
+          data.workspace.id,
         ).getNavigationRecordIdentifiers(
           {
             userId: auth.userId,
@@ -59,7 +66,6 @@ export const createMetadataContext = (
           rows.map((row) => [row.navigationMenuItemId, row.identifier]),
         );
       })()),
-    workspace: (workspaceId: string) =>
-      env.WORKSPACE.get(env.WORKSPACE.idFromName(workspaceId)),
+    workspace: (workspaceId: string) => getWorkspaceStub(env, workspaceId),
   };
 };

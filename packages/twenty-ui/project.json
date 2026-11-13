@@ -20,7 +20,7 @@
         "{workspaceRoot}/yarn.lock"
       ],
       "options": {
-        "command": "tsx {projectRoot}/scripts/generateBarrels.ts --check && tsx {projectRoot}/scripts/checkModuleOwnership.ts"
+        "command": "node {projectRoot}/scripts/generateBarrels.ts --check && tsx {projectRoot}/scripts/checkModuleOwnership.ts"
       }
     },
     "generateTokens": {
@@ -47,7 +47,7 @@
         "{projectRoot}/src/**/*/index.ts",
         "{projectRoot}/package.json"
       ],
-      "options": { "command": "tsx {projectRoot}/scripts/generateBarrels.ts" }
+      "options": { "command": "node {projectRoot}/scripts/generateBarrels.ts" }
     },
     "generateIconDictionary": {
       "executor": "nx:run-commands",

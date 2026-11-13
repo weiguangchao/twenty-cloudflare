@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Twenty is an open-source CRM — an Nx / Yarn 4 monorepo. Main packages: `twenty-front` (React 18, Jotai, Linaria, Vite), `twenty-server` (NestJS, TypeORM, PostgreSQL, Redis, GraphQL), `twenty-shared` (isomorphic types/utils), `twenty-ui`, `twenty-sdk` (application definitions and runtime), `twenty-cli` (standalone CLI), `twenty-e2e-testing` (Playwright).
+Twenty on Cloudflare is an Nx / Yarn 4 monorepo. Runtime packages: `twenty-front` (React 19, Jotai, Linaria, Vite), `twenty-worker` (Hono, GraphQL Yoga, D1, SQLite Durable Objects, R2, Queues), `twenty-shared`, `twenty-ui`, `twenty-emails`, and `twenty-e2e-testing` (Playwright). Website and docs are independent reference packages.
 
 Match the surrounding code — the adjacent files in the directory you are editing beat any written rule, including for file naming, which varies by area.
 
@@ -31,30 +31,37 @@ Docstrings carry the what and the design; they are not exempt from terseness, bu
 
 ## Commands
 
+Use Node 26. Yarn is checked in at `.yarn/releases/yarn-4.18.1.cjs`.
+
 ```bash
-bash packages/twenty-utils/setup-dev-env.sh   # Postgres/Redis + DB init; only for tasks needing a running app
-yarn start                                    # front + server + worker
-
-npx jest path/to/file.spec.ts --config=packages/<pkg>/jest.config.mjs   # single test file (preferred)
-npx vitest run --root packages/twenty-ui --project unit <file>          # twenty-ui runs on vitest, not jest
-npx nx test twenty-server                     # package unit tests (same for twenty-front, ...)
-npx nx run twenty-server:test:integration:with-db-reset
-npx nx storybook:build twenty-front && npx nx storybook:test twenty-front
-
-npx nx lint:diff-with-main twenty-server      # diff-based lint (fast; add --configuration=fix); run with typecheck after changes
-npx nx fmt <pkg>                              # format
-npx nx build twenty-shared                    # required before building/testing packages that depend on it
-npx nx database:reset twenty-server
-npx nx run twenty-front:graphql:generate      # after GraphQL schema changes (--configuration=metadata for metadata schema)
+bash packages/twenty-utils/setup-dev-env.sh  # Local Wrangler storage and frontend assets
+yarn start                                  # Worker + static frontend, localhost:3000
+yarn start:front                            # Optional Vite hot reload, localhost:3001
+npx nx build twenty-shared --skip-nx-cache
+npx nx build twenty-front
+npx jest path/to/file.test.ts --config=packages/twenty-front/jest.config.mjs
+npx vitest run --root packages/twenty-ui --project unit <file>
 ```
+
+Run Worker commands from `packages/twenty-worker`:
+
+```bash
+npx tsgo -p tsconfig.json --noEmit
+npx vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000
+npx wrangler deploy --dry-run --outdir dist
+node scripts/export-schemas.mjs
+```
+
+Run frontend codegen from `packages/twenty-front` with `npx graphql-codegen --config codegen.cjs` and `--config codegen-metadata.cjs`. Both use Worker-owned schema files. Core schema exports must match the schema of a fresh workspace; a workerd test checks this. Run Playwright from `packages/twenty-e2e-testing`; its temporary Worker uses port 3030 and separate storage.
 
 ## Gotchas
 
-- **`twenty-shared/dist` is per-branch state nothing tracks.** After switching branches or editing `twenty-shared`, run `npx nx build twenty-shared --skip-nx-cache` before trusting any typecheck or test failure in a dependent package.
-- **Nx caching can serve a stale pass.** To verify a fix, run `npx tsgo -p tsconfig.json --noEmit` in the package directly rather than `nx typecheck`.
-- **Do not commit translation catalogs unless translations are the task.** `lingui extract`/`compile` regenerate `packages/twenty-server/src/engine/core-modules/i18n/locales/*.po` and `locales/generated/*` with thousands of lines of churn as a side effect of touching any `msg` string. The i18n pipeline maintains them; leave them out of your commit.
-- **Commit messages must not carry AI attribution.** CI rejects commits containing `@anthropic.com` co-author trailers or "Generated with Claude Code" lines.
-- **Upgrade commands** (`packages/twenty-server/src/database/commands/upgrade-version-command/`): add or edit files only under the current `TWENTY_CURRENT_VERSION` directory, with a real epoch-ms timestamp strictly greater than every existing one in that directory — CI enforces both, and the upgrade cursor silently skips a command that sorts before an already-applied one. Instance commands implement `up` and `down`; workspace commands only implement `runOnWorkspace`, since nothing ever runs a `down` on them. Never rewrite committed command logic. Keep command-only helpers and constants in the version folder, never in runtime modules, and never make runtime code branch on migration state. See `packages/twenty-server/docs/UPGRADE_COMMANDS.md`.
-- **Entity file changes need a generated instance command**: `npx nx run twenty-server:database:migrate:generate --name <name> --type <fast|slow>` (slow = adds a data-backfill step).
-- A read-only Postgres MCP server is configured in `.mcp.json` for inspecting workspace data, metadata, and migration results. Writes go through the CLI commands above.
-- E2E login: click "Continue with Email" and use the prefilled credentials.
+- Rebuild shared without the Nx cache after switching branches or editing shared. Dependent typechecks otherwise use stale declarations.
+- Use direct `npx tsgo -p tsconfig.json --noEmit` from each package when verifying a change; Nx can return a cached result.
+- Do not build the frontend while workerd tests or Wrangler are reading its assets. Vite replaces the build directory.
+- Do not commit translation catalogs unless translation is the task.
+- Worker source uses kebab-case files; schema and seed snapshots live in `twenty-worker/contract` and `src/workspace/seed`.
+- D1 schema changes go through numbered SQL migrations; workspace schema changes go through the Durable Object migration list. Preserve committed migration logic.
+- Secrets belong in ignored `.dev.vars` locally and Wrangler secrets remotely. Never print API tokens or operator secrets in logs.
+- See `packages/twenty-worker/OPERATIONS.md` for provisioning, maintenance and recovery. Production uses the `production` Wrangler environment.
+- Commit messages must not include AI attribution.

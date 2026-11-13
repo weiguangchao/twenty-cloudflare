@@ -71,3 +71,6 @@ screenshots/
 /.diag*.mjs
 /.compare*.mjs
 /.narrow*.mjs
+
+# Local uploads from the retired backend remain outside source control.
+/packages/twenty-server/.local-storage/

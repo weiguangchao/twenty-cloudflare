@@ -1,3 +1,4 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { GraphQLError } from 'graphql';
 import { isValidUuid } from 'twenty-shared/utils';
 
@@ -57,9 +58,7 @@ export const handleFileUploadRequest = async (
       claims.sub !== claims.workspaceId
     )
       throw apiError('Invalid upload token', 'FORBIDDEN');
-    const stub = env.WORKSPACE.get(
-      env.WORKSPACE.idFromName(claims.workspaceId),
-    );
+    const stub = getWorkspaceStub(env, claims.workspaceId);
     const file = await fileRpc<WorkspaceFile>(stub, 'claimUpload', { id });
     try {
       await receiveFileStream(request, env.FILES, file);
@@ -101,7 +100,7 @@ export const handleFileDownloadRequest = async (
     )
       throw apiError('Invalid file token', 'FORBIDDEN');
     const file = await fileRpc<WorkspaceFile | null>(
-      env.WORKSPACE.get(env.WORKSPACE.idFromName(claims.workspaceId)),
+      getWorkspaceStub(env, claims.workspaceId),
       'get',
       { id },
     );

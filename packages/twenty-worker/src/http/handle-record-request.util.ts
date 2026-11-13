@@ -1,3 +1,4 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { isPlainObject } from 'twenty-shared/utils';
 import { GraphQLError } from 'graphql';
 
@@ -25,10 +26,9 @@ export const handleRecordRequest = async (request: Request, env: Env) => {
         !isPlainObject(body.variables))
     )
       throw apiError('Invalid GraphQL request');
-    const result = await env.WORKSPACE.get(
-      env.WORKSPACE.idFromName(workspaceId),
-    ).executeRecordQuery(
+    const result = await getWorkspaceStub(env, workspaceId).executeRecordQuery(
       {
+        requestId: request.headers.get('x-request-id') ?? undefined,
         query: body.query,
         fileUrl: {
           workspaceId,

@@ -21,7 +21,6 @@
     "**/*.md",
     "**/*.mdx",
     "**/seed-project/**/*.mjs",
-    "packages/twenty-zapier/build/**",
     "**/upgrade-version-command/**",
     "packages/twenty-worker/contract/fixtures/**",
     "packages/twenty-worker/contract/metadata-export/**",
@@ -29,6 +28,6 @@
     // Must stay a bare function expression for the Playwright MCP tool.
     "packages/twenty-worker/contract/scripts/capture-listener.js",
     "packages/twenty-worker/src/workspace/seed/*.json",
-    "packages/twenty-worker/worker-configuration.d.ts"
-  ]
+    "packages/twenty-worker/worker-configuration.d.ts",
+  ],
 }

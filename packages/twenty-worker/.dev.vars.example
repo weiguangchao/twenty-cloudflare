@@ -1,0 +1,2 @@
+APP_SECRET=replace-with-a-random-development-secret
+# Optional email and social login settings are documented in INTEGRATIONS.md.

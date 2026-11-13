@@ -100,6 +100,7 @@ export const scheduleWorkspaceAlarm = async (
   const next = [task, job, webhook].filter(
     (value): value is number => value !== null,
   );
-  if (next.length)
-    await storage.setAlarm(Math.max(Date.now() + 1000, Math.min(...next)));
+  await storage.setAlarm(
+    Math.max(Date.now() + 1000, Math.min(Date.now() + 86_400_000, ...next)),
+  );
 };

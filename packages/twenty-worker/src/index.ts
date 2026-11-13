@@ -1,3 +1,6 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
+import { logEvent } from '@/observability/log-event.util';
+import { handleOperationsRequest } from '@/operations/handle-operations-request.util';
 import { handleOAuthRequest } from '@/auth/oauth/oauth-login.service';
 import { deliverWebhook } from '@/integrations/deliver-webhook.service';
 import { handleRestRequest } from '@/http/handle-rest-request.util';
@@ -22,6 +25,10 @@ export { WorkspaceDurableObject } from '@/workspace/workspace.durable-object';
 const app = new Hono<{ Bindings: Env }>();
 
 app.get('/healthz', (context) => context.json({ status: 'ok' }));
+
+app.post('/cloudflare/operations', (context) =>
+  handleOperationsRequest(context.req.raw, context.env),
+);
 
 app.get('/client-config', (context) =>
   context.json(buildClientConfig(new URL(context.req.url), context.env)),
@@ -79,8 +86,45 @@ app.notFound((context) =>
 );
 
 export default {
-  fetch: app.fetch,
+  fetch: async (request: Request, env: Env, context: ExecutionContext) => {
+    const path = new URL(request.url).pathname;
+    if (
+      env.MAINTENANCE_MODE === 'true' &&
+      !['/healthz', '/cloudflare/operations'].includes(path)
+    )
+      return Response.json(
+        { error: 'MAINTENANCE' },
+        { status: 503, headers: { 'retry-after': '60' } },
+      );
+    const startedAt = performance.now();
+    const requestId = crypto.randomUUID();
+    const headers = new Headers(request.headers);
+    headers.set('x-request-id', requestId);
+    const response = await app.fetch(
+      new Request(request, { headers }),
+      env,
+      context,
+    );
+    logEvent(
+      {
+        event: 'http_request',
+        requestId,
+        operation: `${request.method} ${new URL(request.url).pathname.split('/')[1]}`,
+        durationMs: Math.round(performance.now() - startedAt),
+        status: response.status,
+      },
+      response.status >= 500 ? 'error' : 'info',
+    );
+    if (response.status === 101) return response;
+    const result = new Response(response.body, response);
+    result.headers.set('x-request-id', requestId);
+    return result;
+  },
   queue: async (batch: MessageBatch<unknown>, env: Env) => {
+    if (env.MAINTENANCE_MODE === 'true') {
+      batch.retryAll({ delaySeconds: 60 });
+      return;
+    }
     for (const message of batch.messages) {
       try {
         const body = message.body;
@@ -111,11 +155,19 @@ export default {
           body.fileIds.some((id) => typeof id !== 'string')
         )
           throw new Error('Invalid file deletion job');
-        await env.WORKSPACE.get(
-          env.WORKSPACE.idFromName(body.workspaceId),
-        ).deleteFiles(body.fileIds as string[]);
+        await getWorkspaceStub(env, body.workspaceId).deleteFiles(
+          body.fileIds as string[],
+        );
         message.ack();
       } catch {
+        logEvent(
+          {
+            event: 'queue_delivery_failed',
+            requestId: message.id,
+            errorCode: 'DELIVERY_FAILED',
+          },
+          'error',
+        );
         message.retry();
       }
     }
@@ -125,6 +177,7 @@ export default {
     env: Env,
     context: ExecutionContext,
   ) => {
+    if (env.MAINTENANCE_MODE === 'true') return;
     context.waitUntil(cleanupExpiredCredentials(env.CORE_DB));
     context.waitUntil(dispatchPendingEmails(env));
   },

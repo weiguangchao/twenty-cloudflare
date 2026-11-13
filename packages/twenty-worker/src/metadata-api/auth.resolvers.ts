@@ -30,7 +30,12 @@ import {
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
 import { apiError } from '@/shared/errors/api-error.util';
 
-type Credentials = { email: string; password: string; locale?: string | null };
+type Credentials = {
+  captchaToken?: string | null;
+  email: string;
+  password: string;
+  locale?: string | null;
+};
 type Resolver = GraphQLFieldResolver<unknown, MetadataContext>;
 
 export const credentialsSession = async (

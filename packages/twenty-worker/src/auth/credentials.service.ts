@@ -1,3 +1,4 @@
+import { validateRegistrationCaptcha } from '@/auth/validate-registration-captcha.util';
 import { sendVerificationEmail } from '@/auth/email-action.service';
 import { requireEmailSending } from '@/emails/email-delivery.service';
 import { emailSchema } from 'twenty-shared/utils';
@@ -54,11 +55,17 @@ export const userFromCredentials = async (
 
 export const registerUser = async (
   context: MetadataContext,
-  input: { email: string; password: string; locale?: string | null },
+  input: {
+    email: string;
+    password: string;
+    locale?: string | null;
+    captchaToken?: string | null;
+  },
   inWorkspace = false,
 ) => {
   const email = normalizeEmail(input.email);
   await limitAuthentication(context, email);
+  await validateRegistrationCaptcha(context, input.captchaToken);
   if (await context.store.userByEmail(email))
     throw apiError('User already exists', 'FORBIDDEN', 'USER_ALREADY_EXISTS');
   if (

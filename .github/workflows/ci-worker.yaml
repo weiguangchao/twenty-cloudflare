@@ -1,0 +1,101 @@
+name: Cloudflare CRM
+on:
+  pull_request:
+    paths:
+      - 'packages/twenty-worker/**'
+      - 'packages/twenty-front/**'
+      - 'packages/twenty-shared/**'
+      - 'packages/twenty-ui/**'
+      - 'packages/twenty-emails/**'
+      - 'packages/twenty-e2e-testing/**'
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/ci-worker.yaml'
+  push:
+    branches: [cloudflare-migration, main]
+  merge_group:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        type: boolean
+        default: false
+        description: Deploy the validated commit to workers.dev
+permissions:
+  contents: read
+concurrency:
+  group: cloudflare-crm-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NX_DAEMON: 'false'
+      NX_ISOLATE_PLUGINS: 'false'
+      NODE_OPTIONS: '--max-old-space-size=8192'
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: ./.github/actions/yarn-install
+      - name: Build runtime dependencies and frontend
+        run: |
+          npx nx build twenty-shared --skip-nx-cache
+          npx nx build twenty-emails
+          npx nx build twenty-front
+      - name: Worker lint and direct types
+        run: |
+          npx nx lint twenty-worker --excludeTaskDependencies --skip-nx-cache
+          cd packages/twenty-worker
+          npx tsgo -p tsconfig.json --noEmit
+      - name: Shared package direct types
+        run: |
+          for package in twenty-shared twenty-ui twenty-emails twenty-oxlint-rules; do
+            (cd "packages/$package" && npx tsgo -p tsconfig.json --noEmit)
+          done
+      - name: Worker regression tests
+        working-directory: packages/twenty-worker
+        run: npx vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000
+      - name: Generate frontend types from Worker schemas
+        run: |
+          node packages/twenty-worker/scripts/export-schemas.mjs
+          cd packages/twenty-front
+          npx graphql-codegen --config codegen.cjs
+          npx graphql-codegen --config codegen-metadata.cjs
+          npx tsgo -p tsconfig.json --noEmit
+          cd ../..
+          git diff --exit-code -- packages/twenty-worker/contract/worker-core-schema.graphql packages/twenty-front/src/generated packages/twenty-front/src/generated-metadata
+      - name: Install Chromium
+        working-directory: packages/twenty-e2e-testing
+        run: npx playwright install --with-deps chromium
+      - name: Core CRM end-to-end tests
+        working-directory: packages/twenty-e2e-testing
+        run: npx playwright test
+      - name: Validate Worker bundle
+        working-directory: packages/twenty-worker
+        run: npx wrangler deploy --env production --dry-run --outdir dist
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: playwright-results
+          path: packages/twenty-e2e-testing/run_results
+          retention-days: 7
+  deploy:
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy && github.ref == 'refs/heads/cloudflare-migration'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      OPERATIONS_TOKEN: ${{ secrets.OPERATIONS_TOKEN }}
+      TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+      NX_DAEMON: 'false'
+      NX_ISOLATE_PLUGINS: 'false'
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: ./.github/actions/yarn-install
+      - run: npx nx build twenty-worker
+      - name: Deploy validated CRM
+        working-directory: packages/twenty-worker
+        run: node scripts/deploy.mjs production

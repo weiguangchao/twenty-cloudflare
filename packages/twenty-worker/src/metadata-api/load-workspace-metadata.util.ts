@@ -1,3 +1,4 @@
+import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { type AuthContext } from '@/auth/types/auth-context.type';
 import { type CoreStore } from '@/core-db/core-store';
 import { apiError, unauthenticated } from '@/shared/errors/api-error.util';
@@ -22,8 +23,9 @@ export const loadWorkspaceMetadata = async (
   if (!workspace || !membership) throw unauthenticated();
   if (workspace.activationStatus !== 'ACTIVE')
     throw apiError('Workspace is not active', 'FORBIDDEN');
-  const metadata = await env.WORKSPACE.get(
-    env.WORKSPACE.idFromName(workspace.id),
+  const metadata = await getWorkspaceStub(
+    env,
+    workspace.id,
   ).getMetadataReadModel(membership.id);
   if (metadata.permissions.roleIds.length === 0)
     throw apiError('Workspace access denied', 'FORBIDDEN');

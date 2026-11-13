@@ -1,4 +1,5 @@
 import { isPlainObject } from 'twenty-shared/utils';
+import { logEvent, logOperationName } from '@/observability/log-event.util';
 import { enqueueOutbox } from '@/workspace/events/enqueue-outbox.util';
 import {
   prepareWebhookDelivery,
@@ -255,6 +256,11 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
   }
 
   async alarm() {
+    if (this.env.MAINTENANCE_MODE === 'true') {
+      await this.ctx.storage.setAlarm(Date.now() + 60_000);
+      return;
+    }
+    this.reportCapacity();
     try {
       this.ctx.storage.transactionSync(() => {
         const catalog = createRecordCatalog(this.getMetadataSnapshot());
@@ -575,6 +581,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
   }
 
   executeRecordQuery(input: RecordQueryInput, identity: RecordQueryIdentity) {
+    const startedAt = performance.now();
     try {
       return this.ctx.storage.transactionSync(() => {
         const { permissions, actor } = this.recordPrincipal(identity);
@@ -604,8 +611,27 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       if (error instanceof RecordMutationRollback) return error.response;
       if (error instanceof GraphQLError)
         return JSON.stringify({ errors: [error] });
+      logEvent(
+        {
+          event: 'record_operation_failed',
+          requestId: input.requestId,
+          workspaceId: input.fileUrl?.workspaceId,
+          durableObjectId: this.ctx.id.toString(),
+          operation: logOperationName(input.operationName),
+          errorCode: 'INTERNAL_SERVER_ERROR',
+        },
+        'error',
+      );
       throw error;
     } finally {
+      logEvent({
+        event: 'record_operation',
+        requestId: input.requestId,
+        workspaceId: input.fileUrl?.workspaceId,
+        durableObjectId: this.ctx.id.toString(),
+        operation: logOperationName(input.operationName),
+        durationMs: Math.round(performance.now() - startedAt),
+      });
       this.ctx.waitUntil(this.deliverRealtimeEvents());
       this.ctx.waitUntil(
         scheduleWorkspaceAlarm(this.ctx.storage, [
@@ -618,6 +644,52 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
         ]),
       );
     }
+  }
+
+  private reportCapacity() {
+    const databaseSize = this.ctx.storage.sql.databaseSize;
+    const capacityRatio = databaseSize / 10_000_000_000;
+    logEvent(
+      {
+        event:
+          capacityRatio >= 0.9
+            ? 'workspace_capacity_alert'
+            : 'workspace_capacity',
+        durableObjectId: this.ctx.id.toString(),
+        databaseSize,
+        capacityRatio,
+      },
+      capacityRatio >= 0.9 ? 'error' : 'info',
+    );
+  }
+
+  async recoverySnapshot() {
+    return {
+      bookmark: await this.ctx.storage.getCurrentBookmark(),
+      databaseSize: this.ctx.storage.sql.databaseSize,
+      marker:
+        (await this.ctx.storage.get<string>('recovery-drill-marker')) ?? null,
+    };
+  }
+
+  async writeRecoveryDrillMarker(marker: string) {
+    await this.ctx.storage.put('recovery-drill-marker', marker);
+    return this.recoverySnapshot();
+  }
+
+  async prepareRecovery(bookmark: string) {
+    const undoBookmark =
+      await this.ctx.storage.onNextSessionRestoreBookmark(bookmark);
+    return { undoBookmark };
+  }
+
+  restartForRecovery(): void {
+    this.ctx.abort('Operator requested point-in-time recovery');
+  }
+
+  async deleteRecoveryDrill() {
+    await this.ctx.storage.deleteAlarm();
+    await this.ctx.storage.deleteAll();
   }
 
   private async flushLifecycleJobs() {

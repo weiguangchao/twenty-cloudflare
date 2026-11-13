@@ -8,7 +8,7 @@
     "dev": {
       "executor": "nx:run-commands",
       "cache": false,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "twenty-front:build"],
       "options": {
         "cwd": "packages/twenty-worker",
         "command": "wrangler dev"
@@ -29,7 +29,7 @@
       "dependsOn": ["build"],
       "options": {
         "cwd": "packages/twenty-worker",
-        "command": "wrangler deploy"
+        "command": "node scripts/deploy.mjs production"
       }
     },
     "typecheck": {},
@@ -39,6 +39,14 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts"
+      }
+    },
+    "provision": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "cwd": "packages/twenty-worker",
+        "command": "node scripts/provision.mjs production"
       }
     }
   }

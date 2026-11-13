@@ -9,6 +9,7 @@ test.use({ storageState: { cookies: [], origins: [] } });
 
 test('Sign up with invite link via email', async ({
   browser,
+  baseURL,
   page,
   loginPage,
   leftMenu,
@@ -24,15 +25,21 @@ test('Sign up with invite link via email', async ({
     await test.step('Go to Settings and copy invite link', async () => {
       // Signing out or up from the saved session would revoke it server-side for later tests.
       const inviterPage = await browser.newPage({
+        baseURL,
         storageState: AUTH_STORAGE_STATE_PATH,
         permissions: ['clipboard-read', 'clipboard-write'],
       });
 
       try {
-        await inviterPage.goto(process.env.LINK);
-        await new LeftMenu(inviterPage).goToSettings();
-        await new SettingsPage(inviterPage).goToMembersSection();
-        await new MembersSection(inviterPage).copyInviteLink();
+        await inviterPage.goto('/settings/members#invite');
+        const inviteSwitch = inviterPage.getByRole('switch', {
+          name: 'Invite by Link',
+        });
+        await expect(inviteSwitch).toBeVisible();
+        if (!(await inviteSwitch.isChecked())) await inviteSwitch.click();
+        await inviterPage
+          .getByRole('button', { name: 'Copy link', exact: true })
+          .click();
 
         return await inviterPage.evaluate(() => navigator.clipboard.readText());
       } finally {
@@ -49,7 +56,9 @@ test('Sign up with invite link via email', async ({
     await loginPage.clickLoginWithEmailIfVisible();
     await loginPage.typeEmail(email);
     await loginPage.clickContinueButton();
-    await loginPage.typePassword(process.env.DEFAULT_PASSWORD);
+    await loginPage.typePassword(
+      process.env.DEFAULT_PASSWORD ?? 'E2e-test-password-2026!',
+    );
     await loginPage.clickSignUpButton();
     await expect(page.getByText('Create profile')).toBeVisible();
     await expect(page.getByPlaceholder('Head of Partnerships')).toBeVisible();
@@ -67,7 +76,9 @@ test('Sign up with invite link via email', async ({
     await loginPage.clickLoginWithEmailIfVisible();
     await loginPage.typeEmail(email);
     await loginPage.clickContinueButton();
-    await loginPage.typePassword(process.env.DEFAULT_PASSWORD);
+    await loginPage.typePassword(
+      process.env.DEFAULT_PASSWORD ?? 'E2e-test-password-2026!',
+    );
     await loginPage.clickSignInButton();
   });
 

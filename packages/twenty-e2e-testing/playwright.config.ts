@@ -3,13 +3,9 @@ import { config } from 'dotenv';
 import * as path from 'path';
 import { AUTH_STORAGE_STATE_PATH } from './lib/constants/authStorageStatePath';
 
-const envResult = config({
+config({
   path: path.resolve(__dirname, '.env'),
 });
-
-if (envResult.error) {
-  throw new Error('Failed to load .env file');
-}
 
 export default defineConfig({
   testDir: './tests',
@@ -21,12 +17,20 @@ export default defineConfig({
   workers: 1, // tests can't be parallelized
   timeout: process.env.CI ? 60_000 : 30 * 1000,
   use: {
-    baseURL: process.env.FRONTEND_BASE_URL || 'http://localhost:3001',
+    baseURL: process.env.FRONTEND_BASE_URL || 'http://127.0.0.1:3030',
     trace: 'retain-on-failure',
-    screenshot: 'on',
+    screenshot: 'only-on-failure',
     headless: true, // instead of changing it to false, run 'yarn test:e2e:debug' or 'yarn test:e2e:ui'
     testIdAttribute: 'data-testid',
   },
+  webServer: process.env.FRONTEND_BASE_URL
+    ? undefined
+    : {
+        command: 'node scripts/start-worker.mjs',
+        url: 'http://127.0.0.1:3030/healthz',
+        reuseExistingServer: false,
+        timeout: 120_000,
+      },
   expect: {
     // CI runners routinely exceed 5s on post-mutation UI transitions.
     timeout: process.env.CI ? 15_000 : 5000,
