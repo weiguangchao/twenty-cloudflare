@@ -106,6 +106,15 @@ const deserializeValue = (
 // be bumped once the surrounding operation commits.
 export class MetadataStore {
   readonly touchedEntityNames = new Set<string>();
+  readonly originalRowsByEntityName = new Map<
+    MetadataEntityName,
+    Record<string, unknown>[]
+  >();
+
+  private captureOriginalRows(entityName: MetadataEntityName) {
+    if (!this.originalRowsByEntityName.has(entityName))
+      this.originalRowsByEntityName.set(entityName, this.findMany(entityName));
+  }
 
   constructor(private readonly sql: SqlStorage) {}
 
@@ -113,6 +122,7 @@ export class MetadataStore {
     entityName: TEntityName,
     row: MetadataRow<TEntityName>,
   ): void {
+    this.captureOriginalRows(entityName);
     const columns = columnsOf(entityName);
     const record = row as Record<string, unknown>;
 
@@ -136,6 +146,7 @@ export class MetadataStore {
     );
 
     if (columns.length === 0) return;
+    this.captureOriginalRows(entityName);
 
     this.sql.exec(
       `UPDATE "${computeMetadataTableName(entityName)}" SET ${columns
@@ -149,6 +160,10 @@ export class MetadataStore {
 
   delete(entityName: MetadataEntityName, ids: string[]): void {
     if (ids.length === 0) return;
+    this.captureOriginalRows(entityName);
+    for (const dependent of CASCADE_TARGETS_BY_ENTITY_NAME.get(entityName) ??
+      [])
+      this.captureOriginalRows(dependent as MetadataEntityName);
 
     this.sql.exec(
       `DELETE FROM "${computeMetadataTableName(entityName)}" WHERE "id" IN (SELECT "value" FROM json_each(?))`,

@@ -1,3 +1,5 @@
+import { authenticateRequest } from '@/auth/session.service';
+import { WorkspaceEventStreams } from '@/workspace/subscriptions/workspace-event-streams';
 import {
   removeWorkspaceMember,
   processMemberCleanup,
@@ -91,6 +93,8 @@ import {
 
 // One instance per workspace, addressed with WORKSPACE.idFromName(workspaceId).
 export class WorkspaceDurableObject extends DurableObject<Env> {
+  private readonly eventStreams: WorkspaceEventStreams;
+  private realtimeDelivery: Promise<void> | undefined;
   private metadataSnapshot: MetadataSnapshot | undefined;
   private recordModel:
     | { catalog: RecordCatalog; schema: ReturnType<typeof buildRecordSchema> }
@@ -101,16 +105,119 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
+    this.eventStreams = new WorkspaceEventStreams(ctx, env, (identity) => {
+      const snapshot = this.getMetadataSnapshot();
+      if (this.recordModel?.catalog.version !== snapshot.version) {
+        const catalog = createRecordCatalog(snapshot);
+        const schema = buildRecordSchema(catalog);
+        attachRecordResolvers(schema);
+        this.recordModel = { catalog, schema };
+      }
+      return {
+        sql: ctx.storage.sql,
+        ...this.recordModel,
+        permissions: buildPermissionContext(
+          new MetadataStore(ctx.storage.sql),
+          identity.userWorkspaceId,
+        ),
+        fileUrl: {
+          workspaceId: identity.workspaceId,
+          origin: identity.origin,
+          secret: env.APP_SECRET,
+        },
+      };
+    });
 
     void ctx.blockConcurrencyWhile(async () => {
       await initializeRecordIndexTypes();
       runWorkspaceMigrations(ctx.storage, WORKSPACE_MIGRATIONS);
+      this.eventStreams.restore();
       await scheduleWorkspaceAlarm(ctx.storage, [
         'file-cleanup',
         'member-cleanup',
         'workspace-settings',
+        'record-event',
+        'metadata-event',
       ]);
     });
+  }
+
+  async fetch(request: Request) {
+    try {
+      if (
+        new URL(request.url).pathname !== '/_event-stream' ||
+        request.headers.get('upgrade')?.toLowerCase() !== 'websocket'
+      )
+        return new Response('Not found', { status: 404 });
+      const auth = await authenticateRequest(request, this.env);
+      if (!auth.workspaceId || !auth.workspaceMemberId || !auth.userWorkspaceId)
+        throw apiError('A workspace session is required', 'UNAUTHENTICATED');
+      return await this.eventStreams.connect(
+        new URL(request.url).searchParams.get('eventStreamId') ?? '',
+        {
+          ...auth,
+          workspaceId: auth.workspaceId,
+          userWorkspaceId: auth.userWorkspaceId,
+          workspaceMemberId: auth.workspaceMemberId,
+          origin: new URL(request.url).origin,
+        },
+      );
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return Response.json(
+          { error: { message: error.message, code: error.extensions.code } },
+          { status: 403 },
+        );
+      throw error;
+    }
+  }
+
+  updateEventStreamQuery(
+    action: 'add' | 'remove',
+    inputJson: string,
+    identity: RecordQueryIdentity,
+  ) {
+    try {
+      return JSON.stringify({
+        value: this.eventStreams.query(
+          action,
+          JSON.parse(inputJson) as Record<string, unknown>,
+          identity,
+        ),
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
+    }
+  }
+
+  webSocketMessage(socket: WebSocket) {
+    this.eventStreams.close(socket, 1008);
+  }
+  webSocketClose(socket: WebSocket) {
+    this.eventStreams.close(socket);
+  }
+  webSocketError(socket: WebSocket) {
+    this.eventStreams.close(socket, 1011);
+  }
+
+  private deliverRealtimeEvents() {
+    this.realtimeDelivery ??= this.withWorkspaceLock(() =>
+      this.eventStreams.publish(),
+    ).finally(() => {
+      this.realtimeDelivery = undefined;
+      this.ctx.waitUntil(
+        scheduleWorkspaceAlarm(this.ctx.storage, [
+          'file-cleanup',
+          'member-cleanup',
+          'workspace-settings',
+          'record-event',
+          'metadata-event',
+        ]),
+      );
+    });
+    return this.realtimeDelivery;
   }
 
   ping(): string {
@@ -162,6 +269,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           },
         });
       });
+      await this.deliverRealtimeEvents();
       expireFileUploads(this.ctx.storage);
       await processOutbox(this.ctx.storage, {
         'member-cleanup': (item) =>
@@ -192,6 +300,8 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
         'file-cleanup',
         'member-cleanup',
         'workspace-settings',
+        'record-event',
+        'metadata-event',
       ]);
     }
   }
@@ -303,11 +413,14 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
         return JSON.stringify({ errors: [error] });
       throw error;
     } finally {
+      this.ctx.waitUntil(this.deliverRealtimeEvents());
       this.ctx.waitUntil(
         scheduleWorkspaceAlarm(this.ctx.storage, [
           'file-cleanup',
           'member-cleanup',
           'workspace-settings',
+          'record-event',
+          'metadata-event',
         ]),
       );
     }
@@ -319,10 +432,13 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       'workspace-settings': () =>
         processWorkspaceSettings(this.ctx.storage.sql, this.env.CORE_DB),
     });
+    this.ctx.waitUntil(this.deliverRealtimeEvents());
     await scheduleWorkspaceAlarm(this.ctx.storage, [
       'file-cleanup',
       'member-cleanup',
       'workspace-settings',
+      'record-event',
+      'metadata-event',
     ]);
   }
 
@@ -511,6 +627,8 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       if (error instanceof GraphQLError)
         return JSON.stringify({ errors: [error] });
       throw error;
+    } finally {
+      this.ctx.waitUntil(this.deliverRealtimeEvents());
     }
   }
 
@@ -575,11 +693,14 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       if (error instanceof GraphQLError) return JSON.stringify({ error });
       throw error;
     } finally {
+      this.ctx.waitUntil(this.deliverRealtimeEvents());
       this.ctx.waitUntil(
         scheduleWorkspaceAlarm(this.ctx.storage, [
           'file-cleanup',
           'member-cleanup',
           'workspace-settings',
+          'record-event',
+          'metadata-event',
         ]),
       );
     }

@@ -303,12 +303,4 @@ for (const queryName of [
 
 export const METADATA_MUTATION_RESOLVERS: Record<string, Resolver> = {
   trackAnalytics: () => ({ success: true }),
-  addQueryToEventStream: async (_source, _arguments, context) => {
-    await context.requireMetadata();
-    return true;
-  },
-  removeQueryFromEventStream: async (_source, _arguments, context) => {
-    await context.requireMetadata();
-    return true;
-  },
 };

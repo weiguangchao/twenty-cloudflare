@@ -1,3 +1,4 @@
+import { enqueueMetadataEvents } from '@/workspace/subscriptions/enqueue-metadata-events.util';
 import { capitalize, isPlainObject } from 'twenty-shared/utils';
 
 import { MetadataStore } from '@/workspace/metadata/storage/metadata-store';
@@ -79,6 +80,15 @@ const insertTimeline = (
         : (value as SqlStorageValue),
     ),
   );
+  enqueueOutbox(context.sql, 'record-event', {
+    name: 'timelineActivity.created',
+    objectMetadata: { id: timelineObject.id, nameSingular: 'timelineActivity' },
+    event: {
+      recordId: record.id,
+      ...context.mutation!.identity,
+      properties: { after: record },
+    },
+  });
 };
 
 export const recordChangeEffects = (
@@ -130,8 +140,10 @@ export const recordChangeEffects = (
         .findMany('navigationMenuItem', { targetRecordId: String(record.id) })
         .map((item) => item.id),
     );
-    if (store.touchedEntityNames.size)
+    if (store.touchedEntityNames.size) {
       bumpMetadataCollectionHashes(context.sql, store.touchedEntityNames);
+      enqueueMetadataEvents(context.sql, store);
+    }
   }
   const files = (row: RecordData | undefined) =>
     object.fields

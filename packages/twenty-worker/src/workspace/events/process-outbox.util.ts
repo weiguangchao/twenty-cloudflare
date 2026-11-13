@@ -18,7 +18,7 @@ export const processOutbox = async (
   if (!Object.keys(handlers).length) return;
   const due = storage.sql
     .exec<{ id: string }>(
-      'SELECT "id" FROM "sys_outbox" WHERE "kind" IN (SELECT value FROM json_each(?)) AND (("status" = \'pending\' AND "availableAt" <= ?) OR ("status" = \'processing\' AND "leaseUntil" <= ?)) ORDER BY "availableAt", "id" LIMIT 20',
+      'SELECT "id" FROM "sys_outbox" WHERE "kind" IN (SELECT value FROM json_each(?)) AND (("status" = \'pending\' AND "availableAt" <= ?) OR ("status" = \'processing\' AND "leaseUntil" <= ?)) ORDER BY "availableAt", rowid LIMIT 20',
       JSON.stringify(Object.keys(handlers)),
       now,
       now,

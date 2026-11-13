@@ -1,3 +1,4 @@
+import { enqueueMetadataEvents } from '@/workspace/subscriptions/enqueue-metadata-events.util';
 import { MetadataValidationException } from '@/workspace/metadata/errors/metadata-validation.exception';
 import { bumpMetadataCollectionHashes } from '@/workspace/metadata/storage/metadata-collection-hashes.util';
 import { MetadataStore } from '@/workspace/metadata/storage/metadata-store';
@@ -48,6 +49,7 @@ export const runMetadataOperation = <TValue>(
 
       synchronizeSearchIndexes(storage.sql);
       bumpMetadataCollectionHashes(storage.sql, store.touchedEntityNames);
+      enqueueMetadataEvents(storage.sql, store);
 
       return result;
     });

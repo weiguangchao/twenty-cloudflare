@@ -1,10 +1,6 @@
 import { SELF } from 'cloudflare:test';
-import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
-import {
-  createHeartbeatStream,
-  HEARTBEAT_INTERVAL_MILLISECONDS,
-} from '@/metadata-api/subscriptions/create-heartbeat-stream.util';
 import subscriptionFixture from '../../contract/fixtures/auth-signout-signin/002-OnEventSubscription.json';
 import {
   client,
@@ -13,56 +9,6 @@ import {
   prepareWorkspace,
   setupCoreTestDatabase,
 } from '../utils/auth-test.util';
-
-afterEach(() => {
-  vi.clearAllTimers();
-  vi.useRealTimers();
-});
-
-describe('heartbeat lifecycle', () => {
-  it('sends an initial event and an empty event every 30 seconds', async () => {
-    vi.useFakeTimers();
-    const controller = new AbortController();
-    const stream = createHeartbeatStream('event-stream', controller.signal);
-    const first = await stream.next();
-    expect(first).toEqual({
-      done: false,
-      value: {
-        eventStreamId: 'event-stream',
-        objectRecordEventsWithQueryIds: [],
-        metadataEvents: [],
-        queueJobEvents: [],
-      },
-    });
-    let received = false;
-    const pending = stream.next().then((value) => {
-      received = true;
-      return value;
-    });
-    await vi.advanceTimersByTimeAsync(HEARTBEAT_INTERVAL_MILLISECONDS - 1);
-    expect(received).toBe(false);
-    await vi.advanceTimersByTimeAsync(1);
-    expect(await pending).toEqual(first);
-    await stream.return!();
-    expect(vi.getTimerCount()).toBe(0);
-  });
-
-  it.each(['abort', 'return'])(
-    'releases a pending read and timer on %s',
-    async (reason) => {
-      vi.useFakeTimers();
-      const controller = new AbortController();
-      const stream = createHeartbeatStream('event-stream', controller.signal);
-      await stream.next();
-      const pending = stream.next();
-      if (reason === 'abort') controller.abort();
-      else await stream.return!();
-      expect(await pending).toEqual({ done: true, value: undefined });
-      expect(await stream.next()).toEqual({ done: true, value: undefined });
-      expect(vi.getTimerCount()).toBe(0);
-    },
-  );
-});
 
 describe('GraphQL over SSE', () => {
   const connection = client();

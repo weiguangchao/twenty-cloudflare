@@ -30,7 +30,7 @@
 | 8 | 元数据写入 API 与视图 | 4 | 完成 |
 | 9 | 文件 | 4 | 完成 |
 | 10 | 权限与成员管理 | 6、8 | 完成 |
-| 11 | 实时事件 | 6 | 未开始 |
+| 11 | 实时事件 | 6 | 完成 |
 | 12 | 可选集成 | 10 | 未开始 |
 | 13 | 清理、部署与上线 | 全部 | 未开始 |
 
@@ -886,6 +886,16 @@ npx nx test twenty-worker
 - 空闲 5 分钟后连接仍然可用，或者能自动恢复。
 - 关闭页面后 DO 里的注册信息被清除。
 
+**实施记录**
+
+- **注册与传输**：新增 DO 迁移 `0007-initialize-event-streams`，在 SQLite 持久化事件流、连接标识和查询签名。保留现有 GraphQL-over-SSE；Worker 通过经过会话认证的内部 fetch 与 DO 建立 WebSocket，DO 使用 Hibernation API，连接附件保存接收者身份与连接时的 outbox 游标。重建实例时恢复现存连接并移除孤立注册；新连接不重放建立前的历史事件。
+- **记录事件**：消费记录事务已有的 `record-event` outbox，并补齐时间线记录事件。匹配复用记录查询的筛选、排序和权限校验；空筛选沿用旧服务的全对象匹配，更新同时检查 before/after，删除和恢复保留相应匹配语义。只发送命中的 queryIds；接收者可读字段、关系标签及文件 URL 在推送时重新投影。outbox 同一时间的任务按插入顺序处理，失败继续使用租约和 alarm 重试。
+- **元数据事件**：在元数据事务内采集受影响表的变更前后值，包括外键级联，并与 collection hash 一起写入 `metadata-event` outbox；回滚不产生事件。输出前端使用的 field、relation、index、view 等形状；索引字段作为 index 的嵌套数据发送，隐藏 morph 派生字段不重复发送。删除记录导致的导航清理也会广播。
+- **权限与隐私**：注册、修改查询和推送都检查实际成员及角色；每轮投递重新验证 D1 会话，重新构建接收者权限。隐藏字段不能参与事件筛选、排序或出现在 before/after、updatedFields、diff 中；无读取权限的对象不推送。私人导航只发给所属成员，角色配置按 ROLES 权限过滤，时间线嵌套 properties 暂不推送，避免携带其他对象的隐藏字段值。
+- **心跳与清理**：Worker 每 30 秒验证会话并发送 SSE 空事件；内部 ping/pong 由 DO 自动应答，不唤醒 DO。断开或取消会结束挂起读取、清理计时器并关闭 WebSocket，随后级联删除查询；旧连接迟到的关闭事件不会删除替代连接。每成员最多 20 个连接、workspace 最多 1000 个连接、每流最多 200 个查询；单次消息超过 512 KB 或 Worker 缓冲超过 100 条/1 MB 时关闭连接，使用前端现有重连与重新查询恢复。
+- **验证**：workerd 完整测试 42 个文件、824 项通过；新增覆盖五种记录变更、筛选前后匹配、关系投影、元数据与事务回滚、真实 DO 驱逐后恢复、会话撤销、字段/对象权限、私人导航、查询移除、连接替换和断开清理。虚拟时钟验证连续五分钟心跳及计时器释放。worker 直接 tsgo、lint 和 Wrangler dry-run 通过。
+- **浏览器验收**：使用独立 `.wrangler/stage11-acceptance` 数据副本，两个登录同一 workspace 的页面验证新建、修改、删除、恢复记录及新建自定义字段能自动显示；空闲超过五分钟后可继续更新。关闭验收页面后检查 DO，事件流和查询注册均为零。沿用推荐传输，无需修改前端或 twenty-server，未部署远程资源。
+
 ### 阶段 12：可选集成
 
 每一项单独确认后再做，互相独立。
@@ -968,6 +978,10 @@ npx nx test twenty-worker
 - R2 Workers API（条件写、范围读取）：https://developers.cloudflare.com/r2/api/workers/workers-api-reference/
 - FixedLengthStream（声明长度和字节数量校验）：https://developers.cloudflare.com/workers/runtime-apis/streams/transformstream/
 - DO blockConcurrencyWhile 的异常重置语义：https://developers.cloudflare.com/durable-objects/api/state/
+
+阶段 11 补充核验（2026-11-13）：
+
+- DO WebSocket Hibernation API、连接附件与自动应答：https://developers.cloudflare.com/durable-objects/best-practices/websockets/
 
 仓库内的参考：
 

@@ -73,7 +73,9 @@ it('creates, updates, deletes, restores and destroys records with authenticated 
       'person.restored',
       'person.destroyed',
     ]);
-    expect(events[1].event).toMatchObject({
+    expect(
+      events.find((entry) => entry.name === 'person.updated').event,
+    ).toMatchObject({
       recordId: created.id,
       userId: identity.userId,
       workspaceMemberId: identity.workspaceMemberId,

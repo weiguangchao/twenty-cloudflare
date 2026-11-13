@@ -32,7 +32,8 @@ import {
 import { METADATA_FIELD_RESOLVERS } from '@/metadata-api/metadata-field.resolvers';
 import { METADATA_WRITE_RESOLVERS } from '@/metadata-api/metadata-write.resolvers';
 import { FILE_MUTATION_RESOLVERS } from '@/metadata-api/file.resolvers';
-import { createHeartbeatStream } from '@/metadata-api/subscriptions/create-heartbeat-stream.util';
+import { createEventStream } from '@/metadata-api/subscriptions/create-event-stream.util';
+import { EVENT_STREAM_MUTATION_RESOLVERS } from '@/metadata-api/subscriptions/event-stream.resolvers';
 
 const zeroValue = (type: GraphQLOutputType): unknown => {
   if (!isNonNullType(type)) return null;
@@ -133,6 +134,7 @@ export const buildMetadataSchema = () => {
           });
       } else if (type === mutation) {
         field.resolve =
+          EVENT_STREAM_MUTATION_RESOLVERS[field.name] ??
           MEMBER_MUTATION_RESOLVERS[field.name] ??
           FILE_MUTATION_RESOLVERS[field.name] ??
           METADATA_WRITE_RESOLVERS[field.name] ??
@@ -155,7 +157,7 @@ export const buildMetadataSchema = () => {
           context: MetadataContext,
         ) => {
           await context.requireMetadata();
-          return createHeartbeatStream(eventStreamId, context.request.signal);
+          return createEventStream(context, eventStreamId);
         };
         field.resolve = (value: unknown) => value;
       } else {
