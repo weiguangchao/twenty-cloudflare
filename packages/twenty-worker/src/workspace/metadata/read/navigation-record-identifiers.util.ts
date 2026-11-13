@@ -1,4 +1,6 @@
 import { getLinkFaviconUrl, isPlainObject } from 'twenty-shared/utils';
+import { projectFileValues } from '@/files/project-file-values.util';
+import { type FileUrlContext } from '@/files/types/workspace-file.type';
 
 import { type MetadataOperationContext } from '@/workspace/metadata/types/metadata-operation-context.type';
 import { type PermissionContext } from '@/workspace/permissions/types/permission-context.type';
@@ -7,6 +9,7 @@ import { quoteIdentifier } from '@/workspace/record-api/sql/record-sql.util';
 export const navigationRecordIdentifiers = (
   context: MetadataOperationContext,
   permissions: PermissionContext,
+  fileUrl?: FileUrlContext,
 ) => {
   const objects = context.store.findMany('objectMetadata');
   const fields = context.store.findMany('fieldMetadata');
@@ -53,7 +56,8 @@ export const navigationRecordIdentifiers = (
           ? JSON.parse(row.label)
           : row.label;
       const imageValue: unknown =
-        image?.type === 'LINKS' && typeof row.image === 'string'
+        ['LINKS', 'FILES'].includes(image?.type ?? '') &&
+        typeof row.image === 'string'
           ? JSON.parse(row.image)
           : row.image;
       return [
@@ -68,9 +72,15 @@ export const navigationRecordIdentifiers = (
               image?.type === 'LINKS' && isPlainObject(imageValue)
                 ? (getLinkFaviconUrl(String(imageValue.primaryLinkUrl ?? '')) ??
                   '')
-                : image?.type === 'TEXT'
-                  ? String(imageValue ?? '')
-                  : '',
+                : image?.type === 'FILES'
+                  ? ((
+                      projectFileValues(context.sql, imageValue, fileUrl) as
+                        | { url?: string }[]
+                        | null
+                    )?.[0]?.url ?? '')
+                  : image?.type === 'TEXT'
+                    ? String(imageValue ?? '')
+                    : '',
           },
         },
       ];

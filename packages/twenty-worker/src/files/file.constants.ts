@@ -1,0 +1,7 @@
+export const MAX_FILE_UPLOAD_BYTES = 100_000_000;
+export const MAX_CORE_PICTURE_BYTES = 10 * 1024 * 1024;
+export const MAX_SVG_BYTES = 2 * 1024 * 1024;
+export const FILE_UPLOAD_TOKEN_SECONDS = 15 * 60;
+export const FILE_TOKEN_SECONDS = 60 * 60;
+export const FILE_UPLOAD_EXPIRATION_MS = 24 * 60 * 60 * 1000;
+export const FILE_TRANSFER_LEASE_MS = 15 * 60 * 1000;

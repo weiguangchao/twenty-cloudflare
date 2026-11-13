@@ -3,6 +3,7 @@ import {
   QUERY_MAX_RECORDS_FROM_RELATION,
 } from 'twenty-shared/constants';
 import { isPlainObject } from 'twenty-shared/utils';
+import { projectFileValues } from '@/files/project-file-values.util';
 
 import { apiError } from '@/shared/errors/api-error.util';
 import { computeFieldColumn } from '@/workspace/metadata/ddl/compute-field-column.util';
@@ -91,6 +92,12 @@ export class RecordQueryEngine {
         )
           row[field.name] = JSON.parse(value);
         const decoded = row[field.name];
+        if (field.type === 'FILES')
+          row[field.name] = projectFileValues(
+            this.context.sql,
+            decoded,
+            this.context.fileUrl,
+          );
         if (isPlainObject(decoded))
           for (const [name, defaultValue] of Object.entries(
             RECORD_COMPOSITE_NULL_EQUIVALENTS[field.type] ?? {},

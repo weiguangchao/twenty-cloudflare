@@ -51,6 +51,7 @@ export const readRecordFixtures = (directory: string) => {
   const fixtures: ReadRecordFixture[] = [];
   const writeFixtures: ReadRecordFixture[] = [];
   const searchFixtures: ReadRecordFixture[] = [];
+  const fileUploads: { id: string; input: Record<string, unknown> }[] = [];
   const records = new Map<string, CapturedRecord>();
   const objects = new Map(
     [...standardMetadata.tables.objectMetadata, customObject].map((object) => [
@@ -101,6 +102,19 @@ export const readRecordFixtures = (directory: string) => {
       (name) => name.endsWith('.json'),
     )) {
       const fixture = read(path.join(directory, flow.name, name));
+      if (fixture.operationName === 'CreateFileUpload') {
+        const result = fixture.response as
+          | { data?: { createFileUpload?: { fileId: string } } }
+          | undefined;
+        if (
+          result?.data?.createFileUpload &&
+          typeof fixture.variables === 'object'
+        )
+          fileUploads.push({
+            id: result.data.createFileUpload.fileId,
+            input: fixture.variables as Record<string, unknown>,
+          });
+      }
       if (fixture.endpoint !== '/graphql' || typeof fixture.query !== 'string')
         continue;
       const response = (fixture.response ??
@@ -152,6 +166,7 @@ export const readRecordFixtures = (directory: string) => {
     customFields,
     writeFixtures,
     searchFixtures,
+    fileUploads,
     customSearchFields: exported.tables.searchFieldMetadata.filter(
       (field) => field.objectMetadataId === customObject.id,
     ),

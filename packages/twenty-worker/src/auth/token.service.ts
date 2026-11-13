@@ -94,6 +94,7 @@ export const verifyToken = async (
   secret: string,
   type: TokenType,
   token: string,
+  ignoreExpiration = false,
 ): Promise<TokenClaims> => {
   try {
     if (token.length > 8192) throw unauthenticated();
@@ -117,7 +118,8 @@ export const verifyToken = async (
       !isNonEmptyString(claims.jti) ||
       typeof claims.exp !== 'number' ||
       !Number.isFinite(claims.exp) ||
-      claims.exp <= Date.now() / 1000 ||
+      (claims.exp <= Date.now() / 1000 &&
+        !(ignoreExpiration && type === 'file')) ||
       typeof claims.iat !== 'number' ||
       !Number.isFinite(claims.iat) ||
       claims.iat > Date.now() / 1000 ||

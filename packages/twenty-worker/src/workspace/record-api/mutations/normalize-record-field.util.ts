@@ -20,6 +20,7 @@ import {
 } from 'twenty-shared/utils';
 
 import { apiError } from '@/shared/errors/api-error.util';
+import { WorkspaceFileStore } from '@/files/workspace-file-store';
 import { type FieldMetadataRow } from '@/workspace/metadata/types/field-metadata-row.type';
 import { COMPOSITE_GRAPHQL_TYPES } from '@/workspace/record-api/record-catalog.util';
 import { RECORD_COMPOSITE_NULL_EQUIVALENTS } from '@/workspace/record-api/record-null-equivalents.constant';
@@ -298,7 +299,19 @@ export const normalizeRecordField = (
         )
       )
         invalid(name);
-      return input;
+      return (input as { fileId: string; label: string }[]).map((item) => {
+        const file = new WorkspaceFileStore(context.sql).find(item.fileId);
+        if (
+          !file ||
+          file.status !== 'UPLOADED' ||
+          file.fieldMetadataId !== field.id
+        )
+          throw apiError(
+            'File is not available for this field',
+            'BAD_USER_INPUT',
+          );
+        return { fileId: item.fileId, label: item.label };
+      });
     case 'RAW_JSON':
       if (typeof input === 'string') {
         try {

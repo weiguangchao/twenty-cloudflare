@@ -28,7 +28,7 @@
 | 6 | 记录写入与副作用 | 5 | 完成 |
 | 7 | 搜索 | 6 | 完成 |
 | 8 | 元数据写入 API 与视图 | 4 | 完成 |
-| 9 | 文件 | 4 | 未开始 |
+| 9 | 文件 | 4 | 完成 |
 | 10 | 权限与成员管理 | 6、8 | 未开始 |
 | 11 | 实时事件 | 6 | 未开始 |
 | 12 | 可选集成 | 10 | 未开始 |
@@ -806,6 +806,17 @@ npx nx test twenty-worker
 - 没有 token 或 token 属于别的文件时返回 403。
 - 永久删除带附件的记录后，R2 里对应的对象被删除。
 
+**实施记录**
+
+- **存储与上传状态**：已有阶段 2 的 meta_file 表，本阶段通过 DO 迁移 0005 扩展上传者、字段、workspace、R2 key、声明大小、租约及过期时间，保留原有列。createFileUpload 返回 15 分钟有效的上传能力令牌，限定 workspace 和 fileId；PUT 用 TransformStream 计数并通过 FixedLengthStream 流式写 R2，过量返回 413，短包返回 400，重复上传返回 409。状态为 PENDING → UPLOADING → STORED → COMPLETING → UPLOADED，未完成的文件不能下载或写入记录；租约防止同时上传或完成。文件直接写最终的 workspace/applicationUniversalIdentifier/folder/path，R2 条件写防止覆盖已有内容。
+- **类型校验与 SVG**：沿用 file-type/core 的内容识别和 mrmime 的扩展名映射，并保留 TypeScript 文件的 MIME 特例；头像/logo 复用 shared 的 CORE_PICTURE_MIME_TYPES。SVG 最多 2 MiB，使用 sanitize-html 的 XML 解析和 SVG 元素/属性白名单，移除脚本、事件、样式、foreignObject、外部链接和非本地片段引用，拒绝 DTD/实体声明。仅 SVG 有界读入内存，其余文件只读取 8 KiB 前缀。净化使用 R2 etag 条件覆盖，保存净化标识，使“R2 已写入、DO 尚未提交”后的完成重试仍可成功；不用旧服务的 JSDOM。Vitest 的 SSR dependency optimizer 预打包 sanitize-html，解决其 CommonJS 依赖在 workerd 测试中的加载问题。
+- **下载与签名**：GET/HEAD /file/:folder/:id 要求签名、用途、workspace、fileId 和实际目录全部匹配；缺少、伪造或借用别的文件 token 返回 403。core-picture 仅忽略过期时间，其余验证仍执行。支持单段、开放结尾和后缀 Range、206/416、ETag/304、If-Range、Content-Length 和缓存头。普通文件缓存时间收紧到 token 剩余寿命，区别于历史 fixture 固定 86400 秒，避免缓存越过能力令牌有效期。危险文档强制下载，并设置 nosniff/CSP；图片、文本、PDF 和媒体可预览。
+- **前端接入**：实现头像、workspace logo 的专用完成入口，以及新 workspace 在登录令牌兑换和激活前上传 logo 的流程；未激活 workspace 的特殊路径在 DO 内重新通过 D1 校验创建者和成员。兼容旧式 multipart 上传 mutation。补齐前端上传后写 avatarUrl、删除头像/清空 logo 的设置入口；workspace 的其他设置仍留给阶段 10。currentUser.editableProfileFields 改成前端实际识别的 firstName/lastName/profilePicture，替换阶段 3 占位的 name/avatarUrl。FILES 写入只接受本 DO 已完成且属于目标字段的文件，持久化 fileId/label，读取时补 extension 和新的签名 URL；全局搜索和收藏图片也接入 FILES 投影。记录事务内用 node:crypto 的同步 HMAC 签名，与异步 token 校验保持相同的用途派生规则，没有事务内 await。
+- **删除与清理**：接入阶段 6 的 file-cleanup outbox，覆盖字段移除文件、永久删除及关联级联删除；删除前检查所有 FILES 引用、成员头像和 D1 的 workspace logo，回收站中的记录也计为有效引用。每小时分批检查超过 24 小时的未完成上传和已完成但未引用的文件；每页 100 项，超过 20 个文件的删除通过 Queue，消息每批最多 100 个 ID。R2 删除失败保留 DELETING 元数据并按 outbox 退避重试，重复投递幂等；周期任务也重投过期的 DELETING 项，避免 Queue 重试耗尽后遗失删除工作。跨 D1/R2 的临界区用 blockConcurrencyWhile 防止重新引用，异常在回调内捕获后再向外抛，避免 DO 被重置而丢失正常的重试状态；没有在 SQLite 事务内调用外部 IO。
+- **边界与偏离**：普通直传上限取 100,000,000 字节，头像/logo 为 10 MiB，低于旧服务的 1 GiB 普通上传上限，以适配 Cloudflare Free/Pro 域名的请求体限制。只开放范围内的 CorePicture 和 FilesField，工作流、邮件、应用包等目录不启用。历史文件访问 fixture 中无 token 的旧头像地址不再回退读取：按本阶段验收标准统一返回 403。没有线上旧文件需要迁移。
+- **验证**：重放 files/021、026、037、074、099 的申请与对应的 023、028、039、076、101 完成 mutation，映射历史字段和生成 ID，并实际 PUT/GET 校验字节；另外 16 项行为测试覆盖 Range、缓存、能力令牌、大小/类型、SVG 净化及中断重试、头像/logo 保存删除、激活前上传、权限、共享引用、父记录级联清理、Queue、R2 失败重试和 multipart。既有 74 条记录写入 fixture 的安装步骤补齐对应文件元数据，再继续执行真实的文件引用校验。最终 39 个测试文件、799 项测试通过；直接 tsgo、Nx lint、格式检查、git diff --check 和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 5,400.25 KiB，gzip 827.71 KiB。lint 沿用 --skip-nx-cache --excludeTaskDependencies 的本机依赖绕行方式；最终全量测试直接运行 vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000，规避本机运行器并发启动及默认超时问题。
+- **浏览器验收**：使用独立的 .wrangler/stage9-acceptance 数据副本，在共享预览上传并显示头像和 logo；给 Airbnb 上传文本附件，打开预览读到正文并操作下载；新建 Documents 文件字段并上传文件，刷新后读取签名 URL。永久删除带附件记录的 R2 清理由 workerd 集成测试验收。twenty-front 和 twenty-server 均零改动，未部署远程资源。
+
 ### 阶段 10：权限与成员管理
 
 **目标**：把占位的权限实现换成真的，并完成成员相关的设置页。
@@ -940,6 +951,12 @@ npx nx test twenty-worker
 - Containers 更新日志：https://developers.cloudflare.com/changelog/product/containers/
 - Email Service 更新日志：https://developers.cloudflare.com/email-service/platform/changelog/
 - Workers 连接数据库的方式：https://developers.cloudflare.com/workers/databases/connecting-to-databases/
+
+阶段 9 补充核验（2026-11-13）：
+
+- R2 Workers API（条件写、范围读取）：https://developers.cloudflare.com/r2/api/workers/workers-api-reference/
+- FixedLengthStream（声明长度和字节数量校验）：https://developers.cloudflare.com/workers/runtime-apis/streams/transformstream/
+- DO blockConcurrencyWhile 的异常重置语义：https://developers.cloudflare.com/durable-objects/api/state/
 
 仓库内的参考：
 

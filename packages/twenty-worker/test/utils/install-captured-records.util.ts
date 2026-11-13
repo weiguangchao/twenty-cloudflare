@@ -9,6 +9,7 @@ import { type MetadataRow } from '@/workspace/metadata/types/metadata-row.type';
 import { type JsonValue } from '@/workspace/metadata/types/json-value.type';
 import { type WorkspaceDurableObject } from '@/workspace/workspace.durable-object';
 import { synchronizeSearchIndexes } from '@/workspace/search/synchronize-search-indexes.util';
+import { WorkspaceFileStore } from '@/files/workspace-file-store';
 
 import { type readRecordFixtures } from '../config/read-record-fixtures.util';
 import { createRecordIdentity, insertRecord } from './record-query-test.util';
@@ -62,6 +63,21 @@ export const installCapturedRecords = (
     bumpMetadataCollectionHashes(sql, store.touchedEntityNames);
   });
   const identity = createRecordIdentity(instance);
+  const fileStore = new WorkspaceFileStore(sql);
+  for (const upload of contracts.fileUploads.filter(
+    (file) => file.input.fileFolder === 'FilesField',
+  )) {
+    if (fileStore.find(upload.id)) continue;
+    const file = fileStore.create(
+      { ...upload.input, workspaceId: crypto.randomUUID() },
+      identity,
+    );
+    sql.exec(
+      'UPDATE "meta_file" SET "id" = ?, "status" = \'UPLOADED\' WHERE "id" = ?',
+      upload.id,
+      file.id,
+    );
+  }
   const snapshot = instance.getMetadataSnapshot();
   const pending: {
     table: string;

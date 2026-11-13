@@ -44,11 +44,17 @@ export const createMetadataContext = (
         ));
         const rows = await env.WORKSPACE.get(
           env.WORKSPACE.idFromName(data.workspace.id),
-        ).getNavigationRecordIdentifiers({
-          userId: auth.userId,
-          userWorkspaceId: data.membership.id,
-          workspaceMemberId: data.membership.workspaceMemberId,
-        });
+        ).getNavigationRecordIdentifiers(
+          {
+            userId: auth.userId,
+            userWorkspaceId: data.membership.id,
+            workspaceMemberId: data.membership.workspaceMemberId,
+          },
+          {
+            workspaceId: data.workspace.id,
+            origin: new URL(request.url).origin,
+          },
+        );
         return new Map(
           rows.map((row) => [row.navigationMenuItemId, row.identifier]),
         );

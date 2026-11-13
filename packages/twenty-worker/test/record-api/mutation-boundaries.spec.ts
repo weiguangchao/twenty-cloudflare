@@ -10,6 +10,7 @@ import { createRecordCatalog } from '@/workspace/record-api/record-catalog.util'
 import { buildRecordSchema } from '@/workspace/record-api/schema/build-record-schema.util';
 import { buildPermissionContext } from '@/workspace/permissions/build-permission-context.util';
 import { MetadataStore } from '@/workspace/metadata/storage/metadata-store';
+import { WorkspaceFileStore } from '@/files/workspace-file-store';
 
 import { runInNewWorkspace } from '../utils/run-in-new-workspace.util';
 import {
@@ -198,7 +199,23 @@ it('applies CASCADE and SET NULL and queues removed file references', async () =
       'mutation($companyId: ID!) {createPerson(data: {companyId: $companyId}) {id}}',
       { companyId: company.id },
     ).createPerson;
-    const fileId = crypto.randomUUID();
+    const attachmentField = new MetadataStore(sql)
+      .findMany('fieldMetadata')
+      .find((field) => field.type === 'FILES' && field.name === 'file')!;
+    const fileId = new WorkspaceFileStore(sql).create(
+      {
+        workspaceId: crypto.randomUUID(),
+        filename: 'Test.txt',
+        size: 4,
+        fileFolder: 'FilesField',
+        fieldMetadataId: attachmentField.id,
+      },
+      identity,
+    ).id;
+    sql.exec(
+      'UPDATE "meta_file" SET "status" = \'UPLOADED\' WHERE "id" = ?',
+      fileId,
+    );
     queryRecords(
       instance,
       identity,

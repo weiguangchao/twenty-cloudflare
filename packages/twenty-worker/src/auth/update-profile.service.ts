@@ -4,6 +4,7 @@ import { isPlainObject } from 'twenty-shared/utils';
 import { requireWorkspace } from '@/auth/workspace-lifecycle.service';
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
 import { apiError } from '@/shared/errors/api-error.util';
+import { updateWorkspacePicture } from '@/files/update-workspace-picture.util';
 
 const SETTING_VALUES: Record<string, readonly string[]> = {
   colorScheme: ['System', 'Light', 'Dark'],
@@ -36,7 +37,10 @@ export const updateProfile = async (
     string | number | { firstName: string; lastName: string }
   > = {};
   for (const [name, value] of Object.entries(input)) {
-    if (name === 'name') {
+    if (name === 'avatarUrl') {
+      if (value !== null && typeof value !== 'string')
+        throw apiError('Invalid picture URL');
+    } else if (name === 'name') {
       if (
         !isPlainObject(value) ||
         typeof value.firstName !== 'string' ||
@@ -82,6 +86,8 @@ export const updateProfile = async (
     if (membership.profilePending && !isNonEmptyString(update.name.firstName))
       throw apiError('First name is required');
   }
+  if ('avatarUrl' in input)
+    await updateWorkspacePicture(context, input.avatarUrl, 'avatar');
   await context
     .workspace(workspace.id)
     .updateWorkspaceMemberProfile(workspaceMemberId, update);

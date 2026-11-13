@@ -90,6 +90,9 @@
     },
   ],
   "queues": {
+    "consumers": [
+      { "queue": "twenty-jobs", "max_batch_size": 10, "max_retries": 5 },
+    ],
     "producers": [
       {
         "binding": "JOBS",

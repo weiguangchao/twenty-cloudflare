@@ -5,6 +5,7 @@ import {
 } from 'twenty-shared/utils';
 
 import { apiError } from '@/shared/errors/api-error.util';
+import { projectFileValues } from '@/files/project-file-values.util';
 import { compileRecordFilter } from '@/workspace/record-api/sql/compile-record-filter.util';
 import {
   executeRecordSql,
@@ -187,9 +188,11 @@ export const searchRecords = (
     const imageValue =
       imageColumn !== "''" && image?.type === 'LINKS'
         ? `${imageColumn} ->> '$.primaryLinkUrl'`
-        : image?.type === 'TEXT'
+        : imageColumn !== "''" && image?.type === 'FILES'
           ? imageColumn
-          : "''";
+          : image?.type === 'TEXT'
+            ? imageColumn
+            : "''";
     const after = cursorCondition(object, cursor, bindings);
     bindings.push(input.limit + 1);
     const rows = executeRecordSql(
@@ -205,7 +208,15 @@ export const searchRecords = (
             imageUrl:
               image?.type === 'LINKS'
                 ? (getLinkFaviconUrl(String(row.imageUrl ?? '')) ?? '')
-                : row.imageUrl,
+                : image?.type === 'FILES' && imageColumn !== "''"
+                  ? ((
+                      projectFileValues(
+                        context.sql,
+                        JSON.parse(String(row.imageUrl || '[]')),
+                        context.fileUrl,
+                      ) as { url?: string }[] | null
+                    )?.[0]?.url ?? '')
+                  : row.imageUrl,
             objectNameSingular: object.nameSingular,
             objectLabelSingular: object.labelSingular,
           }) as SearchRow,

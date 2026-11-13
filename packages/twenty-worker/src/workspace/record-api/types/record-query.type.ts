@@ -1,10 +1,12 @@
 import { type GraphQLSchema } from 'graphql';
+import { type FileUrlContext } from '@/files/types/workspace-file.type';
 
 import { type FieldMetadataRow } from '@/workspace/metadata/types/field-metadata-row.type';
 import { type ObjectMetadataSnapshot } from '@/workspace/metadata/snapshot/build-metadata-snapshot.util';
 import { type PermissionContext } from '@/workspace/permissions/types/permission-context.type';
 
 export type RecordQueryInput = {
+  fileUrl?: Omit<FileUrlContext, 'secret'>;
   query: string;
   variables?: Record<string, unknown> | null;
   operationName?: string | null;
@@ -49,6 +51,7 @@ export type RecordCatalog = {
 };
 
 export type RecordQueryContext = {
+  fileUrl?: FileUrlContext;
   sql: SqlStorage;
   catalog: RecordCatalog;
   schema: GraphQLSchema;

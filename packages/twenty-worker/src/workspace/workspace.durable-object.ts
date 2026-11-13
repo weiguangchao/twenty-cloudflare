@@ -67,6 +67,14 @@ import {
   type RecordQueryInput,
 } from '@/workspace/record-api/types/record-query.type';
 import { apiError } from '@/shared/errors/api-error.util';
+import { executeFileOperation } from '@/files/execute-file-operation.util';
+import { WorkspaceFileStore } from '@/files/workspace-file-store';
+import { attachWorkspacePicture } from '@/files/attach-workspace-picture.util';
+import {
+  expireFileUploads,
+  processFileCleanup,
+  deleteWorkspaceFiles,
+} from '@/files/cleanup-files.util';
 import { navigationRecordIdentifiers } from '@/workspace/metadata/read/navigation-record-identifiers.util';
 import {
   executeMetadataMutation,
@@ -89,12 +97,25 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     void ctx.blockConcurrencyWhile(async () => {
       await initializeRecordIndexTypes();
       runWorkspaceMigrations(ctx.storage, WORKSPACE_MIGRATIONS);
-      await scheduleWorkspaceAlarm(ctx.storage);
+      await scheduleWorkspaceAlarm(ctx.storage, ['file-cleanup']);
     });
   }
 
   ping(): string {
     return 'pong';
+  }
+
+  private async withFileLock<TData>(operation: () => Promise<TData>) {
+    // A rejected blockConcurrencyWhile callback resets the DO before outbox retry state is saved.
+    const outcome = await this.ctx.blockConcurrencyWhile(async () => {
+      try {
+        return { status: 'success' as const, value: await operation() };
+      } catch (error) {
+        return { status: 'error' as const, error };
+      }
+    });
+    if (outcome.status === 'error') throw outcome.error;
+    return outcome.value;
   }
 
   async alarm() {
@@ -129,8 +150,13 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           },
         });
       });
-      // File and realtime consumers arrive in stages 9 and 11; retain their pending jobs.
-      await processOutbox(this.ctx.storage, {});
+      expireFileUploads(this.ctx.storage);
+      await processOutbox(this.ctx.storage, {
+        'file-cleanup': (item) =>
+          this.withFileLock(() =>
+            processFileCleanup(this.ctx.storage, this.env, item),
+          ),
+      });
     } catch (error) {
       this.ctx.storage.sql.exec(
         'UPDATE "sys_scheduledTask" SET "nextRunAt" = ?, "lastError" = ? WHERE "nextRunAt" <= ?',
@@ -142,7 +168,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       );
       throw error;
     } finally {
-      await scheduleWorkspaceAlarm(this.ctx.storage);
+      await scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']);
     }
   }
 
@@ -231,6 +257,9 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
           ...this.recordModel,
           sql: this.ctx.storage.sql,
           permissions,
+          fileUrl: input.fileUrl
+            ? { ...input.fileUrl, secret: this.env.APP_SECRET }
+            : undefined,
           mutation: {
             identity,
             actor: {
@@ -249,6 +278,10 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       if (error instanceof GraphQLError)
         return JSON.stringify({ errors: [error] });
       throw error;
+    } finally {
+      this.ctx.waitUntil(
+        scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']),
+      );
     }
   }
 
@@ -335,6 +368,80 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     }
   }
 
+  async executeFileOperation(
+    operation: string,
+    inputJson: string,
+    identity?: RecordQueryIdentity,
+  ) {
+    try {
+      const input = JSON.parse(inputJson) as Record<string, unknown>;
+      const onboarding = input.onboarding === true;
+      if (onboarding) {
+        const workspaceId =
+          operation === 'create'
+            ? input.workspaceId
+            : new WorkspaceFileStore(this.ctx.storage.sql).find(
+                String(input.id),
+              )?.workspaceId;
+        const allowed =
+          identity &&
+          typeof workspaceId === 'string' &&
+          (await this.env.CORE_DB.prepare(
+            'SELECT 1 FROM "workspace" AS "workspace" JOIN "userWorkspace" AS "member" ON "member"."workspaceId" = "workspace"."id" WHERE "workspace"."id" = ? AND "workspace"."creatorUserId" = ? AND "workspace"."activationStatus" = \'PENDING_CREATION\' AND "member"."id" = ? AND "member"."userId" = ?',
+          )
+            .bind(
+              workspaceId,
+              identity.userId,
+              identity.userWorkspaceId,
+              identity.userId,
+            )
+            .first());
+        if (!allowed) throw apiError('Permission denied', 'FORBIDDEN');
+      }
+      const value =
+        operation === 'picture'
+          ? await this.withFileLock(() => {
+              if (!identity) throw apiError('Permission denied', 'FORBIDDEN');
+              return attachWorkspacePicture(
+                this.ctx.storage,
+                this.env,
+                input.id === null ? null : String(input.id),
+                String(input.purpose),
+                String(input.origin),
+                identity,
+                onboarding,
+                typeof input.workspaceId === 'string'
+                  ? input.workspaceId
+                  : undefined,
+              );
+            })
+          : this.ctx.storage.transactionSync(() =>
+              executeFileOperation(
+                this.ctx.storage.sql,
+                operation,
+                input,
+                identity,
+                onboarding,
+              ),
+            );
+      return JSON.stringify({ value });
+    } catch (error) {
+      if (error instanceof GraphQLError) return JSON.stringify({ error });
+      throw error;
+    } finally {
+      this.ctx.waitUntil(
+        scheduleWorkspaceAlarm(this.ctx.storage, ['file-cleanup']),
+      );
+    }
+  }
+
+  async deleteFiles(fileIds: string[]) {
+    if (fileIds.length > 100) throw apiError('Invalid file cleanup batch');
+    await this.withFileLock(() =>
+      deleteWorkspaceFiles(this.ctx.storage, this.env, fileIds),
+    );
+  }
+
   getObjectRecordCounts(identity: RecordQueryIdentity) {
     const context = {
       sql: this.ctx.storage.sql,
@@ -356,7 +463,10 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
       }));
   }
 
-  getNavigationRecordIdentifiers(identity: RecordQueryIdentity) {
+  getNavigationRecordIdentifiers(
+    identity: RecordQueryIdentity,
+    fileUrl?: { workspaceId: string; origin: string },
+  ) {
     const context = {
       sql: this.ctx.storage.sql,
       store: new MetadataStore(this.ctx.storage.sql),
@@ -364,6 +474,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     return navigationRecordIdentifiers(
       context,
       metadataWritePermissions(context, identity),
+      fileUrl ? { ...fileUrl, secret: this.env.APP_SECRET } : undefined,
     );
   }
 

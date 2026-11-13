@@ -35,6 +35,7 @@ export default defineConfig({
   },
   test: {
     name: 'twenty-worker',
+    deps: { optimizer: { ssr: { enabled: true, include: ['sanitize-html'] } } },
     include: ['test/**/*.spec.ts'],
     provide: {
       metadataWriteContracts: readMetadataWriteFixtures(

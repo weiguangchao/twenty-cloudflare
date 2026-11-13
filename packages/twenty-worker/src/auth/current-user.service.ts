@@ -135,7 +135,7 @@ export const currentUser = async (context: MetadataContext) => {
       isTrialAvailable: false,
       trashRetentionDays: 30,
       eventLogRetentionDays: 30,
-      editableProfileFields: ['name', 'avatarUrl'],
+      editableProfileFields: ['firstName', 'lastName', 'profilePicture'],
       iframeMediaPermissions: [],
     },
   };

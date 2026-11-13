@@ -31,6 +31,10 @@ export const handleRecordRequest = async (request: Request, env: Env) => {
     const result = await context.workspace(workspace.id).executeRecordQuery(
       {
         query: body.query,
+        fileUrl: {
+          workspaceId: workspace.id,
+          origin: new URL(request.url).origin,
+        },
         variables: body.variables as Record<string, unknown> | undefined,
         operationName: body.operationName as string | undefined,
       },
