@@ -31,7 +31,7 @@
 | `FindAllRecordPageLayouts` | 4 | auth-signup-onboarding, data-model, views, files, members-roles |  |
 | `FindAllViews` | 4 | auth-signup-onboarding, data-model, views, files, members-roles |  |
 | `FindFieldsWidgetViews` | 4 | auth-signup-onboarding, data-model, views, files, members-roles |  |
-| `FindManyApplications` | 4 | auth-signup-onboarding, auth-signout-signin, records-list, record-detail, record-lifecycle, notes-tasks, search, data-model, custom-object-records, views, files, members-roles | 新增。每次启动调用，返回标准应用一条记录（见 fixture） |
+| `FindManyApplications` | 4 | auth-signup-onboarding, auth-signout-signin, records-list, record-detail, record-lifecycle, notes-tasks, search, data-model, custom-object-records, views, files, members-roles | 每次启动调用，按种子返回 Standard 和 Custom 两条应用（见 fixture） |
 | `FindManyCommandMenuItems` | 4 | auth-signup-onboarding, data-model |  |
 | `FindManyFrontComponents` | 4 | auth-signup-onboarding, data-model | 返回空列表 |
 | `FindManyLogicFunctions` | 4 | auth-signup-onboarding, data-model | 返回空列表 |

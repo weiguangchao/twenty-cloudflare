@@ -54,4 +54,15 @@ export class CoreStore {
         .all<WorkspaceRow>()
     ).results;
   }
+
+  async membershipsForWorkspace(workspaceId: string) {
+    return (
+      await this.database
+        .prepare(
+          'SELECT * FROM "userWorkspace" WHERE "workspaceId" = ? ORDER BY "createdAt", "id"',
+        )
+        .bind(workspaceId)
+        .all<UserWorkspaceRow>()
+    ).results;
+  }
 }

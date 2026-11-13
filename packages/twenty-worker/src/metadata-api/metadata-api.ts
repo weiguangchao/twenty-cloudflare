@@ -1,6 +1,6 @@
 import { createYoga } from 'graphql-yoga';
 
-import { extractSessionCookie } from '@/auth/session.service';
+import { cookieSessionOriginError } from '@/http/cookie-session-origin-error.util';
 import { buildMetadataSchema } from '@/metadata-api/metadata-schema.util';
 import { createMetadataContext } from '@/metadata-api/create-metadata-context.util';
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
@@ -22,26 +22,8 @@ const createMetadataApi = () =>
 let metadataApi: ReturnType<typeof createMetadataApi> | undefined;
 
 export const handleMetadataRequest = async (request: Request, env: Env) => {
-  const bearer = /^Bearer\s+\S+$/i.test(
-    request.headers.get('authorization') ?? '',
-  );
-  if (
-    !['GET', 'HEAD', 'OPTIONS'].includes(request.method) &&
-    !bearer &&
-    extractSessionCookie(request) &&
-    request.headers.get('origin') !== new URL(request.url).origin
-  ) {
-    return Response.json(
-      {
-        statusCode: 403,
-        messages: [
-          'Request origin is not allowed for cookie-authenticated requests',
-        ],
-        error: 'CSRF_ORIGIN_MISMATCH',
-      },
-      { status: 403 },
-    );
-  }
+  const originError = cookieSessionOriginError(request);
+  if (originError) return originError;
 
   metadataApi ??= createMetadataApi();
   const responseHeaders = new Headers();

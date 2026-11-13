@@ -41,10 +41,21 @@ import {
 import { runWorkspaceMigrations } from '@/workspace/migrations/run-workspace-migrations.util';
 import { WORKSPACE_MIGRATIONS } from '@/workspace/migrations/workspace-migrations.constant';
 import standardMetadata from '@/workspace/seed/standard-metadata.json';
+import { buildPermissionContext } from '@/workspace/permissions/build-permission-context.util';
+import { readMetadataTables } from '@/workspace/metadata/read/read-metadata-tables.util';
+import {
+  type MetadataReadModel,
+  type MetadataReadTables,
+} from '@/workspace/metadata/read/types/metadata-read-model.type';
+import { getWorkspaceApplications } from '@/workspace/metadata/read/workspace-applications.util';
+import { executeShellRecordQuery } from '@/workspace/record-api/execute-shell-record-query.util';
 
 // One instance per workspace, addressed with WORKSPACE.idFromName(workspaceId).
 export class WorkspaceDurableObject extends DurableObject<Env> {
   private metadataSnapshot: MetadataSnapshot | undefined;
+  private metadataReadTables:
+    | { version: string; tables: MetadataReadTables }
+    | undefined;
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -71,6 +82,10 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
 
   getWorkspaceAuthData(
     input: Pick<WorkspaceMemberInput, 'workspaceMemberId' | 'userWorkspaceId'>,
+    memberships: { workspaceMemberId: string; userWorkspaceId: string }[] = [
+      input,
+    ],
+    defaultRoleId?: string | null,
   ) {
     const store = new MetadataStore(this.ctx.storage.sql);
     const roles = store
@@ -80,12 +95,56 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
 
     return {
       member: member ? { ...member, roles } : null,
+      members: this.getWorkspaceMembers(memberships),
+      applications: getWorkspaceApplications(store),
       roles,
+      permissions: buildPermissionContext(store, input.userWorkspaceId),
       featureFlags: store.findMany('featureFlag'),
-      defaultRole: store.findMany('role', {
-        universalIdentifier: standardMetadata.defaultRoleUniversalIdentifier,
-      })[0],
+      defaultRole:
+        (defaultRoleId ? store.findById('role', defaultRoleId) : undefined) ??
+        store.findMany('role', {
+          universalIdentifier: standardMetadata.defaultRoleUniversalIdentifier,
+        })[0],
     };
+  }
+
+  getWorkspaceMembers(
+    memberships: { workspaceMemberId: string; userWorkspaceId: string }[],
+  ) {
+    return memberships
+      .map((membership) => getWorkspaceMember(this.ctx.storage.sql, membership))
+      .filter((member) => member !== null);
+  }
+
+  getMetadataReadModel(userWorkspaceId: string): MetadataReadModel {
+    const collectionHashes = this.getCollectionHashes();
+    const version = collectionHashes.map(({ hash }) => hash).join(':');
+    const store = new MetadataStore(this.ctx.storage.sql);
+    if (this.metadataReadTables?.version !== version) {
+      this.metadataReadTables = { version, tables: readMetadataTables(store) };
+    }
+
+    return {
+      tables: this.metadataReadTables.tables,
+      collectionHashes,
+      permissions: buildPermissionContext(store, userWorkspaceId),
+      applications: getWorkspaceApplications(store),
+    };
+  }
+
+  executeShellRecordQuery(
+    input: {
+      query: string;
+      variables?: Record<string, unknown>;
+      operationName?: string;
+    },
+    memberships: { workspaceMemberId: string; userWorkspaceId: string }[],
+  ) {
+    return this.ctx.storage.transactionSync(() =>
+      executeShellRecordQuery(input, {
+        members: this.getWorkspaceMembers(memberships),
+      }),
+    );
   }
 
   updateWorkspaceMemberProfile(

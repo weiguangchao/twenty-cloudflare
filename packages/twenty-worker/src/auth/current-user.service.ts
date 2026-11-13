@@ -32,12 +32,23 @@ export const currentUser = async (context: MetadataContext) => {
   if (!auth.workspaceId) return base;
 
   const { workspace, membership } = await requireWorkspace(context);
+  const memberships =
+    workspace.activationStatus === 'ACTIVE'
+      ? await context.store.membershipsForWorkspace(workspace.id)
+      : [];
   const data =
     workspace.activationStatus === 'ACTIVE'
-      ? await context.workspace(workspace.id).getWorkspaceAuthData({
-          workspaceMemberId: membership.workspaceMemberId,
-          userWorkspaceId: membership.id,
-        })
+      ? await context.workspace(workspace.id).getWorkspaceAuthData(
+          {
+            workspaceMemberId: membership.workspaceMemberId,
+            userWorkspaceId: membership.id,
+          },
+          memberships.map((member) => ({
+            userWorkspaceId: member.id,
+            workspaceMemberId: member.workspaceMemberId,
+          })),
+          workspace.defaultRoleId,
+        )
       : null;
   const onboardingStatus =
     workspace.activationStatus !== 'ACTIVE'
@@ -57,15 +68,21 @@ export const currentUser = async (context: MetadataContext) => {
       ONBOARDING_BOOK_CALL_PENDING: false,
     },
     workspaceMember: data?.member,
-    workspaceMembers: data?.member ? [data.member] : [],
+    workspaceMembers: data?.members ?? [],
     onboardingStatus,
     previousOnboardingStatus: membership.previousOnboardingStatus,
     isWorkspaceCreator: workspace.creatorUserId === user.id,
     currentUserWorkspace: {
       id: membership.id,
-      permissionFlags: ['PROFILE_INFORMATION'],
+      userId: user.id,
+      locale: user.locale,
+      createdAt: membership.createdAt,
+      updatedAt: user.updatedAt,
+      user: { ...base, firstName: user.firstName, lastName: user.lastName },
+      permissionFlags: data?.permissions.permissionFlags ?? [],
       isImpersonating: false,
-      objectRecordsPermissions: [],
+      objectRecordsPermissions:
+        data?.permissions.objectRecordsPermissions ?? [],
       twoFactorAuthenticationMethodSummary: [],
     },
     currentWorkspace: {
@@ -88,17 +105,10 @@ export const currentUser = async (context: MetadataContext) => {
       hasValidEnterpriseValidityToken: false,
       workspaceUrls: workspaceUrls(workspace),
       workspaceCustomApplication: null,
-      installedApplications: [],
+      installedApplications: data?.applications ?? [],
       featureFlags: data?.featureFlags ?? [],
       defaultRole: data?.defaultRole ?? null,
-      workspaceMembersCount:
-        (
-          await context.env.CORE_DB.prepare(
-            'SELECT COUNT(*) AS "count" FROM "userWorkspace" WHERE "workspaceId" = ?',
-          )
-            .bind(workspace.id)
-            .first<{ count: number }>()
-        )?.count ?? 0,
+      workspaceMembersCount: memberships.length,
       aiChatModelTier: 'balanced',
       aiAgentModelTier: 'balanced',
       aiChatDirectMessageAssistantMode: 'NEVER',

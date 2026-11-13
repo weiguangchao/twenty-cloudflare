@@ -23,7 +23,7 @@
 | 1 | 工程骨架与平台验证 | 0 | 完成 |
 | 2 | Workspace DO：元数据存储与 DDL 引擎 | 1 | 完成 |
 | 3 | 认证、会话与 workspace 生命周期 | 1 | 完成 |
-| 4 | 元数据读取 API 与应用启动 | 2、3 | 未开始 |
+| 4 | 元数据读取 API 与应用启动 | 2、3 | 完成 |
 | 5 | 记录查询引擎（读） | 4 | 未开始 |
 | 6 | 记录写入与副作用 | 5 | 未开始 |
 | 7 | 搜索 | 6 | 未开始 |
@@ -582,9 +582,21 @@ npx nx test twenty-worker
 **验收标准**
 
 - 登录后进入主界面，左侧导航显示人员、公司、商机、任务、备注，没有工作流、AI、仪表盘入口。
-- 设置里的数据模型页列出 10 个标准对象和它们的字段。
+- 元数据 API 返回 10 个标准对象和它们的字段；设置里的数据模型页按现有前端规则显示 5 个非系统业务对象，5 个系统对象保留在 API 中。
 - 浏览器控制台没有 GraphQL 校验错误。
 - 启动阶段的每个操作，响应结构和 fixture 一致（ID 和时间戳除外）。
+
+**实施记录**
+
+- **读取接口**：实现全部阶段 4 元数据操作，以及对象/字段单项读取、视图和页面布局的子集合读取、workspace 设置与角色读取。对象含字段、索引和搜索字段；视图含字段分组、筛选、排序和看板分组；布局含 tab、widget、配置与位置 union。对象支持筛选和游标分页。DO 按全部 collection hash 缓存读取模型，Worker 每个请求只加载一次；权限按当前 membership 单独计算，不缓存进共享数据。
+- **前端关联契约**：物理 morph 子字段不放入 `fieldsList`，主字段的 `morphRelations` 列出保留的目标，反向普通关联指向 morph 主字段。`isUnique` 来自单字段唯一索引，`isSearchable` 来自搜索字段元数据。已用采集的完整 query 验证，布局配置和命令 payload 的 union 都有类型解析。
+- **当前用户和权限**：`PermissionContext` 集中实现临时策略：Admin 具有核心 workspace、成员、角色、数据模型和布局权限，Member 具有核心记录读写、视图、文件和个人资料权限；无角色不授予访问。两类角色均不授予 AI、工作流、应用、邮件日历、计费、SSO、管理后台等权限。当前成员、全部 workspace 成员、默认角色、feature flag 和应用信息来自 DO，身份与 membership 来自 D1。阶段 10 替换对象/字段级真实权限；现阶段只标记标准只读字段为不可编辑。
+- **范围外操作**：logic function、front component、连接账户、消息和日历 channel、AI channel、validation rule 查询返回空列表，`TrackAnalytics` 对未登录访问也返回成功。`FindManyApplications` 返回种子里的 Standard 和 Custom 两条应用；原操作清单写成一条，与 fixture 不符，已更正。种子仍保留若干通过通用 WORKSPACE 权限可见的 AI/计费设置命令，读取层按目标路径过滤它们。
+- **SSE**：复用 Yoga 的 GraphQL-over-SSE，订阅时检查 workspace 和角色，首次立即返回空事件，此后每 30 秒返回空的 records、metadata 和 jobs 列表；取消或断开会清理计时器并结束等待中的读取。`addQueryToEventStream`、`removeQueryFromEventStream` 认证后返回 true，实际事件注册和广播留在阶段 11。
+- **应用启动与成员页的衔接**：浏览器验证发现，成员设置实际从 `/graphql` 查询 workspaceMember 记录，而主记录页也会立即请求记录。因此新增临时只读入口：在 DO 内懒加载阶段 0 的 core SDL，真实读取当前 workspace 的成员（含姓名、邮箱、头像、设置和 actor JSON），支持基本筛选及 first/offset；其余记录返回空连接，mutation 返回 `NOT_IMPLEMENTED`。Worker 先校验 session、workspace、权限和 cookie Origin，再通过 RPC 转交，同步执行过程无 `await`。阶段 5 必须用元数据驱动的动态 schema 与真实记录查询替换 `execute-shell-record-query.util.ts`，包括完整排序、游标和关系展开。
+- **文档修正与边界**：数据模型页调用 `useFilteredObjectMetadataItems`，默认隐藏系统对象，所以界面显示 company、person、opportunity、task、note，API 保留全部 10 个对象；未为了凑界面数量修改 `isSystem`。现有前端的 Communication 入口仍受通用 WORKSPACE 权限控制，个人资料仍显示 2FA/邮件重置入口，这些页面写入不在本阶段实现。前端零改动，阶段 13 清理时处理这些残留入口。
+- **测试**：新增 41 个 workerd 测试，覆盖 25 个采集的阶段 4 操作、默认角色及 settings、morph/索引解析、分页、hash 更新、Member 权限、workspace 隔离、菜单裁剪、SSE 周期/取消和 HTTP 流、成员记录与只读占位入口；原认证测试复用抽出的公共测试工具。直接 `tsgo`、Nx lint 和完整 Worker 测试通过，最终全量测试耗时 26.4 秒，使用 `--skip-nx-cache`；lint/test 沿用阶段 3 的 `--excludeTaskDependencies`，避开本机 shared 依赖任务挂起。
+- **浏览器验收**：使用本地 wrangler 加原前端构建，登录 `stage4-browser@example.com` 后验证五个核心导航、空公司列表、数据模型、公司字段、General、成员及 Roles，全部 API 成功，无 GraphQL 错误和页面异常；共享预览定位不稳定后改用本地 Playwright 完成。验收数据使用独立的 `.wrangler/stage4-acceptance`，未部署远程资源。
 
 ### 阶段 5：记录查询引擎（读）
 
