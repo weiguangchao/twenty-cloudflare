@@ -8,7 +8,6 @@ import { InitializeQueryParamStateEffect } from '@/app/effect-components/Initial
 import { AuthProvider } from '@/auth/components/AuthProvider';
 import { SignOutOnOtherTabSignOutEffect } from '@/auth/effect-components/SignOutOnOtherTabSignOutEffect';
 import { CaptchaProvider } from '@/captcha/components/CaptchaProvider';
-import { RequestFreshCaptchaTokenEffect } from '@/captcha/components/RequestFreshCaptchaTokenEffect';
 import { ErrorMessageEffect } from '@/error-handler/components/ErrorMessageEffect';
 import { PromiseRejectionEffect } from '@/error-handler/components/PromiseRejectionEffect';
 import { UserMetadataProviderInitialEffect } from '@/metadata-store/effect-components/UserMetadataProviderInitialEffect';
@@ -45,7 +44,6 @@ export const RootAppProviders = () => {
                 <Outlet />
                 <InitializeQueryParamStateEffect />
                 <TrackPageViewEffect />
-                <RequestFreshCaptchaTokenEffect />
                 <SignOutOnOtherTabSignOutEffect />
               </StrictMode>
             </DialogManager>

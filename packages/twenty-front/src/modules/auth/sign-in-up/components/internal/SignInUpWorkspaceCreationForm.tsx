@@ -1,6 +1,7 @@
 import { useSignUpInNewWorkspace } from '@/auth/sign-in-up/hooks/useSignUpInNewWorkspace';
 import { useWorkspaceSubdomainField } from '@/auth/sign-in-up/hooks/useWorkspaceSubdomainField';
 import { isCreatingWorkspaceState } from '@/auth/states/isCreatingWorkspaceState';
+import { CaptchaWidgetContainer } from '@/captcha/components/CaptchaWidgetContainer';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
 import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
 import { OnboardingAnimatedReveal } from '@/onboarding/components/OnboardingAnimatedReveal';
@@ -352,6 +353,7 @@ export const SignInUpWorkspaceCreationForm = () => {
           fullWidth
         >{t`Create workspace`}</MainButton>
       </OnboardingStepAnimatedItem>
+      <CaptchaWidgetContainer />
     </StyledContentContainer>
   );
 };
