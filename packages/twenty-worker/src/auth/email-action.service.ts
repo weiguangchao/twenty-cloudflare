@@ -5,6 +5,7 @@ import {
 import { type OAuthBinding } from '@/auth/oauth/oauth-provider.util';
 import { hashToken, randomToken } from '@/auth/token.service';
 import { hashPassword } from '@/auth/password.util';
+import { validateCaptcha } from '@/auth/validate-captcha.util';
 import {
   enqueueEmail,
   requireEmailSending,
@@ -107,10 +108,12 @@ export const sendVerificationEmail = async (
 export const emailPasswordResetLink = async (
   context: MetadataContext,
   email: string,
+  captchaToken?: string | null,
 ) => {
   requireEmailSending(context.env);
   const normalized = normalizeEmail(email);
   await limitAuthentication(context, normalized);
+  await validateCaptcha(context, captchaToken);
   const user = await context.store.userByEmail(normalized);
   if (user && !user.disabled) {
     const origin = new URL(context.request.url).origin;

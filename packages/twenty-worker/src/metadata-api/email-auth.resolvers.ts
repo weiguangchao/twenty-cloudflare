@@ -40,8 +40,11 @@ export const EMAIL_AUTH_QUERY_RESOLVERS: Record<string, Resolver> = {
 };
 
 export const EMAIL_AUTH_MUTATION_RESOLVERS: Record<string, Resolver> = {
-  emailPasswordResetLink: (_source, { email }: { email: string }, context) =>
-    emailPasswordResetLink(context, email),
+  emailPasswordResetLink: (
+    _source,
+    { email, captchaToken }: { email: string; captchaToken?: string | null },
+    context,
+  ) => emailPasswordResetLink(context, email, captchaToken),
   updatePasswordViaResetToken: (
     _source,
     {

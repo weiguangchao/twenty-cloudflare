@@ -1,7 +1,7 @@
 import { env } from 'cloudflare:test';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { validateRegistrationCaptcha } from '@/auth/validate-registration-captcha.util';
+import { validateCaptcha } from '@/auth/validate-captcha.util';
 import { createMetadataContext } from '@/metadata-api/create-metadata-context.util';
 
 const context = (settings: Partial<Env> = {}) =>
@@ -22,14 +22,11 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('registration Turnstile verification', () => {
   it('requires a token and fails closed when configuration is incomplete', async () => {
-    await expect(validateRegistrationCaptcha(context())).rejects.toMatchObject({
+    await expect(validateCaptcha(context())).rejects.toMatchObject({
       extensions: { code: 'FORBIDDEN' },
     });
     await expect(
-      validateRegistrationCaptcha(
-        context({ TURNSTILE_SECRET_KEY: undefined }),
-        'token',
-      ),
+      validateCaptcha(context({ TURNSTILE_SECRET_KEY: undefined }), 'token'),
     ).rejects.toThrow('Captcha verification required');
   });
 
@@ -39,7 +36,7 @@ describe('registration Turnstile verification', () => {
       .mockResolvedValue(
         Response.json({ success: true, hostname: 'crm.example.test' }),
       );
-    await validateRegistrationCaptcha(context(), 'captcha-token');
+    await validateCaptcha(context(), 'captcha-token');
     const [url, options] = fetch.mock.calls[0];
     expect(url).toBe(
       'https://challenges.cloudflare.com/turnstile/v0/siteverify',
@@ -56,9 +53,9 @@ describe('registration Turnstile verification', () => {
     'rejects invalid, expired, reused or foreign-host tokens: %j',
     async (result) => {
       vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json(result));
-      await expect(
-        validateRegistrationCaptcha(context(), 'token'),
-      ).rejects.toThrow('Captcha verification failed');
+      await expect(validateCaptcha(context(), 'token')).rejects.toThrow(
+        'Captcha verification failed',
+      );
     },
   );
 
@@ -66,8 +63,8 @@ describe('registration Turnstile verification', () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(
       new Error('Network failed'),
     );
-    await expect(
-      validateRegistrationCaptcha(context(), 'token'),
-    ).rejects.toThrow('Captcha verification unavailable');
+    await expect(validateCaptcha(context(), 'token')).rejects.toThrow(
+      'Captcha verification unavailable',
+    );
   });
 });
