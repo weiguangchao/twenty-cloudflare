@@ -42,7 +42,7 @@ D1 stores email jobs before Queue dispatch. Queue messages contain the job ID; a
 
 Create a key in **Settings → Developers → API**, select an assignable role, then copy the generated token. `createApiKey` creates the configuration; `generateApiKeyToken` returns a token once and stores its hash. Generating another token rotates the old one. `assignRoleToApiKey`, `updateApiKey` and `revokeApiKey` apply immediately.
 
-Use the token as a Bearer credential for `/graphql` or `/rest`. It is bound to its workspace origin and does not grant access to account or settings mutations on `/metadata`.
+Use the token as a Bearer credential for `/graphql`, `/rest`, or the [MCP server](MCP.md) at `/mcp`. It is bound to its workspace origin and does not grant access to account or settings mutations on `/metadata`.
 
 ```sh
 curl 'https://crm.example.com/rest/companies?limit=20&fields=id,name' \

@@ -32,7 +32,8 @@
 | 10 | 权限与成员管理 | 6、8 | 完成 |
 | 11 | 实时事件 | 6 | 完成 |
 | 12 | 可选集成 | 10 | 完成（外部配置待接入） |
-| 13 | 清理、部署与上线 | 全部 | 未开始 |
+| 13 | 清理、部署与上线 | 全部 | 本地完成，云端验收暂缓 |
+| 14 | 对外 MCP 服务 | 5、6、7、10、12 | 完成（本地验证，未部署） |
 
 可以并行的组合：2 和 3；5、8、9；7、10、11。
 
@@ -63,6 +64,7 @@
 - 文件：头像、workspace logo、附件、文件字段。
 - 时间线活动、回收站自动清理。
 - 实时更新（阶段 11）。
+- 对外 MCP 服务：核心 CRM 工具发现和调用，沿用 API key、会话及对象/字段权限（阶段 14）。
 
 ### 不做
 
@@ -87,6 +89,7 @@ Worker: twenty-worker（一个脚本，同时承载静态资源和 API）
   ├─ /client-config  静态 JSON
   ├─ /metadata       GraphQL（graphql-yoga），认证、用户、元数据、视图、文件、订阅
   ├─ /graphql        认证后整个请求转发给 Workspace DO
+  ├─ /mcp            MCP Streamable HTTP，工具发现与调用转发到 Workspace DO
   ├─ /file /file-upload   R2 读写
   │
   ├─ D1: core        user、workspace、userWorkspace、userSession、appToken
@@ -232,6 +235,7 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 |---|---|
 | `POST /metadata` | 默认 Apollo client。认证、当前用户、元数据、视图、文件 mutation、订阅 |
 | `POST /graphql` | 记录的增删改查和 `search` |
+| `POST /mcp` | MCP 初始化、工具发现和调用；支持 `mode=meta` |
 | `GET /client-config?v=v1` | 启动配置。HTML 里有 `<script id="twenty-client-config">` 时前端跳过这次请求 |
 | `PUT /file-upload/:id?token=` | 上传文件体，成功返回 204 |
 | `GET /file/:fileFolder/:id?token=` | 下载文件，支持 Range |
@@ -952,6 +956,19 @@ npx nx test twenty-worker
 - 新增 dev/production 资源配置、亚太区位置提示、资源创建/部署脚本、稳定 secrets 管理、生产注册 Turnstile、结构化日志、每日 DO 容量日志及阈值事件、维护模式和受独立 token 保护的恢复操作入口。根架构文档、开发命令与 CI 已适配 Worker。
 - **云端验收暂缓**：只读账号预检发现 R2 未启用（错误 10042），需求方随后明确决定暂缓远程部署。未创建或修改远程 D1、R2、Queue、Worker 或 Turnstile 资源。生产从零部署、CI 实际运行、云端恢复演练及外部告警通知目的地仍待验收，不能将本阶段视为生产上线完成。恢复手册和演练脚本已备齐；D1 免费计划 Time Travel 为 7 天，付费计划为 30 天，DO 为 30 天。
 - 完整本地验证结果和后续验收条件记录在 `packages/twenty-worker/STAGE13_VALIDATION.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
+
+### 阶段 14：对外 MCP 服务
+
+**目标**：将原版 `f7fed3afdc7` 中的对外 MCP 服务迁入 Worker，供外部 AI 客户端操作核心 CRM，复用既有认证、权限、记录事务和副作用。
+
+**实施记录（2026-11-16）**
+
+- **协议与路由**：新增 `/mcp` 的无状态 Streamable HTTP 入口。支持初始化、ping、工具发现/调用及空的资源/模板/提示列表；POST 可返回 JSON 或有限 SSE 响应，通知返回 202 且不执行工具。协商 `2025-11-25`、原版 `2025-06-18` 和兼容版本 `2025-03-26`；校验 JSON-RPC、协议头、Content-Type、Accept、Origin，并限制请求体为 2,000,000 字节。GET/DELETE 返回 405，不保留 MCP 会话状态。
+- **认证与隔离**：沿用 API key 和已激活 workspace 会话，先在 Worker 检查身份及 workspace origin，再在 DO 校验实际 key hash、有效期、撤销状态及当前角色。初始化、发现和通知同样校验，不把 key 的外层格式检查视为认证完成。Cookie 请求继续使用原有标记和 CSRF 检查，不新增账户或设置写权限。
+- **核心工具**：从当前元数据和权限生成标准/自定义对象的查询、创建、更新、upsert、软删除、恢复、永久删除、合并、聚合和分组工具，并提供跨对象搜索及只读对象/字段元数据发现。沿用原版 snake_case 工具命名和查询的顶层字段筛选；保留默认直接模式与 `mode=meta` 的 `get_tool_catalog`、`learn_tools`、`execute_tool`。输入 schema 和嵌套定义按字段、对象及写入权限裁剪，实际执行仍通过记录引擎检查。
+- **事务与运行时**：复用同步 GraphQL 记录执行和事务回滚，不在事务内引入外部 IO。文件签名、时间线、实时事件及 webhook 沿用既有路径；写入 actor 标记为 AGENT 并保留 key/成员名称。复用 DO 的 schema 缓存，新增 shared/workflow 源码 alias 以使用既有对象自动化守卫。
+- **兼容边界**：不恢复范围外工作流、AI/skills、应用/函数、外部 MCP 连接器及账户/设置工具；MCP 的 metadata 工具只读。分组/聚合输入按 Worker GraphQL 契约生成，客户端应重新发现 schema。使用现有 Bearer 凭据，不提供 MCP OAuth 授权服务器、动态客户端注册、旧版 GET/SSE、进度通知、断线重放或后台任务。批量上限沿用 Worker 的 200 条。无需新增依赖、存储迁移或前端改动；未部署远程资源。
+- **使用与验证**：连接配置、curl 示例、工具参数和协议边界见 `packages/twenty-worker/MCP.md`。Node 26 下跳过 Nx 缓存重建 shared，直接 Worker tsgo、全包 lint/格式检查通过；完整 workerd 回归 51 个文件、877 项测试通过，最后补充数组参数校验后重跑 MCP 的 16 项集成测试全部通过。覆盖握手、直接/meta 模式、标准及自定义对象、关联与合并、权限及隐藏字段、密钥轮换/撤销/过期、会话/CSRF、元数据变化、事务回滚和固定/流式请求体大小限制。Wrangler 默认及 production dry-run 通过，最终 production 包 gzip 1,477.11 KiB；未部署或修改远程资源。
 
 ## 9. 风险、未决事项与记录
 

@@ -1,4 +1,6 @@
 import { isPlainObject } from 'twenty-shared/utils';
+import { executeMcpRequest } from '@/mcp/execute-mcp-request.util';
+import { type McpRequest } from '@/mcp/types/mcp.type';
 import { logEvent, logOperationName } from '@/observability/log-event.util';
 import { enqueueOutbox } from '@/workspace/events/enqueue-outbox.util';
 import {
@@ -395,7 +397,9 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
   private async dispatchWebhookJobs() {
     const sql = this.ctx.storage.sql;
     for (const pending of sql
-      .exec<{ id: string }>(
+      .exec<{
+        id: string;
+      }>(
         'SELECT "id" FROM "sys_webhookDelivery" WHERE "status" != \'done\' AND "attempts" < 10 AND "availableAt" <= ? AND "queuedUntil" <= ? AND ("leaseUntil" IS NULL OR "leaseUntil" <= ?) AND "createdAt" > ? LIMIT 100',
         Date.now(),
         Date.now(),
@@ -523,6 +527,41 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
     }
   }
 
+  executeMcpRequest(
+    inputJson: string,
+    identity: RecordQueryIdentity,
+    fileUrl: { workspaceId: string; origin: string },
+    metaMode: boolean,
+    requestId?: string,
+  ) {
+    try {
+      const { permissions } = this.recordPrincipal(identity);
+      const snapshot = this.getMetadataSnapshot();
+      if (this.recordModel?.catalog.version !== snapshot.version) {
+        const catalog = createRecordCatalog(snapshot);
+        const schema = buildRecordSchema(catalog);
+        attachRecordResolvers(schema);
+        this.recordModel = { catalog, schema };
+      }
+      return JSON.stringify({
+        value: executeMcpRequest(
+          JSON.parse(inputJson) as McpRequest,
+          { sql: this.ctx.storage.sql, ...this.recordModel, permissions },
+          (input) =>
+            this.executeRecordQuery(
+              { ...input, fileUrl, actorSource: 'AGENT', requestId },
+              identity,
+            ),
+          metaMode,
+        ),
+      });
+    } catch (error) {
+      if (error instanceof GraphQLError)
+        return JSON.stringify({ errors: [error] });
+      throw error;
+    }
+  }
+
   executeRestRequest(inputJson: string, identity: RecordQueryIdentity) {
     try {
       const input = JSON.parse(inputJson) as RestRequest;
@@ -601,7 +640,7 @@ export class WorkspaceDurableObject extends DurableObject<Env> {
             : undefined,
           mutation: {
             identity,
-            actor,
+            actor: { ...actor, source: input.actorSource ?? actor.source },
             affectedRecords: 0,
             changed: false,
           },

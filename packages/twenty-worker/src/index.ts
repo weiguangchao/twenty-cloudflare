@@ -4,6 +4,7 @@ import { handleOperationsRequest } from '@/operations/handle-operations-request.
 import { handleOAuthRequest } from '@/auth/oauth/oauth-login.service';
 import { deliverWebhook } from '@/integrations/deliver-webhook.service';
 import { handleRestRequest } from '@/http/handle-rest-request.util';
+import { handleMcpRequest } from '@/mcp/handle-mcp-request.util';
 import {
   deliverEmail,
   dispatchPendingEmails,
@@ -58,6 +59,8 @@ app.get('/auth/:provider/redirect', (context) =>
 app.all('/rest/*', (context) =>
   handleRestRequest(context.req.raw, context.env),
 );
+
+app.all('/mcp', (context) => handleMcpRequest(context.req.raw, context.env));
 
 app.post('/graphql', (context) =>
   handleRecordRequest(context.req.raw, context.env),

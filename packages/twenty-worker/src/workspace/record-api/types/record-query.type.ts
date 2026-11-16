@@ -6,6 +6,7 @@ import { type ObjectMetadataSnapshot } from '@/workspace/metadata/snapshot/build
 import { type PermissionContext } from '@/workspace/permissions/types/permission-context.type';
 
 export type RecordQueryInput = {
+  actorSource?: 'AGENT';
   requestId?: string;
   fileUrl?: Omit<FileUrlContext, 'secret'>;
   query: string;
