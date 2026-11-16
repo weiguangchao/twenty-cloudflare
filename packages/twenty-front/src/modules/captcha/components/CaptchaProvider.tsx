@@ -1,7 +1,5 @@
-import { styled } from '@linaria/react';
 import React, { useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { themeCssVariables } from 'twenty-ui/theme';
 
 import { CaptchaProviderScriptLoaderEffect } from '@/captcha/components/CaptchaProviderScriptLoaderEffect';
 import { RequestFreshCaptchaTokenEffect } from '@/captcha/components/RequestFreshCaptchaTokenEffect';
@@ -11,13 +9,6 @@ import { captchaState } from '@/client-config/states/captchaState';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useLocation } from 'react-router-dom';
 import { CaptchaDriverType } from '~/generated-metadata/graphql';
-
-const StyledFloatingWidget = styled.div`
-  bottom: ${themeCssVariables.spacing[4]};
-  position: fixed;
-  right: ${themeCssVariables.spacing[4]};
-  z-index: 1;
-`;
 
 export const CaptchaProvider = React.memo(
   ({ children }: React.PropsWithChildren) => {
@@ -29,6 +20,10 @@ export const CaptchaProvider = React.memo(
       () => isCaptchaRequiredForPath(location.pathname),
       [location.pathname],
     );
+    const isCaptchaActive =
+      isCaptchaRequired &&
+      (captcha?.provider === CaptchaDriverType.GOOGLE_RECAPTCHA ||
+        container !== null);
 
     const widget = (
       <>
@@ -41,14 +36,10 @@ export const CaptchaProvider = React.memo(
 
     return (
       <CaptchaWidgetContainerContext.Provider value={setContainer}>
-        {isCaptchaRequired && <CaptchaProviderScriptLoaderEffect />}
+        {isCaptchaActive && <CaptchaProviderScriptLoaderEffect />}
         {children}
-        {isCaptchaRequired &&
-          (container ? (
-            createPortal(widget, container)
-          ) : (
-            <StyledFloatingWidget>{widget}</StyledFloatingWidget>
-          ))}
+        {isCaptchaActive &&
+          (container ? createPortal(widget, container) : widget)}
       </CaptchaWidgetContainerContext.Provider>
     );
   },

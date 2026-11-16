@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { CaptchaProvider } from '@/captcha/components/CaptchaProvider';
 import { CaptchaWidgetContainer } from '@/captcha/components/CaptchaWidgetContainer';
 import { captchaTokenState } from '@/captcha/states/captchaTokenState';
+import { captchaWidgetIdState } from '@/captcha/states/captchaWidgetIdState';
 import { isCaptchaScriptLoadedState } from '@/captcha/states/isCaptchaScriptLoadedState';
 import { captchaState } from '@/client-config/states/captchaState';
 import { CaptchaDriverType } from '~/generated-metadata/graphql';
@@ -39,9 +40,11 @@ const AuthenticationForms = () => {
 const renderAuthentication = ({
   pathname = '/welcome',
   provider = CaptchaDriverType.TURNSTILE,
+  hasContainer = true,
 }: {
   pathname?: string;
   provider?: CaptchaDriverType;
+  hasContainer?: boolean;
 } = {}) => {
   window.history.replaceState(null, '', pathname);
   const store = createStore();
@@ -52,7 +55,7 @@ const renderAuthentication = ({
     <JotaiProvider store={store}>
       <MemoryRouter initialEntries={[pathname]}>
         <CaptchaProvider>
-          <AuthenticationForms />
+          {hasContainer && <AuthenticationForms />}
         </CaptchaProvider>
       </MemoryRouter>
     </JotaiProvider>,
@@ -100,6 +103,28 @@ describe('CaptchaProvider', () => {
       screen.queryByTitle('Cloudflare verification'),
     ).not.toBeInTheDocument();
     expect(window.turnstile.execute).not.toHaveBeenCalled();
+  });
+
+  it('does not run or float a challenge when no form requests one', () => {
+    renderAuthentication({
+      pathname: '/settings/profile',
+      hasContainer: false,
+    });
+
+    expect(
+      screen.queryByTitle('Cloudflare verification'),
+    ).not.toBeInTheDocument();
+    expect(window.turnstile.execute).not.toHaveBeenCalled();
+  });
+
+  it('removes the challenge and its token when the form unmounts', () => {
+    const store = renderAuthentication();
+    store.set(captchaTokenState.atom, 'previous-token');
+    cleanup();
+
+    expect(window.turnstile.remove).toHaveBeenCalledWith('test-widget');
+    expect(store.get(captchaTokenState.atom)).toBeUndefined();
+    expect(store.get(captchaWidgetIdState.atom)).toBeUndefined();
   });
 
   it('continues requesting Google reCAPTCHA tokens without a Turnstile challenge', async () => {

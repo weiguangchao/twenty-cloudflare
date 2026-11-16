@@ -3,7 +3,7 @@ import { isPlainObject } from 'twenty-shared/utils';
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
 import { apiError } from '@/shared/errors/api-error.util';
 
-export const validateRegistrationCaptcha = async (
+export const validateCaptcha = async (
   context: MetadataContext,
   token?: string | null,
 ) => {

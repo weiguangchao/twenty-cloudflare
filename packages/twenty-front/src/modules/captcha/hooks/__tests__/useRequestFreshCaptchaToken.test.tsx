@@ -23,6 +23,9 @@ describe('useRequestFreshCaptchaToken', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    window.history.replaceState(null, '', '/welcome');
+    document.body.innerHTML = '<div id="captcha-widget"></div>';
+    jotaiStore.set(captchaState.atom, null);
     jotaiStore.set(captchaWidgetIdState.atom, undefined);
 
     window.grecaptcha = {
@@ -127,8 +130,27 @@ describe('useRequestFreshCaptchaToken', () => {
       expect.objectContaining({
         sitekey: 'turnstile-site-key',
         execution: 'execute',
+        appearance: 'always',
       }),
     );
     expect(mockTurnstileExecute).toHaveBeenCalledWith('turnstile-widget-id');
+  });
+
+  it('only displays the profile challenge when interaction is required', async () => {
+    window.history.replaceState(null, '', '/settings/profile');
+    jotaiStore.set(captchaState.atom, {
+      provider: CaptchaDriverType.TURNSTILE,
+      siteKey: 'turnstile-site-key',
+    } as Captcha);
+    const { result } = renderHook(() => useRequestFreshCaptchaToken(), {
+      wrapper: createWrapper,
+    });
+
+    await act(() => result.current.requestFreshCaptchaToken());
+
+    expect(mockTurnstileRender).toHaveBeenCalledWith(
+      '#captcha-widget',
+      expect.objectContaining({ appearance: 'interaction-only' }),
+    );
   });
 });

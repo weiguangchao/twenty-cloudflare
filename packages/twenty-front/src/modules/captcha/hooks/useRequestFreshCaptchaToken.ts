@@ -5,9 +5,11 @@ import { isCaptchaRequiredForPath } from '@/captcha/utils/isCaptchaRequiredForPa
 import { captchaState } from '@/client-config/states/captchaState';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
 import { useCallback } from 'react';
-import { assertIsDefinedOrThrow, isDefined } from 'twenty-shared/utils';
+import { SettingsPath } from 'twenty-shared/types';
+import { getSettingsPath, isDefined } from 'twenty-shared/utils';
 import { CaptchaDriverType } from '~/generated-metadata/graphql';
 import { useStore } from 'jotai';
+import { isMatchingPathname } from '~/utils/isMatchingPathname';
 
 export const useRequestFreshCaptchaToken = () => {
   const store = useStore();
@@ -27,7 +29,13 @@ export const useRequestFreshCaptchaToken = () => {
       return;
     }
 
-    assertIsDefinedOrThrow(captcha);
+    if (
+      captcha.provider === CaptchaDriverType.TURNSTILE &&
+      (!isDefined(window.turnstile) ||
+        !isDefined(document.getElementById('captcha-widget')))
+    ) {
+      return;
+    }
 
     setIsRequestingCaptchaToken(true);
 
@@ -51,6 +59,12 @@ export const useRequestFreshCaptchaToken = () => {
         const widgetId: string = window.turnstile.render('#captcha-widget', {
           sitekey: captcha.siteKey,
           execution: 'execute',
+          appearance: isMatchingPathname(
+            window.location.pathname,
+            getSettingsPath(SettingsPath.ProfilePage),
+          )
+            ? 'interaction-only'
+            : 'always',
           callback: (token: string) => {
             setCaptchaToken(token);
             setIsRequestingCaptchaToken(false);
