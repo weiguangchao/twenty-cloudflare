@@ -31,7 +31,28 @@ Client configuration formats vary; select **Streamable HTTP** and supply the URL
 
 Use the key on the same origin as the workspace. Every request validates the key's hash, expiry, revocation and current role inside the workspace, including initialization, discovery and notifications. Tool schemas omit unreadable fields and uneditable write fields. Record operations use the same permissions, transactions, file signing, timeline, realtime events and webhook outbox as GraphQL. Writes use the `AGENT` actor source and the key's name.
 
-Existing authenticated workspace sessions also work, with the same session-cookie marker and CSRF checks as the frontend. Requests with an Origin header must match the endpoint origin. This endpoint accepts existing credentials; it does not provide an OAuth authorization server, dynamic client registration or an interactive OAuth login flow for MCP clients.
+Existing authenticated workspace sessions also work, with the same session-cookie marker and CSRF checks as the frontend. Requests with an Origin header must match the endpoint origin. Use `/mcp/v1` below for interactive user authorization.
+
+## User-authorized connections
+
+Add `https://crm.example.com/mcp/v1` (or `/mcp/v1?mode=meta`) as a remote Streamable HTTP server in an OAuth-capable MCP client. The client discovers authorization automatically, opens the CRM login/consent page, and exchanges an authorization code using PKCE S256. No API key is required. The tool schemas, arguments and results match `/mcp`.
+
+Each consent grants the `crm` scope for one user, client and workspace. It permits the existing CRM tools within that user's **current** object and field permissions, including permanent deletion and merge where permitted. Row-level permissions are not implemented. Writes retain the user's member identity and use the `AGENT` source. User disablement, workspace suspension, membership removal and role changes affect subsequent requests.
+
+The connection remains active after browser logout. Revoke it in **Settings → Profile → MCP connections**, or use the OAuth revocation endpoint. Access tokens expire after 30 minutes; refresh tokens rotate on every exchange and expire after 30 days without renewal. Reusing an exchanged refresh token revokes its entire grant. MCP tokens are opaque, stored only as hashes, and cannot authenticate ordinary CRM APIs or `/mcp`.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /.well-known/oauth-protected-resource/mcp/v1` | Resource metadata; also available at the root well-known path |
+| `GET /.well-known/oauth-authorization-server` | Authorization-server metadata |
+| `POST /oauth/register` | RFC 7591 dynamic registration for public clients (`token_endpoint_auth_method: none`) |
+| `GET /oauth/authorize` | Authorization-code flow; requires `resource`, `redirect_uri` and PKCE S256 |
+| `POST /oauth/token` | Form-encoded authorization-code or refresh-token exchange |
+| `POST /oauth/revoke` | Form-encoded `token` and `client_id`; revokes the connection |
+
+HTTPS Client ID Metadata Documents are also supported. Their `client_id` must exactly match the document URL, and redirects must match the document's registered values. Redirects require HTTPS or loopback HTTP. Authorization and token requests use `resource=https://crm.example.com/mcp/v1`, including when the MCP URL has `?mode=meta`. Token requests include `client_id`; code exchanges also include the original `redirect_uri` and `code_verifier`.
+
+For browser clients, CORS preflight is supported. Authenticated MCP requests carrying an Origin must match the CRM origin, a registered redirect origin, or the HTTPS client metadata origin. Browser consent and connection-management mutations require the signed-in workspace session and same-origin CSRF checks.
 
 ## Protocol
 

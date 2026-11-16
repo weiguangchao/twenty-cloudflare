@@ -12,6 +12,7 @@ import {
 import { type MetadataContext } from '@/metadata-api/types/metadata-context.type';
 import { apiError } from '@/shared/errors/api-error.util';
 import { type UserRow } from '@/core-db/types/core-rows.type';
+import { isSafeInternalPath } from 'twenty-shared/utils';
 
 type EmailAction = { userId: string; type: string; payload: string };
 
@@ -86,8 +87,10 @@ export const sendVerificationEmail = async (
   const url = new URL('/verify-email', origin);
   url.searchParams.set('email', email);
   url.searchParams.set('emailVerificationToken', token);
-  if (nextPath?.startsWith('/') && !nextPath.startsWith('//'))
+  if (nextPath?.startsWith('/') && isSafeInternalPath(nextPath)) {
     url.searchParams.set('nextPath', nextPath);
+    url.searchParams.set('returnToPath', nextPath);
+  }
   await enqueueEmail(
     context.env,
     {

@@ -1,6 +1,6 @@
 # Twenty Cloudflare MCP 完整接口参考
 
-更新日期：2026-11-16。实现基线：`5da5cb82afc`。本文件依据 Worker 源码和本地运行服务的实际工具清单编写。
+更新日期：2026-11-16。工具接口基线：`5da5cb82afc`；用户授权入口为 `/mcp/v1`。本文件依据 Worker 源码和本地运行服务的实际工具清单编写。
 
 本文包含 HTTP 入口、全部 JSON-RPC 方法、6 个通用工具、16 类对象工具的参数与响应，以及标准对象和当前验收工作区的完整工具名称目录。动态字段以调用者当次获取的 `inputSchema` 为准。
 
@@ -36,7 +36,13 @@ API key 与 workspace origin 绑定，例如为 `http://localhost:3000` 创建�
 
 也支持现有 workspace 登录会话。Cookie 请求需要 `Cookie`、`x-twenty-session-cookie: 1` 和匹配的 `Origin`；Cookie 名称沿用应用的 `twenty-session` / `__Host-twenty-session` 规则。外部客户端通常直接使用 API key。
 
-当前不提供 MCP OAuth 授权服务器、动态客户端注册或 MCP 专用交互登录流程。
+`/mcp` 保留上述凭证方式。面向用户的 OAuth 入口为 `/mcp/v1`，支持 `/mcp/v1?mode=meta`，工具参数和返回值与本文一致。
+
+用户在客户端添加该地址后，通过标准授权发现、CRM 登录和授权确认，获得绑定本人、客户端和工作区的 MCP 专用 token。授权范围为 `crm`，使用用户当前对象与字段权限，包含其有权限执行的永久删除及合并。当前没有行级权限。
+
+授权独立于网页会话；可在 Settings → Profile → MCP connections 撤销。Access token 有效期 30 分钟，refresh token 每次使用后轮换，30 天未续期失效；复用旧 refresh token 会撤销整个连接。MCP 专用 token 不能用于普通 CRM API 或旧 `/mcp`。
+
+授权发现、动态客户端注册、Client ID Metadata Documents 和标准端点参数见 [用户授权说明](MCP.md#user-authorized-connections)。
 
 ### 1.3 客户端配置示例
 

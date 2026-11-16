@@ -5,6 +5,8 @@ import { handleOAuthRequest } from '@/auth/oauth/oauth-login.service';
 import { deliverWebhook } from '@/integrations/deliver-webhook.service';
 import { handleRestRequest } from '@/http/handle-rest-request.util';
 import { handleMcpRequest } from '@/mcp/handle-mcp-request.util';
+import { handleMcpUserRequest } from '@/mcp/handle-mcp-user-request.util';
+import { handleMcpOAuthRequest } from '@/mcp/oauth/handle-mcp-oauth-request.util';
 import {
   deliverEmail,
   dispatchPendingEmails,
@@ -61,6 +63,15 @@ app.all('/rest/*', (context) =>
 );
 
 app.all('/mcp', (context) => handleMcpRequest(context.req.raw, context.env));
+app.all('/mcp/v1', (context) =>
+  handleMcpUserRequest(context.req.raw, context.env),
+);
+app.all('/oauth/*', (context) =>
+  handleMcpOAuthRequest(context.req.raw, context.env),
+);
+app.all('/.well-known/*', (context) =>
+  handleMcpOAuthRequest(context.req.raw, context.env),
+);
 
 app.post('/graphql', (context) =>
   handleRecordRequest(context.req.raw, context.env),

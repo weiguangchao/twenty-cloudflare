@@ -4,7 +4,7 @@ This fork runs the Twenty CRM on Cloudflare Workers. The React frontend and Grap
 
 Core CRM includes people, companies, opportunities, tasks, notes, custom objects and fields, table and Kanban views, record layouts, search, CSV import/export, files, roles and permissions, invitations and realtime updates. Optional email delivery, REST/API keys, webhooks and Google/Microsoft login are implemented; provider setup is described in [INTEGRATIONS.md](packages/twenty-worker/INTEGRATIONS.md).
 
-The [MCP server](packages/twenty-worker/MCP.md) exposes permission-aware CRM tools at `/mcp`, using existing API keys and stateless Streamable HTTP. `/mcp?mode=meta` provides compact tool discovery for AI clients.
+The [MCP server](packages/twenty-worker/MCP.md) exposes permission-aware CRM tools over stateless Streamable HTTP. `/mcp/v1` supports user OAuth authorization, token renewal and revocation; `/mcp` accepts existing API keys and sessions. Add `?mode=meta` for compact tool discovery.
 
 The application platform, SDK/CLI, workflow/AI, billing, email/calendar synchronization and old container backend have been removed from this fork. The independent documentation and marketing website remain as upstream reference material.
 

@@ -1,4 +1,5 @@
 import oauthMigration from '../../migrations/0004-oauth-login.sql?raw';
+import mcpOauthMigration from '../../migrations/0005-mcp-oauth.sql?raw';
 import emailMigration from '../../migrations/0003-transactional-email.sql?raw';
 import { applyD1Migrations, env, SELF } from 'cloudflare:test';
 import { expect } from 'vitest';
@@ -169,12 +170,23 @@ export const setupCoreTestDatabase = async () => {
         .map((query) => query.trim())
         .filter(Boolean),
     },
+    {
+      name: '0005-mcp-oauth.sql',
+      queries: mcpOauthMigration
+        .split(';')
+        .map((query) => query.trim())
+        .filter(Boolean),
+    },
   ]);
 };
 
 export const clearCoreTestDatabase = async () => {
   await env.CORE_DB.batch(
     [
+      'mcpOAuthToken',
+      'mcpOAuthRequest',
+      'mcpOAuthGrant',
+      'mcpOAuthClient',
       'oauthState',
       'oauthIdentity',
       'emailDelivery',

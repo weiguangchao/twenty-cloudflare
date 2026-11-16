@@ -11,7 +11,14 @@ import { type McpRequest, type McpResponse } from '@/mcp/types/mcp.type';
 import { getWorkspaceStub } from '@/workspace/get-workspace-stub.util';
 import { logEvent } from '@/observability/log-event.util';
 
-export const handleMcpRequest = async (request: Request, env: Env) => {
+export const handleMcpRequest = async (
+  request: Request,
+  env: Env,
+  options: {
+    authenticate: typeof authenticateRecordRequest;
+    validateSameOrigin: boolean;
+  } = { authenticate: authenticateRecordRequest, validateSameOrigin: true },
+) => {
   const headers = new Headers({
     'cache-control': 'no-store',
     'x-content-type-options': 'nosniff',
@@ -27,15 +34,16 @@ export const handleMcpRequest = async (request: Request, env: Env) => {
       { status, headers },
     );
   const origin = new URL(request.url).origin;
-  if (request.headers.has('origin') && request.headers.get('origin') !== origin)
+  if (
+    options.validateSameOrigin &&
+    request.headers.has('origin') &&
+    request.headers.get('origin') !== origin
+  )
     return failure(403, -32000, 'Request origin is not allowed');
   const originError = cookieSessionOriginError(request);
   if (originError) return originError;
   try {
-    const { workspaceId, identity } = await authenticateRecordRequest(
-      request,
-      env,
-    );
+    const { workspaceId, identity } = await options.authenticate(request, env);
     const workspace = getWorkspaceStub(env, workspaceId);
     const invoke = async (message: McpRequest) => {
       const result = JSON.parse(

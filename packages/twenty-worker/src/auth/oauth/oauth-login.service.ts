@@ -1,7 +1,7 @@
 import { setupI18n } from '@lingui/core';
 import { parse, serialize } from 'hono/utils/cookie';
 import { GraphQLError } from 'graphql';
-import { isPlainObject } from 'twenty-shared/utils';
+import { isPlainObject, isSafeInternalPath } from 'twenty-shared/utils';
 
 import { hashToken, randomToken } from '@/auth/token.service';
 import { authenticateRequest, createSession } from '@/auth/session.service';
@@ -34,6 +34,7 @@ type OAuthState = {
   invitationToken: string | null;
   inviteHash: string | null;
   linkUserId: string | null;
+  returnToPath: string | null;
 };
 const cookieName = (url: URL) =>
   url.protocol === 'https:' ? '__Host-twenty-oauth' : 'twenty-oauth';
@@ -103,10 +104,11 @@ const startOAuth = async (
   ).catch(() => null);
   const invitationToken = url.searchParams.get('inviteToken');
   const inviteHash = url.searchParams.get('workspaceInviteHash');
+  const returnToPath = url.searchParams.get('returnToPath');
   if ((invitationToken?.length ?? 0) > 256 || (inviteHash?.length ?? 0) > 256)
     throw apiError('Invalid invitation');
   await context.env.CORE_DB.prepare(
-    'INSERT INTO "oauthState" ("stateHash", "provider", "nonce", "verifier", "origin", "invitationToken", "inviteHash", "linkUserId", "expiresAt") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO "oauthState" ("stateHash", "provider", "nonce", "verifier", "origin", "invitationToken", "inviteHash", "linkUserId", "expiresAt", "returnToPath") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
   )
     .bind(
       await hashToken(state),
@@ -118,6 +120,11 @@ const startOAuth = async (
       inviteHash,
       current?.userId ?? null,
       new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      returnToPath &&
+        returnToPath.length <= 4096 &&
+        isSafeInternalPath(returnToPath)
+        ? returnToPath
+        : null,
     )
     .run();
   context.responseHeaders.append(
@@ -284,7 +291,13 @@ const finishOAuth = async (
     if (user.disabled) throw apiError('Account is disabled', 'FORBIDDEN');
     if (!provenEmail) {
       await joinOAuthWorkspace(context, user, saved, invitation);
-      await sendVerificationEmail(context, user, undefined, undefined, binding);
+      await sendVerificationEmail(
+        context,
+        user,
+        saved.returnToPath,
+        undefined,
+        binding,
+      );
       const i18n = setupI18n({ locale: 'en', messages: { en: {} } });
       const title = i18n._('Check your email');
       const instructions = i18n._(
@@ -323,6 +336,8 @@ const finishOAuth = async (
     );
     const redirect = new URL('/verify', url.origin);
     redirect.searchParams.set('loginToken', login.token);
+    if (saved.returnToPath)
+      redirect.searchParams.set('returnToPath', saved.returnToPath);
     return new Response(null, {
       status: 302,
       headers: { location: redirect.href },
