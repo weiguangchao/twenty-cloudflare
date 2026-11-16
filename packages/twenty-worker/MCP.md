@@ -1,5 +1,7 @@
 # MCP server
 
+完整中文接口、参数、错误码及工具名称目录见 [MCP 接口参考](MCP_API_REFERENCE.md)。
+
 The Worker exposes the core CRM through `/mcp`, using stateless Streamable HTTP. It runs in the existing Worker and workspace Durable Object; no additional service, database migration or secret is required.
 
 ## Connect
