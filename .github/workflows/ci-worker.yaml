@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       NX_DAEMON: 'false'
@@ -38,6 +38,7 @@ jobs:
       - uses: ./.github/actions/yarn-install
       - name: Build runtime dependencies and frontend
         run: |
+          npx nx build twenty-oxlint-rules
           npx nx build twenty-shared --skip-nx-cache
           npx nx build twenty-emails
           npx nx build twenty-front

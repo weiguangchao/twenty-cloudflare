@@ -166,6 +166,12 @@ export const cleanupExpiredCredentials = async (database: D1Database) => {
   const now = new Date().toISOString();
   await database.batch([
     database
+      .prepare('DELETE FROM "mcpOAuthRequest" WHERE "expiresAt" <= ?')
+      .bind(now),
+    database
+      .prepare('DELETE FROM "mcpOAuthToken" WHERE "expiresAt" <= ?')
+      .bind(now),
+    database
       .prepare('DELETE FROM "oauthState" WHERE "expiresAt" <= ?')
       .bind(now),
     database.prepare('DELETE FROM "appToken" WHERE "expiresAt" <= ?').bind(now),

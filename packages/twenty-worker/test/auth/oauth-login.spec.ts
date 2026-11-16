@@ -3,6 +3,7 @@ import { exportJWK, generateKeyPair, SignJWT } from 'jose';
 import { afterEach, beforeAll, beforeEach, expect, it, vi } from 'vitest';
 
 import { handleOAuthRequest } from '@/auth/oauth/oauth-login.service';
+import { hashToken, randomToken } from '@/auth/token.service';
 import { buildClientConfig } from '@/http/build-client-config.util';
 import { verifyEmailAction } from '@/auth/email-action.service';
 import { createMetadataContext } from '@/metadata-api/create-metadata-context.util';
@@ -17,7 +18,7 @@ import {
   user,
 } from '../utils/auth-test.util';
 
-const connection = client();
+let connection = client();
 const configuration: Env = {
   ...env,
   GOOGLE_CLIENT_ID: 'google-test-client',
@@ -43,6 +44,7 @@ beforeAll(async () => {
   };
 });
 beforeEach(async () => {
+  connection = client();
   await clearCoreTestDatabase();
   account = await prepareWorkspace(connection);
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (input, options) => {
@@ -155,6 +157,27 @@ it('validates Google OIDC and returns a single-use workspace login token', async
   expect((await finish(flow)).status).toBe(400);
 });
 
+it.each([
+  '/authorize?request=authorization-request',
+  '//attacker.example/callback',
+])(
+  'preserves only safe authorization return paths: %s',
+  async (returnToPath) => {
+    const flow = await begin(
+      'google',
+      false,
+      `?returnToPath=${encodeURIComponent(returnToPath)}`,
+    );
+    await issueToken(flow);
+    const response = await finish(flow);
+    expect(
+      new URL(response.headers.get('location')!).searchParams.get(
+        'returnToPath',
+      ),
+    ).toBe(returnToPath.startsWith('//') ? null : returnToPath);
+  },
+);
+
 it('requires a matching browser state cookie and consumes state once', async () => {
   const flow = await begin();
   await issueToken(flow);
@@ -214,6 +237,78 @@ it('requires local email proof before linking an untrusted Microsoft email claim
   const subsequent = await begin('microsoft');
   await issueToken(subsequent);
   expect((await finish(subsequent)).status).toBe(302);
+});
+
+it('preserves MCP consent through Microsoft email verification', async () => {
+  const registered = await SELF.fetch(`${ORIGIN}/oauth/register`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      client_name: 'Email proof client',
+      redirect_uris: ['https://agent.example/callback'],
+    }),
+  });
+  const { client_id: clientId } = await registered.json<{
+    client_id: string;
+  }>();
+  const verifier = randomToken();
+  const parameters = new URLSearchParams({
+    client_id: clientId,
+    response_type: 'code',
+    redirect_uri: 'https://agent.example/callback',
+    resource: `${ORIGIN}/mcp/v1`,
+    code_challenge_method: 'S256',
+    code_challenge: await hashToken(verifier),
+  });
+  const authorization = await SELF.fetch(
+    `${ORIGIN}/oauth/authorize?${parameters}`,
+    { redirect: 'manual' },
+  );
+  expect(authorization.status).toBe(302);
+  const consent = new URL(authorization.headers.get('location')!);
+  const returnToPath = `${consent.pathname}${consent.search}`;
+  const flow = await begin(
+    'microsoft',
+    false,
+    `?returnToPath=${encodeURIComponent(returnToPath)}`,
+  );
+  await issueToken(flow, { email_verified: false });
+  expect((await finish(flow)).status).toBe(200);
+  const email = await env.CORE_DB.prepare(
+    'SELECT "payload" FROM "emailDelivery" ORDER BY rowid DESC LIMIT 1',
+  ).first<{ payload: string }>();
+  const job = JSON.parse(email!.payload) as EmailJob;
+  const link = new URL(job.link);
+  expect(link.searchParams.get('returnToPath')).toBe(returnToPath);
+  const verified = await connection.request<{
+    verifyEmailAndGetLoginToken: { loginToken: { token: string } };
+  }>(
+    'mutation($token: String!, $email: String!, $origin: String!) {verifyEmailAndGetLoginToken(emailVerificationToken: $token, email: $email, origin: $origin) {loginToken {token}}}',
+    {
+      token: link.searchParams.get('emailVerificationToken'),
+      email: account.email,
+      origin: ORIGIN,
+    },
+  );
+  expect(verified.result.errors).toBeUndefined();
+  const exchanged = await connection.request(
+    'mutation($token: String!, $origin: String!) {getAuthTokensFromLoginToken(loginToken: $token, origin: $origin) {tokens {accessOrWorkspaceAgnosticToken {token}}}}',
+    {
+      token: verified.result.data!.verifyEmailAndGetLoginToken.loginToken.token,
+      origin: ORIGIN,
+    },
+  );
+  expect(exchanged.result.errors).toBeUndefined();
+  const details = await SELF.fetch(
+    `${ORIGIN}/oauth/mcp/requests/${consent.searchParams.get('request')}`,
+    {
+      headers: { cookie: connection.cookie, 'x-twenty-session-cookie': '1' },
+    },
+  );
+  expect(await details.json()).toMatchObject({
+    clientName: 'Email proof client',
+    workspaceName: 'Acme',
+  });
 });
 
 it('keeps providers disabled until both credentials are configured', async () => {

@@ -7,6 +7,7 @@ import { EmailField } from '@/settings/profile/components/EmailField';
 import { NameFields } from '@/settings/profile/components/NameFields';
 import { SetOrChangePassword } from '@/settings/profile/components/SetOrChangePassword';
 import { SettingsProfileDevicesSection } from '@/settings/profile/devices/components/SettingsProfileDevicesSection';
+import { SettingsMcpConnectionsSection } from '@/settings/profile/components/SettingsMcpConnectionsSection';
 import { useCanChangePassword } from '@/settings/profile/hooks/useCanChangePassword';
 import { useCurrentUserWorkspaceTwoFactorAuthentication } from '@/settings/two-factor-authentication/hooks/useCurrentUserWorkspaceTwoFactorAuthentication';
 import { WorkspaceMemberPictureUploader } from '@/settings/workspace-member/components/WorkspaceMemberPictureUploader';
@@ -94,6 +95,7 @@ export const SettingsProfile = () => {
           </Section.Root>
         )}
         <SettingsProfileDevicesSection />
+        <SettingsMcpConnectionsSection />
         <Section.Root>
           <DeleteAccount />
         </Section.Root>

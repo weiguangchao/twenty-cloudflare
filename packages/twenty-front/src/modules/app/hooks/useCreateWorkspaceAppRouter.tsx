@@ -33,6 +33,12 @@ const PasswordReset = lazy(() =>
   })),
 );
 
+const McpAuthorize = lazy(() =>
+  import('~/pages/auth/McpAuthorize').then((module) => ({
+    default: module.McpAuthorize,
+  })),
+);
+
 const WorkspaceActivation = lazyWithPreload(() =>
   import('~/pages/onboarding/WorkspaceActivation').then((module) => ({
     default: module.WorkspaceActivation,
@@ -101,6 +107,14 @@ const createWorkspaceAppRouter = ({
             {
               element: <AuthFlowLayout />,
               children: [
+                {
+                  path: AppPath.Authorize,
+                  element: (
+                    <LazyRoute fallback={null}>
+                      <McpAuthorize />
+                    </LazyRoute>
+                  ),
+                },
                 { path: AppPath.VerifyEmail, element: <VerifyEmail /> },
                 {
                   path: AppPath.ResetPassword,
