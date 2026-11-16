@@ -6,6 +6,8 @@
 
 清理清单已获需求方确认。本地实现、清理和部署准备继续推进；**远程部署按需求方指示暂缓，生产上线验收尚未完成**。
 
+**2026-11-16 更新**：需求方恢复部署，现已发布至 [twenty-crm-production.tabuxiangma.workers.dev](https://twenty-crm-production.tabuxiangma.workers.dev)。12 项公网检查及隔离 DO/D1 云端恢复演练通过，详情见 [DEPLOYMENT.md](DEPLOYMENT.md)。下文为 2026-11-13 的历史验收记录；首次管理员注册、已认证业务验收及尚未接入的外部服务仍待完成。
+
 ## 本地验证
 
 使用 Node 26.12.1、仓库 Yarn 4.18.1，跳过 Nx 缓存构建 shared 后执行直接类型检查。整条构建通过 `node .yarn/releases/yarn-4.18.1.cjs nx build twenty-worker --skip-nx-cache` 执行，避免本机缺少全局 Yarn；shared/UI barrel 生成器改用原生 Node 和异步 Prettier，解决 Nx 子进程中的同步 formatter 挂起。

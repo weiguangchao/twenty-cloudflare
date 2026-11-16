@@ -2,6 +2,8 @@
 
 Use Node 26 and run commands here unless a different directory is shown. Initial acceptance targets workers.dev; no custom domain or DNS changes are needed. `wrangler.jsonc` has isolated `dev` and `production` resources. D1, R2 and the first lookup of every workspace Durable Object request Asia-Pacific placement; placement hints are best effort.
 
+The current production URL and verification record are in [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ## Provision and deploy
 
 Provide `CLOUDFLARE_API_TOKEN` through a secret store and select `CLOUDFLARE_ACCOUNT_ID`. The token needs Workers Scripts, D1, R2, Queues, Turnstile and account read access. Never put the token in a tracked file or shell history.

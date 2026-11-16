@@ -214,12 +214,13 @@
       "workers_dev": true,
       "vars": {
         "MAINTENANCE_MODE": "false",
+        "TURNSTILE_SITE_KEY": "0x4AAAAAAGCw--T4cq5msTl8",
       },
       "d1_databases": [
         {
           "binding": "CORE_DB",
           "database_name": "twenty-core-production",
-          "database_id": "00000000-0000-0000-0000-000000000000",
+          "database_id": "d6205d72-a77a-4565-848c-d4402aa1cf0d",
           "migrations_dir": "migrations",
         },
       ],
