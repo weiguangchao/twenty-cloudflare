@@ -38,7 +38,7 @@ jobs:
       (github.event_name == 'push' ||
       needs.changed-files-check.outputs.any_changed == 'true')
     timeout-minutes: 30
-    runs-on: ubuntu-latest-8-cores
+    runs-on: ubuntu-24.04
     env:
       REACT_APP_SERVER_BASE_URL: http://localhost:3000
     steps:
@@ -112,7 +112,7 @@ jobs:
       shard-count: ${{ strategy.job-total }}
   front-sb-screenshots:
     timeout-minutes: 5
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [front-sb-test-modules, front-sb-test-pages]
     if: >-
       always() &&
@@ -136,7 +136,7 @@ jobs:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
       TASK_CACHE_KEY: front-task-${{ matrix.name }}${{ matrix.shard && format('-{0}', matrix.shard) || '' }}
@@ -183,7 +183,7 @@ jobs:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'
     timeout-minutes: 30
-    runs-on: ubuntu-latest-8-cores
+    runs-on: ubuntu-24.04
     env:
       NODE_OPTIONS: '--max-old-space-size=10240'
       ANALYZE: 'true'
@@ -207,7 +207,7 @@ jobs:
   ci-front-status-check:
     if: always() && !cancelled()
     timeout-minutes: 5
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       [
         changed-files-check,

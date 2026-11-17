@@ -22,6 +22,7 @@ permissions: {}
 
 jobs:
   open-pull-request:
+    if: github.repository == 'twentyhq/twenty'
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:

@@ -27,6 +27,7 @@ import { useAtomComponentStateValue } from '@/ui/utilities/state/jotai/hooks/use
 import { stringifyRelativeDateFilter } from '@/views/view-filter-value/utils/stringifyRelativeDateFilter';
 import { isObject, isString } from '@sniptt/guards';
 import { useContext } from 'react';
+import { doNotTranslate } from 'twenty-shared/i18n';
 import {
   RecordFilterOperand,
   StandardObjectNameSingular,
@@ -239,7 +240,7 @@ export const AdvancedFilterSidePanelValueFormInput = ({
   }
 
   const shouldUseUTCTimeZone = isWorkflowFindRecords === true;
-  const timeZone = shouldUseUTCTimeZone ? 'UTC' : undefined;
+  const timeZone = shouldUseUTCTimeZone ? doNotTranslate('UTC') : undefined;
 
   return (
     <FormFieldInput
