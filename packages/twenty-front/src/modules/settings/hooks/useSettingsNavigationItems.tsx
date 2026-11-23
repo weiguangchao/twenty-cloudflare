@@ -1,9 +1,7 @@
 import { SettingsPath } from 'twenty-shared/types';
 import { useAuth } from '@/auth/hooks/useAuth';
-import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { supportChatState } from '@/client-config/states/supportChatState';
 import { permissionFlagMapSelector } from '@/settings/roles/states/permissionFlagMapSelector';
-import { getDocumentationUrl } from '@/support/utils/getDocumentationUrl';
 import { type NavigationDrawerItemModifier } from '@/ui/navigation/navigation-drawer/types/NavigationDrawerItemModifier';
 import { type NavigationDrawerItemIndentationLevel } from '@/ui/navigation/navigation-drawer/types/NavigationDrawerItemIndentationLevel';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
@@ -14,7 +12,6 @@ import {
   IconColorSwatch,
   type IconComponent,
   IconDoorEnter,
-  IconHelpCircle,
   IconHierarchy,
   IconMessage,
   IconSettings2,
@@ -22,7 +19,6 @@ import {
   IconUsers,
 } from 'twenty-ui/icon';
 import { PermissionFlagType } from '~/generated-metadata/graphql';
-import { openUrlInNewTab } from '~/utils/openUrlInNewTab';
 import { useLingui } from '@lingui/react/macro';
 
 export type SettingsNavigationSection = {
@@ -46,7 +42,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
   const { t } = useLingui();
   const { signOut } = useAuth();
   const supportChat = useAtomStateValue(supportChatState);
-  const currentWorkspaceMember = useAtomStateValue(currentWorkspaceMemberState);
   const isSupportChatConfigured =
     supportChat?.supportDriver === 'FRONT' &&
     isNonEmptyString(supportChat.supportFrontChatId);
@@ -113,14 +108,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           onClick: () => window.FrontChat?.('show'),
           Icon: IconMessage,
           isHidden: !isSupportChatConfigured,
-        },
-        {
-          label: t`Documentation`,
-          onClick: () =>
-            openUrlInNewTab(
-              getDocumentationUrl({ locale: currentWorkspaceMember?.locale }),
-            ),
-          Icon: IconHelpCircle,
         },
         {
           label: t`Logout`,
