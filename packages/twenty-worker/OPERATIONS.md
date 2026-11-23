@@ -57,7 +57,7 @@ Run the drill on the deployed Worker with its operator secret available locally:
 WORKER_URL=https://<worker>.<subdomain>.workers.dev node scripts/restore-drill.mjs production
 ```
 
-It writes `before`/`after` markers to an isolated DO and a newly created disposable D1 database, restores each to the saved bookmark, checks `before`, deletes the drill resources, and writes a report under `.wrangler/restore-drill-*.json`. Commit a redacted result to STAGE13_VALIDATION.md after a successful remote run. Local workerd tests validate the API guards; they do not prove remote point-in-time recovery.
+It writes `before`/`after` markers to an isolated DO and a newly created disposable D1 database, restores each to the saved bookmark, checks `before`, deletes the drill resources, and writes a report under `.wrangler/restore-drill-*.json`. Commit a redacted result to DEPLOYMENT.md after a successful remote run. Local workerd tests validate the API guards; they do not prove remote point-in-time recovery.
 
 For retention beyond 30 days, coordinated encrypted exports of D1, workspace SQL/metadata and R2 blobs are needed. CSV exports are not a full recovery backup. This deployment currently uses platform recovery; add off-platform archival exports when a longer retention or account-loss recovery requirement is established. R2 alone shares the same account failure boundary.
 

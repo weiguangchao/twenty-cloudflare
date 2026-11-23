@@ -1,7 +1,7 @@
 {
   "source": {
     "exportedAt": "2026-11-12T12:26:11.762Z",
-    "description": "Standard metadata of a freshly activated workspace on twenty-server, trimmed to the core CRM scope by contract/scripts/filter-standard-metadata.mjs"
+    "description": "Standard metadata of a freshly activated workspace on the old server, trimmed to the core CRM scope"
   },
   "defaultRoleUniversalIdentifier": "20202020-a8a6-47ae-be79-e3601fa46a8e",
   "featureFlags": [

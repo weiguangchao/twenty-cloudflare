@@ -397,7 +397,7 @@ npx nx test twenty-worker
 产出都在 `packages/twenty-worker/contract/` 和 `src/workspace/seed/`，说明见 `contract/README.md`。
 
 - 21 个流程，1365 个 fixture。14 个由浏览器操作产生，7 个（名字以 `-api` 结尾）用脚本直接调 API，覆盖界面不易触发的错误码、cookie 和 CSRF、各字段类型的写入形状、文件 token、只读角色的行为。
-- **没有录 HAR。** Playwright MCP 的代码沙箱不能写文件，改为在浏览器上下文挂响应监听，把请求和响应发给本地 collector，按流程写 JSONL，再由 `split-fixtures.mjs` 拆分和脱敏。结果和 HAR 拆分等价。
+- **没有录 HAR。** Playwright MCP 的代码沙箱不能写文件，改为在浏览器上下文挂响应监听，把请求和响应发给本地 collector，按流程写 JSONL，再拆分和脱敏。结果和 HAR 拆分等价。
 - **关联字段走了 API。** 用 Playwright 操作数据模型页的关联字段表单时，前端发出的请求缺少 `relationCreationPayload` 而失败（失败的请求也保留在 fixture 里）。关联和 morph 关联改在 `data-model-api` 里按前端代码的形状创建。
 - **演示数据的生成脚本没有入库。** `demo-data.json` 由仓库外的临时脚本执行旧服务端的 prefill 函数一次性生成，因为本包不能 import `twenty-server`。数据本身是字面量，不会再变。
 - **种子裁剪的额外规则**：只保留标准应用拥有的行（Member 角色按标准 universal identifier 保留，默认角色是 Member）；删掉范围外的 widget 类型和命令菜单项；没有 widget 的 tab、没有 widget 使用的 widget 视图、空的导航文件夹也删掉。权限标志定义全部保留，授予由角色决定。丢了列的索引也删掉（复核时发现第一版留下了 10 个没有列的索引，已修正）。裁剪后 10 个对象、181 个字段、41 个索引，悬空引用校验通过。
@@ -491,7 +491,7 @@ npx nx test twenty-worker
 
 **实施记录**
 
-- **元数据表**：28 张 `meta_` 表由 `contract/scripts/generate-metadata-table-definitions.mjs` 从旧系统的 `core` schema 生成，产物是 `metadata-table-definitions.constant.ts`。列和旧表一致，去掉了 `workspaceId`。表之间的外键和 `ON DELETE` 规则（50 条）也照搬过来，删除对象或字段时，视图字段、筛选、排序、索引列、搜索字段、页面布局等由 SQLite 级联清理，不用手写。`fieldMetadataOption` 没有建表，选项存在 `fieldMetadata.options` 里，但 `collectionHashes` 里仍报告这个集合。
+- **元数据表**：28 张 `meta_` 表从旧系统的 `core` schema 生成，产物是 `metadata-table-definitions.constant.ts`。列和旧表一致，去掉了 `workspaceId`。表之间的外键和 `ON DELETE` 规则（50 条）也照搬过来，删除对象或字段时，视图字段、筛选、排序、索引列、搜索字段、页面布局等由 SQLite 级联清理，不用手写。`fieldMetadataOption` 没有建表，选项存在 `fieldMetadata.options` 里，但 `collectionHashes` 里仍报告这个集合。
 - **初始化**：走 `sys_migration` 机制，`0001-create-metadata-tables` 建表，`0002-load-standard-metadata` 载入种子、建 10 张记录表和 35 个物理索引。6 个 `TS_VECTOR` 的 GIN 索引只保留元数据，阶段 7 换成 FTS5。种子里的默认 feature flag 也在这一步写入，阶段 3 不用再写。每个新 DO 首次构造时都会自动完成初始化。
 - **操作**：DO 上的 RPC 方法是 `createObject`、`updateObject`、`deleteObject`、`createField`、`updateField`、`deleteField`、`createIndex`、`deleteIndex`。另有 `getCollectionHashes()`，以及按版本缓存的 `getMetadataSnapshot()`，供记录引擎使用。每个操作在一个 `transactionSync` 里同时改元数据和表结构，返回 `{ status: 'success', value }` 或 `{ status: 'fail', failure }`。`failure` 的结构和旧系统 `METADATA_VALIDATION_FAILED` 的 extensions 一致（`errors` 按元数据名分组，带 `summary`），阶段 8 可以直接透传。非校验类的意外错误照常抛出，同样整体回滚。
 - **对齐旧系统的行为**：
@@ -951,11 +951,11 @@ npx nx test twenty-worker
 
 **阶段 13 执行记录（2026-11-13）**
 
-- 清理清单已确认并执行：删除 12 个专用包的 21,121 个已跟踪文件，SDK/renderer 在解除运行时引用后删除；删除范围外前端路由、模块和专用测试，保留核心 CRM。前端清理单独提交为 `ce42d9912c7`。详见 `packages/twenty-worker/STAGE13_CLEANUP.md`。
+- 清理清单已确认并执行：删除 12 个专用包的 21,121 个已跟踪文件，SDK/renderer 在解除运行时引用后删除；删除范围外前端路由、模块和专用测试，保留核心 CRM。前端清理单独提交为 `ce42d9912c7`。
 - 核心与 metadata codegen 已指向 Worker schema；新增 core SDL 导出和真实 workspace schema 一致性检查。E2E 使用独立临时存储启动 Wrangler，通过 UI 建立账号/工作区，验证记录、Kanban、邀请和登录跳转。
 - 新增 dev/production 资源配置、亚太区位置提示、资源创建/部署脚本、稳定 secrets 管理、生产注册 Turnstile、结构化日志、每日 DO 容量日志及阈值事件、维护模式和受独立 token 保护的恢复操作入口。根架构文档、开发命令与 CI 已适配 Worker。
 - **云端验收暂缓**：只读账号预检发现 R2 未启用（错误 10042），需求方随后明确决定暂缓远程部署。未创建或修改远程 D1、R2、Queue、Worker 或 Turnstile 资源。生产从零部署、CI 实际运行、云端恢复演练及外部告警通知目的地仍待验收，不能将本阶段视为生产上线完成。恢复手册和演练脚本已备齐；D1 免费计划 Time Travel 为 7 天，付费计划为 30 天，DO 为 30 天。
-- 完整本地验证结果和后续验收条件记录在 `packages/twenty-worker/STAGE13_VALIDATION.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
+- 部署结果和后续验收条件记录在 `packages/twenty-worker/DEPLOYMENT.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
 
 ### 阶段 14：对外 MCP 服务
 

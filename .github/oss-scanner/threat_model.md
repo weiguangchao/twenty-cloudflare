@@ -16,4 +16,4 @@ npx tsgo -p tsconfig.json --noEmit
 npx vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000
 ```
 
-Review operational recovery boundaries and the deferred remote acceptance checks in `packages/twenty-worker/OPERATIONS.md` and `STAGE13_VALIDATION.md`. Report a concrete exploit with the affected principal, workspace, request sequence and observed unauthorized behavior. Do not use production credentials or customer data for verification.
+Review operational recovery boundaries and the deferred remote acceptance checks in `packages/twenty-worker/OPERATIONS.md` and `packages/twenty-worker/DEPLOYMENT.md`. Report a concrete exploit with the affected principal, workspace, request sequence and observed unauthorized behavior. Do not use production credentials or customer data for verification.

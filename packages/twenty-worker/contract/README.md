@@ -11,13 +11,12 @@
 | `metadata-operations.md` | 所有操作名及其归属阶段 |
 | `metadata-export/workspace-metadata.json` | 该 workspace 的全部元数据行，未裁剪 |
 | `metadata-export/filter-report.json` | 裁剪脚本的报告：每张表保留多少行、每条删除原因计数 |
-| `scripts/` | 采集、导出、裁剪、拆分脚本 |
 
 种子数据在 `src/workspace/seed/`：`standard-metadata.json`（裁剪后的标准元数据）和 `demo-data.json`（预填的公司、人员、商机）。
 
 ## 流程
 
-按采集顺序排列。后面的流程依赖前面流程留下的状态，重放时也要按这个顺序。名字以 `-api` 结尾的流程由 `scripts/api-capture.mjs` 直接调用 API 产生，用于界面不容易触发的错误分支和字段类型，用的是前端在其他流程里实际发出的 query 文本。
+按采集顺序排列。后面的流程依赖前面流程留下的状态，重放时也要按这个顺序。名字以 `-api` 结尾的流程由脚本直接调用 API 产生，用于界面不容易触发的错误分支和字段类型，用的是前端在其他流程里实际发出的 query 文本。
 
 | 流程 | 内容 |
 |---|---|
@@ -75,28 +74,13 @@ JWT、session cookie 值、邀请链接 hash 替换为 `<redacted-jwt-N>`、`<re
 
 ## 采集方式
 
-浏览器部分用 Playwright MCP 驱动。MCP 的代码沙箱不能写文件，所以没有用 HAR，而是：
-
-1. `node scripts/collector.mjs` 在 9477 端口接收请求，按当前流程追加到 `raw/<流程>.jsonl`。切换流程：`curl -X POST --data '<流程>' localhost:9477/flow`。
-2. 用 MCP 的 `browser_run_code_unsafe`（`filename` 参数）执行 `scripts/capture-listener.js`，在浏览器上下文上挂响应监听，把 `/metadata`、`/graphql`、`/file*`、`/client-config` 的请求和响应发给 collector。
-3. API 部分：`node scripts/api-capture.mjs scripts/scenarios/<场景>.mjs`，结果写进同一个 `raw/` 目录。
-4. `node scripts/split-fixtures.mjs` 把 `raw/` 拆成 `fixtures/`。`raw/` 含未脱敏的 token，已在 `.gitignore` 里排除。
-
-其余产出：
-
-```bash
-node scripts/export-sdl.mjs alice@example.com 'Password123!'   # 两份 SDL
-node scripts/export-workspace-metadata.mjs                       # metadata-export/workspace-metadata.json
-node scripts/filter-standard-metadata.mjs                        # src/workspace/seed/standard-metadata.json
-```
-
-脚本用仓库根目录 `node_modules` 里的 `graphql` 和 `pg`，需要 Node 26（仓库的 `engines` 要求）。
+浏览器部分用 Playwright MCP 驱动，在浏览器上下文挂响应监听，把请求和响应发给本地 collector 写成 JSONL，再拆分和脱敏成 `fixtures/`；`-api` 流程直接调用 API。SDL 和元数据从运行中的旧系统导出。采集脚本依赖已删除的 `twenty-server` 和 `pg`，已从仓库移除，需要时从提交 `6baa10464fb` 的 `packages/twenty-worker/contract/scripts/` 恢复。
 
 `demo-data.json` 是一次性生成的：在仓库外临时写了一个脚本，用假的 EntityManager 执行旧服务端的 `prefill-companies.util.ts`、`prefill-people.util.ts`、`prefill-opportunities.util.ts`，截获插入的行，再把展开的复合列折回 JSON 对象。这个脚本没有放进本包，因为本包不允许 import `twenty-server`。三份数据都是代码里的字面量，以后不会变。
 
 ## 种子数据的裁剪规则
 
-`filter-standard-metadata.mjs` 先按规则删除：
+裁剪先按规则删除：
 
 - 不属于标准应用（Standard）的行，即采集过程中用户创建的对象、字段、视图、布局、收藏等。角色例外：按 universal identifier 前缀 `20202020-` 保留 Admin 和 Member（Member 属于 workspace 自定义应用，但它是激活时创建的标准角色）。
 - 第 2 节以外的对象；关联目标在范围外的字段。
