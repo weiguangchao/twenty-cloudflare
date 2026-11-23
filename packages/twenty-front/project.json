@@ -308,13 +308,6 @@
         }
       }
     },
-    "mock:generate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "{projectRoot}",
-        "command": "dotenv npx vite-node scripts/generate-mock-data.ts"
-      }
-    },
     "lingui:extract": {
       "executor": "nx:run-commands",
       "dependsOn": ["^build"],

@@ -22,8 +22,6 @@ The code editor is available separately from `twenty-ui/components/code-editor`.
 npm install @monaco-editor/react monaco-editor
 ```
 
-For Twenty apps, follow [Using Twenty UI components](https://docs.twenty.com/developers/extend/apps/layout/front-components#using-twenty-ui-components). The front component renderer supplies the workspace theme. Keep `twenty-ui`, `twenty-sdk`, and `twenty-client-sdk` on the same version.
-
 ## Usage
 
 For a standalone React application, import the base styles once, pick a theme stylesheet, and wrap your app in `ThemeProvider`:

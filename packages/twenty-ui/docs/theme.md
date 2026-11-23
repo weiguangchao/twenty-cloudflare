@@ -26,4 +26,4 @@ The explicit `theme` supplies hook values and updates when the prop changes. Nes
 
 Raw contexts and their implementation types are private. Use the corresponding hook, including separate hook calls when reading both the theme and color scheme.
 
-In Twenty apps, keep `twenty-ui`, `twenty-sdk`, and `twenty-client-sdk` on the same version. The front component renderer supplies the workspace styles and theme. See the [front component guide](https://docs.twenty.com/developers/extend/apps/layout/front-components#using-twenty-ui-components) for sandbox setup and the [theming guide](https://docs.twenty.com/ui/theming) for standalone applications.
+See the [theming guide](https://docs.twenty.com/ui/theming) for standalone applications.

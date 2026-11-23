@@ -17,7 +17,7 @@ export const DateDisplay = ({ value, dateFieldSettings }: DateDisplayProps) => {
 
   const formattedDate = formatDateString({
     value,
-    timeZone: doNotTranslate('UTC'), // Needed because we have db-stored date (yyyy-mm-dd) is converted to UTC dateTime by TypeORM
+    timeZone: doNotTranslate('UTC'), // Stored dates (yyyy-mm-dd) are read as UTC midnight
     dateFormat,
     dateFieldSettings,
     localeCatalog: dateLocale.localeCatalog,
