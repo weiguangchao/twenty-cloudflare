@@ -14,7 +14,7 @@
     "unresolved": "warn"
   },
   "workspaces": {
-    "packages/twenty-front": {
+    "packages/crm-front": {
       "entry": [
         "src/index.tsx",
         "src/**/graphql/**/*.{ts,tsx}",
@@ -36,11 +36,11 @@
         "rollup-plugin-node-polyfills"
       ]
     },
-    "packages/twenty-oxlint-rules": {
+    "packages/crm-oxlint-rules": {
       "entry": ["scripts/**/*.mjs"],
       "ignoreDependencies": ["eslint", "eslint-plugin-lingui", "oxlint"]
     },
-    "packages/twenty-ui": {
+    "packages/crm-ui": {
       "entry": ["scripts/**/*.ts", "docs/**/*.ts"],
       "ignore": ["src/styles/abstracts/**"],
       "ignoreDependencies": ["@storybook/addon-coverage", "@swc/core"]

@@ -1,0 +1,37 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 2,
+  "capturedAt": "2026-11-12T11:18:51.944Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetPublicWorkspaceDataByDomain",
+  "query": "query GetPublicWorkspaceDataByDomain($origin: String!) {\n  getPublicWorkspaceDataByDomain(origin: $origin) {\n    id\n    logo\n    displayName\n    workspaceUrls {\n      ...WorkspaceUrlsFragment\n      __typename\n    }\n    authProviders {\n      sso {\n        id\n        name\n        type\n        status\n        issuer\n        __typename\n      }\n      google\n      magicLink\n      password\n      microsoft\n      __typename\n    }\n    authBypassProviders {\n      google\n      password\n      microsoft\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment WorkspaceUrlsFragment on WorkspaceUrls {\n  subdomainUrl\n  customUrl\n  __typename\n}",
+  "variables": {
+    "origin": "http://localhost:3001"
+  },
+  "requestHeaders": {
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "170",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "errors": [
+      {
+        "message": "Workspace not found",
+        "extensions": {
+          "subCode": "WORKSPACE_NOT_FOUND",
+          "userFriendlyMessage": "未找到工作区。",
+          "code": "NOT_FOUND"
+        }
+      }
+    ],
+    "data": null
+  },
+  "repeatCount": 2
+}

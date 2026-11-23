@@ -1,0 +1,43 @@
+{
+  "flow": "record-detail",
+  "sequence": 87,
+  "capturedAt": "2026-11-12T11:29:23.716Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "ae8e8467-b30c-47e2-b4df-be41a6b0a99c",
+      "queryId": "timeline-activities-opportunity-9457f8e9-16ae-43b9-92ee-cbd21f3dded5",
+      "operationSignature": {
+        "objectNameSingular": "timelineActivity",
+        "variables": {
+          "filter": {
+            "targetOpportunityId": {
+              "eq": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

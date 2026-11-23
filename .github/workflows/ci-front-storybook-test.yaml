@@ -40,16 +40,16 @@ jobs:
         with:
           key: ${{ env.STORYBOOK_BUILD_CACHE_KEY_FOR_RESTORE_ACTION }}
       - name: Clean stale storybook vitest cache
-        run: rm -rf packages/twenty-front/node_modules/.cache/storybook
+        run: rm -rf packages/crm-front/node_modules/.cache/storybook
       - name: Cache storybook vitest dependency optimizer
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: packages/twenty-front/node_modules/.cache/storybook
-          key: v4-storybook-vitest-deps-twenty-front-${{ inputs.scope }}-${{ hashFiles('yarn.lock', 'packages/twenty-front/vite.config.ts', 'packages/twenty-front/vitest.config.ts', 'packages/twenty-front/.storybook/main.ts') }}
+          path: packages/crm-front/node_modules/.cache/storybook
+          key: v4-storybook-vitest-deps-crm-front-${{ inputs.scope }}-${{ hashFiles('yarn.lock', 'packages/crm-front/vite.config.ts', 'packages/crm-front/vitest.config.ts', 'packages/crm-front/.storybook/main.ts') }}
       - name: Build dependencies
         run: |
-          npx nx build twenty-shared
-          npx nx build twenty-ui
+          npx nx build crm-shared
+          npx nx build crm-ui
       - name: Resolve Playwright version
         id: playwright-version
         run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
@@ -62,9 +62,9 @@ jobs:
       - name: Install Playwright
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          cd packages/twenty-front
+          cd packages/crm-front
           npx playwright install chromium
       - name: Front / Write .env
-        run: npx nx reset:env twenty-front
+        run: npx nx reset:env crm-front
       - name: Run storybook tests
-        run: npx nx storybook:test:no-coverage twenty-front --configuration=${{ inputs.scope }} --shard=${{ inputs.shard }}/${{ inputs.shard-count }}
+        run: npx nx storybook:test:no-coverage crm-front --configuration=${{ inputs.scope }} --shard=${{ inputs.shard }}/${{ inputs.shard-count }}

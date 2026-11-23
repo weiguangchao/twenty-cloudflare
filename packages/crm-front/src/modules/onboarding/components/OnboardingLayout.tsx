@@ -1,0 +1,55 @@
+import { OnboardingHeader } from '@/onboarding/components/OnboardingHeader';
+import { ONBOARDING_BACKGROUND_COMPONENT_MIN_VIEWPORT_WIDTH } from '@/onboarding/constants/OnboardingBackgroundComponentMinViewportWidth';
+import { styled } from '@linaria/react';
+import { type ReactNode } from 'react';
+import { isDefined } from 'crm-shared/utils';
+import { doNotTranslate } from 'crm-shared/i18n';
+import { themeCssVariables } from 'crm-ui/theme';
+import { useMediaQuery } from 'crm-ui/utilities';
+
+const StyledBackground = styled.div`
+  background: ${themeCssVariables.background.secondary};
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh / var(--t-zoom, 1));
+  isolation: isolate;
+  position: relative;
+  width: 100%;
+`;
+
+const StyledBackgroundLayer = styled.div`
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+`;
+
+type OnboardingLayoutProps = {
+  children: ReactNode;
+  onBack?: () => void;
+  isBackDisabled?: boolean;
+  backgroundComponent?: ReactNode;
+};
+
+export const OnboardingLayout = ({
+  children,
+  onBack,
+  isBackDisabled,
+  backgroundComponent,
+}: OnboardingLayoutProps) => {
+  const isBackgroundComponentVisible = useMediaQuery(
+    doNotTranslate(
+      `(min-width: ${ONBOARDING_BACKGROUND_COMPONENT_MIN_VIEWPORT_WIDTH}px)`,
+    ),
+  );
+
+  return (
+    <StyledBackground>
+      {isDefined(backgroundComponent) && isBackgroundComponentVisible && (
+        <StyledBackgroundLayer>{backgroundComponent}</StyledBackgroundLayer>
+      )}
+      <OnboardingHeader onBack={onBack} isBackDisabled={isBackDisabled} />
+      {children}
+    </StyledBackground>
+  );
+};

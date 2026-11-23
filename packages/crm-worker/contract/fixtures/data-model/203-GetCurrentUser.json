@@ -1,0 +1,1824 @@
+{
+  "flow": "data-model",
+  "sequence": 203,
+  "capturedAt": "2026-11-12T11:50:45.105Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetCurrentUser",
+  "query": "query GetCurrentUser {\n  currentUser {\n    ...UserQueryFragment\n    __typename\n  }\n}\n\nfragment WorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  colorScheme\n  uiScale\n  openRecordIn\n  avatarUrl\n  locale\n  userEmail\n  userId\n  userWorkspaceId\n  timeZone\n  dateFormat\n  timeFormat\n  calendarStartDay\n  numberFormat\n  __typename\n}\n\nfragment PartialWorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  avatarUrl\n  userEmail\n  userId\n  userWorkspaceId\n  __typename\n}\n\nfragment DeletedWorkspaceMemberQueryFragment on DeletedWorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  avatarUrl\n  userEmail\n  __typename\n}\n\nfragment RowLevelPermissionPredicateFragment on RowLevelPermissionPredicate {\n  id\n  fieldMetadataId\n  relationFieldMetadataId\n  objectMetadataId\n  operand\n  subFieldName\n  workspaceMemberFieldMetadataId\n  workspaceMemberSubFieldName\n  rowLevelPermissionPredicateGroupId\n  positionInRowLevelPermissionPredicateGroup\n  roleId\n  value\n  __typename\n}\n\nfragment RowLevelPermissionPredicateGroupFragment on RowLevelPermissionPredicateGroup {\n  id\n  parentRowLevelPermissionPredicateGroupId\n  logicalOperator\n  positionInRowLevelPermissionPredicateGroup\n  canReadRecords\n  canUpdateRecords\n  canSoftDeleteRecords\n  canDestroyRecords\n  roleId\n  objectMetadataId\n  __typename\n}\n\nfragment WorkspaceUrlsFragment on WorkspaceUrls {\n  subdomainUrl\n  customUrl\n  __typename\n}\n\nfragment BillingSubscriptionSchedulePhaseItemFragment on BillingSubscriptionSchedulePhaseItem {\n  price\n  quantity\n  __typename\n}\n\nfragment BillingSubscriptionSchedulePhaseFragment on BillingSubscriptionSchedulePhase {\n  start_date\n  end_date\n  items {\n    ...BillingSubscriptionSchedulePhaseItemFragment\n    __typename\n  }\n  __typename\n}\n\nfragment CurrentBillingSubscriptionFragment on BillingSubscription {\n  id\n  status\n  interval\n  metadata\n  currentPeriodEnd\n  cancelAt\n  collectionMethod\n  hasUserCredits\n  phases {\n    ...BillingSubscriptionSchedulePhaseFragment\n    __typename\n  }\n  billingSubscriptionItems {\n    id\n    hasReachedCurrentPeriodCap\n    quantity\n    stripePriceId\n    unitAmount\n    creditAmount\n    billingProduct {\n      name\n      description\n      images\n      metadata {\n        productKey\n        planKey\n        priceUsageBased\n        isLegacy\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nfragment BillingSubscriptionFragment on BillingSubscription {\n  id\n  status\n  metadata\n  cancelAt\n  phases {\n    ...BillingSubscriptionSchedulePhaseFragment\n    __typename\n  }\n  __typename\n}\n\nfragment RoleFragment on Role {\n  id\n  label\n  description\n  icon\n  canUpdateAllSettings\n  canAccessAllTools\n  canAccessAllAgentChatChannels\n  isEditable\n  canReadAllObjectRecords\n  canUpdateAllObjectRecords\n  canSoftDeleteAllObjectRecords\n  canDestroyAllObjectRecords\n  canBeAssignedToUsers\n  canBeAssignedToAgents\n  canBeAssignedToApiKeys\n  applicationId\n  universalIdentifier\n  __typename\n}\n\nfragment AvailableWorkspaceFragment on AvailableWorkspace {\n  id\n  displayName\n  loginToken\n  inviteHash\n  personalInviteToken\n  workspaceUrls {\n    subdomainUrl\n    customUrl\n    __typename\n  }\n  logo\n  sso {\n    type\n    id\n    issuer\n    name\n    status\n    __typename\n  }\n  __typename\n}\n\nfragment AvailableWorkspacesFragment on AvailableWorkspaces {\n  availableWorkspacesForSignIn {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  availableWorkspacesForSignUp {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  __typename\n}\n\nfragment UserQueryFragment on User {\n  id\n  firstName\n  lastName\n  email\n  hasPassword\n  canAccessFullAdminPanel\n  canImpersonate\n  supportUserHash\n  onboardingStatus\n  previousOnboardingStatus\n  isWorkspaceCreator\n  workspaceMember {\n    ...WorkspaceMemberQueryFragment\n    __typename\n  }\n  workspaceMembers {\n    ...PartialWorkspaceMemberQueryFragment\n    __typename\n  }\n  deletedWorkspaceMembers {\n    ...DeletedWorkspaceMemberQueryFragment\n    __typename\n  }\n  currentUserWorkspace {\n    id\n    permissionFlags\n    isImpersonating\n    objectRecordsPermissions {\n      objectMetadataId\n      canCreateAllRecords\n      canReadAllRecords\n      canUpdateAllRecords\n      canSoftDeleteAllRecords\n      canDestroyAllRecords\n      unreadableFields\n      uneditableFields\n      restrictedFields\n      rowLevelRecordsPermissions {\n        canCreateRecords\n        canReadRecords\n        canUpdateRecords\n        canSoftDeleteRecords\n        canDestroyRecords\n        predicates {\n          ...RowLevelPermissionPredicateFragment\n          __typename\n        }\n        predicateGroups {\n          ...RowLevelPermissionPredicateGroupFragment\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    twoFactorAuthenticationMethodSummary {\n      twoFactorAuthenticationMethodId\n      status\n      strategy\n      __typename\n    }\n    __typename\n  }\n  currentWorkspace {\n    id\n    displayName\n    logo\n    inviteHash\n    allowImpersonation\n    activationStatus\n    isPublicInviteLinkEnabled\n    isCampaignClickTrackingEnabled\n    isCampaignOpenTrackingEnabled\n    workspaceDiscoverability\n    isGoogleAuthEnabled\n    isMicrosoftAuthEnabled\n    isPasswordAuthEnabled\n    isGoogleAuthBypassEnabled\n    isMicrosoftAuthBypassEnabled\n    isPasswordAuthBypassEnabled\n    subdomain\n    customDomain\n    hasValidSignedEnterpriseKey\n    hasValidEnterpriseValidityToken\n    workspaceCustomApplication {\n      id\n      __typename\n    }\n    installedApplications {\n      id\n      name\n      description\n      universalIdentifier\n      logoUrl\n      createdAt\n      __typename\n    }\n    isCustomDomainEnabled\n    iframeMediaPermissions {\n      origin\n      microphone\n      camera\n      __typename\n    }\n    workspaceUrls {\n      ...WorkspaceUrlsFragment\n      __typename\n    }\n    featureFlags {\n      key\n      value\n      __typename\n    }\n    currentBillingSubscription {\n      ...CurrentBillingSubscriptionFragment\n      __typename\n    }\n    billingCustomer {\n      id\n      hasPaymentMethod\n      userCreditsFallback\n      __typename\n    }\n    billingSubscriptions {\n      ...BillingSubscriptionFragment\n      __typename\n    }\n    billingEntitlements {\n      key\n      value\n      __typename\n    }\n    isTrialAvailable\n    workspaceMembersCount\n    defaultRole {\n      ...RoleFragment\n      __typename\n    }\n    aiChatModelTier\n    aiChatAssistantProfile {\n      displayName\n      avatarShape\n      avatarColor\n      avatarFace\n      isAvatarAnimated\n      __typename\n    }\n    aiChatDirectMessageAssistantMode\n    aiChatInboxAssistantMode\n    aiAgentModelTier\n    isAutoModelSelectionEnabled\n    aiModelIdByTier\n    aiAdditionalInstructions\n    aiDataPolicy {\n      requiredDataResidencyRegion\n      isZeroDataRetentionRequired\n      isProductImprovementDataSharingEnabled\n      __typename\n    }\n    isTwoFactorAuthenticationEnforced\n    trashRetentionDays\n    eventLogRetentionDays\n    editableProfileFields\n    isInternalMessagesImportEnabled\n    __typename\n  }\n  availableWorkspaces {\n    ...AvailableWorkspacesFragment\n    __typename\n  }\n  userVars\n  __typename\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "40710",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "currentUser": {
+        "id": "15956aaa-a89b-4eaa-8c7f-819c65fa735b",
+        "firstName": "",
+        "lastName": "",
+        "email": "alice@example.com",
+        "hasPassword": true,
+        "canAccessFullAdminPanel": true,
+        "canImpersonate": true,
+        "supportUserHash": null,
+        "onboardingStatus": "COMPLETED",
+        "previousOnboardingStatus": "INVITE_TEAM",
+        "isWorkspaceCreator": true,
+        "workspaceMember": {
+          "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": {
+            "firstName": "Alice",
+            "lastName": "Admin",
+            "__typename": "FullName"
+          },
+          "colorScheme": "System",
+          "uiScale": "Default",
+          "openRecordIn": "SIDE_PANEL",
+          "avatarUrl": "",
+          "locale": "en",
+          "userEmail": "alice@example.com",
+          "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b",
+          "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+          "timeZone": "system",
+          "dateFormat": "SYSTEM",
+          "timeFormat": "SYSTEM",
+          "calendarStartDay": 7,
+          "numberFormat": "SYSTEM",
+          "__typename": "WorkspaceMember"
+        },
+        "workspaceMembers": [
+          {
+            "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+            "name": {
+              "firstName": "Alice",
+              "lastName": "Admin",
+              "__typename": "FullName"
+            },
+            "avatarUrl": "",
+            "userEmail": "alice@example.com",
+            "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b",
+            "userWorkspaceId": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+            "__typename": "WorkspaceMember"
+          }
+        ],
+        "deletedWorkspaceMembers": [],
+        "currentUserWorkspace": {
+          "id": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+          "permissionFlags": [
+            "API_KEYS_AND_WEBHOOKS",
+            "WORKSPACE",
+            "WORKSPACE_MEMBERS",
+            "ROLES",
+            "DATA_MODEL",
+            "SECURITY",
+            "WORKFLOWS",
+            "IMPERSONATE",
+            "SSO_BYPASS",
+            "APPLICATIONS",
+            "MARKETPLACE_APPS",
+            "LAYOUTS",
+            "BILLING",
+            "AI_SETTINGS",
+            "AI",
+            "VIEWS",
+            "UPLOAD_FILE",
+            "DOWNLOAD_FILE",
+            "SEND_EMAIL_TOOL",
+            "CREATE_CALENDAR_EVENT_TOOL",
+            "HTTP_REQUEST_TOOL",
+            "CODE_INTERPRETER_TOOL",
+            "IMPORT_CSV",
+            "EXPORT_CSV",
+            "CONNECTED_ACCOUNTS",
+            "PROFILE_INFORMATION"
+          ],
+          "isImpersonating": false,
+          "objectRecordsPermissions": [
+            {
+              "objectMetadataId": "01c0d47a-163d-44d0-913d-b42ee408e7af",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "1b942d10-b750-4de2-9501-9cdae9ab7aeb",
+                "f77ff656-1d81-4ab8-9490-c521cc0b03c1",
+                "76c94300-ddf7-4ea4-8d8c-4e7a282fa201",
+                "d75a36f5-0fe4-4941-8d39-de005fdfe324",
+                "9ea3ccfc-121b-451a-961c-1b82d154fe1d",
+                "ba4ccec3-18be-4835-9c45-115ce36f21ac",
+                "c487aa12-3724-49d7-b64a-bf6ab6d59ebf",
+                "1585b441-bd91-470a-947d-b3dfeb952f27",
+                "cdbaf34c-dee6-4b77-8e7c-639e1338b35f",
+                "6b42e168-9d88-454b-82c3-a77ab01324c1",
+                "2532fd92-5886-462c-bf8c-d21d835f591e",
+                "40f3c297-f30e-4a21-9595-b19bc7068154",
+                "5b312310-0517-4857-82f2-4f42a2a8007f",
+                "580eb4e4-9684-4cb7-b04e-ba8b03945f8b",
+                "c34da8f8-28b9-4dae-9724-83a0f6004f8b",
+                "a6bfe66c-6435-40f9-854e-0f6941e697be",
+                "f9989bd2-4496-4f9c-bb2c-e534f16a3b0e",
+                "a5c6be8d-f00b-49bd-a7c7-a2b749507a91",
+                "4820b959-4277-444d-a585-e297ff39bf12"
+              ],
+              "restrictedFields": {
+                "1b942d10-b750-4de2-9501-9cdae9ab7aeb": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f77ff656-1d81-4ab8-9490-c521cc0b03c1": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "76c94300-ddf7-4ea4-8d8c-4e7a282fa201": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "d75a36f5-0fe4-4941-8d39-de005fdfe324": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "9ea3ccfc-121b-451a-961c-1b82d154fe1d": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ba4ccec3-18be-4835-9c45-115ce36f21ac": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c487aa12-3724-49d7-b64a-bf6ab6d59ebf": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "1585b441-bd91-470a-947d-b3dfeb952f27": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "cdbaf34c-dee6-4b77-8e7c-639e1338b35f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6b42e168-9d88-454b-82c3-a77ab01324c1": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "2532fd92-5886-462c-bf8c-d21d835f591e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "40f3c297-f30e-4a21-9595-b19bc7068154": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5b312310-0517-4857-82f2-4f42a2a8007f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "580eb4e4-9684-4cb7-b04e-ba8b03945f8b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c34da8f8-28b9-4dae-9724-83a0f6004f8b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "a6bfe66c-6435-40f9-854e-0f6941e697be": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f9989bd2-4496-4f9c-bb2c-e534f16a3b0e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "a5c6be8d-f00b-49bd-a7c7-a2b749507a91": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4820b959-4277-444d-a585-e297ff39bf12": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "3f454f28-0fba-4d2a-a0f7-8e86218866d1"
+              ],
+              "restrictedFields": {
+                "3f454f28-0fba-4d2a-a0f7-8e86218866d1": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "4fdcd4ca-1ecb-4e32-a151-284561864a7d",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "417c29b9-47f1-41e3-b988-153bf6f3c58e"
+              ],
+              "restrictedFields": {
+                "417c29b9-47f1-41e3-b988-153bf6f3c58e": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "edbdb6c6-d5e4-4cce-94f9-cf2a77f4eeca",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "07212a54-796e-49e7-a15d-e89e66791dc8"
+              ],
+              "restrictedFields": {
+                "07212a54-796e-49e7-a15d-e89e66791dc8": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "cba15e45-5ef0-44ce-aa7c-e5b0e1b9ffdd",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "b665a2a8-a10e-4bac-9c9a-65eeec1480e7"
+              ],
+              "restrictedFields": {
+                "b665a2a8-a10e-4bac-9c9a-65eeec1480e7": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "0495f4cb-3de0-4f9f-8af1-bb2a652c22d5",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "00879662-a95e-4e5c-a8bc-43ae17c38268"
+              ],
+              "restrictedFields": {
+                "00879662-a95e-4e5c-a8bc-43ae17c38268": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "0e9221d6-8aa7-4484-b3b0-056c3db93e68",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "071f6b44-29d7-44d4-999f-73708fbc14e1"
+              ],
+              "restrictedFields": {
+                "071f6b44-29d7-44d4-999f-73708fbc14e1": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "731dc6fe-2504-4f83-8307-291a9e9b8686",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "2ca32e82-29fe-46b7-9665-4c17776d29da"
+              ],
+              "restrictedFields": {
+                "2ca32e82-29fe-46b7-9665-4c17776d29da": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "3f5b477d-5481-457e-80e3-456403cf3f41",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "ec99c688-a67b-45e5-8af8-acfc20942aee"
+              ],
+              "restrictedFields": {
+                "ec99c688-a67b-45e5-8af8-acfc20942aee": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "73be341a-a10d-4db5-8e34-e8c0f0ee99cd",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "8e8c392f-3e32-4a62-b599-e2fbf47caf88"
+              ],
+              "restrictedFields": {
+                "8e8c392f-3e32-4a62-b599-e2fbf47caf88": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "038b2018-2f26-4d92-81f5-8e2c3bef3ed4",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "2e036e07-86d4-4fcb-b1bb-ce6e32285f99"
+              ],
+              "restrictedFields": {
+                "2e036e07-86d4-4fcb-b1bb-ce6e32285f99": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "58d9947e-f5a6-4b5c-88ed-3f07c5961182",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "9c8d074e-7e30-4635-b1d8-5b7f48113bf8"
+              ],
+              "restrictedFields": {
+                "9c8d074e-7e30-4635-b1d8-5b7f48113bf8": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "1b678466-aa62-4fca-a458-ff275be9dd94",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "fd78a889-b9c2-410c-b325-8272b9ecca41"
+              ],
+              "restrictedFields": {
+                "fd78a889-b9c2-410c-b325-8272b9ecca41": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "2637cfe5-dbb7-4864-8c86-c99b1f54d33a",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "81882401-c276-4eba-a328-fabb0842c966"
+              ],
+              "restrictedFields": {
+                "81882401-c276-4eba-a328-fabb0842c966": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "f1138223-4c8d-425c-8ad8-dea4291ce217",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "96aa984f-da56-44f4-ab66-253a9f61d09b"
+              ],
+              "restrictedFields": {
+                "96aa984f-da56-44f4-ab66-253a9f61d09b": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "1f5ca1cd-8cea-482d-a3cf-868e9cd74555",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "3cf50e05-93d7-404b-a461-865381893a37"
+              ],
+              "restrictedFields": {
+                "3cf50e05-93d7-404b-a461-865381893a37": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "36ad4145-8501-4dcc-8a41-635db07d4615",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "379f79f9-8c58-4745-b57e-9f1e58e650da"
+              ],
+              "restrictedFields": {
+                "379f79f9-8c58-4745-b57e-9f1e58e650da": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "455632d6-c7b5-448c-ac21-1a27a6351619",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "f219e47a-00f6-4796-91a3-10e6f3af5fe6"
+              ],
+              "restrictedFields": {
+                "f219e47a-00f6-4796-91a3-10e6f3af5fe6": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "7d71445f-8d50-445e-b3af-48eefa728aee",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "2c30a75d-c992-44bb-8ea8-540c1aa455cd"
+              ],
+              "restrictedFields": {
+                "2c30a75d-c992-44bb-8ea8-540c1aa455cd": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "927bc8f6-4ffe-493e-8d98-4ae5e110ced6",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "842c6ae7-f28e-4aef-bf37-bf903399ef91"
+              ],
+              "restrictedFields": {
+                "842c6ae7-f28e-4aef-bf37-bf903399ef91": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "8baf6c81-15a5-4a73-9157-18bf57f67905",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "cd0b6439-e6dd-4187-85ae-44fb28a5104f"
+              ],
+              "restrictedFields": {
+                "cd0b6439-e6dd-4187-85ae-44fb28a5104f": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "8f53e227-405f-4df9-b53d-9adbf3742d6d",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "7df0a876-c596-45db-851d-c85c953859aa"
+              ],
+              "restrictedFields": {
+                "7df0a876-c596-45db-851d-c85c953859aa": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "da41db81-219a-47a5-bdeb-4e5fd2772964",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "9488dabc-80b9-4da9-930e-0bc5af7a91a6"
+              ],
+              "restrictedFields": {
+                "9488dabc-80b9-4da9-930e-0bc5af7a91a6": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "d3c90d38-798a-4db5-95ce-6c328779d89f",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "083edb8c-1acb-4205-b2eb-baa56f66b2b4"
+              ],
+              "restrictedFields": {
+                "083edb8c-1acb-4205-b2eb-baa56f66b2b4": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "cb2deb05-36c2-4b43-a54c-ea2c6db23adc"
+              ],
+              "restrictedFields": {
+                "cb2deb05-36c2-4b43-a54c-ea2c6db23adc": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "66282134-01a3-4f75-a900-ec33ba4bcc98",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "8cbbb4e9-cd2d-4371-a472-6073be63a91a"
+              ],
+              "restrictedFields": {
+                "8cbbb4e9-cd2d-4371-a472-6073be63a91a": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "9a73418d-815c-4185-88c4-1dbe0e60d61c",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "38dad373-9885-4657-b473-6de18d8c8ad6",
+                "46020b20-9171-48fc-bec8-b20b0b393358",
+                "9d8df0dd-88bb-4bd4-93a2-5bac183e768f",
+                "24c343e2-20f4-4abd-8d4f-75273cda1287",
+                "7790a973-13f3-4ec2-81ca-49a81be344e5",
+                "d307a593-06f5-4f94-8539-58664c632bf6",
+                "4b26ef7a-fbe7-4748-9695-79376feb5d17",
+                "4fa91375-200b-46d5-b5df-0b6c020d646f",
+                "cd9dee6e-4034-43f5-ae1e-2d458321b751",
+                "2e24b579-1b6d-44d6-aee1-e97cdbd6f111",
+                "847eae19-c0f6-42c2-91d3-9ce39b968b37",
+                "7d9086ec-3ae3-4d10-aff1-3e33d35f3d73",
+                "c19f0dec-bcb1-4bd9-af91-10237e29f891",
+                "85c163a1-291c-4e68-84dd-e199b12ca31b",
+                "13780801-b29c-47a7-b82f-75c548000f8a",
+                "6f6a05e5-2ecf-4899-a9a5-270514683a0a",
+                "363224a1-5ede-455f-9497-e66eef8b1db1",
+                "87d5b240-d36d-4637-807f-426d8479f849",
+                "07a84209-3d94-43b7-809f-af6b79b2729d",
+                "ced90558-cfa7-4ba3-97ad-5bf9b2e6c1fe",
+                "cb57af94-cdc4-458e-9a11-e0b4deaa0492",
+                "86238de9-5ec8-42f4-8d98-70fc998f0f39",
+                "6e3b44ba-88bc-4a9e-bacc-fb578aba5398",
+                "c1d9369a-b8b0-4143-b569-22c1b9266e97",
+                "82ec8662-029f-4d17-b7d8-69799ff76464",
+                "ee2d365e-bc76-442d-a966-d4ec98ee7b60",
+                "faaff09c-71cd-4d2d-a7c2-82617de83ad9"
+              ],
+              "restrictedFields": {
+                "38dad373-9885-4657-b473-6de18d8c8ad6": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "46020b20-9171-48fc-bec8-b20b0b393358": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "9d8df0dd-88bb-4bd4-93a2-5bac183e768f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "24c343e2-20f4-4abd-8d4f-75273cda1287": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "7790a973-13f3-4ec2-81ca-49a81be344e5": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "d307a593-06f5-4f94-8539-58664c632bf6": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4b26ef7a-fbe7-4748-9695-79376feb5d17": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4fa91375-200b-46d5-b5df-0b6c020d646f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "cd9dee6e-4034-43f5-ae1e-2d458321b751": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "2e24b579-1b6d-44d6-aee1-e97cdbd6f111": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "847eae19-c0f6-42c2-91d3-9ce39b968b37": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "7d9086ec-3ae3-4d10-aff1-3e33d35f3d73": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c19f0dec-bcb1-4bd9-af91-10237e29f891": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "85c163a1-291c-4e68-84dd-e199b12ca31b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "13780801-b29c-47a7-b82f-75c548000f8a": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6f6a05e5-2ecf-4899-a9a5-270514683a0a": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "363224a1-5ede-455f-9497-e66eef8b1db1": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "87d5b240-d36d-4637-807f-426d8479f849": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "07a84209-3d94-43b7-809f-af6b79b2729d": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ced90558-cfa7-4ba3-97ad-5bf9b2e6c1fe": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "cb57af94-cdc4-458e-9a11-e0b4deaa0492": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "86238de9-5ec8-42f4-8d98-70fc998f0f39": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6e3b44ba-88bc-4a9e-bacc-fb578aba5398": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c1d9369a-b8b0-4143-b569-22c1b9266e97": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "82ec8662-029f-4d17-b7d8-69799ff76464": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ee2d365e-bc76-442d-a966-d4ec98ee7b60": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "faaff09c-71cd-4d2d-a7c2-82617de83ad9": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "2cd12f17-fab9-4770-befa-9b8c60306e98",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "1e2a00a1-a63b-46d8-ba20-9e327ae5f97b"
+              ],
+              "restrictedFields": {
+                "1e2a00a1-a63b-46d8-ba20-9e327ae5f97b": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "52f0281d-4861-4081-b094-97025f8c6d8c",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "1d874c12-ba9c-4027-975d-d085c654d542"
+              ],
+              "restrictedFields": {
+                "1d874c12-ba9c-4027-975d-d085c654d542": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "2f06a112-394d-4c22-968c-3a585b328ef4",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "a6944139-dc05-4391-9a55-3db4d6aeefd0"
+              ],
+              "restrictedFields": {
+                "a6944139-dc05-4391-9a55-3db4d6aeefd0": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "c23fd58b-b64d-403d-a216-76be18fe23d8",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "8e9945cd-5b84-4354-9166-f4e594992796"
+              ],
+              "restrictedFields": {
+                "8e9945cd-5b84-4354-9166-f4e594992796": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "e3192478-fe47-4545-b39b-a8ae8b9a35d9",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "e6cb51ac-e7bf-44e4-b40e-66f92393774c",
+                "796ff7c1-bba9-45e1-96b4-5ec3f97f58a7",
+                "e6149521-1601-4253-baa6-a0f782c12044",
+                "fcf27e35-4b6f-4a34-aa91-f0bf1a26d619",
+                "ff94b8df-6b0a-4ba2-a47f-b294070fb692",
+                "549c2bb4-cf39-4e00-a9ac-490eb706156e",
+                "89924617-c00f-4ac2-adb4-8d5dacf1b4c2",
+                "4060d451-e69e-4060-b9ea-b8f97110e36f",
+                "3172e4be-30bc-470a-96d0-f58ce28b449b"
+              ],
+              "restrictedFields": {
+                "e6cb51ac-e7bf-44e4-b40e-66f92393774c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "796ff7c1-bba9-45e1-96b4-5ec3f97f58a7": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "e6149521-1601-4253-baa6-a0f782c12044": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "fcf27e35-4b6f-4a34-aa91-f0bf1a26d619": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ff94b8df-6b0a-4ba2-a47f-b294070fb692": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "549c2bb4-cf39-4e00-a9ac-490eb706156e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "89924617-c00f-4ac2-adb4-8d5dacf1b4c2": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4060d451-e69e-4060-b9ea-b8f97110e36f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "3172e4be-30bc-470a-96d0-f58ce28b449b": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "6b13242f-5c35-4b4f-bedd-9fa8f2a33d2a",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "492008a6-e95f-481c-9076-1d2b55152514"
+              ],
+              "restrictedFields": {
+                "492008a6-e95f-481c-9076-1d2b55152514": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "890659fa-f479-4d8e-a0f5-4693c1f8f5f7",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "6a8d5925-f760-487f-af4e-7001cad9cad7",
+                "6ab13acd-b56a-49fe-aefb-09b58c944bf0",
+                "58566211-cf8d-4296-9c63-5339830e6458",
+                "fda17a71-c2e9-4e02-b4f8-9d9205fc41ab",
+                "4f15c0d9-0f52-493d-8c16-402427e03dab",
+                "d5d88e3a-e39d-45c1-8937-7cd3ec57ec65",
+                "7f14d8b5-bbd3-4c32-9b44-5717ab4f1a38",
+                "3c41fb35-2a36-42d6-ad5d-95d1417c9c3d",
+                "e9f435e4-1f7e-42d1-9960-489a5f170316",
+                "6314b0cd-eafa-491e-940c-a8f49111e5d9",
+                "b98db82a-8d87-4e8b-bfa0-8337aa2628cd",
+                "2e183185-eec6-4459-bbd8-2712084a63c1",
+                "5cd2b48f-ad59-4829-9ddc-1e7aa5e776eb",
+                "f70d22cf-c22f-4dc7-9394-1e1260dcc436"
+              ],
+              "restrictedFields": {
+                "6a8d5925-f760-487f-af4e-7001cad9cad7": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6ab13acd-b56a-49fe-aefb-09b58c944bf0": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "58566211-cf8d-4296-9c63-5339830e6458": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "fda17a71-c2e9-4e02-b4f8-9d9205fc41ab": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4f15c0d9-0f52-493d-8c16-402427e03dab": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "d5d88e3a-e39d-45c1-8937-7cd3ec57ec65": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "7f14d8b5-bbd3-4c32-9b44-5717ab4f1a38": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "3c41fb35-2a36-42d6-ad5d-95d1417c9c3d": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "e9f435e4-1f7e-42d1-9960-489a5f170316": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6314b0cd-eafa-491e-940c-a8f49111e5d9": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "b98db82a-8d87-4e8b-bfa0-8337aa2628cd": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "2e183185-eec6-4459-bbd8-2712084a63c1": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5cd2b48f-ad59-4829-9ddc-1e7aa5e776eb": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f70d22cf-c22f-4dc7-9394-1e1260dcc436": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "014de895-8cea-44d7-b195-3164204098b9",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "25a9eeec-3619-424a-843d-3577261fc630",
+                "997f3fef-24ff-4c59-9e98-e9108ed4499e",
+                "c852b8a5-fcc3-4c0a-8d89-8edd1e38b50a",
+                "6c60972e-13d6-450b-9707-0857e7e85404",
+                "222b0a96-55b0-4efc-9849-f735dd35efd6",
+                "8124a27b-3c11-461b-afbd-e2f84d2cec64",
+                "0e3e3b9e-90f3-4dd5-bf18-2b3a9070a134",
+                "266308e5-75a7-42d8-b89e-0383ffc241b8",
+                "6ff7a809-32ca-4f41-8662-91b0c0747b1f",
+                "95de4cc4-19e0-4866-bba1-024e436e8d82",
+                "14adad82-ceec-4214-ba6d-596aac4f5d32",
+                "8554d6d1-59e2-426c-9bbc-51fe24767817",
+                "75e5df24-de4c-4a56-818c-c30ae2284961",
+                "11b723f8-08db-490a-b926-0b0774528ef2",
+                "56ba9b58-a183-4468-a49b-b47152135763",
+                "37e1c22e-9baf-4665-930b-2bcd86addd65",
+                "5a2d6e6a-4e42-419e-bc78-bf9d6aa373f4",
+                "591cbae7-627b-4a3a-acb7-50c79b4c728e",
+                "61c714de-a120-49ed-9ad4-86bcecbaa5f7"
+              ],
+              "restrictedFields": {
+                "25a9eeec-3619-424a-843d-3577261fc630": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "997f3fef-24ff-4c59-9e98-e9108ed4499e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c852b8a5-fcc3-4c0a-8d89-8edd1e38b50a": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6c60972e-13d6-450b-9707-0857e7e85404": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "222b0a96-55b0-4efc-9849-f735dd35efd6": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "8124a27b-3c11-461b-afbd-e2f84d2cec64": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "0e3e3b9e-90f3-4dd5-bf18-2b3a9070a134": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "266308e5-75a7-42d8-b89e-0383ffc241b8": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6ff7a809-32ca-4f41-8662-91b0c0747b1f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "95de4cc4-19e0-4866-bba1-024e436e8d82": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "14adad82-ceec-4214-ba6d-596aac4f5d32": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "8554d6d1-59e2-426c-9bbc-51fe24767817": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "75e5df24-de4c-4a56-818c-c30ae2284961": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "11b723f8-08db-490a-b926-0b0774528ef2": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "56ba9b58-a183-4468-a49b-b47152135763": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "37e1c22e-9baf-4665-930b-2bcd86addd65": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5a2d6e6a-4e42-419e-bc78-bf9d6aa373f4": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "591cbae7-627b-4a3a-acb7-50c79b4c728e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "61c714de-a120-49ed-9ad4-86bcecbaa5f7": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "dbaf8372-c0f6-4625-aad8-e1f2012026f4",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "62dede3e-8688-4ad5-a644-533a93c10a1e"
+              ],
+              "restrictedFields": {
+                "62dede3e-8688-4ad5-a644-533a93c10a1e": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "57448f48-fdf9-482a-a32e-5cce6b53b994",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "b58bcee5-5f0b-494b-8967-f9e7f027603c",
+                "ed34c3db-de42-4c08-93ff-38dc0693bdca",
+                "876b14ed-8522-4b9c-9a0f-e6b41c415401",
+                "f682a3ed-3baf-433e-a353-f590b16bb23b",
+                "c8fffa41-f0fe-4e7a-a54d-459d9f880201",
+                "2095f358-de16-4ed4-a366-72c0bef8de7e",
+                "8ba31abd-85fa-409d-afbe-d1587f32daca",
+                "a6799e9f-4ec4-40d5-80d9-ca0781c12195"
+              ],
+              "restrictedFields": {
+                "b58bcee5-5f0b-494b-8967-f9e7f027603c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ed34c3db-de42-4c08-93ff-38dc0693bdca": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "876b14ed-8522-4b9c-9a0f-e6b41c415401": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f682a3ed-3baf-433e-a353-f590b16bb23b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "c8fffa41-f0fe-4e7a-a54d-459d9f880201": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "2095f358-de16-4ed4-a366-72c0bef8de7e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "8ba31abd-85fa-409d-afbe-d1587f32daca": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "a6799e9f-4ec4-40d5-80d9-ca0781c12195": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "4273c288-172c-49dc-99b7-7e52830a684f",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "7aee59e4-01eb-4f01-afe3-c4f97eb6095e"
+              ],
+              "restrictedFields": {
+                "7aee59e4-01eb-4f01-afe3-c4f97eb6095e": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "ab542967-15f7-4101-b9ce-64f9d15726cc",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [],
+              "restrictedFields": {},
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "f7074915-ee14-437d-98d7-9a45fc33fd87",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "0188e62b-52bd-4025-a24f-6351c2a2ce95",
+                "958de262-b9d8-4a54-b208-46b78021b607",
+                "9de92dbc-47a6-4c57-85b6-084e574f9317",
+                "04e794f8-3e65-4688-8a31-68931d77bbfe",
+                "0cd0f3ea-1016-4bc0-ba58-e121c00b982a",
+                "9bd2d194-e54b-4844-9622-c6a7433f674c",
+                "a98787ba-b27d-4efe-b376-dff15c909525",
+                "19899bb5-5d00-4eff-91cc-948ae4280faf",
+                "cd94e15b-1f31-400c-9f2d-a272baddf1e0",
+                "6482aeeb-2b63-4895-a7ee-1a866956e3e5",
+                "aa982df6-1a37-4bbe-978f-7cf4719ceec0",
+                "146e4c18-6baf-4a72-8920-0cf101187f06"
+              ],
+              "restrictedFields": {
+                "0188e62b-52bd-4025-a24f-6351c2a2ce95": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "958de262-b9d8-4a54-b208-46b78021b607": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "9de92dbc-47a6-4c57-85b6-084e574f9317": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "04e794f8-3e65-4688-8a31-68931d77bbfe": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "0cd0f3ea-1016-4bc0-ba58-e121c00b982a": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "9bd2d194-e54b-4844-9622-c6a7433f674c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "a98787ba-b27d-4efe-b376-dff15c909525": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "19899bb5-5d00-4eff-91cc-948ae4280faf": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "cd94e15b-1f31-400c-9f2d-a272baddf1e0": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6482aeeb-2b63-4895-a7ee-1a866956e3e5": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "aa982df6-1a37-4bbe-978f-7cf4719ceec0": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "146e4c18-6baf-4a72-8920-0cf101187f06": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "f2dfc114-009f-476c-a1b7-573a324e9fe2",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "0eeb4854-1bd6-42b9-96bf-47c852e5484c"
+              ],
+              "restrictedFields": {
+                "0eeb4854-1bd6-42b9-96bf-47c852e5484c": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "fdf357b6-0398-4e1c-8967-4f9f49fc922a",
+              "canCreateAllRecords": true,
+              "canReadAllRecords": true,
+              "canUpdateAllRecords": true,
+              "canSoftDeleteAllRecords": true,
+              "canDestroyAllRecords": true,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "460a5d60-abb6-4029-9dbe-2293c64fbedb",
+                "3dd1515c-de5d-417b-99cc-3ef29b15281c",
+                "4696351f-f02a-42ed-9f94-c9b56bfe3c20",
+                "168d9b94-6916-4fea-a859-a44e3eed9a2b",
+                "cac614bc-5e86-4c10-b5e2-12c5e61b2ffd",
+                "970fd168-ad0b-47ae-a60c-fc0d2eaf2ee0",
+                "9ae2186b-f0a5-43d2-88fe-3e906ba45ca4",
+                "5b9bad75-7c4e-4d3e-b8bf-f317ea9233dd",
+                "1a63a28d-8619-42f3-a67b-fe4c02a8840a",
+                "2b0682d7-ade5-48bc-9f6b-1af7607de332",
+                "5af2eca6-e795-47bb-becd-02456e53f300",
+                "6e780a0e-5763-43d2-80e8-e98172490659",
+                "f0977a55-8f13-42a3-9764-aae8c19b9320",
+                "f12347c7-df37-47db-9a70-9c559cb0641d",
+                "52587f22-ed2d-4d2c-930b-2133dfa964bd",
+                "1cfeca7e-57ad-4e9d-a02d-0ea206241eb7",
+                "100adbdc-8dda-4951-a6a0-f356145bfbad",
+                "117728a1-adb3-46a0-87bf-fbc56a8bf8ef",
+                "bbd40bc5-74df-4bdc-8764-c67dc6e3c430",
+                "8b790f1d-30c5-486f-acf5-500a82374fc4",
+                "030464f1-9e8e-4bb3-ab31-4211dedebfa0",
+                "4d1aeb3b-1308-4f32-bad0-8e4ef838b799",
+                "1e41aba2-2916-4872-8058-7607953e1c3c",
+                "ba44fac8-9a60-47ba-a723-991cd46754e5",
+                "46c71548-e695-42e9-87bf-65e8b1e226a9",
+                "51bc3d4c-2ac5-4ee3-92e1-7c4cfaa9822b",
+                "3af0e479-e865-484a-83f0-53b3396d91b3",
+                "995c9d77-b97f-4155-897c-6059f311987f",
+                "321876a6-e24e-4a33-abd6-d9a567c1c95b",
+                "5934151f-7817-41cb-96f5-f08088e58891",
+                "83832068-22f2-4470-8d99-e27b452e498c",
+                "951c30d0-eab5-4fc3-85c3-5e2b52357c4e",
+                "fe7beaba-871c-45d2-a652-53840c4f0c3a"
+              ],
+              "restrictedFields": {
+                "460a5d60-abb6-4029-9dbe-2293c64fbedb": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "3dd1515c-de5d-417b-99cc-3ef29b15281c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4696351f-f02a-42ed-9f94-c9b56bfe3c20": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "168d9b94-6916-4fea-a859-a44e3eed9a2b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "cac614bc-5e86-4c10-b5e2-12c5e61b2ffd": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "970fd168-ad0b-47ae-a60c-fc0d2eaf2ee0": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "9ae2186b-f0a5-43d2-88fe-3e906ba45ca4": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5b9bad75-7c4e-4d3e-b8bf-f317ea9233dd": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "1a63a28d-8619-42f3-a67b-fe4c02a8840a": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "2b0682d7-ade5-48bc-9f6b-1af7607de332": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5af2eca6-e795-47bb-becd-02456e53f300": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "6e780a0e-5763-43d2-80e8-e98172490659": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f0977a55-8f13-42a3-9764-aae8c19b9320": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "f12347c7-df37-47db-9a70-9c559cb0641d": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "52587f22-ed2d-4d2c-930b-2133dfa964bd": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "1cfeca7e-57ad-4e9d-a02d-0ea206241eb7": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "100adbdc-8dda-4951-a6a0-f356145bfbad": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "117728a1-adb3-46a0-87bf-fbc56a8bf8ef": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "bbd40bc5-74df-4bdc-8764-c67dc6e3c430": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "8b790f1d-30c5-486f-acf5-500a82374fc4": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "030464f1-9e8e-4bb3-ab31-4211dedebfa0": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "4d1aeb3b-1308-4f32-bad0-8e4ef838b799": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "1e41aba2-2916-4872-8058-7607953e1c3c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "ba44fac8-9a60-47ba-a723-991cd46754e5": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "46c71548-e695-42e9-87bf-65e8b1e226a9": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "51bc3d4c-2ac5-4ee3-92e1-7c4cfaa9822b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "3af0e479-e865-484a-83f0-53b3396d91b3": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "995c9d77-b97f-4155-897c-6059f311987f": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "321876a6-e24e-4a33-abd6-d9a567c1c95b": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "5934151f-7817-41cb-96f5-f08088e58891": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "83832068-22f2-4470-8d99-e27b452e498c": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "951c30d0-eab5-4fc3-85c3-5e2b52357c4e": {
+                  "canRead": null,
+                  "canUpdate": false
+                },
+                "fe7beaba-871c-45d2-a652-53840c4f0c3a": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            },
+            {
+              "objectMetadataId": "92416cc8-621b-435d-a3f3-29750eb58d93",
+              "canCreateAllRecords": false,
+              "canReadAllRecords": false,
+              "canUpdateAllRecords": false,
+              "canSoftDeleteAllRecords": false,
+              "canDestroyAllRecords": false,
+              "unreadableFields": [],
+              "uneditableFields": [
+                "d1e80394-c9fd-4bcf-9b3e-7b95eb4ff981"
+              ],
+              "restrictedFields": {
+                "d1e80394-c9fd-4bcf-9b3e-7b95eb4ff981": {
+                  "canRead": null,
+                  "canUpdate": false
+                }
+              },
+              "rowLevelRecordsPermissions": null,
+              "__typename": "ObjectRecordsPermissions"
+            }
+          ],
+          "twoFactorAuthenticationMethodSummary": [],
+          "__typename": "UserWorkspace"
+        },
+        "currentWorkspace": {
+          "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "displayName": "Acme",
+          "logo": "",
+          "inviteHash": "<redacted-invite-hash-1>",
+          "allowImpersonation": true,
+          "activationStatus": "ACTIVE",
+          "isPublicInviteLinkEnabled": true,
+          "isCampaignClickTrackingEnabled": false,
+          "isCampaignOpenTrackingEnabled": false,
+          "workspaceDiscoverability": "PUBLIC",
+          "isGoogleAuthEnabled": false,
+          "isMicrosoftAuthEnabled": false,
+          "isPasswordAuthEnabled": true,
+          "isGoogleAuthBypassEnabled": false,
+          "isMicrosoftAuthBypassEnabled": false,
+          "isPasswordAuthBypassEnabled": false,
+          "subdomain": "smart-crimson-monkey",
+          "customDomain": null,
+          "hasValidSignedEnterpriseKey": false,
+          "hasValidEnterpriseValidityToken": false,
+          "workspaceCustomApplication": {
+            "id": "ba8a1847-53b2-4f35-b39a-01802658806a",
+            "__typename": "Application"
+          },
+          "installedApplications": [
+            {
+              "id": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+              "name": "Standard",
+              "description": null,
+              "universalIdentifier": "20202020-64aa-4b6f-b003-9c74b97cee20",
+              "logoUrl": null,
+              "createdAt": "2026-11-12T11:19:46.024Z",
+              "__typename": "Application"
+            },
+            {
+              "id": "ba8a1847-53b2-4f35-b39a-01802658806a",
+              "name": "Custom",
+              "description": null,
+              "universalIdentifier": "ba8a1847-53b2-4f35-b39a-01802658806a",
+              "logoUrl": null,
+              "createdAt": "2026-11-12T11:19:45.725Z",
+              "__typename": "Application"
+            }
+          ],
+          "isCustomDomainEnabled": false,
+          "iframeMediaPermissions": [],
+          "workspaceUrls": {
+            "subdomainUrl": "http://localhost:3001/",
+            "customUrl": null,
+            "__typename": "WorkspaceUrls"
+          },
+          "featureFlags": [
+            {
+              "key": "IS_REST_METADATA_API_NEW_FORMAT_DIRECT",
+              "value": true,
+              "__typename": "FeatureFlag"
+            },
+            {
+              "key": "IS_AGENT_CHAT_DIRECT_MESSAGE_IDENTITY_ENABLED",
+              "value": true,
+              "__typename": "FeatureFlag"
+            },
+            {
+              "key": "IS_MESSAGE_ATTACHMENT_ENABLED",
+              "value": true,
+              "__typename": "FeatureFlag"
+            },
+            {
+              "key": "IS_GETTING_STARTED_ENABLED",
+              "value": true,
+              "__typename": "FeatureFlag"
+            }
+          ],
+          "currentBillingSubscription": null,
+          "billingCustomer": null,
+          "billingSubscriptions": [],
+          "billingEntitlements": [
+            {
+              "key": "SSO",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "CUSTOM_DOMAIN",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "RLS",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "RECORD_SHARING",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "AUDIT_LOGS",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "USAGE_LIMIT",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "VALIDATION_RULES",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "CUSTOM_ROLES",
+              "value": true,
+              "__typename": "BillingEntitlement"
+            }
+          ],
+          "isTrialAvailable": false,
+          "workspaceMembersCount": 1,
+          "defaultRole": {
+            "id": "a922d654-a498-4614-8bbd-36e695f510d9",
+            "label": "Member",
+            "description": "Member role",
+            "icon": "IconUser",
+            "canUpdateAllSettings": false,
+            "canAccessAllTools": true,
+            "canAccessAllAgentChatChannels": true,
+            "isEditable": true,
+            "canReadAllObjectRecords": true,
+            "canUpdateAllObjectRecords": true,
+            "canSoftDeleteAllObjectRecords": true,
+            "canDestroyAllObjectRecords": true,
+            "canBeAssignedToUsers": true,
+            "canBeAssignedToAgents": false,
+            "canBeAssignedToApiKeys": false,
+            "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+            "universalIdentifier": "20202020-a8a6-47ae-be79-e3601fa46a8e",
+            "__typename": "Role"
+          },
+          "aiChatModelTier": "fast",
+          "aiChatAssistantProfile": {
+            "displayName": "Ada",
+            "avatarShape": "circle",
+            "avatarColor": "blue",
+            "avatarFace": "default",
+            "isAvatarAnimated": true,
+            "__typename": "AiChatAssistantProfile"
+          },
+          "aiChatDirectMessageAssistantMode": "MENTION_ONLY",
+          "aiChatInboxAssistantMode": "AUTOMATIC",
+          "aiAgentModelTier": "fast",
+          "isAutoModelSelectionEnabled": true,
+          "aiModelIdByTier": {},
+          "aiAdditionalInstructions": null,
+          "aiDataPolicy": null,
+          "isTwoFactorAuthenticationEnforced": false,
+          "trashRetentionDays": 14,
+          "eventLogRetentionDays": 3,
+          "editableProfileFields": [
+            "email",
+            "profilePicture",
+            "firstName",
+            "lastName"
+          ],
+          "isInternalMessagesImportEnabled": false,
+          "__typename": "Workspace"
+        },
+        "availableWorkspaces": {
+          "availableWorkspacesForSignIn": [
+            {
+              "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+              "displayName": "Acme",
+              "loginToken": "<redacted-jwt-57>",
+              "inviteHash": null,
+              "personalInviteToken": null,
+              "workspaceUrls": {
+                "subdomainUrl": "http://localhost:3001/",
+                "customUrl": null,
+                "__typename": "WorkspaceUrls"
+              },
+              "logo": "",
+              "sso": [],
+              "__typename": "AvailableWorkspace"
+            }
+          ],
+          "availableWorkspacesForSignUp": [],
+          "__typename": "AvailableWorkspaces"
+        },
+        "userVars": {},
+        "__typename": "User"
+      }
+    }
+  },
+  "repeatCount": 1
+}

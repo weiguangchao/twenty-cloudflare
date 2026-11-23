@@ -1,0 +1,37 @@
+{
+  "flow": "record-detail",
+  "sequence": 129,
+  "capturedAt": "2026-11-12T11:31:16.383Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOnePerson",
+  "query": "query FindOnePerson($objectRecordId: UUID!) {\n  person(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    emails {\n      primaryEmail\n      additionalEmails\n      __typename\n    }\n    id\n  }\n}",
+  "variables": {
+    "objectRecordId": "07394720-1c4d-4703-ace2-241ba54ea531"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "person": {
+        "__typename": "Person",
+        "emails": {
+          "primaryEmail": "person7@example0.com",
+          "additionalEmails": [],
+          "__typename": "Emails"
+        },
+        "id": "07394720-1c4d-4703-ace2-241ba54ea531"
+      }
+    }
+  },
+  "repeatCount": 1
+}

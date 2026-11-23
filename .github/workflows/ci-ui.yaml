@@ -21,11 +21,11 @@ jobs:
       files: |
         package.json
         yarn.lock
-        packages/twenty-ui/**
-        packages/twenty-shared/**
-        packages/twenty-oxlint-rules/scripts/check-unlocalized-strings.mjs
-        packages/twenty-oxlint-rules/scripts/filter-unlocalized-strings.mjs
-        packages/twenty-oxlint-rules/.oxlintrc.i18n.json
+        packages/crm-ui/**
+        packages/crm-shared/**
+        packages/crm-oxlint-rules/scripts/check-unlocalized-strings.mjs
+        packages/crm-oxlint-rules/scripts/filter-unlocalized-strings.mjs
+        packages/crm-oxlint-rules/.oxlintrc.i18n.json
   ui-task:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'
@@ -42,13 +42,13 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
       - name: Run ${{ matrix.task }}
-        run: npx nx ${{ matrix.task }} twenty-ui
+        run: npx nx ${{ matrix.task }} crm-ui
       - name: Check generated theme artifacts are up to date
         if: matrix.task == 'lint'
-        run: npx nx generate:check twenty-ui
+        run: npx nx generate:check crm-ui
       - name: Check optional peer dependencies stay out of the root entry point
         if: matrix.task == 'pack-size'
-        run: npx nx test:package twenty-ui
+        run: npx nx test:package crm-ui
   ui-sb-build:
     needs: changed-files-check
     if: >-
@@ -65,12 +65,12 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
       - name: Build storybook
-        run: npx nx storybook:build twenty-ui
+        run: npx nx storybook:build crm-ui
       - name: Upload storybook build
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: storybook-twenty-ui
-          path: packages/twenty-ui/storybook-static
+          name: storybook-crm-ui
+          path: packages/crm-ui/storybook-static
           retention-days: 1
   ui-sb-test:
     timeout-minutes: 30
@@ -88,14 +88,14 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
       - name: Build dependencies
-        run: npx nx build twenty-shared
+        run: npx nx build crm-shared
       - name: Cache storybook vitest dependency optimizer
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: |
-            packages/twenty-ui/node_modules/.cache/storybook
-            packages/twenty-ui/node_modules/.vite
-          key: v4-storybook-vitest-deps-twenty-ui-${{ hashFiles('yarn.lock', 'packages/twenty-ui/vite.config.ts', 'packages/twenty-ui/vitest.config.ts', 'packages/twenty-ui/.storybook/main.ts') }}
+            packages/crm-ui/node_modules/.cache/storybook
+            packages/crm-ui/node_modules/.vite
+          key: v4-storybook-vitest-deps-crm-ui-${{ hashFiles('yarn.lock', 'packages/crm-ui/vite.config.ts', 'packages/crm-ui/vitest.config.ts', 'packages/crm-ui/.storybook/main.ts') }}
       - name: Resolve Playwright version
         id: playwright-version
         run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
@@ -108,10 +108,10 @@ jobs:
       - name: Install Playwright
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          cd packages/twenty-ui
+          cd packages/crm-ui
           npx playwright install chromium
       - name: Run storybook tests
-        run: npx nx storybook:test:no-coverage twenty-ui
+        run: npx nx storybook:test:no-coverage crm-ui
   ci-ui-status-check:
     if: always() && !cancelled()
     timeout-minutes: 5

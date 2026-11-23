@@ -1,0 +1,94 @@
+{
+  "flow": "views",
+  "sequence": 93,
+  "capturedAt": "2026-11-12T12:07:34.558Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "c913a39a-c981-4ab0-ac8e-92ff520ad988",
+      "queryId": "record-table-empty-company",
+      "operationSignature": {
+        "objectNameSingular": "company",
+        "variables": {
+          "filter": {
+            "or": [
+              {
+                "address": {
+                  "addressStreet1": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressStreet2": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressCity": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressState": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressCountry": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              },
+              {
+                "address": {
+                  "addressPostcode": {
+                    "ilike": "%San Francisco%"
+                  }
+                }
+              }
+            ]
+          },
+          "orderBy": [
+            {
+              "annualRevenue": {
+                "amountMicros": "DescNullsLast"
+              }
+            },
+            {
+              "position": "AscNullsFirst"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

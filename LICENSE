@@ -2,7 +2,7 @@ This project is a modified version of Twenty, an open-source CRM by
 Twenty.com, PBC, changed in 2026 to run on Cloudflare Workers. It is licensed
 under the GNU Affero General Public License v3.0 (AGPLv3) below.
 
-The twenty-shared and twenty-ui packages are licensed under the MIT license
+The crm-shared and crm-ui packages are licensed under the MIT license
 instead, as indicated by the license field of their package.json and the
 LICENSE file at the package root.
 

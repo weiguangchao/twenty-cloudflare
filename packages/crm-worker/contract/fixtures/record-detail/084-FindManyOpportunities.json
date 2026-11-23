@@ -1,0 +1,77 @@
+{
+  "flow": "record-detail",
+  "sequence": 84,
+  "capturedAt": "2026-11-12T11:29:23.673Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyOpportunities",
+  "query": "query FindManyOpportunities($filter: OpportunityFilterInput, $orderBy: [OpportunityOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  opportunities(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "position": {
+            "gt": 5
+          }
+        },
+        {
+          "and": [
+            {
+              "position": {
+                "eq": 5
+              }
+            },
+            {
+              "id": {
+                "gt": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "opportunities": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Opportunity",
+              "id": "9543adcf-ec03-44e2-9233-3c2d3ebae98a"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NTQzYWRjZi1lYzAzLTQ0ZTItOTIzMy0zYzJkM2ViYWU5OGEifQ",
+            "__typename": "OpportunityEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NTQzYWRjZi1lYzAzLTQ0ZTItOTIzMy0zYzJkM2ViYWU5OGEifQ",
+          "endCursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI5NTQzYWRjZi1lYzAzLTQ0ZTItOTIzMy0zYzJkM2ViYWU5OGEifQ",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "OpportunityConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

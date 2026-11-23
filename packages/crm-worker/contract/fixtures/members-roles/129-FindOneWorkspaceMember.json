@@ -1,0 +1,40 @@
+{
+  "flow": "members-roles",
+  "sequence": 129,
+  "capturedAt": "2026-11-12T12:21:46.007Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneWorkspaceMember",
+  "query": "query FindOneWorkspaceMember($objectRecordId: UUID!) {\n  workspaceMember(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    avatarUrl\n    id\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    userEmail\n    userId\n  }\n}",
+  "variables": {
+    "objectRecordId": "40cc477c-a642-42f9-914a-b1fd5efc9ffe"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "workspaceMember": {
+        "__typename": "WorkspaceMember",
+        "avatarUrl": "",
+        "id": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+        "name": {
+          "firstName": "Bob",
+          "lastName": "Member",
+          "__typename": "FullName"
+        },
+        "userEmail": "bob@example.com",
+        "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80"
+      }
+    }
+  },
+  "repeatCount": 2
+}

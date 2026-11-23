@@ -1,0 +1,13 @@
+{
+  "name": "crm-oxlint-rules",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@oxlint/plugins": "^1.51.0",
+    "crm-shared": "workspace:*",
+    "eslint": "^9.39.4",
+    "eslint-plugin-lingui": "^0.16.0",
+    "oxlint": "^1.51.0",
+    "typescript": "^5.9.3"
+  }
+}

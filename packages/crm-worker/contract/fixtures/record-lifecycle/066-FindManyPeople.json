@@ -1,0 +1,74 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 66,
+  "capturedAt": "2026-11-12T11:35:36.148Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "ac15dca9-2891-4f48-ab02-81365d943d55",
+          "e7132b7f-cac9-45ff-b249-e173df411702",
+          "babadf91-49fa-41a4-ace9-242b0e0afe33"
+        ]
+      }
+    },
+    "limit": 30
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "ac15dca9-2891-4f48-ab02-81365d943d55"
+            },
+            "cursor": "eyJpZCI6ImFjMTVkY2E5LTI4OTEtNGY0OC1hYjAyLTgxMzY1ZDk0M2Q1NSJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "babadf91-49fa-41a4-ace9-242b0e0afe33"
+            },
+            "cursor": "eyJpZCI6ImJhYmFkZjkxLTQ5ZmEtNDFhNC1hY2U5LTI0MmIwZTBhZmUzMyJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "e7132b7f-cac9-45ff-b249-e173df411702"
+            },
+            "cursor": "eyJpZCI6ImU3MTMyYjdmLWNhYzktNDVmZi1iMjQ5LWUxNzNkZjQxMTcwMiJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6ImFjMTVkY2E5LTI4OTEtNGY0OC1hYjAyLTgxMzY1ZDk0M2Q1NSJ9",
+          "endCursor": "eyJpZCI6ImU3MTMyYjdmLWNhYzktNDVmZi1iMjQ5LWUxNzNkZjQxMTcwMiJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 3,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,44 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 46,
+  "capturedAt": "2026-11-12T11:20:39.816Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "730ff266-174b-4b08-be5f-aeed067be6fd",
+      "queryId": "record-table-virtualized-company",
+      "operationSignature": {
+        "objectNameSingular": "company",
+        "variables": {
+          "filter": {},
+          "orderBy": [
+            {
+              "position": "AscNullsFirst"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-2>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

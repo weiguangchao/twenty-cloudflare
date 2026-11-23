@@ -1,0 +1,32 @@
+{
+  "flow": "files",
+  "sequence": 86,
+  "capturedAt": "2026-11-12T12:12:24.953Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneInitiative",
+  "query": "query FindOneInitiative($objectRecordId: UUID!) {\n  initiative(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    phase\n  }\n}",
+  "variables": {
+    "objectRecordId": "11b170fb-3229-40e9-8c51-e42cf4a3d12f"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "initiative": {
+        "__typename": "Initiative",
+        "phase": "EXECUTION"
+      }
+    }
+  },
+  "repeatCount": 1
+}

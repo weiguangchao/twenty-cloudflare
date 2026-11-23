@@ -1,0 +1,194 @@
+{
+  "flow": "auth-signup-onboarding",
+  "sequence": 10,
+  "capturedAt": "2026-11-12T11:19:45.986Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetCurrentUser",
+  "query": "query GetCurrentUser {\n  currentUser {\n    ...UserQueryFragment\n    __typename\n  }\n}\n\nfragment WorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  colorScheme\n  uiScale\n  openRecordIn\n  avatarUrl\n  locale\n  userEmail\n  userId\n  userWorkspaceId\n  timeZone\n  dateFormat\n  timeFormat\n  calendarStartDay\n  numberFormat\n  __typename\n}\n\nfragment PartialWorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  avatarUrl\n  userEmail\n  userId\n  userWorkspaceId\n  __typename\n}\n\nfragment DeletedWorkspaceMemberQueryFragment on DeletedWorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  avatarUrl\n  userEmail\n  __typename\n}\n\nfragment RowLevelPermissionPredicateFragment on RowLevelPermissionPredicate {\n  id\n  fieldMetadataId\n  relationFieldMetadataId\n  objectMetadataId\n  operand\n  subFieldName\n  workspaceMemberFieldMetadataId\n  workspaceMemberSubFieldName\n  rowLevelPermissionPredicateGroupId\n  positionInRowLevelPermissionPredicateGroup\n  roleId\n  value\n  __typename\n}\n\nfragment RowLevelPermissionPredicateGroupFragment on RowLevelPermissionPredicateGroup {\n  id\n  parentRowLevelPermissionPredicateGroupId\n  logicalOperator\n  positionInRowLevelPermissionPredicateGroup\n  canReadRecords\n  canUpdateRecords\n  canSoftDeleteRecords\n  canDestroyRecords\n  roleId\n  objectMetadataId\n  __typename\n}\n\nfragment WorkspaceUrlsFragment on WorkspaceUrls {\n  subdomainUrl\n  customUrl\n  __typename\n}\n\nfragment BillingSubscriptionSchedulePhaseItemFragment on BillingSubscriptionSchedulePhaseItem {\n  price\n  quantity\n  __typename\n}\n\nfragment BillingSubscriptionSchedulePhaseFragment on BillingSubscriptionSchedulePhase {\n  start_date\n  end_date\n  items {\n    ...BillingSubscriptionSchedulePhaseItemFragment\n    __typename\n  }\n  __typename\n}\n\nfragment CurrentBillingSubscriptionFragment on BillingSubscription {\n  id\n  status\n  interval\n  metadata\n  currentPeriodEnd\n  cancelAt\n  collectionMethod\n  hasUserCredits\n  phases {\n    ...BillingSubscriptionSchedulePhaseFragment\n    __typename\n  }\n  billingSubscriptionItems {\n    id\n    hasReachedCurrentPeriodCap\n    quantity\n    stripePriceId\n    unitAmount\n    creditAmount\n    billingProduct {\n      name\n      description\n      images\n      metadata {\n        productKey\n        planKey\n        priceUsageBased\n        isLegacy\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nfragment BillingSubscriptionFragment on BillingSubscription {\n  id\n  status\n  metadata\n  cancelAt\n  phases {\n    ...BillingSubscriptionSchedulePhaseFragment\n    __typename\n  }\n  __typename\n}\n\nfragment RoleFragment on Role {\n  id\n  label\n  description\n  icon\n  canUpdateAllSettings\n  canAccessAllTools\n  canAccessAllAgentChatChannels\n  isEditable\n  canReadAllObjectRecords\n  canUpdateAllObjectRecords\n  canSoftDeleteAllObjectRecords\n  canDestroyAllObjectRecords\n  canBeAssignedToUsers\n  canBeAssignedToAgents\n  canBeAssignedToApiKeys\n  applicationId\n  universalIdentifier\n  __typename\n}\n\nfragment AvailableWorkspaceFragment on AvailableWorkspace {\n  id\n  displayName\n  loginToken\n  inviteHash\n  personalInviteToken\n  workspaceUrls {\n    subdomainUrl\n    customUrl\n    __typename\n  }\n  logo\n  sso {\n    type\n    id\n    issuer\n    name\n    status\n    __typename\n  }\n  __typename\n}\n\nfragment AvailableWorkspacesFragment on AvailableWorkspaces {\n  availableWorkspacesForSignIn {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  availableWorkspacesForSignUp {\n    ...AvailableWorkspaceFragment\n    __typename\n  }\n  __typename\n}\n\nfragment UserQueryFragment on User {\n  id\n  firstName\n  lastName\n  email\n  hasPassword\n  canAccessFullAdminPanel\n  canImpersonate\n  supportUserHash\n  onboardingStatus\n  previousOnboardingStatus\n  isWorkspaceCreator\n  workspaceMember {\n    ...WorkspaceMemberQueryFragment\n    __typename\n  }\n  workspaceMembers {\n    ...PartialWorkspaceMemberQueryFragment\n    __typename\n  }\n  deletedWorkspaceMembers {\n    ...DeletedWorkspaceMemberQueryFragment\n    __typename\n  }\n  currentUserWorkspace {\n    id\n    permissionFlags\n    isImpersonating\n    objectRecordsPermissions {\n      objectMetadataId\n      canCreateAllRecords\n      canReadAllRecords\n      canUpdateAllRecords\n      canSoftDeleteAllRecords\n      canDestroyAllRecords\n      unreadableFields\n      uneditableFields\n      restrictedFields\n      rowLevelRecordsPermissions {\n        canCreateRecords\n        canReadRecords\n        canUpdateRecords\n        canSoftDeleteRecords\n        canDestroyRecords\n        predicates {\n          ...RowLevelPermissionPredicateFragment\n          __typename\n        }\n        predicateGroups {\n          ...RowLevelPermissionPredicateGroupFragment\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    twoFactorAuthenticationMethodSummary {\n      twoFactorAuthenticationMethodId\n      status\n      strategy\n      __typename\n    }\n    __typename\n  }\n  currentWorkspace {\n    id\n    displayName\n    logo\n    inviteHash\n    allowImpersonation\n    activationStatus\n    isPublicInviteLinkEnabled\n    isCampaignClickTrackingEnabled\n    isCampaignOpenTrackingEnabled\n    workspaceDiscoverability\n    isGoogleAuthEnabled\n    isMicrosoftAuthEnabled\n    isPasswordAuthEnabled\n    isGoogleAuthBypassEnabled\n    isMicrosoftAuthBypassEnabled\n    isPasswordAuthBypassEnabled\n    subdomain\n    customDomain\n    hasValidSignedEnterpriseKey\n    hasValidEnterpriseValidityToken\n    workspaceCustomApplication {\n      id\n      __typename\n    }\n    installedApplications {\n      id\n      name\n      description\n      universalIdentifier\n      logoUrl\n      createdAt\n      __typename\n    }\n    isCustomDomainEnabled\n    iframeMediaPermissions {\n      origin\n      microphone\n      camera\n      __typename\n    }\n    workspaceUrls {\n      ...WorkspaceUrlsFragment\n      __typename\n    }\n    featureFlags {\n      key\n      value\n      __typename\n    }\n    currentBillingSubscription {\n      ...CurrentBillingSubscriptionFragment\n      __typename\n    }\n    billingCustomer {\n      id\n      hasPaymentMethod\n      userCreditsFallback\n      __typename\n    }\n    billingSubscriptions {\n      ...BillingSubscriptionFragment\n      __typename\n    }\n    billingEntitlements {\n      key\n      value\n      __typename\n    }\n    isTrialAvailable\n    workspaceMembersCount\n    defaultRole {\n      ...RoleFragment\n      __typename\n    }\n    aiChatModelTier\n    aiChatAssistantProfile {\n      displayName\n      avatarShape\n      avatarColor\n      avatarFace\n      isAvatarAnimated\n      __typename\n    }\n    aiChatDirectMessageAssistantMode\n    aiChatInboxAssistantMode\n    aiAgentModelTier\n    isAutoModelSelectionEnabled\n    aiModelIdByTier\n    aiAdditionalInstructions\n    aiDataPolicy {\n      requiredDataResidencyRegion\n      isZeroDataRetentionRequired\n      isProductImprovementDataSharingEnabled\n      __typename\n    }\n    isTwoFactorAuthenticationEnforced\n    trashRetentionDays\n    eventLogRetentionDays\n    editableProfileFields\n    isInternalMessagesImportEnabled\n    __typename\n  }\n  availableWorkspaces {\n    ...AvailableWorkspacesFragment\n    __typename\n  }\n  userVars\n  __typename\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-2>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "4118",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "currentUser": {
+        "id": "15956aaa-a89b-4eaa-8c7f-819c65fa735b",
+        "firstName": "",
+        "lastName": "",
+        "email": "alice@example.com",
+        "hasPassword": true,
+        "canAccessFullAdminPanel": true,
+        "canImpersonate": true,
+        "supportUserHash": null,
+        "onboardingStatus": "WORKSPACE_ACTIVATION",
+        "previousOnboardingStatus": null,
+        "isWorkspaceCreator": true,
+        "workspaceMember": null,
+        "workspaceMembers": [],
+        "deletedWorkspaceMembers": [],
+        "currentUserWorkspace": {
+          "id": "d1d5fe35-2a66-4dc7-8ef1-6b127a75f8ae",
+          "permissionFlags": [],
+          "isImpersonating": false,
+          "objectRecordsPermissions": [],
+          "twoFactorAuthenticationMethodSummary": [],
+          "__typename": "UserWorkspace"
+        },
+        "currentWorkspace": {
+          "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "displayName": "Acme",
+          "logo": "",
+          "inviteHash": "<redacted-invite-hash-1>",
+          "allowImpersonation": true,
+          "activationStatus": "PENDING_CREATION",
+          "isPublicInviteLinkEnabled": true,
+          "isCampaignClickTrackingEnabled": false,
+          "isCampaignOpenTrackingEnabled": false,
+          "workspaceDiscoverability": "PUBLIC",
+          "isGoogleAuthEnabled": false,
+          "isMicrosoftAuthEnabled": false,
+          "isPasswordAuthEnabled": true,
+          "isGoogleAuthBypassEnabled": false,
+          "isMicrosoftAuthBypassEnabled": false,
+          "isPasswordAuthBypassEnabled": false,
+          "subdomain": "smart-crimson-monkey",
+          "customDomain": null,
+          "hasValidSignedEnterpriseKey": false,
+          "hasValidEnterpriseValidityToken": false,
+          "workspaceCustomApplication": null,
+          "installedApplications": [
+            {
+              "id": "ba8a1847-53b2-4f35-b39a-01802658806a",
+              "name": "Custom",
+              "description": null,
+              "universalIdentifier": "ba8a1847-53b2-4f35-b39a-01802658806a",
+              "logoUrl": null,
+              "createdAt": "2026-11-12T11:19:45.725Z",
+              "__typename": "Application"
+            }
+          ],
+          "isCustomDomainEnabled": false,
+          "iframeMediaPermissions": [],
+          "workspaceUrls": {
+            "subdomainUrl": "http://localhost:3001/",
+            "customUrl": null,
+            "__typename": "WorkspaceUrls"
+          },
+          "featureFlags": [],
+          "currentBillingSubscription": null,
+          "billingCustomer": null,
+          "billingSubscriptions": [],
+          "billingEntitlements": [
+            {
+              "key": "SSO",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "CUSTOM_DOMAIN",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "RLS",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "RECORD_SHARING",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "AUDIT_LOGS",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "USAGE_LIMIT",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "VALIDATION_RULES",
+              "value": false,
+              "__typename": "BillingEntitlement"
+            },
+            {
+              "key": "CUSTOM_ROLES",
+              "value": true,
+              "__typename": "BillingEntitlement"
+            }
+          ],
+          "isTrialAvailable": false,
+          "workspaceMembersCount": 1,
+          "defaultRole": null,
+          "aiChatModelTier": "fast",
+          "aiChatAssistantProfile": {
+            "displayName": "Ada",
+            "avatarShape": "circle",
+            "avatarColor": "blue",
+            "avatarFace": "default",
+            "isAvatarAnimated": true,
+            "__typename": "AiChatAssistantProfile"
+          },
+          "aiChatDirectMessageAssistantMode": "MENTION_ONLY",
+          "aiChatInboxAssistantMode": "AUTOMATIC",
+          "aiAgentModelTier": "fast",
+          "isAutoModelSelectionEnabled": true,
+          "aiModelIdByTier": {},
+          "aiAdditionalInstructions": null,
+          "aiDataPolicy": null,
+          "isTwoFactorAuthenticationEnforced": false,
+          "trashRetentionDays": 14,
+          "eventLogRetentionDays": 3,
+          "editableProfileFields": [
+            "email",
+            "profilePicture",
+            "firstName",
+            "lastName"
+          ],
+          "isInternalMessagesImportEnabled": false,
+          "__typename": "Workspace"
+        },
+        "availableWorkspaces": {
+          "availableWorkspacesForSignIn": [
+            {
+              "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+              "displayName": "Acme",
+              "loginToken": "<redacted-jwt-6>",
+              "inviteHash": null,
+              "personalInviteToken": null,
+              "workspaceUrls": {
+                "subdomainUrl": "http://localhost:3001/",
+                "customUrl": null,
+                "__typename": "WorkspaceUrls"
+              },
+              "logo": "",
+              "sso": [],
+              "__typename": "AvailableWorkspace"
+            }
+          ],
+          "availableWorkspacesForSignUp": [],
+          "__typename": "AvailableWorkspaces"
+        },
+        "userVars": {
+          "ONBOARDING_INVITE_TEAM_PENDING": true,
+          "ONBOARDING_CONNECT_ACCOUNT_PENDING": true
+        },
+        "__typename": "User"
+      }
+    }
+  },
+  "repeatCount": 1
+}

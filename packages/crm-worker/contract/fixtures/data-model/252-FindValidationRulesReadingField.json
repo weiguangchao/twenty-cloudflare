@@ -1,0 +1,30 @@
+{
+  "flow": "data-model",
+  "sequence": 252,
+  "capturedAt": "2026-11-12T11:56:04.279Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindValidationRulesReadingField",
+  "query": "query FindValidationRulesReadingField($fieldMetadataId: UUID!) {\n  validationRulesReadingField(fieldMetadataId: $fieldMetadataId) {\n    ...ValidationRuleFragment\n    __typename\n  }\n}\n\nfragment ValidationRuleFragment on ValidationRule {\n  id\n  objectMetadataId\n  name\n  description\n  icon\n  errorFieldMetadataId\n  expression\n  message\n  isActive\n  __typename\n}",
+  "variables": {
+    "fieldMetadataId": "85fae2f3-8bca-4acf-8f5a-319aa253ee46"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "43",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "validationRulesReadingField": []
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,45 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 55,
+  "capturedAt": "2026-11-12T11:39:40.284Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyAttachments",
+  "query": "query FindManyAttachments($filter: AttachmentFilterInput, $orderBy: [AttachmentOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  attachments(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        file {\n          fileId\n          label\n          extension\n          url\n          __typename\n        }\n        fileCategory\n        fullPath\n        id\n        name\n        position\n        targetAgentChatThreadId\n        targetCompanyId\n        targetDashboardId\n        targetMessageId\n        targetNoteId\n        targetOpportunityId\n        targetPersonId\n        targetTaskId\n        targetWorkflowId\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "targetTaskId": {
+        "eq": "37a24a59-f068-49ba-ade8-31307a8061d5"
+      }
+    },
+    "limit": 60
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "attachments": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "AttachmentConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

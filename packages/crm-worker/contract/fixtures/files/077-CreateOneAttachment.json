@@ -1,0 +1,115 @@
+{
+  "flow": "files",
+  "sequence": 77,
+  "capturedAt": "2026-11-12T12:11:38.343Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "CreateOneAttachment",
+  "query": "mutation CreateOneAttachment($input: AttachmentCreateInput!) {\n  createAttachment(data: $input) {\n    __typename\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    file {\n      fileId\n      label\n      extension\n      url\n      __typename\n    }\n    fileCategory\n    fullPath\n    id\n    name\n    position\n    targetAgentChatThread {\n      __typename\n      id\n      title\n    }\n    targetAgentChatThreadId\n    targetCompany {\n      __typename\n      domainName {\n        primaryLinkUrl\n        primaryLinkLabel\n        secondaryLinks {\n          label\n          url\n          __typename\n        }\n        __typename\n      }\n      id\n      name\n    }\n    targetCompanyId\n    targetDashboard {\n      __typename\n      id\n      title\n    }\n    targetDashboardId\n    targetInitiative {\n      __typename\n      id\n      name\n    }\n    targetInitiativeId\n    targetMessage {\n      __typename\n      id\n      subject\n    }\n    targetMessageId\n    targetNote {\n      __typename\n      id\n      title\n    }\n    targetNoteId\n    targetOpportunity {\n      __typename\n      id\n      name\n    }\n    targetOpportunityId\n    targetPerson {\n      __typename\n      avatarFile {\n        fileId\n        label\n        extension\n        url\n        __typename\n      }\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    targetPersonId\n    targetTask {\n      __typename\n      id\n      title\n    }\n    targetTaskId\n    targetWorkflow {\n      __typename\n      id\n      name\n    }\n    targetWorkflowId\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "input": {
+      "name": "proposal.txt",
+      "targetCompanyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+      "file": [
+        {
+          "fileId": "9062968d-4f32-4e86-acf5-4825f45665a1",
+          "label": "proposal.txt"
+        }
+      ],
+      "id": "176b5cbd-778c-4f0a-b0d9-58ff9ac2c35a"
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "createAttachment": {
+        "__typename": "Attachment",
+        "createdAt": "2026-11-12T12:11:38.234Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "file": [
+          {
+            "label": "proposal.txt",
+            "fileId": "9062968d-4f32-4e86-acf5-4825f45665a1",
+            "extension": ".txt",
+            "url": "http://localhost:3000/file/files-field/9062968d-4f32-4e86-acf5-4825f45665a1?token=<redacted-jwt-110>"
+          }
+        ],
+        "fileCategory": "OTHER",
+        "fullPath": "",
+        "id": "176b5cbd-778c-4f0a-b0d9-58ff9ac2c35a",
+        "name": "proposal.txt",
+        "position": 0,
+        "targetAgentChatThread": null,
+        "targetAgentChatThreadId": null,
+        "targetCompany": {
+          "__typename": "Company",
+          "domainName": {
+            "primaryLinkUrl": "airbnb.com",
+            "primaryLinkLabel": "",
+            "secondaryLinks": [
+              {
+                "label": "News",
+                "url": "news.airbnb.com",
+                "__typename": "SecondaryLink"
+              }
+            ],
+            "__typename": "Links"
+          },
+          "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+          "name": "Airbnb"
+        },
+        "targetCompanyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "targetDashboard": null,
+        "targetDashboardId": null,
+        "targetInitiative": null,
+        "targetInitiativeId": null,
+        "targetMessage": null,
+        "targetMessageId": null,
+        "targetNote": null,
+        "targetNoteId": null,
+        "targetOpportunity": null,
+        "targetOpportunityId": null,
+        "targetPerson": null,
+        "targetPersonId": null,
+        "targetTask": null,
+        "targetTaskId": null,
+        "targetWorkflow": null,
+        "targetWorkflowId": null,
+        "updatedAt": "2026-11-12T12:11:38.234Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        }
+      }
+    }
+  },
+  "repeatCount": 1
+}

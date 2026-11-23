@@ -1,0 +1,55 @@
+{
+  "flow": "files",
+  "sequence": 98,
+  "capturedAt": "2026-11-12T12:12:24.961Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyInitiatives",
+  "query": "query FindManyInitiatives($filter: InitiativeFilterInput, $orderBy: [InitiativeOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  initiatives(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {},
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "initiatives": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Initiative",
+              "id": "11b170fb-3229-40e9-8c51-e42cf4a3d12f"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6MCwiaWQiOiIxMWIxNzBmYi0zMjI5LTQwZTktOGM1MS1lNDJjZjRhM2QxMmYifQ",
+            "__typename": "InitiativeEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6MCwiaWQiOiIxMWIxNzBmYi0zMjI5LTQwZTktOGM1MS1lNDJjZjRhM2QxMmYifQ",
+          "endCursor": "eyJwb3NpdGlvbiI6MCwiaWQiOiIxMWIxNzBmYi0zMjI5LTQwZTktOGM1MS1lNDJjZjRhM2QxMmYifQ",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 1,
+        "__typename": "InitiativeConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

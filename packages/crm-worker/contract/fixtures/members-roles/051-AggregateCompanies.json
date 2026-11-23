@@ -1,0 +1,77 @@
+{
+  "flow": "members-roles",
+  "sequence": 51,
+  "capturedAt": "2026-11-12T12:19:19.921Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateCompanies",
+  "query": "query AggregateCompanies($filter: CompanyFilterInput) {\n  companies(filter: $filter) {\n    countNotEmptyAddress\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "address": {
+            "addressStreet1": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressStreet2": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressCity": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressState": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressCountry": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        },
+        {
+          "address": {
+            "addressPostcode": {
+              "ilike": "%San Francisco%"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "countNotEmptyAddress": 4,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 4
+}

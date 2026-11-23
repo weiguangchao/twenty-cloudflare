@@ -1,0 +1,108 @@
+{
+  "flow": "members-roles",
+  "sequence": 91,
+  "capturedAt": "2026-11-12T12:20:30.856Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneWorkspaceMember",
+  "query": "query FindOneWorkspaceMember($objectRecordId: UUID!) {\n  workspaceMember(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    accountOwnerForCompanies {\n      edges {\n        node {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreadParticipants {\n      edges {\n        node {\n          __typename\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedAgentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedTasks {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    avatarUrl\n    blocklist {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarStartDay\n    colorScheme\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    dateFormat\n    deletedAt\n    id\n    jobTitle\n    locale\n    messageParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    numberFormat\n    openRecordIn\n    ownedOpportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    timeFormat\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    timeZone\n    uiScale\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    userEmail\n    userId\n  }\n}",
+  "variables": {
+    "objectRecordId": "40cc477c-a642-42f9-914a-b1fd5efc9ffe"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-5>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "workspaceMember": {
+        "__typename": "WorkspaceMember",
+        "accountOwnerForCompanies": {
+          "edges": [],
+          "__typename": "CompanyConnection"
+        },
+        "agentChatThreadParticipants": {
+          "edges": [],
+          "__typename": "AgentChatThreadParticipantConnection"
+        },
+        "agentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedAgentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedTasks": {
+          "edges": [],
+          "__typename": "TaskConnection"
+        },
+        "avatarUrl": "",
+        "blocklist": {
+          "edges": [],
+          "__typename": "BlocklistConnection"
+        },
+        "calendarEventParticipants": {
+          "edges": [],
+          "__typename": "CalendarEventParticipantConnection"
+        },
+        "calendarStartDay": 7,
+        "colorScheme": "System",
+        "createdAt": "2026-11-12T12:20:11.630Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "dateFormat": "SYSTEM",
+        "deletedAt": null,
+        "id": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+        "jobTitle": "",
+        "locale": "zh-CN",
+        "messageParticipants": {
+          "edges": [],
+          "__typename": "MessageParticipantConnection"
+        },
+        "name": {
+          "firstName": "Bob",
+          "lastName": "Member",
+          "__typename": "FullName"
+        },
+        "numberFormat": "SYSTEM",
+        "openRecordIn": "SIDE_PANEL",
+        "ownedOpportunities": {
+          "edges": [],
+          "__typename": "OpportunityConnection"
+        },
+        "position": 0,
+        "timeFormat": "SYSTEM",
+        "timelineActivities": {
+          "edges": [],
+          "__typename": "TimelineActivityConnection"
+        },
+        "timeZone": "system",
+        "uiScale": "Default",
+        "updatedAt": "2026-11-12T12:20:28.289Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "userEmail": "bob@example.com",
+        "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80"
+      }
+    }
+  },
+  "repeatCount": 1
+}

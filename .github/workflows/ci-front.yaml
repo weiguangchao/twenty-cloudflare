@@ -27,10 +27,10 @@ jobs:
       files: |
         package.json
         yarn.lock
-        packages/twenty-front/**
-        packages/twenty-oxlint-rules/**
-        packages/twenty-ui/**
-        packages/twenty-shared/**
+        packages/crm-front/**
+        packages/crm-oxlint-rules/**
+        packages/crm-ui/**
+        packages/crm-shared/**
   front-sb-build:
     needs: changed-files-check
     if: >-
@@ -55,14 +55,14 @@ jobs:
       - name: Diagnostic disk space issue
         run: df -h
       - name: Front / Write .env
-        run: npx nx reset:env twenty-front
+        run: npx nx reset:env crm-front
       - name: Front / Build storybook
-        run: npx nx storybook:build twenty-front
+        run: npx nx storybook:build crm-front
       - name: Upload storybook build
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: storybook-static
-          path: packages/twenty-front/storybook-static
+          path: packages/crm-front/storybook-static
           retention-days: 1
       - name: Save storybook build cache
         uses: ./.github/actions/save-cache
@@ -173,14 +173,14 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
       - name: Front / Write .env
-        run: npx nx reset:env twenty-front
+        run: npx nx reset:env crm-front
       - name: Build frontend
-        run: npx nx build twenty-front
+        run: npx nx build crm-front
       # - name: Upload frontend build artifact
       #   uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       #   with:
       #     name: frontend-build
-      #     path: packages/twenty-front/build
+      #     path: packages/crm-front/build
       #     retention-days: 1
   ci-front-status-check:
     if: always() && !cancelled()

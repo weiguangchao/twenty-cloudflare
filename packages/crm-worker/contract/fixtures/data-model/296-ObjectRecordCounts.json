@@ -1,0 +1,244 @@
+{
+  "flow": "data-model",
+  "sequence": 296,
+  "capturedAt": "2026-11-12T11:58:52.617Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "ObjectRecordCounts",
+  "query": "query ObjectRecordCounts {\n  objectRecordCounts {\n    objectNamePlural\n    totalCount\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "3818",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "objectRecordCounts": [
+        {
+          "objectNamePlural": "campaignDeliveries",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "initiatives",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "blocklists",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "notes",
+          "totalCount": 1,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "tasks",
+          "totalCount": 1,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "workflowAutomatedTriggers",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "workspaceMembers",
+          "totalCount": 1,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "dashboards",
+          "totalCount": 1,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messages",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "calendarChannelEventAssociations",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "workflowRuns",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "taskTargets",
+          "totalCount": 1,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "workflows",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "timelineActivities",
+          "totalCount": 103,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageThreads",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "calendarEvents",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "opportunities",
+          "totalCount": 6,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageChannelMessageAssociationMessageFolders",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "calendarEventParticipants",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageParticipants",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageChannelMessageAssociations",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "companies",
+          "totalCount": 5,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "attachments",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "workflowVersions",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "people",
+          "totalCount": 95,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "noteTargets",
+          "totalCount": 2,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentMessageParts",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "shortLinks",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageCampaigns",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageListMembers",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageThreadTargets",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageSuppressions",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "accessGroups",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentMessages",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentTurns",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "calendarEventTargets",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentMessageReactions",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "messageLists",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentChatThreadTargets",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentChatThreadParticipants",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "callRecordings",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "agentChatThreads",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        },
+        {
+          "objectNamePlural": "recordShares",
+          "totalCount": 0,
+          "__typename": "ObjectRecordCount"
+        }
+      ]
+    }
+  },
+  "repeatCount": 2
+}

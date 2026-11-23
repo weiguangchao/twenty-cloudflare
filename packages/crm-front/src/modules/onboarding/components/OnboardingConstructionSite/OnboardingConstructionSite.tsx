@@ -1,0 +1,77 @@
+import { styled } from '@linaria/react';
+import { useRef } from 'react';
+
+import { currentUserState } from '@/auth/states/currentUserState';
+import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
+import { isCurrentUserLoadedState } from '@/auth/states/isCurrentUserLoadedState';
+import { clientConfigApiStatusState } from '@/client-config/states/clientConfigApiStatusState';
+import { OnboardingConstructionSiteCanvasEffect } from '@/onboarding/components/OnboardingConstructionSite/OnboardingConstructionSiteCanvasEffect';
+import { getOnboardingConstructionSiteStage } from '@/onboarding/components/OnboardingConstructionSite/getOnboardingConstructionSiteStage';
+import { getIsLastOnboardingStep } from '@/onboarding/utils/getIsLastOnboardingStep';
+import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
+import { themeCssVariables, useThemeColorScheme } from 'crm-ui/theme';
+import { useMediaQuery } from 'crm-ui/utilities';
+import { doNotTranslate } from 'crm-shared/i18n';
+
+const StyledCanvas = styled.canvas`
+  animation: onboardingConstructionSiteIn 0.8s ease-out both;
+  color: color-mix(
+    in srgb,
+    ${themeCssVariables.border.color.medium} 50%,
+    ${themeCssVariables.border.color.strong} 50%
+  );
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  @keyframes onboardingConstructionSiteIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+export const OnboardingConstructionSite = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const currentUser = useAtomStateValue(currentUserState);
+  const currentWorkspace = useAtomStateValue(currentWorkspaceState);
+  const isClientConfigLoaded = useAtomStateValue(
+    clientConfigApiStatusState,
+  ).isLoadedOnce;
+  const isCurrentUserLoaded = useAtomStateValue(isCurrentUserLoadedState);
+  const colorScheme = useThemeColorScheme();
+  const prefersReducedMotion = useMediaQuery(
+    doNotTranslate('(prefers-reduced-motion: reduce)'),
+  );
+
+  if (!isClientConfigLoaded || !isCurrentUserLoaded) {
+    return null;
+  }
+
+  const { stageIndex } = getOnboardingConstructionSiteStage({
+    onboardingStatus: currentUser?.onboardingStatus,
+    isLastOnboardingStep: getIsLastOnboardingStep({
+      currentUser,
+      currentWorkspace,
+    }),
+  });
+
+  return (
+    <>
+      <StyledCanvas ref={canvasRef} aria-hidden="true" />
+      <OnboardingConstructionSiteCanvasEffect
+        canvasRef={canvasRef}
+        stageIndex={stageIndex}
+        colorScheme={colorScheme}
+        prefersReducedMotion={prefersReducedMotion}
+      />
+    </>
+  );
+};

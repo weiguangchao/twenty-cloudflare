@@ -1,0 +1,24 @@
+{
+  "flow": "record-detail",
+  "sequence": 18,
+  "capturedAt": "2026-11-12T11:27:12.250Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindMinimalMetadata",
+  "query": "query FindMinimalMetadata {\n  minimalMetadata {\n    objectMetadataItems {\n      id\n      nameSingular\n      namePlural\n      labelSingular\n      labelPlural\n      icon\n      isActive\n      isSystem\n      isRemote\n      __typename\n    }\n    views {\n      id\n      type\n      key\n      objectMetadataId\n      __typename\n    }\n    collectionHashes {\n      collectionName\n      hash\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "25299",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "responseRef": "auth-signup-onboarding/021-FindMinimalMetadata.json",
+  "repeatCount": 5
+}

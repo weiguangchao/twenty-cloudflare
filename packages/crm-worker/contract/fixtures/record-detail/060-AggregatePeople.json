@@ -1,0 +1,38 @@
+{
+  "flow": "record-detail",
+  "sequence": 60,
+  "capturedAt": "2026-11-12T11:28:57.964Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregatePeople",
+  "query": "query AggregatePeople($filter: PersonFilterInput) {\n  people(filter: $filter) {\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "companyId": {
+        "in": [
+          "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+        ]
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "totalCount": 2,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

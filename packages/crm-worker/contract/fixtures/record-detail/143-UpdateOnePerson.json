@@ -1,0 +1,163 @@
+{
+  "flow": "record-detail",
+  "sequence": 143,
+  "capturedAt": "2026-11-12T11:31:33.471Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "UpdateOnePerson",
+  "query": "mutation UpdateOnePerson($idToUpdate: UUID!, $input: PersonUpdateInput!) {\n  updatePerson(id: $idToUpdate, data: $input) {\n    __typename\n    agentChatThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          thread {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    avatarFile {\n      fileId\n      label\n      extension\n      url\n      __typename\n    }\n    avatarUrl\n    calendarEventParticipants {\n      edges {\n        node {\n          __typename\n          calendarEvent {\n            __typename\n            id\n            title\n          }\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventTargets {\n      edges {\n        node {\n          __typename\n          calendarEvent {\n            __typename\n            id\n            title\n          }\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    company {\n      __typename\n      domainName {\n        primaryLinkUrl\n        primaryLinkLabel\n        secondaryLinks {\n          label\n          url\n          __typename\n        }\n        __typename\n      }\n      id\n      name\n    }\n    companyId\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    emails {\n      primaryEmail\n      additionalEmails\n      __typename\n    }\n    id\n    jobTitle\n    linkedinLink {\n      primaryLinkUrl\n      primaryLinkLabel\n      secondaryLinks {\n        label\n        url\n        __typename\n      }\n      __typename\n    }\n    listMemberships {\n      edges {\n        node {\n          __typename\n          id\n          list {\n            __typename\n            id\n            name\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    messageParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n          message {\n            __typename\n            id\n            subject\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    messageThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          messageThread {\n            __typename\n            id\n            subject\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    noteTargets {\n      edges {\n        node {\n          __typename\n          id\n          note {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    phones {\n      primaryPhoneNumber\n      primaryPhoneCountryCode\n      primaryPhoneCallingCode\n      additionalPhones {\n        number\n        callingCode\n        countryCode\n        __typename\n      }\n      __typename\n    }\n    pointOfContactForOpportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    taskTargets {\n      edges {\n        node {\n          __typename\n          id\n          task {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "idToUpdate": "07394720-1c4d-4703-ace2-241ba54ea531",
+    "input": {
+      "name": {
+        "firstName": "Zoey",
+        "lastName": "Test007"
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "updatePerson": {
+        "__typename": "Person",
+        "agentChatThreadTargets": {
+          "edges": [],
+          "__typename": "AgentChatThreadTargetConnection"
+        },
+        "attachments": {
+          "edges": [],
+          "__typename": "AttachmentConnection"
+        },
+        "avatarFile": null,
+        "avatarUrl": "",
+        "calendarEventParticipants": {
+          "edges": [],
+          "__typename": "CalendarEventParticipantConnection"
+        },
+        "calendarEventTargets": {
+          "edges": [],
+          "__typename": "CalendarEventTargetConnection"
+        },
+        "company": {
+          "__typename": "Company",
+          "domainName": {
+            "primaryLinkUrl": "airbnb.com",
+            "primaryLinkLabel": "",
+            "secondaryLinks": [],
+            "__typename": "Links"
+          },
+          "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+          "name": "Airbnb"
+        },
+        "companyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "createdAt": "2026-11-12T11:22:53.379Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "emails": {
+          "primaryEmail": "person7@example0.com",
+          "additionalEmails": [],
+          "__typename": "Emails"
+        },
+        "id": "07394720-1c4d-4703-ace2-241ba54ea531",
+        "jobTitle": "Staff Engineer",
+        "linkedinLink": {
+          "primaryLinkUrl": "",
+          "primaryLinkLabel": "",
+          "secondaryLinks": [],
+          "__typename": "Links"
+        },
+        "listMemberships": {
+          "edges": [],
+          "__typename": "MessageListMemberConnection"
+        },
+        "messageParticipants": {
+          "edges": [],
+          "__typename": "MessageParticipantConnection"
+        },
+        "messageThreadTargets": {
+          "edges": [],
+          "__typename": "MessageThreadTargetConnection"
+        },
+        "name": {
+          "firstName": "Zoey",
+          "lastName": "Test007",
+          "__typename": "FullName"
+        },
+        "noteTargets": {
+          "edges": [],
+          "__typename": "NoteTargetConnection"
+        },
+        "phones": {
+          "primaryPhoneNumber": "612345678",
+          "primaryPhoneCountryCode": "FR",
+          "primaryPhoneCallingCode": "+33",
+          "additionalPhones": [],
+          "__typename": "Phones"
+        },
+        "pointOfContactForOpportunities": {
+          "edges": [],
+          "__typename": "OpportunityConnection"
+        },
+        "position": -7,
+        "taskTargets": {
+          "edges": [],
+          "__typename": "TaskTargetConnection"
+        },
+        "timelineActivities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "ebb13cf8-af1c-4a7f-9d8f-745830827319",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "77a75a86-8018-462f-a7bb-8a8cf1a2ae84",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            }
+          ],
+          "__typename": "TimelineActivityConnection"
+        },
+        "updatedAt": "2026-11-12T11:31:33.167Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        }
+      }
+    }
+  },
+  "repeatCount": 1
+}

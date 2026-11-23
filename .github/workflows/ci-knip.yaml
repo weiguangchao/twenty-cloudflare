@@ -25,10 +25,10 @@ jobs:
         nx.json
         package.json
         yarn.lock
-        packages/twenty-front/**
-        packages/twenty-oxlint-rules/**
-        packages/twenty-shared/**
-        packages/twenty-ui/**
+        packages/crm-front/**
+        packages/crm-oxlint-rules/**
+        packages/crm-shared/**
+        packages/crm-ui/**
   knip:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'

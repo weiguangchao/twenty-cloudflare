@@ -9,8 +9,8 @@
 所有阶段共同遵守的规则：
 
 1. **不修改旧服务端。** 它在整个迁移期间只作为行为参考，最后一个阶段统一删除。
-2. **新代码只放在 `packages/twenty-worker`**（阶段 1 创建）。它可以依赖 `twenty-shared`，不能 import 旧服务端的任何文件。需要旧服务端里的逻辑时，读懂后在新包里重写。
-3. **前端改动最小化。** 优先让后端满足前端现有契约。只有当后端模拟的代价明显大于改前端时才改 `twenty-front`，并把改动追加到第 9 节的"前端改动记录"。
+2. **新代码只放在 `packages/crm-worker`**（阶段 1 创建）。它可以依赖 `crm-shared`，不能 import 旧服务端的任何文件。需要旧服务端里的逻辑时，读懂后在新包里重写。
+3. **前端改动最小化。** 优先让后端满足前端现有契约。只有当后端模拟的代价明显大于改前端时才改 `crm-front`，并把改动追加到第 9 节的"前端改动记录"。
 4. **文档和事实不符时，改文档。** 本文的文件路径和行号是在提交 `f7fed3afdc7` 上由自动调研收集的，平台限制是 2026-11-12 查的。依赖某条事实之前先自己核实，发现不对就在同一次改动里更正本文。
 5. **遵守仓库根目录 `CLAUDE.md` 的代码规范。**
 6. **完成后更新下面的进度表**，并在自己阶段末尾的"实施记录"里写下偏离方案的地方和原因。
@@ -45,7 +45,7 @@
 - **只做核心 CRM。** 范围见第 2 节。
 - **没有线上数据需要迁移。** 全新部署，不需要数据导入工具，不需要兼容旧的 ID、token、密码哈希。
 - **不再跟进上游 CRM。** 不需要保持和上游可合并，可以删减前端和 API。
-- **前端 `twenty-front` 保留**，新后端实现它实际用到的那部分 GraphQL 契约。
+- **前端 `crm-front` 保留**，新后端实现它实际用到的那部分 GraphQL 契约。
 
 为什么是重写而不是移植：Cloudflare Containers 没有持久磁盘，跑不了数据库；Workers 启动限时 1 秒、内存 128 MB，装不下现在约 1.2 万个文件的 NestJS 服务；现有数据层在 251 个文件里写了 Postgres 专有 SQL。
 
@@ -84,8 +84,8 @@ v1 按**单 workspace 模式**实现（`isMultiWorkspaceEnabled: false`，等同
 浏览器
   │
   ▼
-Worker: twenty-worker（一个脚本，同时承载静态资源和 API）
-  ├─ 静态资源        twenty-front 的构建产物，SPA 回退
+Worker: crm-worker（一个脚本，同时承载静态资源和 API）
+  ├─ 静态资源        crm-front 的构建产物，SPA 回退
   ├─ /client-config  静态 JSON
   ├─ /metadata       GraphQL（graphql-yoga），认证、用户、元数据、视图、文件、订阅
   ├─ /graphql        认证后整个请求转发给 Workspace DO
@@ -179,7 +179,7 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 | `RELATION`、`MORPH_RELATION` | `TEXT` | 只在多对一那一侧建列，列名 `<字段名>Id` |
 | `TS_VECTOR` | 无列 | 由 `fts_` 表替代 |
 
-复合子字段的定义在 `packages/twenty-shared/src/types/composite-types/`。
+复合子字段的定义在 `packages/crm-shared/src/types/composite-types/`。
 
 ### 5.3 约束
 
@@ -227,7 +227,7 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 
 ## 6. 前后端契约要点
 
-完整契约以阶段 0 采集的 fixture 为准，这里只列结构性事实。`F` 代表 `packages/twenty-front/src`，`S` 代表旧服务端源码。
+完整契约以阶段 0 采集的 fixture 为准，这里只列结构性事实。`F` 代表 `packages/crm-front/src`，`S` 代表旧服务端源码。
 
 ### 6.1 端点
 
@@ -236,20 +236,20 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 | `POST /metadata` | 默认 Apollo client。认证、当前用户、元数据、视图、文件 mutation、订阅 |
 | `POST /graphql` | 记录的增删改查和 `search` |
 | `POST /mcp` | MCP 初始化、工具发现和调用；支持 `mode=meta` |
-| `GET /client-config?v=v1` | 启动配置。HTML 里有 `<script id="twenty-client-config">` 时前端跳过这次请求 |
+| `GET /client-config?v=v1` | 启动配置。HTML 里有 `<script id="crm-client-config">` 时前端跳过这次请求 |
 | `PUT /file-upload/:id?token=` | 上传文件体，成功返回 204 |
 | `GET /file/:fileFolder/:id?token=` | 下载文件，支持 Range |
 | `GET /healthz` | 健康检查，前端不调用 |
 
-需要由 Worker 而不是静态资源处理的路径前缀列在 `packages/twenty-shared/src/types/ApiPath.ts`。
+需要由 Worker 而不是静态资源处理的路径前缀列在 `packages/crm-shared/src/types/ApiPath.ts`。
 
 前端的服务端地址取 `window._env_.REACT_APP_SERVER_BASE_URL`，没有就用 `location.origin`（`F/config/index.ts`）。新架构前后端同源，不注入这个变量。
 
 ### 6.2 认证
 
-- **前端不发 `Authorization` 头，认证靠 httpOnly session cookie。** 前端每个请求带 `credentials: 'include'` 和 `x-twenty-session-cookie: 1`，另有 `x-locale`、`X-App-Version`（`F/modules/apollo/services/ApolloFactory.ts:85-306`）。
-- cookie 名：https 下是 `__Host-twenty-session`，http 下是 `twenty-session`。值是 `sess_` 加 32 字节随机数的 base64url。httpOnly，`Path=/`，`SameSite=Lax`。服务端只存它的 sha256。有效期 180 天。
-- 服务端只在请求带 `x-twenty-session-cookie` 头或 `sec-fetch-mode: navigate` 时才读 cookie（`S/engine/core-modules/user-session/utils/resolve-session-cookie-access.util.ts`）。
+- **前端不发 `Authorization` 头，认证靠 httpOnly session cookie。** 前端每个请求带 `credentials: 'include'` 和 `x-crm-session-cookie: 1`，另有 `x-locale`、`X-App-Version`（`F/modules/apollo/services/ApolloFactory.ts:85-306`）。
+- cookie 名：https 下是 `__Host-crm-session`，http 下是 `crm-session`。值是 `sess_` 加 32 字节随机数的 base64url。httpOnly，`Path=/`，`SameSite=Lax`。服务端只存它的 sha256。有效期 180 天。
+- 服务端只在请求带 `x-crm-session-cookie` 头或 `sec-fetch-mode: navigate` 时才读 cookie（`S/engine/core-modules/user-session/utils/resolve-session-cookie-access.util.ts`）。
 - CSRF：用 cookie 认证的非安全方法必须带允许的 `Origin`（`S/engine/middlewares/cookie-session-csrf.middleware.ts`）。
 - 认证 mutation 仍返回 `AuthTokenPair`，前端忽略其中的 token，只调用 `markSessionActive()`。前端从不调用 `renewToken`。
 - 密码规则：8 到 50 个字符（`S/engine/core-modules/auth/auth.util.ts`）。
@@ -296,7 +296,7 @@ DO 的 SQLite 支持 FTS5、JSON 函数、数学函数、窗口函数、`RETURNI
 ### 7.1 包结构
 
 ```
-packages/twenty-worker/
+packages/crm-worker/
   wrangler.jsonc
   project.json                 nx 目标：dev、build、test、typecheck、lint、deploy
   migrations/                  D1 迁移（wrangler d1 migrations）
@@ -328,7 +328,7 @@ packages/twenty-worker/
 - HTTP 路由：Hono。
 - GraphQL：`graphql` 16 加 `graphql-yoga`（和现有服务端一致，前端的 `graphql-sse` 客户端能直接对接）。DO 内的记录 API 用 graphql-js 直接构建 schema 并执行。
 - 测试：vitest 加 `@cloudflare/vitest-plugin`（原 `@cloudflare/vitest-pool-workers`，已改名，旧包不再更新），在 workerd 里跑真实的 DO SQLite 和 D1。
-- 端到端：现有的 `packages/twenty-e2e-testing`（Playwright），目标指向 `wrangler dev`。
+- 端到端：现有的 `packages/crm-e2e-testing`（Playwright），目标指向 `wrangler dev`。
 - wrangler 版本用 4.151。`compatibility_date` 取这个 wrangler 自带的 workerd 支持的最新日期（2026-10-12），升级 wrangler 时一起调整；开启 `nodejs_compat`。
 - 仓库的 `.yarnrc.yml` 设了 `npmMinimalAgeGate: 3d`，发布不满 3 天的包装不上，新加依赖时要选更早的版本。
 
@@ -336,7 +336,7 @@ packages/twenty-worker/
 
 前端的启动查询会请求不在范围内的字段（如计费、AI 相关）。schema 里缺字段会导致整个查询校验失败。所以：
 
-- **用现有的完整 SDL 作为 schema**，即阶段 0 从运行中的旧服务端导出的 `packages/twenty-worker/contract/metadata-schema.graphql`。不要用 `packages/twenty-client-sdk/src/metadata/generated/schema.graphql`，它比运行中的服务端少 7 个输入字段。
+- **用现有的完整 SDL 作为 schema**，即阶段 0 从运行中的旧服务端导出的 `packages/crm-worker/contract/metadata-schema.graphql`。不要用 `packages/crm-client-sdk/src/metadata/generated/schema.graphql`，它比运行中的服务端少 7 个输入字段。
 - resolver 逐阶段实现。未实现的 Query 字段返回零值（可空返回 `null`，列表返回空数组），未实现的 Mutation 抛 `NOT_IMPLEMENTED`。
 - 启动查询涉及的非空字段必须有明确的返回值，以 fixture 为准。
 - SDL 里的自定义标量（`DateTime`、`UUID`、`JSON`、`Upload` 等）都要有实现。
@@ -346,9 +346,9 @@ packages/twenty-worker/
 每个阶段结束前必须通过：
 
 ```bash
-npx tsgo -p packages/twenty-worker/tsconfig.json --noEmit
-npx nx lint twenty-worker
-npx nx test twenty-worker
+npx tsgo -p packages/crm-worker/tsconfig.json --noEmit
+npx nx lint crm-worker
+npx nx test crm-worker
 ```
 
 涉及前端可见行为的阶段，还要用 `wrangler dev` 起服务，按该阶段的验收标准在浏览器里走一遍。
@@ -361,8 +361,8 @@ npx nx test twenty-worker
 
 **任务**
 
-1. 用 `bash packages/twenty-utils/setup-dev-env.sh` 和 `yarn start` 启动旧系统，注册一个新 workspace。
-2. 用 Playwright 录制下列流程的 HAR，拆成每个 GraphQL 操作一个文件（操作名、query、variables、response），存到 `packages/twenty-worker/contract/fixtures/<流程>/`。响应里的密钥和 token 要抹掉。
+1. 用 `bash packages/crm-utils/setup-dev-env.sh` 和 `yarn start` 启动旧系统，注册一个新 workspace。
+2. 用 Playwright 录制下列流程的 HAR，拆成每个 GraphQL 操作一个文件（操作名、query、variables、response），存到 `packages/crm-worker/contract/fixtures/<流程>/`。响应里的密钥和 token 要抹掉。
    - 注册、创建 workspace、完成引导、登出、登录。
    - 人员和公司列表：加载、滚动翻页、筛选、排序、切换视图、看板分组。
    - 记录详情页：查看、编辑各类型字段、关联其他记录。
@@ -375,14 +375,14 @@ npx nx test twenty-worker
    - 设置里的成员和角色：复制邀请链接、用邀请链接加入、改角色、移除成员。
 3. 导出两份 SDL：`/metadata` 的完整 schema，和这个 workspace 的 `/graphql` schema。存到 `contract/metadata-schema.graphql` 和 `contract/core-schema.graphql`。
 4. 从数据库的 `core` schema 导出新 workspace 的标准元数据为 JSON：对象、字段、字段选项、索引、搜索字段、视图及其字段、筛选、排序、分组、字段分组、页面布局及其 tab 和 widget、导航菜单项、命令菜单项、角色、权限标志。
-5. 写一个过滤脚本，把导出的 JSON 裁剪到第 2 节的范围：删掉范围外的对象；删掉关联目标在范围外的字段；删掉引用了被删对象或范围外 widget 类型的视图、布局、菜单项。结果存为 `packages/twenty-worker/src/workspace/seed/standard-metadata.json`。脚本要校验裁剪后没有悬空引用。
+5. 写一个过滤脚本，把导出的 JSON 裁剪到第 2 节的范围：删掉范围外的对象；删掉关联目标在范围外的字段；删掉引用了被删对象或范围外 widget 类型的视图、布局、菜单项。结果存为 `packages/crm-worker/src/workspace/seed/standard-metadata.json`。脚本要校验裁剪后没有悬空引用。
 6. 导出演示数据（公司、人员、商机）的生成逻辑或结果，供新 workspace 预填。参考 `S/engine/workspace-manager/standard-objects-prefill-data/utils/`。
 7. 汇总 fixture 里出现过的所有 `/metadata` 操作，写成 `contract/metadata-operations.md`，每个操作标注归属阶段。fixture 里出现但本文没分配的操作，分配到最合适的阶段并更新本文。
 
 **参考代码**
 
-- 标准对象定义：`S/engine/workspace-manager/twenty-standard-application/utils/`
-- 前端的代码生成配置：`packages/twenty-front/codegen-metadata.cjs`
+- 标准对象定义：`S/engine/workspace-manager/crm-standard-application/utils/`
+- 前端的代码生成配置：`packages/crm-front/codegen-metadata.cjs`
 
 **验收标准**
 
@@ -394,14 +394,14 @@ npx nx test twenty-worker
 
 **实施记录**
 
-产出都在 `packages/twenty-worker/contract/` 和 `src/workspace/seed/`，说明见 `contract/README.md`。
+产出都在 `packages/crm-worker/contract/` 和 `src/workspace/seed/`，说明见 `contract/README.md`。
 
 - 21 个流程，1365 个 fixture。14 个由浏览器操作产生，7 个（名字以 `-api` 结尾）用脚本直接调 API，覆盖界面不易触发的错误码、cookie 和 CSRF、各字段类型的写入形状、文件 token、只读角色的行为。
 - **没有录 HAR。** Playwright MCP 的代码沙箱不能写文件，改为在浏览器上下文挂响应监听，把请求和响应发给本地 collector，按流程写 JSONL，再拆分和脱敏。结果和 HAR 拆分等价。
 - **关联字段走了 API。** 用 Playwright 操作数据模型页的关联字段表单时，前端发出的请求缺少 `relationCreationPayload` 而失败（失败的请求也保留在 fixture 里）。关联和 morph 关联改在 `data-model-api` 里按前端代码的形状创建。
 - **演示数据的生成脚本没有入库。** `demo-data.json` 由仓库外的临时脚本执行旧服务端的 prefill 函数一次性生成，因为本包不能 import 旧服务端。数据本身是字面量，不会再变。
 - **种子裁剪的额外规则**：只保留标准应用拥有的行（Member 角色按标准 universal identifier 保留，默认角色是 Member）；删掉范围外的 widget 类型和命令菜单项；没有 widget 的 tab、没有 widget 使用的 widget 视图、空的导航文件夹也删掉。权限标志定义全部保留，授予由角色决定。丢了列的索引也删掉（复核时发现第一版留下了 10 个没有列的索引，已修正）。裁剪后 10 个对象、181 个字段、41 个索引，悬空引用校验通过。
-- `core-schema.graphql` 包含采集时建的自定义对象 `initiative`，不是纯标准 workspace 的 schema。`metadata-schema.graphql` 是仓库里 `twenty-client-sdk` 那份 SDL 的严格超集，7.3 和第 10 节已改为引用它。
+- `core-schema.graphql` 包含采集时建的自定义对象 `initiative`，不是纯标准 workspace 的 schema。`metadata-schema.graphql` 是仓库里 `crm-client-sdk` 那份 SDL 的严格超集，7.3 和第 10 节已改为引用它。
 - 环境：仓库要求 Node 26（`yarn install` 在 Node 24 下失败）；Homebrew 的 Postgres 默认没有 `postgres` 角色，需要先建（密码 `postgres`）。
 - 采集中确认的旧系统行为（分页用 offset、错误码、cookie、文件 token、权限报错方式等）记在 `contract/README.md`，并据此更新了 6.3、6.4、6.5 和阶段 2、3、4、8、10 的任务。前端启动时调用的 `FindManyAgentChatThreads` 有 AI 权限和对象存在两个前置条件，裁剪后不会发出，不需要处理。
 
@@ -411,8 +411,8 @@ npx nx test twenty-worker
 
 **任务**
 
-1. 创建 `packages/twenty-worker`，按 7.1 的结构，配好 nx 目标、tsconfig、lint、vitest。
-2. `wrangler.jsonc`：静态资源指向 `packages/twenty-front/build`，开 SPA 回退；`ApiPath.ts` 里的路径前缀交给 Worker 处理；声明 D1、R2、Queue、DO 绑定，DO 类用 SQLite 后端。
+1. 创建 `packages/crm-worker`，按 7.1 的结构，配好 nx 目标、tsconfig、lint、vitest。
+2. `wrangler.jsonc`：静态资源指向 `packages/crm-front/build`，开 SPA 回退；`ApiPath.ts` 里的路径前缀交给 Worker 处理；声明 D1、R2、Queue、DO 绑定，DO 类用 SQLite 后端。
 3. 实现 `/healthz` 和 `/client-config`。client config 的字段列表见 `S/engine/core-modules/client-config/client-config.entity.ts:343-463`，所有可选功能关闭：`authProviders` 只开 `password`，`billing.isBillingEnabled` 为 false，`isMultiWorkspaceEnabled` 为 false，`isCookieSessionEnabled` 为 true，邮件日历相关全为 false，`aiModels` 为空。
 4. 实现 `WorkspaceDurableObject` 的空壳：构造函数里跑 `sys_migration` 机制，暴露一个 `ping()` RPC 方法。
 5. 写平台验证测试，逐项确认并把结论写进本阶段的实施记录：
@@ -427,7 +427,7 @@ npx nx test twenty-worker
    - 超过 50 字节的 `LIKE` 模式的报错信息。
    - 单行写入 2 MB 和 8 MB 文本的结果。
    - 从 DO 内访问 D1 和 R2 绑定。
-6. 配好前端开发方式：`packages/twenty-front` 的 vite 开发服务器把 `F/config/apiProxyPrefixes.ts` 里的前缀代理到 `wrangler dev`。
+6. 配好前端开发方式：`packages/crm-front` 的 vite 开发服务器把 `F/config/apiProxyPrefixes.ts` 里的前缀代理到 `wrangler dev`。
 
 **验收标准**
 
@@ -437,12 +437,12 @@ npx nx test twenty-worker
 
 **实施记录**
 
-- **包结构**：`packages/twenty-worker` 已加入根 `package.json` 的 workspaces。nx 目标有 `dev`、`build`（`wrangler deploy --dry-run`，依赖 `twenty-front:build`）、`deploy`、`test`、`typecheck`、`lint`。`worker-configuration.d.ts` 由 `wrangler types --include-runtime=false` 生成并入库，运行时类型来自 `@cloudflare/workers-types`。`migrations/` 和 `src/shared/` 等空目录留给后续阶段创建。
+- **包结构**：`packages/crm-worker` 已加入根 `package.json` 的 workspaces。nx 目标有 `dev`、`build`（`wrangler deploy --dry-run`，依赖 `crm-front:build`）、`deploy`、`test`、`typecheck`、`lint`。`worker-configuration.d.ts` 由 `wrangler types --include-runtime=false` 生成并入库，运行时类型来自 `@cloudflare/workers-types`。`migrations/` 和 `src/shared/` 等空目录留给后续阶段创建。
 - **偏离 7.2**：
   - 测试库用 `@cloudflare/vitest-plugin`。原定的 `@cloudflare/vitest-pool-workers` 已改名、不再更新。
   - `compatibility_date` 是 2026-10-12，不是建包当天：wrangler 4.151 自带的 workerd 最多支持到这一天。
   - 仓库的 3 天包龄限制使依赖只能选较早的版本：hono 4.13.17、vitest-plugin 1.6.1、workers-types 5.20261108.1。
-- **路由**：静态资源指向 `twenty-front/build`，开启 SPA 回退。`run_worker_first` 列出 `ApiPath` 的全部前缀（每个前缀写 `/x` 和 `/x/*` 两条），`test/wrangler-config.spec.ts` 校验两者一致。未实现的 API 路径返回 JSON 404。
+- **路由**：静态资源指向 `crm-front/build`，开启 SPA 回退。`run_worker_first` 列出 `ApiPath` 的全部前缀（每个前缀写 `/x` 和 `/x/*` 两条），`test/wrangler-config.spec.ts` 校验两者一致。未实现的 API 路径返回 JSON 404。
 - **client config**：所有可选功能关闭，`serverUrl` 和 `frontDomain` 取自请求地址。`signInPrefilled` 为 false，e2e 测试需要预填账号时再考虑开关。前端类型里有、旧服务端不返回的 `isTwoFactorAuthenticationEnabled` 也返回了（false）。
 - **Workspace DO**：构造函数在 `blockConcurrencyWhile` 里跑 `sys_migration` 机制。迁移按数组顺序、各自在一个 `transactionSync` 里执行；名字必须唯一且升序，失败的迁移整体回滚、保持待执行。当前迁移列表为空，`ping()` 返回 `"pong"`。
 - **平台验证**：结论都写进了第 4 节和 5.3 节，测试在 `test/platform/`。和原文不符、需要后续阶段注意的有：
@@ -453,7 +453,7 @@ npx nx test twenty-worker
   - 删除带外键的列不会被阻止。
 - **前端开发方式**：vite 开发服务器本来就把 `ApiPath` 前缀代理到 `REACT_APP_SERVER_BASE_URL`（默认 `http://localhost:3000`），所以只把 `wrangler dev` 的端口设成 3000，前端零改动。已验证从 3001 端口访问 `/healthz`、`/client-config`、`/metadata` 都转发到了 Worker。
 - **验收**：`wrangler dev` 下浏览器打开 `/` 跳到 `/welcome`，登录页正常渲染，`/client-config` 返回 200。控制台只有 `/metadata` 的 404（`GetPublicWorkspaceDataByDomain`、`TrackAnalytics`），阶段 3 和 4 实现。
-- `twenty-front` 的生产构建在本机耗时约 50 分钟，产物 65 MB、2167 个文件，最大单文件 7 MB，在 Workers 静态资源的限制内。
+- `crm-front` 的生产构建在本机耗时约 50 分钟，产物 65 MB、2167 个文件，最大单文件 7 MB，在 Workers 静态资源的限制内。
 - 根目录 `.oxfmtrc.jsonc` 排除了契约 fixture、导出数据、种子 JSON 和生成的类型文件，否则 `nx lint` 会要求重排这些数据文件。
 
 ### 阶段 2：Workspace DO 的元数据存储与 DDL 引擎
@@ -478,9 +478,9 @@ npx nx test twenty-worker
 
 - 名称计算：`S/engine/metadata-modules/field-metadata/utils/compute-column-name.util.ts`、`S/engine/utils/compute-table-name.util.ts`
 - 系统字段：`S/engine/metadata-modules/object-metadata/constants/partial-system-flat-field-metadatas.constant.ts`
-- 关联和 morph：`packages/twenty-shared/src/utils/fieldMetadata/isMorphRelationHead.ts`、`S/engine/workspace-manager/twenty-standard-application/utils/field-metadata/compute-note-target-standard-flat-field-metadata.util.ts`
+- 关联和 morph：`packages/crm-shared/src/utils/fieldMetadata/isMorphRelationHead.ts`、`S/engine/workspace-manager/crm-standard-application/utils/field-metadata/compute-note-target-standard-flat-field-metadata.util.ts`
 - 校验规则：`S/engine/workspace-manager/workspace-migration/workspace-migration-builder/validators/`
-- 旧 DDL 生成：`S/engine/twenty-orm/workspace-schema-manager/`
+- 旧 DDL 生成：`S/engine/crm-orm/workspace-schema-manager/`
 
 **验收标准**
 
@@ -543,7 +543,7 @@ npx nx test twenty-worker
 **验收标准**
 
 - 浏览器里能完成注册、创建 workspace、填写个人资料，之后登出再登录。
-- cookie 属性符合 6.2；不带 `x-twenty-session-cookie` 头的请求不被认证；跨源的 mutation 被拒绝。
+- cookie 属性符合 6.2；不带 `x-crm-session-cookie` 头的请求不被认证；跨源的 mutation 被拒绝。
 - 登录 token 第二次使用失败。
 - 错误密码、已存在邮箱、过期 session 的错误码和 fixture 一致。
 
@@ -556,9 +556,9 @@ npx nx test twenty-worker
 - **引导**：激活后直接进入 `PROFILE_CREATION`，跳过邮件同步和计费。个人资料更新只允许自己的成员记录，并校验允许的设置字段；保存姓名后进入 `INVITE_TEAM`，空邮箱邀请完成引导，非空邮箱仍返回 `NOT_IMPLEMENTED`。必须同时返回 `userVars.ONBOARDING_INVITE_TEAM_PENDING`，否则前端会自行跳过邀请页，与服务端状态不一致。
 - **平台配置**：新增 `AUTH_RATE_LIMITER`，按 IP 和归一化邮箱分别限制每分钟 20 次认证尝试；每天 UTC 03:00 清理过期 session、refresh token 和登录 token 使用记录。限制使用 Cloudflare 的 [Rate Limiting 绑定](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)，它是每个 Cloudflare 位置的近似限制。
 - **冷启动修正**：真实 `wrangler dev` 发现阶段 2 使用的共享包打包 chunk 会在全局作用域生成 ACTOR 选项 UUID，workerd 拒绝启动。Worker 的普通共享依赖改用 source alias 以便裁剪；复合类型定义通过单独 alias 在 DO 的 `blockConcurrencyWhile` 内懒加载，之后才执行迁移。事务内部仍无 `await`，没有修改共享包或旧服务端。
-- **验证**：新增 18 个 workerd 测试，覆盖完整前端 query、注册登录、邀请加入和角色、引导返回、激活重试、登录 token 并发重放与过期、cookie/CSRF、Bearer 撤销、密码错误、限流和签名用途隔离。直接 `tsgo`、Nx lint 和完整 Worker 测试通过；测试使用 `--skip-nx-cache`。本机 Nx 的依赖任务 `twenty-shared:generateBarrels` 在 Node 26 下挂起，因此 lint/test 使用 `--excludeTaskDependencies`，复用现有 shared 构建和 lint 插件；`wrangler dev` 真实冷启动另行通过。
+- **验证**：新增 18 个 workerd 测试，覆盖完整前端 query、注册登录、邀请加入和角色、引导返回、激活重试、登录 token 并发重放与过期、cookie/CSRF、Bearer 撤销、密码错误、限流和签名用途隔离。直接 `tsgo`、Nx lint 和完整 Worker 测试通过；测试使用 `--skip-nx-cache`。本机 Nx 的依赖任务 `crm-shared:generateBarrels` 在 Node 26 下挂起，因此 lint/test 使用 `--excludeTaskDependencies`，复用现有 shared 构建和 lint 插件；`wrangler dev` 真实冷启动另行通过。
 - **浏览器验收**：使用原有前端构建，注册 `stage3-browser@example.com`、创建 workspace、填写资料、从邀请页返回资料页再继续、跳过邀请，确认服务端 `onboardingStatus: COMPLETED`。通过设置里的 Logout 登出并用邮箱密码重新登录。前端零改动；主记录界面所需的元数据和对象权限仍在阶段 4 实现。
-- **本地启动**：使用仓库要求的 Node 26，在 `packages/twenty-worker/.dev.vars` 配置随机 `APP_SECRET`（文件已被忽略），先运行 `wrangler d1 migrations apply CORE_DB --local`，再运行 `wrangler dev`。验收使用独立的 `.wrangler/stage3-acceptance` 本地存储，迁移和 dev 都传相同的 `--persist-to`；未部署远程资源。
+- **本地启动**：使用仓库要求的 Node 26，在 `packages/crm-worker/.dev.vars` 配置随机 `APP_SECRET`（文件已被忽略），先运行 `wrangler d1 migrations apply CORE_DB --local`，再运行 `wrangler dev`。验收使用独立的 `.wrangler/stage3-acceptance` 本地存储，迁移和 dev 都传相同的 `--persist-to`；未部署远程资源。
 
 ### 阶段 4：元数据读取 API 与应用启动
 
@@ -581,7 +581,7 @@ npx nx test twenty-worker
 - 用户片段：`F/modules/users/graphql/fragments/userQueryFragment.ts`
 - 启动门控：`F/modules/metadata-store/effect-components/IsMinimalMetadataReadyEffect.tsx`
 - 功能开关位置：`F/modules/settings/hooks/useSettingsNavigationItems.tsx`、`F/modules/app/components/SettingsRoutes.tsx:839-1397`
-- 权限标志：`packages/twenty-shared/src/constants/PermissionFlagType.ts`
+- 权限标志：`packages/crm-shared/src/constants/PermissionFlagType.ts`
 
 **验收标准**
 
@@ -652,7 +652,7 @@ npx nx test twenty-worker
 - **契约重放**：重放 365 条阶段 0 成功读取请求，覆盖标准对象、成员、时间线、备注任务、附件、自定义 initiative、关联和看板。测试从采集响应组合记录快照，导入采集的自定义元数据，移除范围外关联选择；改名前的 Project 请求按最终名称 Initiative 重放。比较保留选择的响应结构及值类型，ID、时间、历史写入状态和旧服务返回的 typename 不作字面量比较。全局 Search、范围外对象和原本失败的权限请求不计入这 365 条；错误与隔离另有行为测试。前端零改动，服务端参考包零改动。
 - **万条数据性能**：本机 Node 26/workerd，10,000 条 company、按 position 排序取 60 条，含 totalCount、游标、域名和 pageInfo。独立运行 DO 内首次 84 ms，随后 5 次为 5、6、5、5、5 ms；含测试 RPC 的往返为 122 ms 和 6–7 ms。最终全量测试并发下首次 203 ms、随后 6、11、6、6、6 ms，往返 235 ms 和 10–60 ms。包含 schema 冷构建与权限检查；这是本地墙钟时间，不是生产 CPU 指标。测试通过 reporter 输出实测值，不设依赖机器速度的耗时断言。
 - **浏览器验收**：本地 wrangler 配合原前端构建，验证 5 家公司、100 个人员和 6 个商机；人员从 60 条滚动加载余下 40 条，按 Job Title 筛到 95 条、姓名降序首条正确；Brian Chesky 详情显示字段和 Airbnb 关联；By Stage 看板显示五列、卡片和金额汇总。无 GraphQL 错误、页面异常或失败的 API 请求。使用从阶段 4 本地数据复制的独立 `.wrangler/stage5-acceptance`，验收用的额外 95 个人员只写入该本地库；未部署远程资源。
-- **运行边界**：新增 `twenty-shared/constants` 的 source alias，避免 Wrangler 从 shared dist 引入模块顶层随机数初始化而冷启动失败。记录写入、保存视图筛选排序、文件 URL 签名、全局搜索和实时广播仍由后续对应阶段实现。
+- **运行边界**：新增 `crm-shared/constants` 的 source alias，避免 Wrangler 从 shared dist 引入模块顶层随机数初始化而冷启动失败。记录写入、保存视图筛选排序、文件 URL 签名、全局搜索和实时广播仍由后续对应阶段实现。
 - **检查结果**：新增 440 项 workerd 测试（365 条契约重放、75 项行为和性能测试），最终 27 个测试文件、596 项测试全部通过，Nx 耗时 32.1 秒。直接 `tsgo` 和 Nx lint 通过；lint 为 0 warnings/0 errors，格式检查通过。lint/test 使用 `--skip-nx-cache --excludeTaskDependencies`，沿用阶段 3 的本机 shared 依赖任务绕行方式。
 
 ### 阶段 6：记录写入与副作用
@@ -668,7 +668,7 @@ npx nx test twenty-worker
 5. `createdBy`、`updatedBy` 从认证上下文填充。
 6. 永久删除时的外键行为，按阶段 1 的结论由 SQLite 或应用层执行。
 7. 批量操作：单次影响的记录数受 `mutationMaximumAffectedRecords` 限制；批量插入按"100 除以列数"分片；整个 mutation 在一个事务里。
-8. 事件：每次写入生成和旧系统同构的事件（`{recordId, userId, workspaceMemberId, properties: {before, after, diff, updatedFields}}`，类型见 `packages/twenty-shared/src/database-events/`）。
+8. 事件：每次写入生成和旧系统同构的事件（`{recordId, userId, workspaceMemberId, properties: {before, after, diff, updatedFields}}`，类型见 `packages/crm-shared/src/database-events/`）。
 9. 同步副作用，和写入在同一个事务里完成：时间线活动的写入；删除记录时清理指向它的导航菜单项。
 10. 异步副作用，写入 `sys_outbox`：实时事件推送（阶段 11 消费）、文件清理（阶段 9 消费）。先把 outbox 和 alarm 机制按 5.6 实现好。
 11. 回收站清理：`sys_scheduledTask` 里的每日任务，永久删除软删除超过 `trashRetentionDays` 的记录。
@@ -680,7 +680,7 @@ npx nx test twenty-worker
 - 时间线活动：从上面的 listener 追到 `entityEventsToDbQueue` 的处理器
 - 合并：`S/engine/api/common/common-query-runners/` 里的 merge runner
 - 回收站：`S/engine/trash-cleanup/`
-- upsert：`S/engine/twenty-orm/repository/workspace-repository.ts:855` 附近
+- upsert：`S/engine/crm-orm/repository/workspace-repository.ts:855` 附近
 
 **验收标准**
 
@@ -779,7 +779,7 @@ npx nx test twenty-worker
 - **默认值与设置页**：API 接收字段默认值后递归去掉 SQL 字面量外层单引号并还原成对单引号，兼容复合字段 JSON 内的字面量；阶段 2 的内部操作不改签名。ObjectRecordCounts 查询实际未删除记录数，MostlyEmptyFieldMetadataIds 按允许的降级返回空列表。currentUser 返回实际的 workspaceCustomApplication，修复前端把自定义字段当作标准字段、改标签时不生成同步 API 名称的问题。补齐导航项 targetRecordIdentifier，通过一次 DO RPC 按读取权限取得收藏记录的实时标签及图片标识，刷新后收藏不再因缺少标签被前端隐藏；FILES 签名图片 URL 留给阶段 9。
 - **契约与测试**：新增 43 条元数据写入 fixture 重放，覆盖对象和各字段类型、改名、停用启用、删除、视图列、筛选、排序和收藏。使用真实静态 GraphQL schema/resolver 和 workerd DO，以测试上下文注入已认证身份；另有 9 项 HTTP 行为测试覆盖真实认证入口、默认布局、SQL 默认值、改名后数据、关联、批量回滚、嵌套筛选删除、循环引用、导航排序与收藏权限。历史 fixture 比较响应结构和字段类型，生成 ID、时间及历史字段数量不作逐值比较。旧服务两条 deferred schema action 尚未完成的临时 CONFLICT fixture 不重放：新实现同步提交 DDL，不存在该后台等待状态。
 - **浏览器验收**：在独立的 .wrangler/stage8-acceptance 数据副本上通过共享预览创建 Stage Eight Project、文本和数字字段及指向人员的关联；新建记录并选择 Brian Chesky，列表和默认详情页均能读取。把 Reference 改成 Tracking Reference 后，已有 Preserved reference 值仍可读。新建 Stage Eight Saved 视图，保存名称筛选、名称升序并隐藏 Owner 列，刷新后保持；收藏后刷新显示正确记录名，取消收藏后刷新移除。其余字段类型由 fixture 重放覆盖。验收发现的 RPC 序列化和 workspaceCustomApplication 缺失问题已修复并纳入 HTTP 回归测试。
-- **检查结果**：36 个测试文件、778 项测试通过；直接 tsgo、Nx lint、格式检查、git diff --check 和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 4,844.57 KiB，gzip 699.75 KiB。lint/test 沿用 --skip-nx-cache --excludeTaskDependencies 的本机 shared 依赖绕行方式。未修改 twenty-front 或 旧服务端，未部署远程资源。
+- **检查结果**：36 个测试文件、778 项测试通过；直接 tsgo、Nx lint、格式检查、git diff --check 和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 4,844.57 KiB，gzip 699.75 KiB。lint/test 沿用 --skip-nx-cache --excludeTaskDependencies 的本机 shared 依赖绕行方式。未修改 crm-front 或 旧服务端，未部署远程资源。
 
 ### 阶段 9：文件
 
@@ -819,7 +819,7 @@ npx nx test twenty-worker
 - **删除与清理**：接入阶段 6 的 file-cleanup outbox，覆盖字段移除文件、永久删除及关联级联删除；删除前检查所有 FILES 引用、成员头像和 D1 的 workspace logo，回收站中的记录也计为有效引用。每小时分批检查超过 24 小时的未完成上传和已完成但未引用的文件；每页 100 项，超过 20 个文件的删除通过 Queue，消息每批最多 100 个 ID。R2 删除失败保留 DELETING 元数据并按 outbox 退避重试，重复投递幂等；周期任务也重投过期的 DELETING 项，避免 Queue 重试耗尽后遗失删除工作。跨 D1/R2 的临界区用 blockConcurrencyWhile 防止重新引用，异常在回调内捕获后再向外抛，避免 DO 被重置而丢失正常的重试状态；没有在 SQLite 事务内调用外部 IO。
 - **边界与偏离**：普通直传上限取 100,000,000 字节，头像/logo 为 10 MiB，低于旧服务的 1 GiB 普通上传上限，以适配 Cloudflare Free/Pro 域名的请求体限制。只开放范围内的 CorePicture 和 FilesField，工作流、邮件、应用包等目录不启用。历史文件访问 fixture 中无 token 的旧头像地址不再回退读取：按本阶段验收标准统一返回 403。没有线上旧文件需要迁移。
 - **验证**：重放 files/021、026、037、074、099 的申请与对应的 023、028、039、076、101 完成 mutation，映射历史字段和生成 ID，并实际 PUT/GET 校验字节；另外 16 项行为测试覆盖 Range、缓存、能力令牌、大小/类型、SVG 净化及中断重试、头像/logo 保存删除、激活前上传、权限、共享引用、父记录级联清理、Queue、R2 失败重试和 multipart。既有 74 条记录写入 fixture 的安装步骤补齐对应文件元数据，再继续执行真实的文件引用校验。最终 39 个测试文件、799 项测试通过；直接 tsgo、Nx lint、格式检查、git diff --check 和 wrangler deploy --dry-run 通过，lint 为 0 warnings/0 errors。Worker 包体 5,400.25 KiB，gzip 827.71 KiB。lint 沿用 --skip-nx-cache --excludeTaskDependencies 的本机依赖绕行方式；最终全量测试直接运行 vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000，规避本机运行器并发启动及默认超时问题。
-- **浏览器验收**：使用独立的 .wrangler/stage9-acceptance 数据副本，在共享预览上传并显示头像和 logo；给 Airbnb 上传文本附件，打开预览读到正文并操作下载；新建 Documents 文件字段并上传文件，刷新后读取签名 URL。永久删除带附件记录的 R2 清理由 workerd 集成测试验收。twenty-front 和旧服务端均零改动，未部署远程资源。
+- **浏览器验收**：使用独立的 .wrangler/stage9-acceptance 数据副本，在共享预览上传并显示头像和 logo；给 Airbnb 上传文本附件，打开预览读到正文并操作下载；新建 Documents 文件字段并上传文件，刷新后读取签名 URL。永久删除带附件记录的 R2 清理由 workerd 集成测试验收。crm-front 和旧服务端均零改动，未部署远程资源。
 
 ### 阶段 10：权限与成员管理
 
@@ -841,7 +841,7 @@ npx nx test twenty-worker
 
 - `S/engine/permissions/`
 - `S/engine/metadata-modules/role/role.service.ts:486-507`
-- `S/engine/workspace-manager/twenty-standard-application/utils/role-metadata/create-standard-flat-role-metadata.util.ts`
+- `S/engine/workspace-manager/crm-standard-application/utils/role-metadata/create-standard-flat-role-metadata.util.ts`
 - `S/engine/core-modules/user-workspace/user-workspace.service.ts`
 - `S/engine/core-modules/workspace-invitation/`
 
@@ -906,7 +906,7 @@ npx nx test twenty-worker
 
 2026-11-13 需求方确认三项全部实现，顺序为 12a → 12b → 12c。
 
-**12a 邮件发送**：用 Cloudflare Email Service（当前 beta，开工前先确认状态和发信域名要求）。包括邀请邮件、重置密码、邮箱验证。模板复用 `packages/twenty-emails`，先确认它在 Workers 运行时里能渲染。发送走 Queue 以便重试。
+**12a 邮件发送**：用 Cloudflare Email Service（当前 beta，开工前先确认状态和发信域名要求）。包括邀请邮件、重置密码、邮箱验证。模板复用 `packages/crm-emails`，先确认它在 Workers 运行时里能渲染。发送走 Queue 以便重试。
 
 **12b API key、REST API、webhook**：API key 的创建和撤销，Bearer 认证；`/rest` 下的记录接口，复用记录引擎；webhook 从 outbox 经 Queue 投递，带签名和重试。参考 `S/engine/api/rest/`、`S/engine/core-modules/api-key/`、`S/engine/metadata-modules/webhook/`。
 
@@ -914,11 +914,11 @@ npx nx test twenty-worker
 
 **实施记录**
 
-- **邮件与运行时**：使用原生 `EMAIL` send_email binding；D1 迁移 `0003-transactional-email.sql` 增加邮件任务、个人邀请与 action token 数据。复用 twenty-emails 的模板和翻译，邮件主题取翻译后的标题。模板在 workerd 渲染通过，但预构建包包含顶层 UUID 默认值，真实 Wrangler 启动不允许执行；因此在发信处理器中延迟导入，并把 shared/translations 指向源文件。原生本地邮件模拟器已生成 HTML/text 邮件。
+- **邮件与运行时**：使用原生 `EMAIL` send_email binding；D1 迁移 `0003-transactional-email.sql` 增加邮件任务、个人邀请与 action token 数据。复用 crm-emails 的模板和翻译，邮件主题取翻译后的标题。模板在 workerd 渲染通过，但预构建包包含顶层 UUID 默认值，真实 Wrangler 启动不允许执行；因此在发信处理器中延迟导入，并把 shared/translations 指向源文件。原生本地邮件模拟器已生成 HTML/text 邮件。
 - **邀请与账户邮件**：实现个人邀请的发送、查询、重发、撤销及按邮箱加入，公共邀请关闭时仍可用，可按管理员指定角色加入。实现一小时密码重置与邮箱验证链接；重发失效旧链接，链接与邮箱、origin 绑定且只能消费一次，密码重置撤销已有会话。EMAIL_VERIFICATION_REQUIRED 可启用密码注册邮箱验证；未验证用户不能建立或访问 workspace。普通未知邮箱请求保持相同成功响应。
 - **邮件可靠性**：先持久化 D1 邮件任务，再向 Queue 发送任务 ID；失败由五分钟 cron 补发。发送使用租约、指数退避及最多十次尝试；完成后擦除任务载荷，过期任务清除。任务中待发送的链接暂存至投递或过期，APP token 表只存 hash。邮件交付仍为至少一次，不能声称第三方邮件服务具有跨进程恰好一次语义。
 - **API key**：DO 迁移 `0008-initialize-integrations` 增加 key、webhook 和投递表。实现 key 创建、读取、改名、角色分配、轮换和撤销；只保存 token hash。Bearer 可访问 /graphql 和 /rest，按 workspace origin 隔离；每次请求在 DO 重新检查有效期、撤销状态与实际角色。开放现有 API_KEYS_AND_WEBHOOKS 权限及原前端开发者设置入口；API 身份不进入账户/设置 mutation，actor 标记为 API，事件不会携带 token hash。
-- **REST 范围**：请求转换为动态 schema 上的 GraphQL 操作，继续使用现有事务、验证和副作用。覆盖单条/批量创建、upsert、单条/筛选批量更新、读取、永久/软删除和恢复；支持 REST 或 JSON 筛选、排序、游标、offset、字段选择及最多两层关系展开。沿用旧 REST 的永久删除默认值。搜索、聚合、分组、去重和合并通过同一 key 使用现有 GraphQL；未复制旧服务这些高级 REST 专用端点，接口范围及例子写在 `packages/twenty-worker/INTEGRATIONS.md`。
+- **REST 范围**：请求转换为动态 schema 上的 GraphQL 操作，继续使用现有事务、验证和副作用。覆盖单条/批量创建、upsert、单条/筛选批量更新、读取、永久/软删除和恢复；支持 REST 或 JSON 筛选、排序、游标、offset、字段选择及最多两层关系展开。沿用旧 REST 的永久删除默认值。搜索、聚合、分组、去重和合并通过同一 key 使用现有 GraphQL；未复制旧服务这些高级 REST 专用端点，接口范围及例子写在 `packages/crm-worker/INTEGRATIONS.md`。
 - **Webhook**：记录变更事务内持久化待办，outbox 经 Queue 仅传 DO/投递 ID，Worker 发起外部请求。发送前按当前角色投影字段和关系，并重新读取 endpoint 与 secret；删除后取消待发项。沿用 timestamp:rawBody 的 HMAC-SHA256 hex 签名，增加稳定 delivery ID，接收端需去重。请求五秒超时、禁止重定向、仅允许公共 HTTPS hostname；启用 global_fetch_strictly_public。失败退避，Queue 耗尽后由 alarm 恢复，最多十次、24 小时；webhook 仅订阅记录变更，元数据继续经 SSE。
 - **OAuth**：D1 迁移 `0004-oauth-login.sql` 保存十分钟单次 state 和 provider/issuer/subject 身份关联。使用 httpOnly state cookie、PKCE S256、nonce，以及 jose 的 RS256/JWKS、issuer、audience、有效期校验和 Microsoft tenant 限制。只请求 openid/profile/email，不保存 provider access/refresh token。现有成员返回 /verify?loginToken，新实例注册使用 agnostic session。Microsoft 邮箱及非权威 Google 邮箱不会直接绑定已有账号，需已登录的同邮箱账号、个人邀请或本地邮件证明。
 - **验证与验收**：完整 workerd 回归 47 个文件、852 项通过，涵盖新邮件流程、原模板渲染、REST、key 轮换/过期/角色变更、webhook 签名与权限过滤/重试、签名 ID token 的 OAuth 流程和绑定防护；公网路由标志调整后的相关 18 项检查、直接 tsgo、lint 与 Wrangler dry-run 也通过。真实 Wrangler 本地服务验证邮件邀请注册及资料设置、密码重置后以新密码登录、设置页创建 key 并调用 REST、创建/删除 webhook。没有修改前端或 旧服务端，没有部署远程资源。真实收件、Google/Microsoft 真实账号登录等待外部域名和应用配置，配置步骤见 INTEGRATIONS.md。
@@ -929,10 +929,10 @@ npx nx test twenty-worker
 
 **任务**
 
-1. 端到端测试：让 `packages/twenty-e2e-testing` 里属于核心 CRM 的用例在 `wrangler dev` 上通过，删掉范围外功能的用例。
+1. 端到端测试：让 `packages/crm-e2e-testing` 里属于核心 CRM 的用例在 `wrangler dev` 上通过，删掉范围外功能的用例。
 2. 删除旧代码：旧服务端、Docker 部署包，以及只服务于范围外功能的包。删除前列出清单交需求方确认，这一步不可逆。
 3. 前端清理：删掉已经隐藏的范围外功能的模块和路由，减小包体积。改动量大，单独提交。
-4. 前端类型生成：把 `packages/twenty-front` 的 codegen 指向新 Worker，确认生成结果没有破坏性差异。
+4. 前端类型生成：把 `packages/crm-front` 的 codegen 指向新 Worker，确认生成结果没有破坏性差异。
 5. 部署配置：`wrangler.jsonc` 里分 `dev` 和 `production` 环境；D1、R2、Queue 的创建脚本；`APP_SECRET` 等用 wrangler secret 管理；绑定自定义域名。
 6. D1 的主库位置和 DO 的 `locationHint` 选在主要用户所在区域。
 7. 可观测性：开启 Workers Logs；关键路径加结构化日志（请求 ID、workspace ID、操作名、DO 内耗时）；错误上报。
@@ -955,7 +955,7 @@ npx nx test twenty-worker
 - 核心与 metadata codegen 已指向 Worker schema；新增 core SDL 导出和真实 workspace schema 一致性检查。E2E 使用独立临时存储启动 Wrangler，通过 UI 建立账号/工作区，验证记录、Kanban、邀请和登录跳转。
 - 新增 dev/production 资源配置、亚太区位置提示、资源创建/部署脚本、稳定 secrets 管理、生产注册 Turnstile、结构化日志、每日 DO 容量日志及阈值事件、维护模式和受独立 token 保护的恢复操作入口。根架构文档、开发命令与 CI 已适配 Worker。
 - **云端验收暂缓**：只读账号预检发现 R2 未启用（错误 10042），需求方随后明确决定暂缓远程部署。未创建或修改远程 D1、R2、Queue、Worker 或 Turnstile 资源。生产从零部署、CI 实际运行、云端恢复演练及外部告警通知目的地仍待验收，不能将本阶段视为生产上线完成。恢复手册和演练脚本已备齐；D1 免费计划 Time Travel 为 7 天，付费计划为 30 天，DO 为 30 天。
-- 部署结果和后续验收条件记录在 `packages/twenty-worker/DEPLOYMENT.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
+- 部署结果和后续验收条件记录在 `packages/crm-worker/DEPLOYMENT.md`；邮件及真实 Google/Microsoft 登录继续按阶段 12 的外部配置边界验收。
 
 ### 阶段 14：对外 MCP 服务
 
@@ -968,7 +968,7 @@ npx nx test twenty-worker
 - **核心工具**：从当前元数据和权限生成标准/自定义对象的查询、创建、更新、upsert、软删除、恢复、永久删除、合并、聚合和分组工具，并提供跨对象搜索及只读对象/字段元数据发现。沿用原版 snake_case 工具命名和查询的顶层字段筛选；保留默认直接模式与 `mode=meta` 的 `get_tool_catalog`、`learn_tools`、`execute_tool`。输入 schema 和嵌套定义按字段、对象及写入权限裁剪，实际执行仍通过记录引擎检查。
 - **事务与运行时**：复用同步 GraphQL 记录执行和事务回滚，不在事务内引入外部 IO。文件签名、时间线、实时事件及 webhook 沿用既有路径；写入 actor 标记为 AGENT 并保留 key/成员名称。复用 DO 的 schema 缓存，新增 shared/workflow 源码 alias 以使用既有对象自动化守卫。
 - **兼容边界**：不恢复范围外工作流、AI/skills、应用/函数、外部 MCP 连接器及账户/设置工具；MCP 的 metadata 工具只读。分组/聚合输入按 Worker GraphQL 契约生成，客户端应重新发现 schema。使用现有 Bearer 凭据，不提供 MCP OAuth 授权服务器、动态客户端注册、旧版 GET/SSE、进度通知、断线重放或后台任务。批量上限沿用 Worker 的 200 条。无需新增依赖、存储迁移或前端改动；未部署远程资源。
-- **使用与验证**：连接配置、curl 示例、工具参数和协议边界见 `packages/twenty-worker/MCP.md`。Node 26 下跳过 Nx 缓存重建 shared，直接 Worker tsgo、全包 lint/格式检查通过；完整 workerd 回归 51 个文件、877 项测试通过，最后补充数组参数校验后重跑 MCP 的 16 项集成测试全部通过。覆盖握手、直接/meta 模式、标准及自定义对象、关联与合并、权限及隐藏字段、密钥轮换/撤销/过期、会话/CSRF、元数据变化、事务回滚和固定/流式请求体大小限制。Wrangler 默认及 production dry-run 通过，最终 production 包 gzip 1,477.11 KiB；未部署或修改远程资源。
+- **使用与验证**：连接配置、curl 示例、工具参数和协议边界见 `packages/crm-worker/MCP.md`。Node 26 下跳过 Nx 缓存重建 shared，直接 Worker tsgo、全包 lint/格式检查通过；完整 workerd 回归 51 个文件、877 项测试通过，最后补充数组参数校验后重跑 MCP 的 16 项集成测试全部通过。覆盖握手、直接/meta 模式、标准及自定义对象、关联与合并、权限及隐藏字段、密钥轮换/撤销/过期、会话/CSRF、元数据变化、事务回滚和固定/流式请求体大小限制。Wrangler 默认及 production dry-run 通过，最终 production 包 gzip 1,477.11 KiB；未部署或修改远程资源。
 
 ## 9. 风险、未决事项与记录
 
@@ -989,7 +989,7 @@ npx nx test twenty-worker
 1. 单 workspace 还是多 workspace 部署（当前默认单 workspace）。
 2. 阶段 12 三项已确认并实现；待提供发信域名及 Google/Microsoft 应用配置以做真实集成验收。
 3. 未接入发信域名前密码重置不可投递；本地仅模拟发信。
-4. 阶段 13 已于 2026-11-16 部署至 workers.dev，12 项公网检查及隔离 DO/D1 恢复演练通过；首次管理员注册和已认证业务验收、CI 实际运行及外部告警接收端仍待完成。详见 `packages/twenty-worker/DEPLOYMENT.md`。
+4. 阶段 13 已于 2026-11-16 部署至 workers.dev，12 项公网检查及隔离 DO/D1 恢复演练通过；首次管理员注册和已认证业务验收、CI 实际运行及外部告警接收端仍待完成。详见 `packages/crm-worker/DEPLOYMENT.md`。
 
 ### 前端改动记录
 
@@ -1033,6 +1033,6 @@ npx nx test twenty-worker
 
 仓库内的参考：
 
-- `/metadata` 的 SDL：`packages/twenty-worker/contract/metadata-schema.graphql`
-- 需要由后端处理的路径前缀：`packages/twenty-shared/src/types/ApiPath.ts`
-- 字段类型枚举：`packages/twenty-shared/src/types/FieldMetadataType.ts`
+- `/metadata` 的 SDL：`packages/crm-worker/contract/metadata-schema.graphql`
+- 需要由后端处理的路径前缀：`packages/crm-shared/src/types/ApiPath.ts`
+- 字段类型枚举：`packages/crm-shared/src/types/FieldMetadataType.ts`

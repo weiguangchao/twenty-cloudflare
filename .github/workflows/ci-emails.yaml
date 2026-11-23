@@ -22,10 +22,10 @@ jobs:
         package.json
         yarn.lock
         .github/workflows/ci-emails.yaml
-        packages/twenty-emails/**
-        packages/twenty-oxlint-rules/scripts/check-unlocalized-strings.mjs
-        packages/twenty-oxlint-rules/scripts/filter-unlocalized-strings.mjs
-        packages/twenty-oxlint-rules/.oxlintrc.i18n.json
+        packages/crm-emails/**
+        packages/crm-oxlint-rules/scripts/check-unlocalized-strings.mjs
+        packages/crm-oxlint-rules/scripts/filter-unlocalized-strings.mjs
+        packages/crm-oxlint-rules/.oxlintrc.i18n.json
   emails-test:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'
@@ -38,18 +38,18 @@ jobs:
           fetch-depth: 10
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
-      - name: Lint twenty-emails
-        run: npx nx lint twenty-emails
-      - name: Build twenty-emails
-        run: npx nx build twenty-emails
+      - name: Lint crm-emails
+        run: npx nx lint crm-emails
+      - name: Build crm-emails
+        run: npx nx build crm-emails
       - name: Extract translations (lingui)
-        run: npx nx run twenty-emails:lingui:extract
+        run: npx nx run crm-emails:lingui:extract
       - name: Compile translations (lingui)
-        run: npx nx run twenty-emails:lingui:compile
+        run: npx nx run crm-emails:lingui:compile
       - name: Run email tests
         run: |
           # Start the email server in the background
-          npx nx run twenty-emails:start &
+          npx nx run crm-emails:start &
           SERVER_PID=$!
 
           # Wait for server to start

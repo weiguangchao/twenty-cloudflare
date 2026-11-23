@@ -1,0 +1,66 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 84,
+  "capturedAt": "2026-11-12T11:37:33.399Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "and": [
+        {},
+        {
+          "not": {
+            "deletedAt": {
+              "is": "NULL"
+            }
+          }
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "id": "e7132b7f-cac9-45ff-b249-e173df411702"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTg4LCJpZCI6ImU3MTMyYjdmLWNhYzktNDVmZi1iMjQ5LWUxNzNkZjQxMTcwMiJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": true,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6LTg4LCJpZCI6ImU3MTMyYjdmLWNhYzktNDVmZi1iMjQ5LWUxNzNkZjQxMTcwMiJ9",
+          "endCursor": "eyJwb3NpdGlvbiI6LTg4LCJpZCI6ImU3MTMyYjdmLWNhYzktNDVmZi1iMjQ5LWUxNzNkZjQxMTcwMiJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 2,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

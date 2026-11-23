@@ -1,0 +1,33 @@
+{
+  "flow": "members-roles",
+  "sequence": 150,
+  "capturedAt": "2026-11-12T12:23:31.144Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "DeleteUserWorkspace",
+  "query": "mutation DeleteUserWorkspace($workspaceMemberIdToDelete: String!) {\n  deleteUserFromWorkspace(workspaceMemberIdToDelete: $workspaceMemberIdToDelete) {\n    id\n    __typename\n  }\n}",
+  "variables": {
+    "workspaceMemberIdToDelete": "40cc477c-a642-42f9-914a-b1fd5efc9ffe"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "111",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "deleteUserFromWorkspace": {
+        "id": "c3c10104-d68d-4541-91ea-06cc54201802",
+        "__typename": "UserWorkspace"
+      }
+    }
+  },
+  "repeatCount": 1
+}

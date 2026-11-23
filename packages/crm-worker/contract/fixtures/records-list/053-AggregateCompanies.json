@@ -1,0 +1,32 @@
+{
+  "flow": "records-list",
+  "sequence": 53,
+  "capturedAt": "2026-11-12T11:25:48.721Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateCompanies",
+  "query": "query AggregateCompanies($filter: CompanyFilterInput) {\n  companies(filter: $filter) {\n    percentageEmptyLinkedinLink\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {}
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "percentageEmptyLinkedinLink": 1,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 2
+}

@@ -1,0 +1,52 @@
+{
+  "flow": "views",
+  "sequence": 35,
+  "capturedAt": "2026-11-12T12:04:38.578Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpdateViewField",
+  "query": "mutation UpdateViewField($input: UpdateViewFieldInput!) {\n  updateViewField(input: $input) {\n    ...ViewFieldFragment\n    __typename\n  }\n}\n\nfragment ViewFieldFragment on ViewField {\n  id\n  fieldMetadataId\n  viewId\n  isVisible\n  position\n  size\n  aggregateOperation\n  viewFieldGroupId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}",
+  "variables": {
+    "input": {
+      "id": "ae9cbfe3-751e-4330-a94b-bf7449e03b8a",
+      "update": {
+        "aggregateOperation": "PERCENTAGE_EMPTY",
+        "isVisible": false,
+        "position": 5,
+        "size": 170
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "421",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "updateViewField": {
+        "id": "ae9cbfe3-751e-4330-a94b-bf7449e03b8a",
+        "fieldMetadataId": "c7db43f2-996d-410b-b019-643d67123a01",
+        "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+        "isVisible": false,
+        "position": 5,
+        "size": 170,
+        "aggregateOperation": "PERCENTAGE_EMPTY",
+        "viewFieldGroupId": null,
+        "isActive": true,
+        "createdAt": "2026-11-12T12:04:03.007Z",
+        "updatedAt": "2026-11-12T12:04:38.414Z",
+        "deletedAt": null,
+        "__typename": "ViewField"
+      }
+    }
+  },
+  "repeatCount": 1
+}

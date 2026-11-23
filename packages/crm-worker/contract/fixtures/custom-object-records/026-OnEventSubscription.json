@@ -1,0 +1,25 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 26,
+  "capturedAt": "2026-11-12T12:01:22.395Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "OnEventSubscription",
+  "query": "subscription OnEventSubscription($eventStreamId: String!) {\n  onEventSubscription(eventStreamId: $eventStreamId) {\n    eventStreamId\n    objectRecordEventsWithQueryIds {\n      objectRecordEvent {\n        action\n        objectNameSingular\n        recordId\n        userId\n        workspaceMemberId\n        properties {\n          updatedFields\n          before\n          after\n          diff\n        }\n      }\n      queryIds\n    }\n    metadataEvents {\n      type\n      metadataName\n      recordId\n      updatedCollectionHash\n      properties {\n        updatedFields\n        before\n        after\n        diff\n      }\n    }\n    queueJobEvents {\n      jobId\n      state\n      attemptsMade\n      failedReason\n      progress\n      enqueuedAt\n      startedAt\n      finishedAt\n    }\n  }\n}",
+  "variables": {
+    "eventStreamId": "cc842243-6da6-4e0e-bd6f-0bb5432a488b"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json; charset=utf-8",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "cache-control": "no-cache",
+    "content-type": "text/event-stream"
+  },
+  "response": null,
+  "repeatCount": 1
+}

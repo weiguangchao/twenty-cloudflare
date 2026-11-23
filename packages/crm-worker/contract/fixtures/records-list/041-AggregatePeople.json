@@ -1,0 +1,42 @@
+{
+  "flow": "records-list",
+  "sequence": 41,
+  "capturedAt": "2026-11-12T11:24:23.242Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregatePeople",
+  "query": "query AggregatePeople($filter: PersonFilterInput) {\n  people(filter: $filter) {\n    minCreatedAt\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "emails": {
+            "primaryEmail": {
+              "ilike": "%exa%"
+            }
+          }
+        },
+        {
+          "emails": {
+            "additionalEmails": {
+              "like": "%exa%"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": null,
+  "repeatCount": 1
+}

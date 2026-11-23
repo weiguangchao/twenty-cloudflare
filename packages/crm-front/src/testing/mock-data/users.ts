@@ -1,0 +1,227 @@
+import { type CurrentUserWorkspace } from '@/auth/states/currentUserWorkspaceState';
+import { CUSTOM_WORKSPACE_APPLICATION_MOCK } from '@/object-metadata/hooks/__tests__/constants/CustomWorkspaceApplicationMock.test.constant';
+import { type WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
+import { DEFAULT_AI_CHAT_ASSISTANT_PROFILE } from 'crm-shared/ai';
+import {
+  AiChatAssistantMode,
+  AiModelTier,
+  OnboardingStatus,
+  PermissionFlagType,
+  type User,
+  type Workspace,
+  WorkspaceActivationStatus,
+  WorkspaceDiscoverability,
+  WorkspaceMemberDateFormatEnum,
+  WorkspaceMemberTimeFormatEnum,
+} from '~/generated-metadata/graphql';
+import { getTestEnrichedObjectMetadataItemsMock } from '~/testing/utils/getTestEnrichedObjectMetadataItemsMock';
+
+type MockedUser = Pick<
+  User,
+  | 'id'
+  | 'email'
+  | 'firstName'
+  | 'lastName'
+  | 'canAccessFullAdminPanel'
+  | 'canImpersonate'
+  | '__typename'
+  | 'onboardingStatus'
+  | 'userVars'
+  | 'availableWorkspaces'
+  | 'hasPassword'
+> & {
+  workspaceMember: WorkspaceMember | null;
+  locale: string;
+  currentWorkspace: Workspace;
+  workspaces: Array<{ workspace: Workspace }>;
+  workspaceMembers: WorkspaceMember[];
+  currentUserWorkspace: CurrentUserWorkspace;
+};
+
+export const avatarUrl =
+  'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAYABgAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABgAAAAAQAAAGAAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAABSgAwAEAAAAAQAAABQAAAAA/8AAEQgAFAAUAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMACwgICggHCwoJCg0MCw0RHBIRDw8RIhkaFBwpJCsqKCQnJy0yQDctMD0wJyc4TDk9Q0VISUgrNk9VTkZUQEdIRf/bAEMBDA0NEQ8RIRISIUUuJy5FRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRf/dAAQAAv/aAAwDAQACEQMRAD8Ava1q728otYY98joSCTgZrnbXWdTtrhrfVZXWLafmcAEkdgR/hVltQku9Q8+OIEBcGOT+ID0PY1ka1KH2u8ToqnPLbmIqG7u6LtbQ7RXBRec4Uck9eKXcPWsKDWVnhWSL5kYcFelSf2m3901POh8jP//QoyIAnTuKpXsY82NsksUyWPU5q/L9z8RVK++/F/uCsVsaEURwgA4HtT9x9TUcf3KfUGh//9k=';
+export const workspaceLogoUrl =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACb0lEQVR4nO2VO4taQRTHr3AblbjxEVlwCwVhg7BoqqCIjy/gAyyFWNlYBOxsfH0KuxgQGwXRUkGuL2S7i1barGAgiwbdW93SnGOc4BonPiKahf3DwXFmuP/fPM4ZlvmlTxAhCBdzHnEQWYiv7Mr4C3NeuVYhQYDPzOUUQgDLBQGcLHNhvQK8DACPx8PTxiqVyvISG43GbyaT6Qfpn06n0m63e/tPAPF4vJ1MJu8kEsnWTCkWi1yr1RKGw+GDRqPBOTfr44vFQvD7/Q/lcpmaaVQAr9fLp1IpO22c47hGOBz+MB6PH+Vy+VYDAL8qlUoGtVotzOfzq4MAgsHgE/6KojiQyWR/bKVSqbSszHFM8Pl8z1YK48JsNltCOBwOnrYLO+8AAIjb+nHbycoTiUQfDJ7tFq4YAHiVSmXBxcD41u8flQU8z7fhzO0r83atVns3Go3u9Xr9x0O/RQXo9/tsIBBg6vX606a52Wz+bZ7P5/WwG29gxSJzhKgA6XTaDoFNF+krFAocmC//4yWEcSf2wTm7mCO19xFgSsKOLI16vV7b7XY7mRNoLwA0JymJ5uQIzgIAuX5PzDElT2m+E8BqtQ4ymcx7Yq7T6a6ZE4sKgOadTucaCwkxp1UzlEKh0GDxIXOwDWHAdi6Xe3swQDQa/Q7mywoolUpvsaptymazDWKxmBHTlWXZm405BFZoNpuGgwEmk4mE2SGtVivii4f1AO7J3ZopkQCQj7Ar1FeRChCJRJzVapX6DKNIfSc1Ax+wtQWQ55h6bH8FWDfYV4fO3wlwDr0C/BcADYiTPCxHqIEA2QsCZAkAKnRGkMbKN/sTX5YHPQ1e7SkAAAAASUVORK5CYII=';
+
+export const mockCurrentWorkspace = {
+  workspaceCustomApplication: CUSTOM_WORKSPACE_APPLICATION_MOCK,
+  workspaceCustomApplicationId: CUSTOM_WORKSPACE_APPLICATION_MOCK.id,
+  installedApplications: [CUSTOM_WORKSPACE_APPLICATION_MOCK],
+  subdomain: 'acme.example.com',
+  id: '7dfbc3f7-6e5e-4128-957e-8d86808cdf6w',
+  displayName: 'CRM',
+  inviteHash: 'example.com-invite-hash',
+  logo: workspaceLogoUrl,
+  isPublicInviteLinkEnabled: true,
+  isCampaignClickTrackingEnabled: false,
+  isCampaignOpenTrackingEnabled: false,
+  workspaceDiscoverability: WorkspaceDiscoverability.PUBLIC,
+  allowImpersonation: true,
+  activationStatus: WorkspaceActivationStatus.ACTIVE,
+  hasValidSignedEnterpriseKey: false,
+  hasValidEnterpriseValidityToken: false,
+  isGoogleAuthEnabled: true,
+  isPasswordAuthEnabled: true,
+  isMicrosoftAuthEnabled: false,
+  isCustomDomainEnabled: false,
+  iframeMediaPermissions: [],
+  isPasswordAuthBypassEnabled: false,
+  isGoogleAuthBypassEnabled: false,
+  isMicrosoftAuthBypassEnabled: false,
+  workspaceUrls: {
+    customUrl: undefined,
+    subdomainUrl: 'crm.example.com',
+  },
+  featureFlags: [],
+  createdAt: '2023-04-26T10:23:42.33625+00:00',
+  updatedAt: '2023-04-26T10:23:42.33625+00:00',
+  metadataVersion: 1,
+  trashRetentionDays: 14,
+  aiChatModelTier: AiModelTier.fast,
+  aiChatAssistantProfile: {
+    ...DEFAULT_AI_CHAT_ASSISTANT_PROFILE,
+    __typename: 'AiChatAssistantProfile',
+  },
+  aiChatDirectMessageAssistantMode: AiChatAssistantMode.MENTION_ONLY,
+  aiChatInboxAssistantMode: AiChatAssistantMode.AUTOMATIC,
+  aiAgentModelTier: AiModelTier.fast,
+  isAutoModelSelectionEnabled: true,
+  aiModelIdByTier: {},
+  isInternalMessagesImportEnabled: false,
+  workspaceMembersCount: 1,
+  databaseSchema: null,
+  isTwoFactorAuthenticationEnforced: false,
+  eventLogRetentionDays: 90,
+  billingEntitlements: [],
+  billingSubscriptions: [],
+  isTrialAvailable: false,
+  __typename: 'Workspace',
+} as const satisfies Workspace;
+
+export const mockedWorkspaceMemberData: WorkspaceMember = {
+  __typename: 'WorkspaceMember',
+  id: '7dfbc3f7-6e5e-4128-957e-8d86808cdf6b',
+  colorScheme: 'Light',
+  avatarUrl,
+  locale: 'en',
+  name: {
+    firstName: 'Charles',
+    lastName: 'Test',
+  },
+  createdAt: '2023-04-26T10:23:42.33625+00:00',
+  updatedAt: '2023-04-26T10:23:42.33625+00:00',
+  userId: '2603c1f9-0172-4ea6-986c-eeaccdf7f4cf',
+  userEmail: 'charles@test.com',
+  dateFormat: WorkspaceMemberDateFormatEnum.DAY_FIRST,
+  timeFormat: WorkspaceMemberTimeFormatEnum.HOUR_24,
+  timeZone: 'America/New_York',
+};
+
+export const mockedUserData: MockedUser = {
+  id: '7dfbc3f7-6e5e-4128-957e-8d86808cdf6d',
+  __typename: 'User',
+  email: 'charles@test.com',
+  firstName: 'Charles',
+  lastName: 'Test',
+  canAccessFullAdminPanel: false,
+  canImpersonate: false,
+  hasPassword: true,
+  workspaceMember: mockedWorkspaceMemberData,
+  currentWorkspace: mockCurrentWorkspace,
+  currentUserWorkspace: {
+    permissionFlags: [
+      PermissionFlagType.WORKSPACE_MEMBERS,
+      PermissionFlagType.CONNECTED_ACCOUNTS,
+    ],
+    twoFactorAuthenticationMethodSummary: [],
+    objectRecordsPermissions: getTestEnrichedObjectMetadataItemsMock().map(
+      (item) => ({
+        objectMetadataId: item.id,
+        canCreateAllRecords: true,
+        canReadAllRecords: true,
+        canUpdateAllRecords: true,
+        canSoftDeleteAllRecords: true,
+        canDestroyAllRecords: true,
+        unreadableFields: [],
+        uneditableFields: [],
+        restrictedFields: {},
+      }),
+    ),
+  },
+  locale: 'en',
+  workspaces: [{ workspace: mockCurrentWorkspace }],
+  workspaceMembers: [mockedWorkspaceMemberData],
+  onboardingStatus: OnboardingStatus.COMPLETED,
+  availableWorkspaces: {
+    availableWorkspacesForSignIn: [],
+    availableWorkspacesForSignUp: [],
+  },
+  userVars: {},
+};
+
+export const mockedLimitedPermissionsUserData: MockedUser = {
+  ...mockedUserData,
+  currentUserWorkspace: {
+    ...mockedUserData.currentUserWorkspace,
+    objectRecordsPermissions: getTestEnrichedObjectMetadataItemsMock().map(
+      (item) => {
+        const hasAccess =
+          item.nameSingular !== 'task' && item.nameSingular !== 'opportunity';
+
+        return {
+          objectMetadataId: item.id,
+          canCreateAllRecords: hasAccess,
+          canReadAllRecords: hasAccess,
+          canUpdateAllRecords: hasAccess,
+          canSoftDeleteAllRecords: hasAccess,
+          canDestroyAllRecords: hasAccess,
+          unreadableFields: [],
+          uneditableFields: [],
+          restrictedFields: {},
+        };
+      },
+    ),
+  },
+};
+
+export const mockedOnboardingUserData = (
+  onboardingStatus?: OnboardingStatus,
+) => {
+  return {
+    id: '7dfbc3f7-6e5e-4128-957e-8d86808cdf6d',
+    __typename: 'User',
+    email: 'workspace-onboarding@test.com',
+    firstName: '',
+    lastName: '',
+    hasPassword: false,
+    canAccessFullAdminPanel: false,
+    canImpersonate: false,
+    workspaceMember: null,
+    workspaceMembers: [],
+    currentWorkspace: mockCurrentWorkspace,
+    currentUserWorkspace: {
+      permissionFlags: [PermissionFlagType.WORKSPACE_MEMBERS],
+      objectRecordsPermissions: getTestEnrichedObjectMetadataItemsMock().map(
+        (item) => ({
+          objectMetadataId: item.id,
+          canCreateAllRecords: true,
+          canReadAllRecords: true,
+          canUpdateAllRecords: true,
+          canSoftDeleteAllRecords: true,
+          canDestroyAllRecords: true,
+          unreadableFields: [],
+          uneditableFields: [],
+          restrictedFields: {},
+        }),
+      ),
+    },
+    locale: 'en',
+    workspaces: [{ workspace: mockCurrentWorkspace }],
+    onboardingStatus: onboardingStatus || null,
+    userVars: {},
+    availableWorkspaces: {
+      availableWorkspacesForSignIn: [],
+      availableWorkspacesForSignUp: [],
+    },
+  };
+};

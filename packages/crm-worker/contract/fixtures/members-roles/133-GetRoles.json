@@ -1,0 +1,469 @@
+{
+  "flow": "members-roles",
+  "sequence": 133,
+  "capturedAt": "2026-11-12T12:22:21.611Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetRoles",
+  "query": "query GetRoles {\n  getPermissionFlags {\n    id\n    applicationId\n    key\n    label\n    description\n    icon\n    permissionType\n    __typename\n  }\n  getRoles {\n    ...RoleFragment\n    workspaceMembers {\n      ...PartialWorkspaceMemberQueryFragment\n      __typename\n    }\n    agents {\n      ...AgentFields\n      __typename\n    }\n    apiKeys {\n      ...ApiKeyForRoleFragment\n      __typename\n    }\n    permissionFlags {\n      ...RolePermissionFlagFragment\n      __typename\n    }\n    objectPermissions {\n      ...ObjectPermissionFragment\n      __typename\n    }\n    fieldPermissions {\n      ...FieldPermissionFragment\n      __typename\n    }\n    rowLevelPermissionPredicates {\n      ...RowLevelPermissionPredicateFragment\n      __typename\n    }\n    rowLevelPermissionPredicateGroups {\n      ...RowLevelPermissionPredicateGroupFragment\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment RoleFragment on Role {\n  id\n  label\n  description\n  icon\n  canUpdateAllSettings\n  canAccessAllTools\n  canAccessAllAgentChatChannels\n  isEditable\n  canReadAllObjectRecords\n  canUpdateAllObjectRecords\n  canSoftDeleteAllObjectRecords\n  canDestroyAllObjectRecords\n  canBeAssignedToUsers\n  canBeAssignedToAgents\n  canBeAssignedToApiKeys\n  applicationId\n  universalIdentifier\n  __typename\n}\n\nfragment PartialWorkspaceMemberQueryFragment on WorkspaceMember {\n  id\n  name {\n    firstName\n    lastName\n    __typename\n  }\n  avatarUrl\n  userEmail\n  userId\n  userWorkspaceId\n  __typename\n}\n\nfragment AgentFields on Agent {\n  id\n  name\n  label\n  description\n  icon\n  prompt\n  modelId\n  responseFormat\n  roleId\n  isSystem\n  isActive\n  modelConfiguration\n  triggers\n  applicationId\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment ApiKeyForRoleFragment on ApiKeyForRole {\n  id\n  name\n  expiresAt\n  revokedAt\n  __typename\n}\n\nfragment RolePermissionFlagFragment on RolePermissionFlag {\n  id\n  flag\n  roleId\n  __typename\n}\n\nfragment ObjectPermissionFragment on ObjectPermission {\n  objectMetadataId\n  canReadObjectRecords\n  canUpdateObjectRecords\n  canSoftDeleteObjectRecords\n  canDestroyObjectRecords\n  unreadableFields\n  uneditableFields\n  __typename\n}\n\nfragment FieldPermissionFragment on FieldPermission {\n  objectMetadataId\n  fieldMetadataId\n  canReadFieldValue\n  canUpdateFieldValue\n  id\n  roleId\n  __typename\n}\n\nfragment RowLevelPermissionPredicateFragment on RowLevelPermissionPredicate {\n  id\n  fieldMetadataId\n  relationFieldMetadataId\n  objectMetadataId\n  operand\n  subFieldName\n  workspaceMemberFieldMetadataId\n  workspaceMemberSubFieldName\n  rowLevelPermissionPredicateGroupId\n  positionInRowLevelPermissionPredicateGroup\n  roleId\n  value\n  __typename\n}\n\nfragment RowLevelPermissionPredicateGroupFragment on RowLevelPermissionPredicateGroup {\n  id\n  parentRowLevelPermissionPredicateGroupId\n  logicalOperator\n  positionInRowLevelPermissionPredicateGroup\n  canReadRecords\n  canUpdateRecords\n  canSoftDeleteRecords\n  canDestroyRecords\n  roleId\n  objectMetadataId\n  __typename\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "11891",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "getPermissionFlags": [
+        {
+          "id": "d6e9c125-db27-46ac-8200-885f3f07ba64",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "API_KEYS_AND_WEBHOOKS",
+          "label": "MCP & APIs",
+          "description": "Manage MCP, API keys, and webhooks",
+          "icon": "IconPlug",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "234816e3-68a5-4059-af27-beeae283eca9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "WORKSPACE",
+          "label": "Workspace",
+          "description": "Set global workspace preferences",
+          "icon": "IconSettings",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "979322bc-0241-4ff7-a9b5-7ab5a711010c",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "WORKSPACE_MEMBERS",
+          "label": "Users",
+          "description": "Add or remove users",
+          "icon": "IconUsers",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "f3bd692b-4f5f-4b60-9527-4eb76bab7164",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "ROLES",
+          "label": "Roles",
+          "description": "Define user roles and access levels",
+          "icon": "IconLock",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "3059121d-0654-45a3-9e94-894deddff1f0",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "DATA_MODEL",
+          "label": "Data Model",
+          "description": "Edit data structure and fields",
+          "icon": "IconHierarchy",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "acb801d1-90c9-4b2e-be7b-2cb6ba6f20ef",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "SECURITY",
+          "label": "Security",
+          "description": "Manage security policies",
+          "icon": "IconKey",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "2bd59e4e-da2a-4e61-a702-472e78a2aa43",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "WORKFLOWS",
+          "label": "Workflows",
+          "description": "Manage workflows",
+          "icon": "IconSettingsAutomation",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "19076eab-6944-409d-9396-ac20f1bac8a1",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "IMPERSONATE",
+          "label": "Impersonate",
+          "description": "Impersonate workspace users",
+          "icon": "IconSpy",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "bb37aec6-d8d5-4b74-bfda-512053481248",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "SSO_BYPASS",
+          "label": "SSO Bypass",
+          "description": "Enable bypass options",
+          "icon": "IconShield",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "1c56d109-26ef-4884-8931-8699e76f49a9",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "APPLICATIONS",
+          "label": "Workspace Apps",
+          "description": "Install and manage workspace apps",
+          "icon": "IconApps",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "becda35a-c7ed-4b8d-839a-b299d3f685f0",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "MARKETPLACE_APPS",
+          "label": "Marketplace Apps",
+          "description": "Browse and install marketplace apps",
+          "icon": "IconShoppingBag",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "2ce9bcb6-c2e1-4f27-ab0a-43f158dda135",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "LAYOUTS",
+          "label": "Layouts",
+          "description": "Customize page layouts and UI structure",
+          "icon": "IconAppWindow",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "6f5b80a7-ac6c-47e0-8925-ddd49bcb69fd",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "BILLING",
+          "label": "Billing",
+          "description": "Manage billing and subscriptions",
+          "icon": "IconCreditCard",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "df9a904e-4ac7-4fe9-99af-d41dc283b3e8",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "AI_SETTINGS",
+          "label": "AI",
+          "description": "Create and configure AI agents",
+          "icon": "IconSparkles",
+          "permissionType": "settings",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "580bfbe5-5ff3-4e5a-9f8f-ade67c1d45ed",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "AI",
+          "label": "Ask AI",
+          "description": "Chat with AI agents and use AI features",
+          "icon": "IconSparkles",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "b84717a7-9b72-49df-830e-afe16aa003e0",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "VIEWS",
+          "label": "Manage Views",
+          "description": "Create, edit, and delete workspace views",
+          "icon": "IconTable",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "64ec1f1f-832a-4a69-a5c8-9f6f3be18db8",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "UPLOAD_FILE",
+          "label": "Upload Files",
+          "description": "Allow uploading files and attachments",
+          "icon": "IconFileUpload",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "059bec84-15fd-4bb4-a4c9-4ba16f12943d",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "DOWNLOAD_FILE",
+          "label": "Download Files",
+          "description": "Allow downloading files and attachments",
+          "icon": "IconDownload",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "0d701972-acf7-421e-a1c0-fdbc597d587b",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "SEND_EMAIL_TOOL",
+          "label": "Send Email",
+          "description": "Send emails via connected accounts",
+          "icon": "IconMail",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "c4064fd4-9213-4524-a588-ebd69327994f",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "CREATE_CALENDAR_EVENT_TOOL",
+          "label": "Create Calendar Event",
+          "description": "Create calendar events via connected accounts",
+          "icon": "IconCalendarEvent",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "b74e5f00-ce51-4085-865a-e4fad262f6a1",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "HTTP_REQUEST_TOOL",
+          "label": "HTTP Request",
+          "description": "Make HTTP requests to external APIs",
+          "icon": "IconApi",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "3d471511-7655-4c0a-877e-a90503fc09f5",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "CODE_INTERPRETER_TOOL",
+          "label": "Code Interpreter",
+          "description": "Run code to analyze files and data",
+          "icon": "IconCode",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "5ed05423-cfac-4f4b-bf29-ede115c9edff",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "IMPORT_CSV",
+          "label": "Import CSV",
+          "description": "Allow importing data from CSV files",
+          "icon": "IconFileImport",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "678b582e-d5bd-460a-acd6-931fa97b40c7",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "EXPORT_CSV",
+          "label": "Export CSV",
+          "description": "Allow exporting data to CSV files",
+          "icon": "IconFileExport",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "601f7808-9fae-458a-b7c0-f4d583e38f01",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "CONNECTED_ACCOUNTS",
+          "label": "User Apps",
+          "description": "Manage own app preferences and accounts",
+          "icon": "IconApps",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        },
+        {
+          "id": "abd09492-cc9d-41b0-bf10-a520734aeb68",
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "key": "PROFILE_INFORMATION",
+          "label": "Edit Profile",
+          "description": "Edit own profile information",
+          "icon": "IconUser",
+          "permissionType": "tool",
+          "__typename": "PermissionFlag"
+        }
+      ],
+      "getRoles": [
+        {
+          "id": "f6f35f57-86ff-440e-aca5-f0c35fc7509d",
+          "label": "Admin",
+          "description": "Admin role",
+          "icon": "IconUserCog",
+          "canUpdateAllSettings": true,
+          "canAccessAllTools": true,
+          "canAccessAllAgentChatChannels": true,
+          "isEditable": false,
+          "canReadAllObjectRecords": true,
+          "canUpdateAllObjectRecords": true,
+          "canSoftDeleteAllObjectRecords": true,
+          "canDestroyAllObjectRecords": true,
+          "canBeAssignedToUsers": true,
+          "canBeAssignedToAgents": false,
+          "canBeAssignedToApiKeys": true,
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "universalIdentifier": "20202020-02c2-43f2-b94d-cab1f2b532eb",
+          "__typename": "Role",
+          "workspaceMembers": [
+            {
+              "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+              "name": {
+                "firstName": "Alice",
+                "lastName": "Admin",
+                "__typename": "FullName"
+              },
+              "avatarUrl": "http://localhost:3001/file/core-picture/68e29b6b-7c7b-4f0f-a31e-9e4315b4088a",
+              "userEmail": "alice@example.com",
+              "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b",
+              "userWorkspaceId": null,
+              "__typename": "WorkspaceMember"
+            }
+          ],
+          "agents": [],
+          "apiKeys": [],
+          "permissionFlags": [],
+          "objectPermissions": [],
+          "fieldPermissions": [],
+          "rowLevelPermissionPredicates": [],
+          "rowLevelPermissionPredicateGroups": []
+        },
+        {
+          "id": "8a89cc51-f17a-4227-815e-a333c4a30f65",
+          "label": "Standard role",
+          "description": "Admin role",
+          "icon": "IconUserCog",
+          "canUpdateAllSettings": true,
+          "canAccessAllTools": true,
+          "canAccessAllAgentChatChannels": true,
+          "isEditable": false,
+          "canReadAllObjectRecords": true,
+          "canUpdateAllObjectRecords": true,
+          "canSoftDeleteAllObjectRecords": true,
+          "canDestroyAllObjectRecords": true,
+          "canBeAssignedToUsers": false,
+          "canBeAssignedToAgents": false,
+          "canBeAssignedToApiKeys": false,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "universalIdentifier": "bb9ae6c6-2764-5356-ad01-8e9b9defc80b",
+          "__typename": "Role",
+          "workspaceMembers": [],
+          "agents": [],
+          "apiKeys": [],
+          "permissionFlags": [],
+          "objectPermissions": [],
+          "fieldPermissions": [],
+          "rowLevelPermissionPredicates": [],
+          "rowLevelPermissionPredicateGroups": []
+        },
+        {
+          "id": "4c9cc615-5720-42bc-b952-b57d286e43fd",
+          "label": "Workspace Custom Application",
+          "description": "Default role of the workspace custom application",
+          "icon": "IconApps",
+          "canUpdateAllSettings": true,
+          "canAccessAllTools": true,
+          "canAccessAllAgentChatChannels": true,
+          "isEditable": false,
+          "canReadAllObjectRecords": true,
+          "canUpdateAllObjectRecords": true,
+          "canSoftDeleteAllObjectRecords": true,
+          "canDestroyAllObjectRecords": true,
+          "canBeAssignedToUsers": false,
+          "canBeAssignedToAgents": false,
+          "canBeAssignedToApiKeys": false,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "universalIdentifier": "b5b505e2-8834-457f-a301-f1f4694fe365",
+          "__typename": "Role",
+          "workspaceMembers": [],
+          "agents": [],
+          "apiKeys": [],
+          "permissionFlags": [],
+          "objectPermissions": [],
+          "fieldPermissions": [],
+          "rowLevelPermissionPredicates": [],
+          "rowLevelPermissionPredicateGroups": []
+        },
+        {
+          "id": "a922d654-a498-4614-8bbd-36e695f510d9",
+          "label": "Member",
+          "description": "Member role",
+          "icon": "IconUser",
+          "canUpdateAllSettings": false,
+          "canAccessAllTools": true,
+          "canAccessAllAgentChatChannels": true,
+          "isEditable": true,
+          "canReadAllObjectRecords": true,
+          "canUpdateAllObjectRecords": true,
+          "canSoftDeleteAllObjectRecords": true,
+          "canDestroyAllObjectRecords": true,
+          "canBeAssignedToUsers": true,
+          "canBeAssignedToAgents": false,
+          "canBeAssignedToApiKeys": false,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "universalIdentifier": "20202020-a8a6-47ae-be79-e3601fa46a8e",
+          "__typename": "Role",
+          "workspaceMembers": [],
+          "agents": [],
+          "apiKeys": [],
+          "permissionFlags": [],
+          "objectPermissions": [],
+          "fieldPermissions": [],
+          "rowLevelPermissionPredicates": [],
+          "rowLevelPermissionPredicateGroups": []
+        },
+        {
+          "id": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+          "label": "Read Only",
+          "description": "Can view records but not change them",
+          "icon": "IconUser",
+          "canUpdateAllSettings": true,
+          "canAccessAllTools": true,
+          "canAccessAllAgentChatChannels": true,
+          "isEditable": true,
+          "canReadAllObjectRecords": true,
+          "canUpdateAllObjectRecords": false,
+          "canSoftDeleteAllObjectRecords": false,
+          "canDestroyAllObjectRecords": false,
+          "canBeAssignedToUsers": true,
+          "canBeAssignedToAgents": true,
+          "canBeAssignedToApiKeys": true,
+          "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+          "universalIdentifier": "ae56d1dd-5dc8-425b-a344-21fef01565ff",
+          "__typename": "Role",
+          "workspaceMembers": [
+            {
+              "id": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+              "name": {
+                "firstName": "Bob",
+                "lastName": "Member",
+                "__typename": "FullName"
+              },
+              "avatarUrl": "",
+              "userEmail": "bob@example.com",
+              "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80",
+              "userWorkspaceId": null,
+              "__typename": "WorkspaceMember"
+            }
+          ],
+          "agents": [],
+          "apiKeys": [],
+          "permissionFlags": [],
+          "objectPermissions": [],
+          "fieldPermissions": [
+            {
+              "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+              "fieldMetadataId": "149e5c50-c05b-4cde-9ab2-cb122f701851",
+              "canReadFieldValue": false,
+              "canUpdateFieldValue": false,
+              "id": "27c6784c-06de-4845-b79c-0fd3968a5b33",
+              "roleId": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+              "__typename": "FieldPermission"
+            }
+          ],
+          "rowLevelPermissionPredicates": [],
+          "rowLevelPermissionPredicateGroups": []
+        }
+      ]
+    }
+  },
+  "repeatCount": 2
+}

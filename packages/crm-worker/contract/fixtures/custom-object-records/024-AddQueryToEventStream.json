@@ -1,0 +1,44 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 24,
+  "capturedAt": "2026-11-12T12:01:04.243Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "fc190419-7f84-4117-a9b0-677ba3393f22",
+      "queryId": "record-show-initiative-11b170fb-3229-40e9-8c51-e42cf4a3d12f-898640f5-93ce-467a-81d6-075ad9735f1d",
+      "operationSignature": {
+        "objectNameSingular": "initiative",
+        "variables": {
+          "filter": {
+            "id": {
+              "eq": "11b170fb-3229-40e9-8c51-e42cf4a3d12f"
+            }
+          },
+          "limit": 1
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,223 @@
+{
+  "flow": "records-list",
+  "sequence": 37,
+  "capturedAt": "2026-11-12T11:24:03.181Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        avatarFile {\n          fileId\n          label\n          extension\n          url\n          __typename\n        }\n        company {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        companyId\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        emails {\n          primaryEmail\n          additionalEmails\n          __typename\n        }\n        id\n        jobTitle\n        linkedinLink {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n        name {\n          firstName\n          lastName\n          __typename\n        }\n        phones {\n          primaryPhoneNumber\n          primaryPhoneCountryCode\n          primaryPhoneCallingCode\n          additionalPhones {\n            number\n            callingCode\n            countryCode\n            __typename\n          }\n          __typename\n        }\n        position\n        updatedAt\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "and": [
+        {
+          "jobTitle": {
+            "ilike": "%Engineer%"
+          }
+        },
+        {
+          "or": [
+            {
+              "name": {
+                "firstName": {
+                  "ilike": "%王%"
+                }
+              }
+            },
+            {
+              "name": {
+                "lastName": {
+                  "ilike": "%王%"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "limit": 60,
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person85@example1.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "42cd1124-c623-45a1-b322-26546833f9c5",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "王",
+                "lastName": "Test085",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -85,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTg1LCJpZCI6IjQyY2QxMTI0LWM2MjMtNDVhMS1iMzIyLTI2NTQ2ODMzZjljNSJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person55@example6.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "faf93171-bc40-422f-9beb-dcdeeb36d2b2",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "王",
+                "lastName": "Test055",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -55,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTU1LCJpZCI6ImZhZjkzMTcxLWJjNDAtNDIyZi05YmViLWRjZGVlYjM2ZDJiMiJ9",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": null,
+              "companyId": null,
+              "createdAt": "2026-11-12T11:22:53.379Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                "name": "Alice Admin",
+                "context": {
+                  "provider": null,
+                  "applicationId": null,
+                  "__typename": "ActorContext"
+                },
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "person25@example4.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "0a222b2b-db72-4bf1-aa1c-e6b55b47aab6",
+              "jobTitle": "Engineer",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "王",
+                "lastName": "Test025",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": -25,
+              "updatedAt": "2026-11-12T11:22:53.379Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6LTI1LCJpZCI6IjBhMjIyYjJiLWRiNzItNGJmMS1hYTFjLWU2YjU1YjQ3YWFiNiJ9",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6LTg1LCJpZCI6IjQyY2QxMTI0LWM2MjMtNDVhMS1iMzIyLTI2NTQ2ODMzZjljNSJ9",
+          "endCursor": "eyJwb3NpdGlvbiI6LTI1LCJpZCI6IjBhMjIyYjJiLWRiNzItNGJmMS1hYTFjLWU2YjU1YjQ3YWFiNiJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 3,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

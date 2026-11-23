@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-02-01 18:53+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: fa\n"
+"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2025-01-01 00:00\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "{senderName} (<0>{senderEmail}</0>) has invited you to join a workspace called <1>{workspaceName}</1>."
+msgstr "{senderName} (<0>{senderEmail}</0>) شما را برای پیوستن به فضای کاری‌ای با نام <1>{workspaceName}</1> دعوت کرده است."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Accept invite"
+msgstr "دعوت را بپذیرید"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm new email"
+msgstr "ایمیل جدید را تأیید کنید"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your email address"
+msgstr "نشانی ایمیل خود را تأیید کنید"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your new email address"
+msgstr "نشانی ایمیل جدید خود را تأیید کنید"
+
+#. js-lingui-explicit-id
+#: src/components/BaseHead.tsx
+msgid "CRM email"
+msgstr "ایمیل CRM"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Join your team on CRM"
+msgstr "به تیم خود در CRM بپیوندید"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset"
+msgstr "بازنشانی"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset your password 🗝"
+msgstr "گذرواژه خود را بازنشانی کنید 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set"
+msgstr "تنظیم"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set your password 🗝"
+msgstr "رمز عبور خود را تنظیم کنید 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Thanks for registering for an account on CRM! Before we get started, we just need to confirm that this is you. Click below to verify your email address."
+msgstr "از ثبت‌نام برای یک حساب در CRM سپاسگزاریم! پیش از شروع، فقط باید تأیید کنیم که این خود شما هستید. برای تأیید نشانی ایمیل خود، زیر را کلیک کنید."
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "This link is only valid for the next {duration}. If the link does not work, you can use the login verification link directly:"
+msgstr "این پیوند فقط تا {duration} آینده معتبر است. اگر پیوند کار نمی‌کند، می‌توانید مستقیماً از پیوند تأیید ورود استفاده کنید:"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Verify Email"
+msgstr "تأیید ایمیل"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "We received a request to change the email address associated with your CRM account. Click below to confirm this change."
+msgstr "درخواستی برای تغییر نشانی ایمیل مرتبط با حساب CRM شما دریافت کردیم. برای تأیید این تغییر، زیر را کلیک کنید."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Workspace logo"
+msgstr "نشان‌واره فضای کاری"

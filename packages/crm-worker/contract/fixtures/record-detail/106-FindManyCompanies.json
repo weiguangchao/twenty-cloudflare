@@ -1,0 +1,161 @@
+{
+  "flow": "record-detail",
+  "sequence": 106,
+  "capturedAt": "2026-11-12T11:30:43.470Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyCompanies",
+  "query": "query FindManyCompanies($filter: CompanyFilterInput, $orderBy: [CompanyOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  companies(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        accountOwnerId\n        address {\n          addressStreet1\n          addressStreet2\n          addressCity\n          addressState\n          addressCountry\n          addressPostcode\n          addressLat\n          addressLng\n          __typename\n        }\n        annualRevenue {\n          amountMicros\n          currencyCode\n          __typename\n        }\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        domainName {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n        id\n        linkedinLink {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n        name\n        position\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "id": {
+        "in": [
+          "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+          "1f70157c-4ea5-4d81-bc49-e1401abfbb94"
+        ]
+      }
+    },
+    "limit": 60
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Company",
+              "accountOwnerId": null,
+              "address": {
+                "addressStreet1": "Eutaw Street",
+                "addressStreet2": "",
+                "addressCity": "Dublin",
+                "addressState": "",
+                "addressCountry": "Ireland",
+                "addressPostcode": "",
+                "addressLat": null,
+                "addressLng": null,
+                "__typename": "Address"
+              },
+              "annualRevenue": {
+                "amountMicros": null,
+                "currencyCode": null,
+                "__typename": "Currency"
+              },
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "domainName": {
+                "primaryLinkUrl": "stripe.com",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "id": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": "Stripe",
+              "position": 3,
+              "updatedAt": "2026-11-12T11:19:49.323Z",
+              "updatedBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              }
+            },
+            "cursor": "eyJpZCI6IjFmNzAxNTdjLTRlYTUtNGQ4MS1iYzQ5LWUxNDAxYWJmYmI5NCJ9",
+            "__typename": "CompanyEdge"
+          },
+          {
+            "node": {
+              "__typename": "Company",
+              "accountOwnerId": null,
+              "address": {
+                "addressStreet1": "760 Market St",
+                "addressStreet2": "Floor 10",
+                "addressCity": "San Francisco",
+                "addressState": "",
+                "addressCountry": "United States",
+                "addressPostcode": "94102",
+                "addressLat": null,
+                "addressLng": null,
+                "__typename": "Address"
+              },
+              "annualRevenue": {
+                "amountMicros": null,
+                "currencyCode": null,
+                "__typename": "Currency"
+              },
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "domainName": {
+                "primaryLinkUrl": "figma.com",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "id": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": "Figma",
+              "position": 4,
+              "updatedAt": "2026-11-12T11:19:49.323Z",
+              "updatedBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              }
+            },
+            "cursor": "eyJpZCI6IjlkNWJjZjQzLTdkMzgtNGU4OC04MmNiLWQ2ZDRjZTYzOGJmMCJ9",
+            "__typename": "CompanyEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6IjFmNzAxNTdjLTRlYTUtNGQ4MS1iYzQ5LWUxNDAxYWJmYmI5NCJ9",
+          "endCursor": "eyJpZCI6IjlkNWJjZjQzLTdkMzgtNGU4OC04MmNiLWQ2ZDRjZTYzOGJmMCJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 2,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-02-01 18:53+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: el\n"
+"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2025-01-01 00:00\n"
+"Last-Translator: \n"
+"Language-Team: Greek\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "{senderName} (<0>{senderEmail}</0>) has invited you to join a workspace called <1>{workspaceName}</1>."
+msgstr "{senderName} (<0>{senderEmail}</0>) σας έχει προσκαλέσει να συμμετάσχετε σε έναν χώρο εργασίας που ονομάζεται <1>{workspaceName}</1>."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Accept invite"
+msgstr "Αποδοχή πρόσκλησης"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm new email"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your email address"
+msgstr "Επιβεβαιώστε τη διεύθυνση email σας"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your new email address"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: src/components/BaseHead.tsx
+msgid "CRM email"
+msgstr "Email του CRM"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Join your team on CRM"
+msgstr "Συμμετέχετε στην ομάδα σας στο CRM"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset your password 🗝"
+msgstr "Επαναφέρετε τον κωδικό σας 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set"
+msgstr "Ορίστε"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set your password 🗝"
+msgstr "Ορίστε τον κωδικό πρόσβασής σας 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Thanks for registering for an account on CRM! Before we get started, we just need to confirm that this is you. Click below to verify your email address."
+msgstr "Σας ευχαριστούμε που κάνατε εγγραφή για λογαριασμό στο CRM! Πριν ξεκινήσουμε, πρέπει να επιβεβαιώσουμε ότι είστε εσείς. Κάντε κλικ παρακάτω για να επαληθεύσετε τη διεύθυνση email σας."
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "This link is only valid for the next {duration}. If the link does not work, you can use the login verification link directly:"
+msgstr "Αυτός ο σύνδεσμος ισχύει μόνο για τις επόμενες {duration}. Εάν ο σύνδεσμος δεν λειτουργεί, μπορείτε να χρησιμοποιήσετε τον σύνδεσμο επαλήθευσης σύνδεσης απευθείας:"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Verify Email"
+msgstr "Επαληθεύστε το Email"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "We received a request to change the email address associated with your CRM account. Click below to confirm this change."
+msgstr "Λάβαμε ένα αίτημα για την αλλαγή της διεύθυνσης email που συνδέεται με τον λογαριασμό σας στο CRM. Κάντε κλικ παρακάτω για να επιβεβαιώσετε αυτή την αλλαγή."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Workspace logo"
+msgstr "Λογότυπο Workspace"

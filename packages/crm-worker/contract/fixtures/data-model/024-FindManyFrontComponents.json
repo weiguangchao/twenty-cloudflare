@@ -1,0 +1,28 @@
+{
+  "flow": "data-model",
+  "sequence": 24,
+  "capturedAt": "2026-11-12T11:43:35.216Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindManyFrontComponents",
+  "query": "query FindManyFrontComponents {\n  frontComponents {\n    id\n    name\n    applicationId\n    builtComponentChecksum\n    builtComponentPath\n    componentName\n    createdAt\n    description\n    isHeadless\n    widgetAvailability {\n      pageLayoutType\n      objectMetadataId\n      __typename\n    }\n    sourceComponentPath\n    universalIdentifier\n    updatedAt\n    usesSdkClient\n    frontComponentSharedDependenciesChecksum\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "31",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "frontComponents": []
+    }
+  },
+  "repeatCount": 2
+}

@@ -1,0 +1,32 @@
+{
+  "flow": "auth-signout-signin",
+  "sequence": 32,
+  "capturedAt": "2026-11-12T11:22:13.765Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "AggregateCompanies",
+  "query": "query AggregateCompanies($filter: CompanyFilterInput) {\n  companies(filter: $filter) {\n    countNotEmptyAddress\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {}
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "countNotEmptyAddress": 5,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

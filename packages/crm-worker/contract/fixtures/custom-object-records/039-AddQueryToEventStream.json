@@ -1,0 +1,43 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 39,
+  "capturedAt": "2026-11-12T12:01:24.855Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "cc842243-6da6-4e0e-bd6f-0bb5432a488b",
+      "queryId": "timeline-activities-initiative-11b170fb-3229-40e9-8c51-e42cf4a3d12f",
+      "operationSignature": {
+        "objectNameSingular": "timelineActivity",
+        "variables": {
+          "filter": {
+            "targetInitiativeId": {
+              "eq": "11b170fb-3229-40e9-8c51-e42cf4a3d12f"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,40 @@
+{
+  "flow": "data-model",
+  "sequence": 238,
+  "capturedAt": "2026-11-12T11:52:50.510Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyAgentChatThreads",
+  "query": "query FindManyAgentChatThreads($filter: AgentChatThreadFilterInput, $orderBy: [AgentChatThreadOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  agentChatThreads(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        activeStreamId\n        archivedAt\n        assigneeId\n        channelArchivedAt\n        channelId\n        channelSnoozedUntil\n        contextWindowTokens\n        conversationSize\n        conversationType\n        createdAt\n        deletedAt\n        directMessageFirstWorkspaceMemberId\n        directMessageSecondWorkspaceMemberId\n        id\n        isAssistantParticipant\n        lastActivityAt\n        lastMessageSenderWorkspaceMemberId\n        lastMessageText\n        pendingQuestionMessageId\n        title\n        totalCacheCreationTokens\n        totalCacheReadTokens\n        totalInputCredits\n        totalInputTokens\n        totalOutputCredits\n        totalOutputTokens\n        updatedAt\n        workspaceMemberId\n        writerWorkspaceMemberIds\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "agentChatThreads": {
+        "edges": [],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": null,
+          "endCursor": null,
+          "__typename": "PageInfo"
+        },
+        "totalCount": 0,
+        "__typename": "AgentChatThreadConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,668 @@
+{
+  "flow": "files",
+  "sequence": 66,
+  "capturedAt": "2026-11-12T12:10:47.944Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneWorkspaceMember",
+  "query": "query FindOneWorkspaceMember($objectRecordId: UUID!) {\n  workspaceMember(filter: {id: {eq: $objectRecordId}}) {\n    __typename\n    accountOwnerForCompanies {\n      edges {\n        node {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreadParticipants {\n      edges {\n        node {\n          __typename\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    agentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedAgentChatThreads {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    assignedTasks {\n      edges {\n        node {\n          __typename\n          id\n          title\n        }\n        __typename\n      }\n      __typename\n    }\n    avatarUrl\n    blocklist {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarEventParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    calendarStartDay\n    colorScheme\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    dateFormat\n    deletedAt\n    id\n    jobTitle\n    locale\n    messageParticipants {\n      edges {\n        node {\n          __typename\n          handle\n          id\n        }\n        __typename\n      }\n      __typename\n    }\n    name {\n      firstName\n      lastName\n      __typename\n    }\n    numberFormat\n    openRecordIn\n    ownedOpportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    position\n    timeFormat\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    timeZone\n    uiScale\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    userEmail\n    userId\n  }\n}",
+  "variables": {
+    "objectRecordId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "workspaceMember": {
+        "__typename": "WorkspaceMember",
+        "accountOwnerForCompanies": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "airbnb.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [
+                    {
+                      "label": "News",
+                      "url": "news.airbnb.com",
+                      "__typename": "SecondaryLink"
+                    }
+                  ],
+                  "__typename": "Links"
+                },
+                "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                "name": "Airbnb"
+              },
+              "__typename": "CompanyEdge"
+            }
+          ],
+          "__typename": "CompanyConnection"
+        },
+        "agentChatThreadParticipants": {
+          "edges": [],
+          "__typename": "AgentChatThreadParticipantConnection"
+        },
+        "agentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedAgentChatThreads": {
+          "edges": [],
+          "__typename": "AgentChatThreadConnection"
+        },
+        "assignedTasks": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Task",
+                "id": "37a24a59-f068-49ba-ade8-31307a8061d5",
+                "title": "Send proposal"
+              },
+              "__typename": "TaskEdge"
+            }
+          ],
+          "__typename": "TaskConnection"
+        },
+        "avatarUrl": "http://localhost:3000/file/core-picture/68e29b6b-7c7b-4f0f-a31e-9e4315b4088a?token=<redacted-jwt-107>",
+        "blocklist": {
+          "edges": [],
+          "__typename": "BlocklistConnection"
+        },
+        "calendarEventParticipants": {
+          "edges": [],
+          "__typename": "CalendarEventParticipantConnection"
+        },
+        "calendarStartDay": 7,
+        "colorScheme": "System",
+        "createdAt": "2026-11-12T11:19:49.295Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "dateFormat": "SYSTEM",
+        "deletedAt": null,
+        "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+        "jobTitle": "",
+        "locale": "en",
+        "messageParticipants": {
+          "edges": [],
+          "__typename": "MessageParticipantConnection"
+        },
+        "name": {
+          "firstName": "Alice",
+          "lastName": "Admin",
+          "__typename": "FullName"
+        },
+        "numberFormat": "SYSTEM",
+        "openRecordIn": "SIDE_PANEL",
+        "ownedOpportunities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "822639e5-9bf7-40f1-8882-a11140362339",
+                "name": "Platform Migration"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "fc747edc-cb00-4078-8d6b-1fab2611dae4",
+                "name": "AI Model Training"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "75de302f-1044-4957-8da4-1f67ebefd52b",
+                "name": "Workspace Expansion"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "2beb07b0-340c-41d7-be33-5aa91757f329",
+                "name": "API Integration Deal"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "9543adcf-ec03-44e2-9233-3c2d3ebae98a",
+                "name": "Enterprise Plan Upgrade"
+              },
+              "__typename": "OpportunityEdge"
+            },
+            {
+              "node": {
+                "__typename": "Opportunity",
+                "id": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5",
+                "name": "Design Partnership"
+              },
+              "__typename": "OpportunityEdge"
+            }
+          ],
+          "__typename": "OpportunityConnection"
+        },
+        "position": 0,
+        "timeFormat": "SYSTEM",
+        "timelineActivities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "75adbc3a-ecbb-4f9c-b243-650f209523c8",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "f1de5d41-520e-4e30-b859-42fe1d3629e0",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "24677df7-4d8f-4149-9d85-a77e64ac2464",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "bcdd49f1-cd70-484c-9e83-c913fd737dcd",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "b30c42dd-c112-4422-87a7-ccbc8a697af5",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "e95bf1fe-4653-4b7c-bed1-ffff1eb37180",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5534488d-8192-47b5-b0cd-39501d8c23ba",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "ebb13cf8-af1c-4a7f-9d8f-745830827319",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5e9ed7fe-c804-436a-8f36-b37d361c2893",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5a1cd3f5-ec60-47e0-9980-c48742b7e4d9",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "34741b77-3d8d-462c-ba99-2095771120b7",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "b6e63c7a-bdd5-4367-a461-f64dbfa7fa62",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "7c88c518-82e2-41c7-ad87-f26ddd0c90d1",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "73ceb3a8-1db9-484e-85f7-1fea2646aef9",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "c4fe4580-57bf-41a0-8d24-f7af4245a83f",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "1b4a54fa-6611-4ac3-9cbf-b0f287c69e7b",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "22165fea-2629-42d0-ae3d-9b8d147d8361",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "c2e49a18-77a7-430b-9238-e223b6fe6a1b",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "761563b6-19a3-4a19-b10d-2ba0b49561ca",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "6eda58d4-1879-4e47-a845-e085ad06f499",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "8b000ca8-0e7a-4fe8-aab9-04ddf4389a1c",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "895c8447-78e4-41dd-b9be-b84d21a9214b",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "8c069c2a-99af-432e-9ffd-493fd491b999",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "cf9102f9-928a-4290-9df1-f7a73f8e2764",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "88d50aaf-b8ca-462c-836a-846e01434be1",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "37cbd684-7b7f-4397-a47c-1aa3540e2286",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "1b86b831-6704-4d71-8fb2-ee9c481dbf25",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "01007d71-2730-40e5-8f8c-a918229d61a4",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "f797c1bb-5c52-4bbd-9d02-221cc11148b4",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "1687e2b1-bac0-4112-b6c3-7dc6abc218c1",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5ecba3cd-4e08-4d4d-a812-93ea295e1298",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "a67ee37e-b5f3-47c9-a617-71cd638c8d25",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "8fed1d1b-84fd-4399-8540-640174038be1",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "e6e84ab4-fa57-4db1-a471-133dbc0cea21",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "b755d358-774a-4016-8bff-ef08d8902b81",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "d29b4c95-663b-4b4f-9c65-e86ae5385e66",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "92577406-cd44-4221-aa0f-607b149b18df",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "2b5596e3-e613-4a08-991a-c6ce19d1932d",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "e9995e6e-b75b-4844-8fbb-cc1ae64d7e80",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "f2ed74f4-ffe6-4f4b-a1a1-ea8ccb340562",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "2bfc2263-18a6-4ea7-ad31-deab399ce0e8",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "1ca5f051-c402-4c22-9f00-2ff993495793",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "c7559cc8-d551-45e7-99b1-031ea2a1f7eb",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "58b930e5-0b29-4418-a73f-a8010827e2f5",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "a93b529c-00e3-4456-9423-335175cb9dc3",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "27cf4e09-350f-4f89-a6d9-1034ada1ae06",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "62597c07-f0fa-4fa1-87b0-d28722b9a0de",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "630433ec-d24f-47fe-b8f9-284e2d01b104",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5a1999e5-85fe-40e1-bd23-52a437173e44",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "5c078e01-00c5-495c-aaaa-4ac8f3932341",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "85108abc-62d5-452a-bfdc-49a7d7c52882",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "a6ba8b67-b9fe-4857-8d21-a106a04f33a0",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "182dbaba-48ec-489b-9acc-3bf15dd76210",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "e24d35c0-011b-4d3e-b3ea-c025559672b0",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "2b09351b-ff8f-480f-b67d-6325a1bfc400",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "bf15b25e-d1b2-455e-a6c6-d71f0affb2c5",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "4b804931-9de0-42b5-b980-076d6f21a05b",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "46049eff-9990-4c42-9cd4-03ee1d378896",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "dc4db11b-3bcb-4e40-9a4f-514fa69d18d7",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "86c46ac8-f919-4532-911a-07dfb9754cb0",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            }
+          ],
+          "__typename": "TimelineActivityConnection"
+        },
+        "timeZone": "system",
+        "uiScale": "Default",
+        "updatedAt": "2026-11-12T12:09:29.925Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": null,
+          "name": "System",
+          "context": null,
+          "__typename": "Actor"
+        },
+        "userEmail": "alice@example.com",
+        "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b"
+      }
+    }
+  },
+  "repeatCount": 1
+}

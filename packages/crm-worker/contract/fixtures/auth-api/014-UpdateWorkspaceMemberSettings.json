@@ -1,0 +1,37 @@
+{
+  "flow": "auth-api",
+  "sequence": 14,
+  "capturedAt": "2026-11-12T11:32:52.985Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpdateWorkspaceMemberSettings",
+  "query": "mutation UpdateWorkspaceMemberSettings($input: UpdateWorkspaceMemberSettingsInput!) {\n  updateWorkspaceMemberSettings(input: $input)\n}",
+  "variables": {
+    "input": {
+      "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+      "update": {
+        "locale": "en"
+      }
+    }
+  },
+  "requestHeaders": {
+    "content-type": "application/json",
+    "origin": "https://evil.example.com",
+    "x-locale": "en",
+    "cookie": "crm-session=<redacted-session-4>",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 403,
+  "responseHeaders": {
+    "content-length": "128",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "response": {
+    "statusCode": 403,
+    "messages": [
+      "Request origin is not allowed for cookie-authenticated requests"
+    ],
+    "error": "CSRF_ORIGIN_MISMATCH"
+  },
+  "repeatCount": 2
+}

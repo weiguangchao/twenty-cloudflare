@@ -1,0 +1,55 @@
+{
+  "flow": "views",
+  "sequence": 39,
+  "capturedAt": "2026-11-12T12:05:05.959Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateManyViewFields",
+  "query": "mutation CreateManyViewFields($inputs: [CreateViewFieldInput!]!) {\n  createManyViewFields(inputs: $inputs) {\n    ...ViewFieldFragment\n    __typename\n  }\n}\n\nfragment ViewFieldFragment on ViewField {\n  id\n  fieldMetadataId\n  viewId\n  isVisible\n  position\n  size\n  aggregateOperation\n  viewFieldGroupId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}",
+  "variables": {
+    "inputs": [
+      {
+        "id": "2a6ff3cb-4723-430f-b38b-58b6015c4d8c",
+        "fieldMetadataId": "49dac3d8-18a6-4976-a9f4-0ae7f5d12400",
+        "position": 8,
+        "isVisible": true,
+        "size": 100,
+        "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "413",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createManyViewFields": [
+        {
+          "id": "2a6ff3cb-4723-430f-b38b-58b6015c4d8c",
+          "fieldMetadataId": "49dac3d8-18a6-4976-a9f4-0ae7f5d12400",
+          "viewId": "42eb4d86-a99f-41d2-84c7-f86183982d61",
+          "isVisible": true,
+          "position": 8,
+          "size": 100,
+          "aggregateOperation": null,
+          "viewFieldGroupId": null,
+          "isActive": true,
+          "createdAt": "2026-11-12T12:05:05.735Z",
+          "updatedAt": "2026-11-12T12:05:05.735Z",
+          "deletedAt": null,
+          "__typename": "ViewField"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

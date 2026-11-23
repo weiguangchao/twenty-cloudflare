@@ -23,7 +23,7 @@
     "yarn": ">=4.0.2"
   },
   "license": "AGPL-3.0",
-  "name": "twenty-monorepo",
+  "name": "crm-monorepo",
   "packageManager": "yarn@4.18.1",
   "resolutions": {
     "tmp": "^0.2.7",
@@ -32,23 +32,23 @@
     "nx/undici": "7.30.1",
     "miniflare/undici": "7.30.1"
   },
-  "//resolutions": "Each entry forces a version outside some parent's declared range because no parent release carries the fix, or keeps a single copy of a package for type identity where noted; remove each once its drop condition is met. tmp ^0.2.7 -> GHSA-7c78-jf6q-g5cm / CVE-2026-49982 and GHSA-ph9p-34f9-6g65 / CVE-2026-44705 fix path traversal. Drop once all retained parents resolve tmp >=0.2.7. @cyntler/react-doc-viewer/ajv 8.20.0 -> GHSA-2g4f-4pwh-qvx6 / CVE-2025-69873 (MEDIUM, ReDoS when using the $data option, vulnerable >=7.0.0-alpha.0 <8.18.0); @cyntler/react-doc-viewer (latest 1.17.1) declares ajv ^7 but never imports it, so forcing 8.x is safe. Drop once it moves to ajv >=8.18.0 or drops ajv. @lingui/cli/esbuild 0.28.1 -> GHSA-gv7w-rqvm-qjhr (Deno-module binary-integrity RCE, >=0.17.0 <0.28.1) and GHSA-g7r4-m6w7-qqqr (Windows dev-server path traversal, >=0.27.3 <0.28.1), both fixed in 0.28.1; @lingui/cli 5.x declares esbuild ^0.25.1 (6.x drops esbuild but is a major migration). Drop once @lingui/cli resolves esbuild >=0.28.1 on its own. nx/undici 7.30.1 -> GHSA-xjj6-f33q-929c / CVE-2026-109869 (HIGH, DoS via unhandled error on excessive content-encodings, vulnerable >=7.18.0 <7.30.1), GHSA-4qv8-2p9j-2685 / CVE-2026-109924 (DoS via unbounded memory in the EventSource parser, vulnerable >=7.0.0 <7.30.1) and GHSA-f72v-6w45-q472 / CVE-2026-109841 (Subresource Integrity bypass via non-lowercase algorithm tokens, vulnerable >=7.15.0 <7.30.1); nx exact-pins undici 7.29.0 in 23.3.1 and through its latest 24.x (24.0.2). Drop once nx pins undici >=7.30.1. miniflare/undici 7.30.1 -> the same undici 7.x advisories (see nx/undici); miniflare (via wrangler in twenty-worker, local development only) exact-pins undici 7.29.1, still in the miniflare that the latest wrangler (4.152.0) pins. Drop once wrangler depends on a miniflare that pins undici >=7.30.1.",
+  "//resolutions": "Each entry forces a version outside some parent's declared range because no parent release carries the fix, or keeps a single copy of a package for type identity where noted; remove each once its drop condition is met. tmp ^0.2.7 -> GHSA-7c78-jf6q-g5cm / CVE-2026-49982 and GHSA-ph9p-34f9-6g65 / CVE-2026-44705 fix path traversal. Drop once all retained parents resolve tmp >=0.2.7. @cyntler/react-doc-viewer/ajv 8.20.0 -> GHSA-2g4f-4pwh-qvx6 / CVE-2025-69873 (MEDIUM, ReDoS when using the $data option, vulnerable >=7.0.0-alpha.0 <8.18.0); @cyntler/react-doc-viewer (latest 1.17.1) declares ajv ^7 but never imports it, so forcing 8.x is safe. Drop once it moves to ajv >=8.18.0 or drops ajv. @lingui/cli/esbuild 0.28.1 -> GHSA-gv7w-rqvm-qjhr (Deno-module binary-integrity RCE, >=0.17.0 <0.28.1) and GHSA-g7r4-m6w7-qqqr (Windows dev-server path traversal, >=0.27.3 <0.28.1), both fixed in 0.28.1; @lingui/cli 5.x declares esbuild ^0.25.1 (6.x drops esbuild but is a major migration). Drop once @lingui/cli resolves esbuild >=0.28.1 on its own. nx/undici 7.30.1 -> GHSA-xjj6-f33q-929c / CVE-2026-109869 (HIGH, DoS via unhandled error on excessive content-encodings, vulnerable >=7.18.0 <7.30.1), GHSA-4qv8-2p9j-2685 / CVE-2026-109924 (DoS via unbounded memory in the EventSource parser, vulnerable >=7.0.0 <7.30.1) and GHSA-f72v-6w45-q472 / CVE-2026-109841 (Subresource Integrity bypass via non-lowercase algorithm tokens, vulnerable >=7.15.0 <7.30.1); nx exact-pins undici 7.29.0 in 23.3.1 and through its latest 24.x (24.0.2). Drop once nx pins undici >=7.30.1. miniflare/undici 7.30.1 -> the same undici 7.x advisories (see nx/undici); miniflare (via wrangler in crm-worker, local development only) exact-pins undici 7.29.1, still in the miniflare that the latest wrangler (4.152.0) pins. Drop once wrangler depends on a miniflare that pins undici >=7.30.1.",
   "version": "0.2.1",
   "nx": {},
   "scripts": {
-    "start": "node .yarn/releases/yarn-4.18.1.cjs nx dev twenty-worker",
-    "start:front": "node .yarn/releases/yarn-4.18.1.cjs nx start twenty-front"
+    "start": "node .yarn/releases/yarn-4.18.1.cjs nx dev crm-worker",
+    "start:front": "node .yarn/releases/yarn-4.18.1.cjs nx start crm-front"
   },
   "workspaces": {
     "packages": [
-      "packages/twenty-front",
-      "packages/twenty-emails",
-      "packages/twenty-ui",
-      "packages/twenty-utils",
-      "packages/twenty-worker",
-      "packages/twenty-e2e-testing",
-      "packages/twenty-shared",
-      "packages/twenty-oxlint-rules"
+      "packages/crm-front",
+      "packages/crm-emails",
+      "packages/crm-ui",
+      "packages/crm-utils",
+      "packages/crm-worker",
+      "packages/crm-e2e-testing",
+      "packages/crm-shared",
+      "packages/crm-oxlint-rules"
     ]
   },
   "prettier": {

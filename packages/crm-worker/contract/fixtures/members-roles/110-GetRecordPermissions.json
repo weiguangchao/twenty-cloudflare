@@ -1,0 +1,48 @@
+{
+  "flow": "members-roles",
+  "sequence": 110,
+  "capturedAt": "2026-11-12T12:21:17.840Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetRecordPermissions",
+  "query": "query GetRecordPermissions($targets: [RecordTargetInput!]!) {\n  recordPermissions(targets: $targets) {\n    objectMetadataId\n    recordId\n    permissions {\n      canRead\n      canUpdate\n      canDelete\n      canSoftDelete\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "targets": [
+      {
+        "objectMetadataId": "fdf357b6-0398-4e1c-8967-4f9f49fc922a",
+        "recordId": "cf39778e-cb13-4bfa-b2f3-86a27798f84f"
+      }
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "307",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "recordPermissions": [
+        {
+          "objectMetadataId": "fdf357b6-0398-4e1c-8967-4f9f49fc922a",
+          "recordId": "cf39778e-cb13-4bfa-b2f3-86a27798f84f",
+          "permissions": {
+            "canRead": false,
+            "canUpdate": false,
+            "canDelete": false,
+            "canSoftDelete": false,
+            "__typename": "RecordPermissionsDTO"
+          },
+          "__typename": "RecordPermissionsResult"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}
