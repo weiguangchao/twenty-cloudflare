@@ -15,8 +15,6 @@ export const getCaptchaUrlByProvider = (
         );
       }
       return `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    case CaptchaDriverType.TURNSTILE:
-      return 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
     default:
       throw new Error(t`Unknown captcha provider`);
   }

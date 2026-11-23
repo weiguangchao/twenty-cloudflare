@@ -5,7 +5,6 @@ import { AnimatedEaseIn } from '@/auth/components/internal/AnimatedEaseIn/Animat
 import { FooterNote } from '@/auth/sign-in-up/components/FooterNote';
 import { WorkspaceSelectionFooter } from '@/auth/sign-in-up/components/WorkspaceSelectionFooter';
 import { SignInUpStep } from '@/auth/states/signInUpStepState';
-import { CaptchaWidgetContainer } from '@/captcha/components/CaptchaWidgetContainer';
 import { styled } from '@linaria/react';
 import { type JSX } from 'react';
 import { AppPath } from 'twenty-shared/types';
@@ -55,10 +54,7 @@ export const SignInUpStandardContent = ({
       <StyledTitleContainer>
         <Title animate>{title}</Title>
       </StyledTitleContainer>
-      <StyledFormContainer>
-        {signInUpForm}
-        <CaptchaWidgetContainer />
-      </StyledFormContainer>
+      <StyledFormContainer>{signInUpForm}</StyledFormContainer>
       {signInUpStep === SignInUpStep.WorkspaceSelection && (
         <WorkspaceSelectionFooter />
       )}

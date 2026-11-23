@@ -1,4 +1,4 @@
-import { chmod, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { readConfig, workerDirectory } from './config.mjs';
 
 const environment = process.argv[2] ?? 'production';
@@ -33,8 +33,6 @@ const database = target.d1_databases[0];
 const databases = await request('d1/database?per_page=100');
 const buckets = await request('r2/buckets?per_page=1000');
 const queues = await request('queues?per_page=100');
-const subdomain = await request('workers/subdomain');
-const widgets = await request('challenges/widgets?per_page=100');
 const existingDatabase = databases.find(
   (candidate) => candidate.name === database.database_name,
 );
@@ -60,33 +58,6 @@ const queueName = target.queues.producers[0].queue;
 if (!queues.some((queue) => queue.queue_name === queueName))
   await request('queues', 'POST', { queue_name: queueName });
 
-const hostname = `${target.name}.${subdomain.subdomain}.workers.dev`;
-
-const existingWidget = widgets.find((widget) => widget.name === target.name);
-const widget = existingWidget
-  ? await request(`challenges/widgets/${existingWidget.sitekey}`)
-  : await request('challenges/widgets', 'POST', {
-      name: target.name,
-      domains: [hostname],
-      mode: 'managed',
-    });
-target.vars.TURNSTILE_SITE_KEY = widget.sitekey;
-await mkdir(`${workerDirectory}/.wrangler`, { recursive: true });
-const secretsPath = `${workerDirectory}/.wrangler/secrets.${environment}.json`;
-let previousSecrets = {};
-try {
-  previousSecrets = JSON.parse(await readFile(secretsPath, 'utf8'));
-} catch (error) {
-  if (error.code !== 'ENOENT') throw error;
-}
-if (!widget.secret)
-  throw new Error('Turnstile secret was not returned by the API');
-await writeFile(
-  secretsPath,
-  JSON.stringify({ ...previousSecrets, TURNSTILE_SECRET_KEY: widget.secret }),
-  { mode: 0o600 },
-);
-await chmod(secretsPath, 0o600);
 await writeFile(
   `${workerDirectory}/wrangler.jsonc`,
   `${JSON.stringify(config, null, 2)}\n`,

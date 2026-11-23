@@ -55,6 +55,6 @@ Playwright creates temporary local storage and starts its own Worker on port 303
 
 ## Deployment and recovery
 
-Start with workers.dev. Resource provisioning, Turnstile, secrets, deployment, logs and recovery are documented in [OPERATIONS.md](packages/twenty-worker/OPERATIONS.md). The migration scope and evidence are in [CLOUDFLARE_MIGRATION.md](CLOUDFLARE_MIGRATION.md).
+Start with workers.dev. Resource provisioning, secrets, deployment, logs and recovery are documented in [OPERATIONS.md](packages/twenty-worker/OPERATIONS.md). The migration scope and evidence are in [CLOUDFLARE_MIGRATION.md](CLOUDFLARE_MIGRATION.md).
 
 Twenty is licensed under [AGPL-3.0](LICENSE).

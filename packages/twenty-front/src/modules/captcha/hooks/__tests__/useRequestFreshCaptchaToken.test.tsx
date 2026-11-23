@@ -1,4 +1,3 @@
-import { captchaWidgetIdState } from '@/captcha/states/captchaWidgetIdState';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { type ReactNode } from 'react';
 import { Provider as JotaiProvider } from 'jotai';
@@ -18,41 +17,20 @@ const createWrapper = ({ children }: { children: ReactNode }) => (
 
 describe('useRequestFreshCaptchaToken', () => {
   const mockGrecaptchaExecute = jest.fn();
-  const mockTurnstileRender = jest.fn();
-  const mockTurnstileExecute = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     window.history.replaceState(null, '', '/welcome');
-    document.body.innerHTML = '<div id="captcha-widget"></div>';
     jotaiStore.set(captchaState.atom, null);
-    jotaiStore.set(captchaWidgetIdState.atom, undefined);
 
     window.grecaptcha = {
       execute: mockGrecaptchaExecute,
-    };
-
-    window.turnstile = {
-      remove: jest.fn(),
-      render: mockTurnstileRender,
-      execute: mockTurnstileExecute,
     };
 
     (isCaptchaRequiredForPath as jest.Mock).mockReturnValue(true);
 
     mockGrecaptchaExecute.mockImplementation((_siteKey, _options) => {
       return Promise.resolve('google-recaptcha-token');
-    });
-
-    mockTurnstileRender.mockImplementation((_selector, _options) => {
-      _options.callback('turnstile-token');
-      return 'turnstile-widget-id';
-    });
-
-    mockTurnstileExecute.mockImplementation((widgetId, options) => {
-      if (options !== undefined && typeof options.callback === 'function') {
-        options.callback('turnstile-token');
-      }
     });
   });
 
@@ -68,8 +46,6 @@ describe('useRequestFreshCaptchaToken', () => {
     });
 
     expect(mockGrecaptchaExecute).not.toHaveBeenCalled();
-    expect(mockTurnstileRender).not.toHaveBeenCalled();
-    expect(mockTurnstileExecute).not.toHaveBeenCalled();
   });
 
   it('should not request a token if captcha provider is undefined', async () => {
@@ -82,8 +58,6 @@ describe('useRequestFreshCaptchaToken', () => {
     });
 
     expect(mockGrecaptchaExecute).not.toHaveBeenCalled();
-    expect(mockTurnstileRender).not.toHaveBeenCalled();
-    expect(mockTurnstileExecute).not.toHaveBeenCalled();
   });
 
   it('should request a token from Google reCAPTCHA when provider is GOOGLE_RECAPTCHA', async () => {
@@ -108,49 +82,5 @@ describe('useRequestFreshCaptchaToken', () => {
     await waitFor(() => {
       expect(mockGrecaptchaExecute).toHaveBeenCalled();
     });
-  });
-
-  it('should request a token from Turnstile when provider is TURNSTILE', async () => {
-    jotaiStore.set(isRequestingCaptchaTokenState.atom, false);
-    jotaiStore.set(captchaState.atom, {
-      provider: CaptchaDriverType.TURNSTILE,
-      siteKey: 'turnstile-site-key',
-    } as Captcha);
-
-    const { result } = renderHook(() => useRequestFreshCaptchaToken(), {
-      wrapper: createWrapper,
-    });
-
-    await act(async () => {
-      await result.current.requestFreshCaptchaToken();
-    });
-
-    expect(mockTurnstileRender).toHaveBeenCalledWith(
-      '#captcha-widget',
-      expect.objectContaining({
-        sitekey: 'turnstile-site-key',
-        execution: 'execute',
-        appearance: 'always',
-      }),
-    );
-    expect(mockTurnstileExecute).toHaveBeenCalledWith('turnstile-widget-id');
-  });
-
-  it('only displays the profile challenge when interaction is required', async () => {
-    window.history.replaceState(null, '', '/settings/profile');
-    jotaiStore.set(captchaState.atom, {
-      provider: CaptchaDriverType.TURNSTILE,
-      siteKey: 'turnstile-site-key',
-    } as Captcha);
-    const { result } = renderHook(() => useRequestFreshCaptchaToken(), {
-      wrapper: createWrapper,
-    });
-
-    await act(() => result.current.requestFreshCaptchaToken());
-
-    expect(mockTurnstileRender).toHaveBeenCalledWith(
-      '#captcha-widget',
-      expect.objectContaining({ appearance: 'interaction-only' }),
-    );
   });
 });

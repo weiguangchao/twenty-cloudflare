@@ -1,8 +1,6 @@
 interface Env {
   OPERATIONS_TOKEN?: string;
   MAINTENANCE_MODE?: string;
-  TURNSTILE_SITE_KEY?: string;
-  TURNSTILE_SECRET_KEY?: string;
   GOOGLE_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
   MICROSOFT_CLIENT_ID?: string;

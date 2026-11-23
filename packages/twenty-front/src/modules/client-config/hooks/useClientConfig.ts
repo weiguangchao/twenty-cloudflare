@@ -43,6 +43,7 @@ import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomStat
 import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
 import { ENTERPRISE_INSTANCE_TYPE } from 'twenty-shared/constants';
 import { t } from '@lingui/core/macro';
+import { CaptchaDriverType } from '~/generated-metadata/graphql';
 
 type UseClientConfigResult = {
   data: { clientConfig: ClientConfig } | undefined;
@@ -204,10 +205,11 @@ export const useClientConfig = (): UseClientConfigResult => {
           tracesSampleRate: clientConfig?.sentry?.tracesSampleRate,
         });
 
-        setCaptcha({
-          provider: clientConfig?.captcha?.provider,
-          siteKey: clientConfig?.captcha?.siteKey,
-        });
+        setCaptcha(
+          clientConfig.captcha?.provider === CaptchaDriverType.GOOGLE_RECAPTCHA
+            ? clientConfig.captcha
+            : null,
+        );
 
         setApiConfig(clientConfig?.api);
         setOnboardingConfig(clientConfig?.onboarding ?? null);

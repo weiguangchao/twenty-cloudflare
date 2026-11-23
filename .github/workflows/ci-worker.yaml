@@ -90,7 +90,6 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       APP_SECRET: ${{ secrets.APP_SECRET }}
       OPERATIONS_TOKEN: ${{ secrets.OPERATIONS_TOKEN }}
-      TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
       NX_DAEMON: 'false'
       NX_ISOLATE_PLUGINS: 'false'
     steps:

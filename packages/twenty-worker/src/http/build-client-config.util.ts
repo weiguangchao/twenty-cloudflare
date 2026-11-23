@@ -20,9 +20,7 @@ export const buildClientConfig = (
   publicFunctionDomain: null,
   support: { supportDriver: 'NONE' },
   sentry: {},
-  captcha: env?.TURNSTILE_SITE_KEY
-    ? { provider: 'TURNSTILE', siteKey: env.TURNSTILE_SITE_KEY }
-    : {},
+  captcha: {},
   api: { mutationMaximumAffectedRecords: MUTATION_MAXIMUM_AFFECTED_RECORDS },
   onboarding: null,
   isAttachmentPreviewEnabled: true,

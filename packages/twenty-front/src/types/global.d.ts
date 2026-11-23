@@ -11,7 +11,6 @@ declare global {
     _env_?: Record<string, string>;
     __APOLLO_CLIENT__?: any;
     grecaptcha?: any;
-    turnstile?: any;
     componentComponentStateContextMap: Map<
       string,
       ComponentInstanceStateContext<any>

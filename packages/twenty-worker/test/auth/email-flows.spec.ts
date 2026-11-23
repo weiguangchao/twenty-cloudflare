@@ -1,5 +1,5 @@
 import { env } from 'cloudflare:test';
-import { afterEach, beforeAll, beforeEach, expect, it, vi } from 'vitest';
+import { beforeAll, beforeEach, expect, it, vi } from 'vitest';
 
 import { createMetadataContext } from '@/metadata-api/create-metadata-context.util';
 import { handleMetadataRequest } from '@/metadata-api/metadata-api';
@@ -50,7 +50,6 @@ const context = () =>
 let account: Awaited<ReturnType<typeof prepareWorkspace>>;
 
 beforeAll(setupCoreTestDatabase);
-afterEach(() => vi.restoreAllMocks());
 beforeEach(async () => {
   await clearCoreTestDatabase();
   sending.mockReset().mockResolvedValue({ messageId: 'sent' });
@@ -152,50 +151,24 @@ it('resets a password once and revokes existing sessions without revealing unkno
   ).toBeUndefined();
 });
 
-it('requires a valid Turnstile token over HTTP before queuing a password reset email', async () => {
-  const configured = {
-    ...configuration,
-    TURNSTILE_SITE_KEY: 'site-key',
-    TURNSTILE_SECRET_KEY: 'secret-key',
-  };
-  const verify = vi.spyOn(globalThis, 'fetch');
-  const requestResetLink = (captchaToken?: string) =>
-    handleMetadataRequest(
-      new Request(`${ORIGIN}/metadata`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', origin: ORIGIN },
-        body: JSON.stringify({
-          query:
-            'mutation($email: String!, $captchaToken: String) {emailPasswordResetLink(email: $email, captchaToken: $captchaToken) {success}}',
-          variables: { email: account.email, captchaToken },
-        }),
+it('queues a password reset email over HTTP without a captcha token', async () => {
+  const response = await handleMetadataRequest(
+    new Request(`${ORIGIN}/metadata`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: ORIGIN },
+      body: JSON.stringify({
+        query:
+          'mutation($email: String!) {emailPasswordResetLink(email: $email) {success}}',
+        variables: { email: account.email },
       }),
-      configured,
-    );
-
-  expect(await (await requestResetLink()).json()).toMatchObject({
-    errors: [{ extensions: { code: 'FORBIDDEN' } }],
-  });
-  expect(verify).not.toHaveBeenCalled();
-
-  verify.mockResolvedValueOnce(Response.json({ success: false }));
-  expect(await (await requestResetLink('invalid-token')).json()).toMatchObject({
-    errors: [{ extensions: { code: 'FORBIDDEN' } }],
-  });
-  expect(
-    await env.CORE_DB.prepare('SELECT 1 FROM "emailDelivery"').first(),
-  ).toBeNull();
-
-  verify.mockResolvedValueOnce(
-    Response.json({ success: true, hostname: new URL(ORIGIN).hostname }),
+    }),
+    configuration,
   );
-  expect(await (await requestResetLink('valid-token')).json()).toEqual({
+
+  expect(await response.json()).toEqual({
     data: { emailPasswordResetLink: { success: true } },
   });
   expect((await latestJob()).job.to).toBe(account.email);
-  expect(String(verify.mock.calls.at(-1)?.[1]?.body)).toContain(
-    'response=valid-token',
-  );
 });
 
 it('verifies matching email links once and expires old links when resending', async () => {

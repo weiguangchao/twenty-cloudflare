@@ -48,6 +48,7 @@ describe('GET /client-config', () => {
     );
     const clientConfig = (await response.json()) as Record<string, unknown>;
 
+    expect(clientConfig.captcha).toEqual({});
     expect(clientConfig).toMatchObject({
       authProviders: {
         password: true,

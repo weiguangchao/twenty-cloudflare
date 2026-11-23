@@ -11,7 +11,6 @@ import { workspacePublicDataState } from '@/auth/states/workspacePublicDataState
 import { PASSWORD_REGEX } from '@/auth/utils/passwordRegex';
 import { useReadCaptchaToken } from '@/captcha/hooks/useReadCaptchaToken';
 import { useCaptcha } from '@/client-config/hooks/useCaptcha';
-import { CaptchaWidgetContainer } from '@/captcha/components/CaptchaWidgetContainer';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { useRedirect } from '@/domain-manager/hooks/useRedirect';
 import { getToastOptionsFromError } from '@/error-handler/utils/getToastOptionsFromError';
@@ -298,7 +297,6 @@ export const PasswordReset = () => {
                 </StyledMainButtonContainer>
               </StyledForm>
             )}
-            <CaptchaWidgetContainer />
           </StyledOnboardingContentContainer>
         </StyledMainContainer>
       </StyledAuthContent>

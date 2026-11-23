@@ -76,10 +76,6 @@ try {
     'EMAIL_FROM:',
     '--var',
     'EMAIL_VERIFICATION_REQUIRED:false',
-    '--var',
-    'TURNSTILE_SITE_KEY:',
-    '--var',
-    'TURNSTILE_SECRET_KEY:',
   ]);
 } finally {
   await stop();

@@ -1,6 +1,5 @@
 import { useHandleResetPassword } from '@/auth/sign-in-up/hooks/useHandleResetPassword';
 import { currentUserState } from '@/auth/states/currentUserState';
-import { CaptchaWidgetContainer } from '@/captcha/components/CaptchaWidgetContainer';
 import { useLingui } from '@lingui/react/macro';
 import { Section } from 'twenty-ui/components/layout';
 import { Button } from 'twenty-ui/primitives/input';
@@ -24,7 +23,6 @@ export const SetOrChangePassword = () => {
       <Button onClick={handleResetPassword()} variant="outline">
         {heading}
       </Button>
-      <CaptchaWidgetContainer hideWhenVerified />
     </>
   );
 };

@@ -214,7 +214,6 @@
       "workers_dev": true,
       "vars": {
         "MAINTENANCE_MODE": "false",
-        "TURNSTILE_SITE_KEY": "0x4AAAAAAGCw--T4cq5msTl8",
       },
       "d1_databases": [
         {

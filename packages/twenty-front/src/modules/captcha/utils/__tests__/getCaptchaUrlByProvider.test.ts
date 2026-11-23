@@ -20,14 +20,6 @@ describe('getCaptchaUrlByProvider', () => {
     );
   });
 
-  it('handles Turnstile', async () => {
-    const captchaUrl = getCaptchaUrlByProvider(CaptchaDriverType.TURNSTILE, '');
-
-    expect(captchaUrl).toEqual(
-      'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
-    );
-  });
-
   it('handles unknown provider', async () => {
     expect(() =>
       getCaptchaUrlByProvider('Unknown' as CaptchaDriverType, ''),

@@ -73,9 +73,6 @@ export const CaptchaProviderScriptLoaderEffect = () => {
         // Google reCAPTCHA tokens expire after 120 seconds, refresh at 110 seconds
         refreshInterval = setInterval(requestFreshCaptchaToken, 110 * 1000);
         break;
-      case CaptchaDriverType.TURNSTILE:
-        refreshInterval = setInterval(requestFreshCaptchaToken, 240 * 1000);
-        break;
       default:
         // Note: hCaptcha has a callback system for expiration that we're not implementing now
         return;

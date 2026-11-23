@@ -33,11 +33,8 @@ const secrets = {
     existingSecrets.OPERATIONS_TOKEN ||
     randomBytes(48).toString('base64url'),
 };
-for (const key of [
-  'TURNSTILE_SECRET_KEY',
-  'GOOGLE_CLIENT_SECRET',
-  'MICROSOFT_CLIENT_SECRET',
-])
+delete secrets.TURNSTILE_SECRET_KEY;
+for (const key of ['GOOGLE_CLIENT_SECRET', 'MICROSOFT_CLIENT_SECRET'])
   if (process.env[key]) secrets[key] = process.env[key];
 await writeFile(secretsPath, `${JSON.stringify(secrets)}\n`, { mode: 0o600 });
 await chmod(secretsPath, 0o600);
@@ -58,12 +55,6 @@ const run = (args) => {
   );
   if (result.status !== 0) throw new Error(`Wrangler ${args[0]} failed`);
 };
-if (
-  environment === 'production' &&
-  (!config.env.production.vars.TURNSTILE_SITE_KEY ||
-    !secrets.TURNSTILE_SECRET_KEY)
-)
-  throw new Error('Production registration requires Turnstile configuration');
 run(['secret', 'bulk', secretsPath]);
 run(['d1', 'migrations', 'apply', 'CORE_DB', '--remote']);
 run(['deploy']);

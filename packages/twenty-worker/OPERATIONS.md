@@ -6,7 +6,7 @@ The current production URL and verification record are in [DEPLOYMENT.md](DEPLOY
 
 ## Provision and deploy
 
-Provide `CLOUDFLARE_API_TOKEN` through a secret store and select `CLOUDFLARE_ACCOUNT_ID`. The token needs Workers Scripts, D1, R2, Queues, Turnstile and account read access. Never put the token in a tracked file or shell history.
+Provide `CLOUDFLARE_API_TOKEN` through a secret store and select `CLOUDFLARE_ACCOUNT_ID`. The token needs Workers Scripts, D1, R2, Queues and account read access. Never put the token in a tracked file or shell history.
 
 ```bash
 node scripts/provision.mjs production
@@ -16,13 +16,13 @@ node .yarn/releases/yarn-4.18.1.cjs nx build twenty-worker
 node scripts/deploy.mjs production
 ```
 
-Provisioning reuses resources with the configured names, creates missing ones, updates the D1 binding ID and creates a managed Turnstile widget for the workers.dev hostname. It does not enable paid services or change existing DNS. If the account has no workers.dev subdomain, configure one in the Cloudflare dashboard first.
+Provisioning reuses resources with the configured names, creates missing ones, and updates the D1 binding ID. It does not enable paid services or change existing DNS. If the account has no workers.dev subdomain, configure one in the Cloudflare dashboard first.
 
-Deployment creates stable random `APP_SECRET` and `OPERATIONS_TOKEN` values and stores them in the ignored, mode-0600 `.wrangler/secrets.production.json`. It uses Wrangler secret bulk, applies D1 migrations and deploys the Worker. Keep an encrypted operator copy outside this checkout before removing local state; rotating `APP_SECRET` invalidates session and file tokens. CI requires stable `APP_SECRET` and `OPERATIONS_TOKEN` secrets from its environment and refuses to generate replacements. Production deployment requires a configured Turnstile site key and secret.
+Deployment creates stable random `APP_SECRET` and `OPERATIONS_TOKEN` values and stores them in the ignored, mode-0600 `.wrangler/secrets.production.json`. It uses Wrangler secret bulk, applies D1 migrations and deploys the Worker. Keep an encrypted operator copy outside this checkout before removing local state; rotating `APP_SECRET` invalidates session and file tokens. CI requires stable `APP_SECRET` and `OPERATIONS_TOKEN` secrets from its environment and refuses to generate replacements.
 
 The email binding is disabled by default in remote environments. Configure native email delivery and Google/Microsoft credentials as described in INTEGRATIONS.md. External provider acceptance remains separate from core workers.dev acceptance.
 
-To add a custom hostname later, add its Worker route/domain and include that hostname in the Turnstile widget, redeploy, and use that origin for the single workspace. Do not change an existing workspace origin without a migration.
+To add a custom hostname later, add its Worker route/domain, redeploy, and use that origin for the single workspace. Do not change an existing workspace origin without a migration.
 
 ## Logs and capacity
 
@@ -61,4 +61,4 @@ It writes `before`/`after` markers to an isolated DO and a newly created disposa
 
 For retention beyond 30 days, coordinated encrypted exports of D1, workspace SQL/metadata and R2 blobs are needed. CSV exports are not a full recovery backup. This deployment currently uses platform recovery; add off-platform archival exports when a longer retention or account-loss recovery requirement is established. R2 alone shares the same account failure boundary.
 
-Sources: [DO storage/PITR](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/), [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/), [DO placement](https://developers.cloudflare.com/durable-objects/reference/data-location/), [Turnstile API](https://developers.cloudflare.com/turnstile/get-started/widget-management/api/), [Siteverify](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/).
+Sources: [DO storage/PITR](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/), [D1 Time Travel](https://developers.cloudflare.com/d1/reference/time-travel/), [DO placement](https://developers.cloudflare.com/durable-objects/reference/data-location/).
