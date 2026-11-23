@@ -3,7 +3,7 @@ import { isNonEmptyString, isObject } from '@sniptt/guards';
 import { ApplicationHealthStatus } from './applicationHealthStatus';
 
 // The string form of the enum, so an app can write either 'WARNING' or
-// ApplicationHealthStatus.WARNING. UNKNOWN is Twenty's answer to a check it
+// ApplicationHealthStatus.WARNING. UNKNOWN is CRM's answer to a check it
 // could not read, never something an app reports.
 export type ApplicationHealthCheckReportedStatus = Exclude<
   `${ApplicationHealthStatus}`,

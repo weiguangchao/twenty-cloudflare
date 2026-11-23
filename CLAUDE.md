@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Twenty on Cloudflare is an Nx / Yarn 4 monorepo. Runtime packages: `twenty-front` (React 19, Jotai, Linaria, Vite), `twenty-worker` (Hono, GraphQL Yoga, D1, SQLite Durable Objects, R2, Queues), `twenty-shared`, `twenty-ui`, `twenty-emails`, and `twenty-e2e-testing` (Playwright). Website and docs are independent reference packages.
+CRM on Cloudflare is an Nx / Yarn 4 monorepo. Runtime packages: `twenty-front` (React 19, Jotai, Linaria, Vite), `twenty-worker` (Hono, GraphQL Yoga, D1, SQLite Durable Objects, R2, Queues), `twenty-shared`, `twenty-ui`, `twenty-emails`, and `twenty-e2e-testing` (Playwright). Website and docs are independent reference packages.
 
 Match the surrounding code — the adjacent files in the directory you are editing beat any written rule, including for file naming, which varies by area.
 
@@ -15,7 +15,7 @@ Where this repo differs from your defaults:
 - No abbreviations in names (`fieldMetadata`, not `fm`); constants in SCREAMING_SNAKE_CASE; component props types suffixed `Props`.
 - Use existing guards and helpers before writing your own: `isDefined`, `isNonEmptyArray`, `isPlainObject`, … from `twenty-shared/utils`; `isNonEmptyString`, `isString`, `isNull`, `isObject`, … from `@sniptt/guards`. Reimplementing an existing util is the most common AI-authored defect here.
 - Lingui for user-facing strings, `doNotTranslate()` from `twenty-shared/i18n` for text that must stay as written (error diagnostics, protocol tokens); Linaria (zero-runtime, styled-components pattern) for twenty-front styling.
-- For Twenty product concepts, consult `packages/twenty-ui/src/icon/icon-dictionary.md` and use the canonical icon.
+- For CRM product concepts, consult `packages/twenty-ui/src/icon/icon-dictionary.md` and use the canonical icon.
 - Import icons from `twenty-ui/icon`, never directly from `@tabler/icons-react`; action and status concepts should use their action or status icons.
 - Test behavior, not implementation: query by user-visible text/roles, `@testing-library/user-event` for interactions.
 

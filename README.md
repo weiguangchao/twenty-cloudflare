@@ -1,6 +1,6 @@
-# Twenty on Cloudflare
+# CRM on Cloudflare
 
-This fork runs the Twenty CRM on Cloudflare Workers. The React frontend and GraphQL APIs share one origin; workspace records and metadata live in a SQLite Durable Object, instance accounts and sessions in D1, and uploaded files in R2. Queues deliver background file cleanup, email and webhook jobs.
+This fork runs the CRM on Cloudflare Workers. The React frontend and GraphQL APIs share one origin; workspace records and metadata live in a SQLite Durable Object, instance accounts and sessions in D1, and uploaded files in R2. Queues deliver background file cleanup, email and webhook jobs.
 
 Core CRM includes people, companies, opportunities, tasks, notes, custom objects and fields, table and Kanban views, record layouts, search, CSV import/export, files, roles and permissions, invitations and realtime updates. Optional email delivery, REST/API keys, webhooks and Google/Microsoft login are implemented; provider setup is described in [INTEGRATIONS.md](packages/twenty-worker/INTEGRATIONS.md).
 
@@ -57,4 +57,4 @@ Playwright creates temporary local storage and starts its own Worker on port 303
 
 Start with workers.dev. Resource provisioning, secrets, deployment, logs and recovery are documented in [OPERATIONS.md](packages/twenty-worker/OPERATIONS.md). The migration scope and evidence are in [CLOUDFLARE_MIGRATION.md](CLOUDFLARE_MIGRATION.md).
 
-Twenty is licensed under [AGPL-3.0](LICENSE).
+CRM is licensed under [AGPL-3.0](LICENSE).

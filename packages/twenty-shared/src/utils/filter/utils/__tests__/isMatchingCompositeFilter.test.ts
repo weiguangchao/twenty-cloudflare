@@ -61,7 +61,7 @@ describe('isMatchingCompositeFilter', () => {
   it('does not match a sub-field without a matcher', () => {
     expect(
       isMatchingLinksFilter({
-        compositeFilter: { unknownSubField: { eq: 'Twenty' } },
+        compositeFilter: { unknownSubField: { eq: 'CRM' } },
         compositeValue: LINKS_VALUE,
       }),
     ).toBe(false);

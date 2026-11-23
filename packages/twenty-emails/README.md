@@ -1,6 +1,6 @@
-# Twenty Emails
+# CRM Emails
 
-This package contains the email templates used by Twenty.
+This package contains the email templates used by CRM.
 
 ## Features
 

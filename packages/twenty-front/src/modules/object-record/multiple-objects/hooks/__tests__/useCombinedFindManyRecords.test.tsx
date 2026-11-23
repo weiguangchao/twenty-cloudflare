@@ -188,7 +188,7 @@ describe('useCombinedFindManyRecords', () => {
             node: {
               __typename: 'Company',
               id: '1',
-              name: 'Twenty',
+              name: 'CRM',
             },
             cursor: 'cursor1',
           },
@@ -241,7 +241,7 @@ describe('useCombinedFindManyRecords', () => {
           {
             __typename: 'Company',
             id: '1',
-            name: 'Twenty',
+            name: 'CRM',
           },
         ],
       },
@@ -471,7 +471,7 @@ describe('useCombinedFindManyRecords', () => {
             node: {
               __typename: 'Company',
               id: '1',
-              name: 'Twenty',
+              name: 'CRM',
             },
             cursor: 'cursor1',
           },
@@ -537,7 +537,7 @@ describe('useCombinedFindManyRecords', () => {
           {
             __typename: 'Company',
             id: '1',
-            name: 'Twenty',
+            name: 'CRM',
           },
         ],
       },

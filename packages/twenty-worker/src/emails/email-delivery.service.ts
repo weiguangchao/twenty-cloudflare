@@ -66,7 +66,7 @@ export const deliverEmail = async (env: Env, id: string) => {
       from,
       to: payload.to,
       ...content,
-      headers: { 'X-Twenty-Delivery-Id': id },
+      headers: { 'X-CRM-Delivery-Id': id },
     });
     await env.CORE_DB.prepare(
       'UPDATE "emailDelivery" SET "status" = \'sent\', "payload" = \'{}\', "leaseUntil" = NULL WHERE "id" = ? AND "attempts" = ?',

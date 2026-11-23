@@ -1,4 +1,4 @@
-# Twenty end-to-end (E2E) Testing
+# CRM end-to-end (E2E) Testing
 
 ## Prerequisite
 

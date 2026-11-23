@@ -23,7 +23,7 @@ const AVAILABLE_WORKSPACES: AvailableWorkspaceFragmentFragment[] = [
   {
     __typename: 'AvailableWorkspace',
     id: mockCurrentWorkspace.id,
-    displayName: 'Twenty',
+    displayName: 'CRM',
     loginToken: null,
     inviteHash: null,
     personalInviteToken: null,
@@ -140,8 +140,8 @@ export const PagesAndWorkspaceLinks: Story = {
 
     try {
       await userEvent.click(canvas.getByTestId('workspace-dropdown'));
-      const menu = await canvas.findByRole('menu', { name: 'Twenty' });
-      const trigger = canvas.getByRole('button', { name: 'Twenty' });
+      const menu = await canvas.findByRole('menu', { name: 'CRM' });
+      const trigger = canvas.getByRole('button', { name: 'CRM' });
       expect(trigger).toHaveAttribute('tabindex', '0');
       await waitFor(() => {
         expect(menu).toHaveAttribute('data-side', 'bottom');
@@ -238,7 +238,7 @@ export const RootInvitationLink: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement.ownerDocument.body);
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Twenty' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'CRM' }));
     const invitedWorkspace = await canvas.findByRole('menuitemradio', {
       name: 'Invited workspace',
     });
@@ -267,7 +267,7 @@ export const MobileBoundary: Story = {
     const canvas = within(canvasElement.ownerDocument.body);
 
     await userEvent.click(canvas.getByTestId('workspace-dropdown'));
-    const menu = await canvas.findByRole('menu', { name: 'Twenty' });
+    const menu = await canvas.findByRole('menu', { name: 'CRM' });
 
     expect(canvas.getByRole('menuitem', { name: 'Settings' })).toBeVisible();
     expect(
@@ -286,14 +286,14 @@ export const MobileBoundary: Story = {
 const HIDDEN_WORKSPACE_LABEL_STORY: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement.ownerDocument.body);
-    const trigger = canvas.getByRole('button', { name: 'Twenty' });
+    const trigger = canvas.getByRole('button', { name: 'CRM' });
 
     await expect(
-      within(trigger).getByRole('img', { name: 'Twenty' }),
+      within(trigger).getByRole('img', { name: 'CRM' }),
     ).toBeVisible();
     await userEvent.click(trigger);
     await expect(
-      await canvas.findByRole('menu', { name: 'Twenty' }),
+      await canvas.findByRole('menu', { name: 'CRM' }),
     ).toBeVisible();
     await userEvent.keyboard('{Escape}');
   },

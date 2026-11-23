@@ -188,7 +188,7 @@ export const PreviewInsertion: Story = {
       ),
     ).toEqual(['Select a menu item', 'Docs', 'Status']);
     await userEvent.click(await body.findByText('Link'));
-    await expect(await body.findByDisplayValue('Twenty')).toBeVisible();
+    await expect(await body.findByDisplayValue('CRM')).toBeVisible();
     await waitFor(() =>
       expect(canvas.queryByText('Select a menu item')).not.toBeInTheDocument(),
     );

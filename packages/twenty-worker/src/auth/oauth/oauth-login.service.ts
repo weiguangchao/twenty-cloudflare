@@ -301,7 +301,7 @@ const finishOAuth = async (
       const i18n = setupI18n({ locale: 'en', messages: { en: {} } });
       const title = i18n._('Check your email');
       const instructions = i18n._(
-        'Open the verification link we sent you to finish signing in to Twenty.',
+        'Open the verification link we sent you to finish signing in to CRM.',
       );
       return new Response(
         `<!doctype html><html lang="en"><meta charset="utf-8"><title>${title}</title><main><h1>${title}</h1><p>${instructions}</p></main></html>`,

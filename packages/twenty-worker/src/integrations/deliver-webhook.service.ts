@@ -22,10 +22,10 @@ export const deliverWebhook = async (
       signal: AbortSignal.timeout(5000),
       headers: {
         'content-type': 'application/json',
-        'X-Twenty-Webhook-Id': deliveryId,
-        'X-Twenty-Webhook-Timestamp': timestamp,
-        'X-Twenty-Webhook-Nonce': randomBytes(16).toString('hex'),
-        'X-Twenty-Webhook-Signature': createHmac('sha256', delivery.secret)
+        'X-CRM-Webhook-Id': deliveryId,
+        'X-CRM-Webhook-Timestamp': timestamp,
+        'X-CRM-Webhook-Nonce': randomBytes(16).toString('hex'),
+        'X-CRM-Webhook-Signature': createHmac('sha256', delivery.secret)
           .update(`${timestamp}:${delivery.body}`)
           .digest('hex'),
       },

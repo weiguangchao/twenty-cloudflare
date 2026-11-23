@@ -249,7 +249,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
           {
             type: 'link',
             href: 'https://example.com',
-            content: [text('Twenty', { italic: true, code: true })],
+            content: [text('CRM', { italic: true, code: true })],
           },
           text(' and '),
           {
@@ -271,7 +271,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
         content: [
           {
             type: 'text',
-            text: 'Twenty',
+            text: 'CRM',
             marks: [
               { type: 'italic' },
               { type: 'link', attrs: { href: 'https://example.com' } },

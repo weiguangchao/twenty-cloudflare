@@ -24,7 +24,7 @@ export const ThemedCodeEditor = (props: CodeEditorProps) => {
         Use option theme
       </Button>
       <Button onClick={() => setThemeSource('default')}>
-        Use Twenty theme
+        Use CRM theme
       </Button>
     </>
   );

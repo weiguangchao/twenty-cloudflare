@@ -23,12 +23,12 @@ it('replaces the full label and URL when clicking into either field', async () =
   const url = screen.getByPlaceholderText('URL');
 
   await user.click(label);
-  await user.keyboard('Twenty');
-  expect(label).toHaveValue('Twenty');
+  await user.keyboard('CRM');
+  expect(label).toHaveValue('CRM');
 
   await user.click(label);
-  await user.keyboard('Twenty CRM');
-  expect(label).toHaveValue('Twenty CRM');
+  await user.keyboard('CRM');
+  expect(label).toHaveValue('CRM');
 
   await user.click(url);
   await user.keyboard('https://example.com');

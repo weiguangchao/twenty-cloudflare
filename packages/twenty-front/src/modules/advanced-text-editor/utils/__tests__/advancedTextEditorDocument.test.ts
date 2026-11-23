@@ -100,14 +100,14 @@ describe('advanced text editor document persistence', () => {
 
   it('creates canonical documents for plain-text entry points', () => {
     expect(
-      JSON.parse(serializePlainTextAsAdvancedTextEditorDocument('Ask Twenty')),
+      JSON.parse(serializePlainTextAsAdvancedTextEditorDocument('Ask CRM')),
     ).toEqual({
       type: 'doc',
       attrs: { schemaVersion: TIPTAP_DOCUMENT_SCHEMA_VERSION },
       content: [
         {
           type: 'paragraph',
-          content: [{ type: 'text', text: 'Ask Twenty' }],
+          content: [{ type: 'text', text: 'Ask CRM' }],
         },
       ],
     });

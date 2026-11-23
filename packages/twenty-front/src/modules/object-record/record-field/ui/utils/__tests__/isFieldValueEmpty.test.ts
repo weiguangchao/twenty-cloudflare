@@ -140,7 +140,7 @@ describe('isFieldValueEmpty', () => {
         fieldDefinition: linksFieldDefinition,
         fieldValue: {
           primaryLinkUrl: 'https://www.example.com',
-          primaryLinkLabel: 'Twenty Website',
+          primaryLinkLabel: 'CRM Website',
           secondaryLinks: [],
         },
       }),
@@ -177,7 +177,7 @@ describe('isFieldValueEmpty', () => {
         fieldDefinition: linksFieldDefinition,
         fieldValue: {
           primaryLinkUrl: 'https://www.example.com',
-          primaryLinkLabel: 'Twenty Website',
+          primaryLinkLabel: 'CRM Website',
           secondaryLinks: [{ url: 'wikipedia', label: 'Invalid URL' }],
         },
       }),

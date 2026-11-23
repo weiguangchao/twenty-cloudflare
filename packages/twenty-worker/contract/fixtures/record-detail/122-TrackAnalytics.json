@@ -8,7 +8,7 @@
   "query": "mutation TrackAnalytics($type: AnalyticsType!, $event: String, $name: String, $properties: JSON) {\n  trackAnalytics(type: $type, event: $event, name: $name, properties: $properties) {\n    success\n    __typename\n  }\n}",
   "variables": {
     "type": "PAGEVIEW",
-    "name": "Twenty",
+    "name": "CRM",
     "properties": {
       "pathname": "/object/person/07394720-1c4d-4703-ace2-241ba54ea531",
       "locale": "zh-CN",

@@ -32,7 +32,7 @@ import {
 import { SESSION_COOKIE_OPT_IN_HEADER_NAME } from 'twenty-shared/constants';
 import { isDefined } from 'twenty-shared/utils';
 
-const logger = loggerLink(() => 'Twenty');
+const logger = loggerLink(() => 'CRM');
 
 export interface Options {
   uri: string;

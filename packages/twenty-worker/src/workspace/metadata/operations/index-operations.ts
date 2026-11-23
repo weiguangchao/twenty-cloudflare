@@ -90,7 +90,7 @@ export const deleteIndex = (
       errors: [
         metadataValidationError(
           'INDEX_MUTATION_NOT_ALLOWED',
-          'System indexes are required for Twenty to work and cannot be deleted.',
+          'System indexes are required for CRM to work and cannot be deleted.',
           index.name,
         ),
       ],

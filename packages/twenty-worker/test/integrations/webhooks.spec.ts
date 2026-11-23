@@ -99,10 +99,10 @@ it('matches operations and sends a signed, idempotent delivery with recipient fi
     called++;
     const headers = new Headers(options?.headers);
     const body = String(options?.body);
-    expect(headers.get('X-Twenty-Webhook-Id')).toBe(delivery.id);
-    expect(headers.get('X-Twenty-Webhook-Signature')).toBe(
+    expect(headers.get('X-CRM-Webhook-Id')).toBe(delivery.id);
+    expect(headers.get('X-CRM-Webhook-Signature')).toBe(
       createHmac('sha256', secret)
-        .update(`${headers.get('X-Twenty-Webhook-Timestamp')}:${body}`)
+        .update(`${headers.get('X-CRM-Webhook-Timestamp')}:${body}`)
         .digest('hex'),
     );
     expect(JSON.parse(body)).toMatchObject({

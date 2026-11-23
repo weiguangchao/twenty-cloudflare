@@ -18,7 +18,7 @@ describe('getFieldLinkDefinedLinks', () => {
       expect(
         getFieldLinkDefinedLinks({
           primaryLinkUrl: null,
-          primaryLinkLabel: 'Twenty',
+          primaryLinkLabel: 'CRM',
           secondaryLinks: [],
         }),
       ).toEqual([]);
@@ -28,7 +28,7 @@ describe('getFieldLinkDefinedLinks', () => {
       expect(
         getFieldLinkDefinedLinks({
           primaryLinkUrl: '',
-          primaryLinkLabel: 'Twenty',
+          primaryLinkLabel: 'CRM',
           secondaryLinks: [],
         }),
       ).toEqual([]);
@@ -69,7 +69,7 @@ describe('getFieldLinkDefinedLinks', () => {
           secondaryLinks: [
             {
               url: null,
-              label: 'Twenty',
+              label: 'CRM',
             },
             {
               url: 'https://docs.example.com',
@@ -93,7 +93,7 @@ describe('getFieldLinkDefinedLinks', () => {
           secondaryLinks: [
             {
               url: '',
-              label: 'Twenty',
+              label: 'CRM',
             },
             {
               url: 'https://docs.example.com',

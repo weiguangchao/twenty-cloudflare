@@ -8,7 +8,7 @@ export type CronDescriptionOptions = {
 
 export const DEFAULT_CRON_DESCRIPTION_OPTIONS: CronDescriptionOptions = {
   verbose: false,
-  use24HourTimeFormat: true, // Twenty uses 24-hour format by default
+  use24HourTimeFormat: true, // CRM uses 24-hour format by default
   dayOfWeekStartIndexZero: true,
   monthStartIndexZero: false,
 };

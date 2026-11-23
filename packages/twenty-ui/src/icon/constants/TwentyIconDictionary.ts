@@ -1,5 +1,5 @@
 export const TWENTY_ICON_DICTIONARY_FIGMA_URL =
-  'https://www.figma.com/design/xt8O9mFeLl46C5InWwoMrN/Twenty?node-id=43908-39914';
+  'https://www.figma.com/design/xt8O9mFeLl46C5InWwoMrN/CRM?node-id=43908-39914';
 
 export const TWENTY_ICON_DICTIONARY_CATEGORIES = [
   { key: 'data-model', label: 'Data Model' },
@@ -389,7 +389,7 @@ export const TWENTY_ICON_DICTIONARY = [
     iconName: 'IconBrandTypescript',
     tablerName: 'brand-typescript',
     keywords: ['serverless function', 'logic function', 'TypeScript function'],
-    useWhen: 'Representing Twenty serverless or logic functions.',
+    useWhen: 'Representing CRM serverless or logic functions.',
     avoidWhen: 'Representing generic source code or non-TypeScript tools.',
   },
   {
@@ -483,7 +483,7 @@ export const TWENTY_ICON_DICTIONARY = [
     iconName: 'IconTerminal2',
     tablerName: 'terminal-2',
     keywords: ['CLI', 'command line', 'terminal', 'twenty command'],
-    useWhen: 'Representing the Twenty command line tool or its commands.',
+    useWhen: 'Representing the CRM command line tool or its commands.',
     avoidWhen:
       'Representing execution logs, runtime output, or the command menu.',
   },
@@ -609,7 +609,7 @@ export const TWENTY_ICON_DICTIONARY = [
     category: 'general',
     iconName: 'IconApps',
     tablerName: 'apps',
-    keywords: ['app', 'application', 'Twenty app'],
+    keywords: ['app', 'application', 'CRM app'],
     useWhen: 'Representing an application or the apps platform.',
     avoidWhen: 'Representing a widget, integration, or one navigation item.',
   },
@@ -637,7 +637,7 @@ export const TWENTY_ICON_DICTIONARY = [
       'admin settings',
     ],
     useWhen:
-      'Representing the Twenty admin panel or instance-level administration.',
+      'Representing the CRM admin panel or instance-level administration.',
     avoidWhen:
       'Representing infrastructure health, server status, or workspace settings.',
   },

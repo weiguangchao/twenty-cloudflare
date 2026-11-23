@@ -101,7 +101,7 @@ const MatchColumnsExample = ({ onClose }: { onClose: () => void }) => {
             headerValues={['company', 'street', 'team']}
             data={[
               ['Acme', 'Paris', 'Red'],
-              ['Twenty', 'London', 'Blue'],
+              ['CRM', 'London', 'Blue'],
             ]}
             onBack={() => undefined}
             setCurrentStepState={() => undefined}

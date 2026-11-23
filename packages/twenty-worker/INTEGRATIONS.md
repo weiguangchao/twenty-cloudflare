@@ -36,7 +36,7 @@ Supported flows:
 
 Templates and their translations come from `twenty-emails`. Subjects use the translated template heading. The prebuilt package loads inside the delivery handler because it evaluates UUID defaults during initialization.
 
-D1 stores email jobs before Queue dispatch. Queue messages contain the job ID; a five minute scheduled dispatcher recovers jobs if initial Queue dispatch fails. Delivery uses leases and exponential retry, with at most ten sending attempts. Delivery can repeat if a process stops after sending but before recording success; `X-Twenty-Delivery-Id` remains stable. Completed jobs erase their payload, and expired jobs are removed. Pending payloads contain the action link until delivery or expiry, so treat local email artifacts and database backups as sensitive.
+D1 stores email jobs before Queue dispatch. Queue messages contain the job ID; a five minute scheduled dispatcher recovers jobs if initial Queue dispatch fails. Delivery uses leases and exponential retry, with at most ten sending attempts. Delivery can repeat if a process stops after sending but before recording success; `X-CRM-Delivery-Id` remains stable. Completed jobs erase their payload, and expired jobs are removed. Pending payloads contain the action link until delivery or expiry, so treat local email artifacts and database backups as sensitive.
 
 ## API keys and REST
 
@@ -82,10 +82,10 @@ The JSON body contains `deliveryId`, `webhookId`, `workspaceId` when available, 
 
 Headers:
 
-- `X-Twenty-Webhook-Id`: stable delivery ID.
-- `X-Twenty-Webhook-Timestamp`: current Unix time in milliseconds.
-- `X-Twenty-Webhook-Nonce`: random nonce for this attempt.
-- `X-Twenty-Webhook-Signature`: hex HMAC-SHA256 of `timestamp + ':' + rawBody`, using the webhook secret.
+- `X-CRM-Webhook-Id`: stable delivery ID.
+- `X-CRM-Webhook-Timestamp`: current Unix time in milliseconds.
+- `X-CRM-Webhook-Nonce`: random nonce for this attempt.
+- `X-CRM-Webhook-Signature`: hex HMAC-SHA256 of `timestamp + ':' + rawBody`, using the webhook secret.
 
 Verify the signature using the exact request bytes and compare in constant time. Reject stale timestamps and deduplicate delivery IDs. Requests time out after five seconds. No webhook secret or record payload is put in Queue messages.
 

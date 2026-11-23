@@ -1,4 +1,4 @@
-# Twenty Cloudflare MCP 完整接口参考
+# CRM Cloudflare MCP 完整接口参考
 
 更新日期：2026-11-16。工具接口基线：`5da5cb82afc`；用户授权入口为 `/mcp/v1`。本文件依据 Worker 源码和本地运行服务的实际工具清单编写。
 
@@ -176,7 +176,7 @@ data: {"jsonrpc":"2.0","id":1,"result":{}}
 }
 ```
 
-`serverInfo` 为 `{ "name": "Twenty on Cloudflare", "version": "1.0.0" }`。随后客户端发送：
+`serverInfo` 为 `{ "name": "CRM on Cloudflare", "version": "1.0.0" }`。随后客户端发送：
 
 ```json
 { "jsonrpc": "2.0", "method": "notifications/initialized" }
@@ -815,7 +815,7 @@ Cookie CSRF 拒绝可能沿用通用 HTTP 错误结构，而非 JSON-RPC 信封�
 
 当前只开放核心 CRM 记录操作与只读元数据发现。不提供工作流、AI/skills、应用/函数、外部 MCP 连接器管理，以及账户、角色、数据模型等设置写入工具。资源与提示词目录当前为空。
 
-分组和聚合的参数来自 Worker GraphQL 契约；客户端迁移自原版 Twenty 时应重新获取 schema。
+分组和聚合的参数来自 Worker GraphQL 契约；客户端迁移自原版 CRM 时应重新获取 schema。
 
 2026-11-16 的本地验收覆盖 200 个直接工具、3 个新增 meta 工具，以及协议、权限、密钥生命周期、真实 R2 附件和重启持久化，共 113 项检查通过。工具数包含 4 个验收自定义对象，并非全新 workspace 的固定数量。
 

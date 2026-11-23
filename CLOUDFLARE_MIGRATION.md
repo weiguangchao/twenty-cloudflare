@@ -1,6 +1,6 @@
 # Cloudflare 迁移方案
 
-把 Twenty 的后端从 NestJS + Postgres + Redis 换成完全运行在 Cloudflare 上的新后端，前端保留。本文是给执行 agent 的任务书，按阶段拆分，每个阶段可以单独交给一个 agent。
+把 CRM 的后端从 NestJS + Postgres + Redis 换成完全运行在 Cloudflare 上的新后端，前端保留。本文是给执行 agent 的任务书，按阶段拆分，每个阶段可以单独交给一个 agent。
 
 ## 0. 怎么用这份文档
 
@@ -44,7 +44,7 @@
 - **必须 100% 运行在 Cloudflare 自己的服务上。** 不允许外部 Postgres、Redis，也不使用经 Cloudflare 计费的 PlanetScale。
 - **只做核心 CRM。** 范围见第 2 节。
 - **没有线上数据需要迁移。** 全新部署，不需要数据导入工具，不需要兼容旧的 ID、token、密码哈希。
-- **不再跟进上游 Twenty。** 不需要保持和上游可合并，可以删减前端和 API。
+- **不再跟进上游 CRM。** 不需要保持和上游可合并，可以删减前端和 API。
 - **前端 `twenty-front` 保留**，新后端实现它实际用到的那部分 GraphQL 契约。
 
 为什么是重写而不是移植：Cloudflare Containers 没有持久磁盘，跑不了数据库；Workers 启动限时 1 秒、内存 128 MB，装不下现在约 1.2 万个文件的 NestJS 服务；现有数据层在 251 个文件里写了 Postgres 专有 SQL。

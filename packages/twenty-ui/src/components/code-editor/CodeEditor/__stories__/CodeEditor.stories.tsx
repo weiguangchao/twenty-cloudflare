@@ -556,7 +556,7 @@ export const ThemePrecedence: Story = {
       });
     });
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Use Twenty theme' }),
+      canvas.getByRole('button', { name: 'Use CRM theme' }),
     );
     await waitFor(() => {
       expect(

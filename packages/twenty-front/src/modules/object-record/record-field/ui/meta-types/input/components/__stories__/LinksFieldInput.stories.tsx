@@ -170,14 +170,14 @@ export const PrimaryLinkOnly: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: null,
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
 
     const addButton = await canvas.findByText('Add URL');
@@ -191,7 +191,7 @@ export const WithSecondaryLinks: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [
         {
           url: 'https://docs.example.com',
@@ -207,7 +207,7 @@ export const WithSecondaryLinks: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
 
     await waitFor(() => {
@@ -257,14 +257,14 @@ export const AddSecondaryLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -284,14 +284,14 @@ export const DeletePrimaryLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const listItemToDelete = await canvas.findByText('Twenty Website');
+    const listItemToDelete = await canvas.findByText('CRM Website');
     expect(listItemToDelete).toBeVisible();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -317,7 +317,7 @@ export const DeletePrimaryLinkPersistsEmptyValue: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
@@ -346,7 +346,7 @@ export const ClearPrimaryLinkAndPressEnter: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
@@ -379,7 +379,7 @@ export const DeletePrimaryLinkAndUseSecondaryLinkAsTheNewPrimaryLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [
         {
           url: 'https://docs.example.com',
@@ -391,7 +391,7 @@ export const DeletePrimaryLinkAndUseSecondaryLinkAsTheNewPrimaryLink: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const listItemToDelete = await canvas.findByText('Twenty Website');
+    const listItemToDelete = await canvas.findByText('CRM Website');
     expect(listItemToDelete).toBeVisible();
 
     await waitFor(() => {
@@ -411,7 +411,7 @@ export const DeletePrimaryLinkAndUseSecondaryLinkAsTheNewPrimaryLink: Story = {
 
     const newPrimaryLink = await canvas.findByText('Documentation');
     expect(newPrimaryLink).toBeVisible();
-    const oldPrimaryLink = canvas.queryByText('Twenty Website');
+    const oldPrimaryLink = canvas.queryByText('CRM Website');
     expect(oldPrimaryLink).not.toBeInTheDocument();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -422,7 +422,7 @@ export const DeleteSecondaryLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [
         {
           url: 'https://docs.example.com',
@@ -452,7 +452,7 @@ export const DeleteSecondaryLink: Story = {
     ).findByRole('menuitem', { name: 'Delete' });
     await userEvent.click(deleteOption);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
     const secondaryLink = canvas.queryByText('Documentation');
     expect(secondaryLink).not.toBeInTheDocument();
@@ -526,7 +526,7 @@ export const MakeSecondaryLinkPrimary: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [
         {
           url: 'https://docs.example.com',
@@ -538,7 +538,7 @@ export const MakeSecondaryLinkPrimary: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
 
     const secondaryLink = await canvas.findByText('Documentation');
@@ -566,7 +566,7 @@ export const MakeSecondaryLinkPrimary: Story = {
         primaryLinkUrl: 'https://docs.example.com',
         primaryLinkLabel: 'Documentation',
         secondaryLinks: [
-          { url: 'https://www.example.com', label: 'Twenty Website' },
+          { url: 'https://www.example.com', label: 'CRM Website' },
         ],
       },
       skipClose: true,
@@ -578,14 +578,14 @@ export const CanNotSetPrimaryLinkAsPrimaryLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const primaryLink = await canvas.findByText('Twenty Website');
+    const primaryLink = await canvas.findByText('CRM Website');
     expect(primaryLink).toBeVisible();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -652,7 +652,7 @@ export const EditUrlKeepsLabel: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [],
     },
   },
@@ -676,7 +676,7 @@ export const EditUrlKeepsLabel: Story = {
     expect(handleSubmitMocked).toHaveBeenCalledWith({
       newValue: {
         primaryLinkUrl: 'https://example.com/pricing',
-        primaryLinkLabel: 'Twenty Website',
+        primaryLinkLabel: 'CRM Website',
         secondaryLinks: [],
       },
       skipClose: true,

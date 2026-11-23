@@ -76,10 +76,10 @@ describe('Chip content and composition', () => {
           <a
             href="https://example.com"
             target="_blank"
-            aria-label="Open Twenty"
+            aria-label="Open CRM"
           />
         }
-        aria-label="Open Twenty"
+        aria-label="Open CRM"
         title="Documentation"
         data-owner="caller"
       >
@@ -87,7 +87,7 @@ describe('Chip content and composition', () => {
       </Chip>,
     );
 
-    const link = screen.getByRole('link', { name: 'Open Twenty' });
+    const link = screen.getByRole('link', { name: 'Open CRM' });
     expect(ref.current).toBe(link);
     expect(link).toHaveAttribute('data-variant', 'outline');
     expect(link).toHaveAttribute('href', 'https://example.com');

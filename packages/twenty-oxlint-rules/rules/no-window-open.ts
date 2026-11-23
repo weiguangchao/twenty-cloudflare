@@ -18,11 +18,11 @@ export const rule = defineRule({
     type: 'problem',
     docs: {
       description:
-        'Disallow window.open() so new tabs are always opened without access to the Twenty tab.',
+        'Disallow window.open() so new tabs are always opened without access to the CRM tab.',
     },
     messages: {
       noWindowOpen:
-        "Use openUrlInNewTab from '~/utils/openUrlInNewTab' instead of window.open(): it sets noopener and noreferrer so the opened page cannot navigate the Twenty tab.",
+        "Use openUrlInNewTab from '~/utils/openUrlInNewTab' instead of window.open(): it sets noopener and noreferrer so the opened page cannot navigate the CRM tab.",
     },
     schema: [],
   },

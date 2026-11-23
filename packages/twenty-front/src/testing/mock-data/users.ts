@@ -49,7 +49,7 @@ export const mockCurrentWorkspace = {
   installedApplications: [CUSTOM_WORKSPACE_APPLICATION_MOCK],
   subdomain: 'acme.example.com',
   id: '7dfbc3f7-6e5e-4128-957e-8d86808cdf6w',
-  displayName: 'Twenty',
+  displayName: 'CRM',
   inviteHash: 'example.com-invite-hash',
   logo: workspaceLogoUrl,
   isPublicInviteLinkEnabled: true,

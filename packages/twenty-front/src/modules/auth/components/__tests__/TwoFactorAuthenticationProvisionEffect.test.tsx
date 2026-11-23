@@ -68,7 +68,7 @@ describe('TwoFactorAuthenticationSetupEffect', () => {
 
   it('shows the authenticator returned by the server', async () => {
     const uri =
-      'otpauth://totp/Twenty:test@example.com?secret=SECRETKEY&issuer=Twenty';
+      'otpauth://totp/CRM:test@example.com?secret=SECRETKEY&issuer=CRM';
 
     mockInitiateCurrentUserWorkspaceOtpProvisioning.mockResolvedValue({
       data: { initiateOTPProvisioning: { uri } },

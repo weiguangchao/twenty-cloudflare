@@ -70,7 +70,7 @@ export const SingleLink: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: null,
     },
   },
@@ -80,7 +80,7 @@ export const SingleLink: Story = {
     const link = await canvas.findByRole('link');
     expect(link).toBeVisible();
     expect(link).toHaveAttribute('href', 'https://www.example.com');
-    expect(link).toHaveTextContent('Twenty Website');
+    expect(link).toHaveTextContent('CRM Website');
 
     await waitFor(() => {
       expect(canvas.getAllByRole('link')).toHaveLength(1);
@@ -92,7 +92,7 @@ export const MultipleLinks: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.example.com',
-      primaryLinkLabel: 'Twenty Website',
+      primaryLinkLabel: 'CRM Website',
       secondaryLinks: [
         { url: 'https://docs.example.com', label: 'Documentation' },
         { url: 'https://blog.example.com', label: 'Blog' },
@@ -108,7 +108,7 @@ export const MultipleLinks: Story = {
     });
 
     const primaryLink = await canvas.findByRole('link', {
-      name: 'Twenty Website',
+      name: 'CRM Website',
     });
     expect(primaryLink).toBeVisible();
     expect(primaryLink).toHaveAttribute('href', 'https://www.example.com');
@@ -205,11 +205,11 @@ export const SocialLinksWithCustomLabels: Story = {
   args: {
     value: {
       primaryLinkUrl: 'https://www.linkedin.com/company/twenty',
-      primaryLinkLabel: 'Twenty on LinkedIn',
+      primaryLinkLabel: 'CRM on LinkedIn',
       secondaryLinks: [
         {
           url: 'https://www.instagram.com/twenty_hq',
-          label: 'Twenty on Instagram',
+          label: 'CRM on Instagram',
         },
       ],
     },
@@ -223,7 +223,7 @@ export const SocialLinksWithCustomLabels: Story = {
     });
 
     const linkedinLink = await canvas.findByRole('link', {
-      name: 'Twenty on LinkedIn',
+      name: 'CRM on LinkedIn',
     });
     expect(linkedinLink).toBeVisible();
     expect(linkedinLink).toHaveAttribute(
@@ -232,7 +232,7 @@ export const SocialLinksWithCustomLabels: Story = {
     );
 
     const instagramLink = await canvas.findByRole('link', {
-      name: 'Twenty on Instagram',
+      name: 'CRM on Instagram',
     });
     expect(instagramLink).toBeVisible();
     expect(instagramLink).toHaveAttribute(
