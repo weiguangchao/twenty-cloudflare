@@ -110,28 +110,6 @@ jobs:
       scope: performance
       shard: ${{ matrix.shard }}
       shard-count: ${{ strategy.job-total }}
-  front-sb-screenshots:
-    timeout-minutes: 5
-    runs-on: ubuntu-24.04
-    needs: [front-sb-test-modules, front-sb-test-pages]
-    if: >-
-      always() &&
-      needs.front-sb-test-modules.result == 'success' &&
-      needs.front-sb-test-pages.result == 'success'
-    steps:
-      - name: Download shard screenshot artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          pattern: argos-screenshots-twenty-front-*
-          merge-multiple: true
-          path: screenshots
-      - name: Upload merged screenshots artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: argos-screenshots-twenty-front
-          path: screenshots
-          retention-days: 1
-          overwrite: true
   front-task:
     needs: changed-files-check
     if: needs.changed-files-check.outputs.any_changed == 'true'
@@ -217,7 +195,6 @@ jobs:
         front-sb-test-pages,
         front-sb-test-performance,
         front-sb-build,
-        front-sb-screenshots,
       ]
     steps:
       - name: Fail job if any needs failed

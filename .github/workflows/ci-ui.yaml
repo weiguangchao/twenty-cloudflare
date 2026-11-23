@@ -112,13 +112,6 @@ jobs:
           npx playwright install chromium
       - name: Run storybook tests
         run: npx nx storybook:test:no-coverage twenty-ui
-      - name: Upload screenshots for visual regression
-        if: always() && !cancelled()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: argos-screenshots-twenty-ui
-          path: packages/twenty-ui/screenshots
-          retention-days: 1
   ci-ui-status-check:
     if: always() && !cancelled()
     timeout-minutes: 5

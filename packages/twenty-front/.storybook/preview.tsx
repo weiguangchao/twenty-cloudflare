@@ -132,10 +132,6 @@ const preview: Preview = {
   loaders: [mswLoader, waitForStorybookFontsLoaded],
 
   parameters: {
-    argos: {
-      // CSS zoom combined with viewport-sized stories makes the iframe grow during capture.
-      fitToContent: { zoom: 1 },
-    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

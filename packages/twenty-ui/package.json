@@ -1,25 +1,8 @@
 {
   "name": "twenty-ui",
+  "private": true,
   "version": "2.58.0",
-  "description": "Twenty's shared React UI component library.",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/twentyhq/twenty.git",
-    "directory": "packages/twenty-ui"
-  },
-  "homepage": "https://twenty.com",
-  "bugs": "https://github.com/twentyhq/twenty/issues",
-  "keywords": [
-    "twenty",
-    "ui",
-    "react",
-    "components",
-    "design-system"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "style": "./dist/style.css",
@@ -29,7 +12,6 @@
     "**/*.scss"
   ],
   "devDependencies": {
-    "@argos-ci/storybook": "6.2.3",
     "@fontsource/dm-mono": "^5.2.7",
     "@fontsource/inter": "^5.2.8",
     "@monaco-editor/react": "^4.7.0",

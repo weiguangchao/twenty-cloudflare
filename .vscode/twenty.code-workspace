@@ -35,14 +35,6 @@
     {
       "name": "packages/twenty-e2e-testing",
       "path": "../packages/twenty-e2e-testing"
-    },
-    {
-      "name": "packages/twenty-docs",
-      "path": "../packages/twenty-docs"
-    },
-    {
-      "name": "packages/twenty-website",
-      "path": "../packages/twenty-website"
     }
   ],
   "settings": {
@@ -84,9 +76,6 @@
       "!typescriptreact",
       "md",
       "mdx"
-    ],
-    "cSpell.words": [
-      "twentyhq"
     ],
     "typescript.preferences.importModuleSpecifier": "non-relative",
     "[javascript][typescript][typescriptreact]": {

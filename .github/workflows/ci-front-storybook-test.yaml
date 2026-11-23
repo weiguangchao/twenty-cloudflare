@@ -68,11 +68,3 @@ jobs:
         run: npx nx reset:env twenty-front
       - name: Run storybook tests
         run: npx nx storybook:test:no-coverage twenty-front --configuration=${{ inputs.scope }} --shard=${{ inputs.shard }}/${{ inputs.shard-count }}
-      - name: Upload screenshots for visual regression
-        if: always() && !cancelled() && inputs.scope != 'performance'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: argos-screenshots-twenty-front-${{ inputs.scope }}-${{ inputs.shard }}
-          path: packages/twenty-front/screenshots
-          retention-days: 1
-          overwrite: true

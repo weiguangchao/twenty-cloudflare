@@ -665,7 +665,6 @@ export const IndependentInstances: Story = {
 };
 
 export const ScopedThemeAndDirection: Story = {
-  parameters: { argos: { fitToContent: { zoom: 1 } } },
   render: (args) => (
     <section aria-label="Scoped company tags">
       <ThemeProvider

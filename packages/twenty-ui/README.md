@@ -1,26 +1,8 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/twentyhq/twenty/main/packages/twenty-ui/logo.png" width="136" height="136" alt="twenty-ui logo" />
-</p>
-
 # twenty-ui
 
-Twenty's open-source React UI library provides foundational primitives, shared components, icons, and theme tokens. It ships prebuilt CSS with CSS variables, so consuming applications do not need a CSS-in-JS compiler.
+The internal React UI library for the CRM frontend: foundational primitives, shared components, icons, and theme tokens. It ships prebuilt CSS with CSS variables, so consumers do not need a CSS-in-JS compiler.
 
-Read the [twenty-ui documentation](https://docs.twenty.com/ui/getting-started) for setup, theming, and component guides.
-
-## Installation
-
-For an existing React application, install the library. React 19 is required.
-
-```bash
-npm install twenty-ui
-```
-
-The code editor is available separately from `twenty-ui/components/code-editor`. Applications using that entry point must install its optional peers and configure Monaco workers for their bundler before mounting the editor:
-
-```bash
-npm install @monaco-editor/react monaco-editor
-```
+The code editor lives in `twenty-ui/components/code-editor`. It needs the optional `@monaco-editor/react` and `monaco-editor` peers and Monaco workers configured for the bundler.
 
 ## Usage
 
@@ -46,7 +28,7 @@ export const App = () => (
 
 The component stylesheet includes a global reset. Load it once at your application entry point.
 
-Component styles and the reset use the `twenty-ui` cascade layer. Unlayered application styles override those layered rules. Put application resets in an earlier layer; see [style overrides](https://docs.twenty.com/ui/getting-started#override-styles) for the layer order and Tailwind setup.
+Component styles and the reset use the `twenty-ui` cascade layer. Unlayered application styles override those layered rules. Put application resets in an earlier layer.
 
 ## Entry points
 
@@ -90,7 +72,7 @@ Import icons such as `IconCheck` from `twenty-ui/icon`. Import `IconsProvider`, 
 - Import `themeCssVariables` for CSS variable references, `useTheme()` for theme values, and `useThemeColorScheme()` for the active scheme, all from `twenty-ui/theme`.
 - The provider's `theme` prop supplies explicit JavaScript values, such as `THEME_LIGHT` or `THEME_DARK`, for consumers that cannot read computed styles. It does not replace the theme stylesheets.
 
-See the [theming guide](https://docs.twenty.com/ui/theming) for scoped overrides, portals, and explicit values.
+See [docs/theme.md](docs/theme.md) for scoped overrides, portals, and explicit values.
 
 ## Responsive hooks
 
@@ -134,41 +116,6 @@ Record formatting, routing, product illustrations, and feature-specific animatio
 - Edit token sources in `design-tokens`, then run `npx nx generateTokens twenty-ui`. Use `npx nx generate:check twenty-ui` to check that generated token files are current.
 - Run `npx nx check:ownership twenty-ui` to validate exports, generated files, and dependency rules. After an intentional interface change, run `node --import tsx packages/twenty-ui/scripts/checkModuleOwnership.ts --write` and review the two inventory files in `docs/`.
 
-### Documentation
-
-Primitive guides belong in `packages/twenty-docs/ui/primitives`. Shared component guides belong in `packages/twenty-docs/ui/components`.
-
-Every component guide starts with its purpose and a `Display` story, followed by **Usage** with complete code matching that preview. Use realistic content and the public API. Compound components share one complete display across their parts; providers and accessibility helpers demonstrate their effect in context. Keep useful Storybook controls available on the display.
-
-Make previews look like usable UI. Align controls with their labels, separate actions from supporting text, and give panels and cards enough padding. Constrain long text to a readable width, use theme colors for secondary content, and check that examples fit the documentation frame in both light and dark themes. Keep these layout choices in the example and its matching code snippet.
-
-Preserve the component's existing appearance in its Display story. Improve the surrounding layout without changing the control's shape, size, variant, or focus styling for decoration. Show alternative appearances in named stories or catalogs.
-
-Use these story roles consistently:
-
-| Story               | Purpose                               | When to include it                                |
-| ------------------- | ------------------------------------- | ------------------------------------------------- |
-| `Display`           | One representative, usable example    | Every component guide                             |
-| `Catalog`           | Labeled comparisons of visual options | When seeing options together helps readers choose |
-| Named examples      | A specific behavior or composition    | When the component supports distinct workflows    |
-| Interaction stories | Verify behavior with `play` functions | Keep these separate from embedded previews        |
-
-After Usage, document visual options, anatomy where relevant, behavior and composition, accessibility, and the generated API reference. Omit sections that add no useful information. Put migration guidance before the API reference.
-
-Catalogs should group variants, sizes, colors, and states separately. Use a matrix only when two dimensions need to be compared together. Avoid multiplying every prop combination. Use `GroupedCatalog` from `twenty-ui/testing` for a consistent grouped layout. Simple components can use a focused alternative example; interactive components usually need working workflow examples. Use the preview's light and dark tabs for theme comparison.
-
-Keep comprehensive visual checks in separate `VisualRegression` stories using `CatalogDecorator`, including the existing dark-theme and variant matrices. Tag them with `!autodocs` and do not embed them in the guides. Simplifying a documentation catalog must preserve its existing visual regression coverage.
-
-Embed stories with a descriptive `title` and a height that closely fits their content, including the preview's padding. Check wrapping at narrow documentation widths. Reserve additional height only for dropdowns, popups, validation messages, resizing, or other expanding content, and verify those states fit. Embedded stories can respond to the reader, but must not define or inherit a `play` function. Share a presentational example with its interaction story instead of copying automated interactions into the documentation.
-
-For each stateful API that supports both modes, include separate **Uncontrolled state** and **Controlled state** examples with the same scenario, labels, and initial state. Keep each example complete, with public imports and one exported example component.
-
-Explain state ownership before advanced behavior such as indeterminate selection or manual tab activation. Document independent states, such as selection and popup visibility, separately. For components that delegate state to a parent or group, explain that ownership and link to the relevant examples.
-
-For compound components, include an anatomy tree and identify required parts, optional parts, and elements supplied internally. Show supported composition with complete examples, use Twenty UI components for supporting controls, and explain how custom wrappers preserve props and refs. Use `text` fences for structural diagrams and `tsx` fences for runnable examples so the documentation checker validates the examples.
-
-Run `npx nx generate:ui twenty-docs` after changing documented component props or theme tokens, then review the generated data in `packages/twenty-ui/generated` and snippets in `packages/twenty-docs/snippets/ui/generated`. Run `npx nx check:ui twenty-docs` to validate generated references and documentation examples. Run `npx nx check:ui-stories twenty-docs` to validate preview titles, story references, the required first `Display`, and the absence of automated interactions in embedded stories.
-
 ### Testing
 
 Component interaction and behavior tests belong in Storybook stories (`*.stories.tsx`) using `play` functions. Component unit tests are reserved for conformance (native props, refs, class names, rendering, and prop types). Keep non-interactive utility, hook, and token tests in the Vitest unit project; avoid duplicating story coverage there.
@@ -182,4 +129,4 @@ The unit project runs in jsdom. The Storybook project runs in headless Chromium 
 
 ## License
 
-twenty-ui is released under the [MIT](https://github.com/twentyhq/twenty/blob/main/packages/twenty-ui/LICENSE) license.
+twenty-ui is released under the [MIT](LICENSE) license.

@@ -25,5 +25,3 @@ import { THEME_DARK, THEME_LIGHT, ThemeProvider } from 'twenty-ui/theme';
 The explicit `theme` supplies hook values and updates when the prop changes. Nested providers inherit it, and a provider with an explicit theme skips reading computed CSS values. Pass `theme` on a nested provider to replace the values for that subtree, for example when it switches color scheme. CSS classes, overrides, scaling, and portal scope retain their existing behavior. CSS overrides do not modify an explicitly supplied theme object. `THEME_LIGHT` and `THEME_DARK` keep their callable spacing helper; the provider resolves it into the same spacing entries that `useTheme()` returns from CSS variables, so `theme.spacing[3]` works with either source.
 
 Raw contexts and their implementation types are private. Use the corresponding hook, including separate hook calls when reading both the theme and color scheme.
-
-See the [theming guide](https://docs.twenty.com/ui/theming) for standalone applications.
