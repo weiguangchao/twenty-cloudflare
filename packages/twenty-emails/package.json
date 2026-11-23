@@ -22,7 +22,6 @@
     "@lingui/swc-plugin": "^5.11.0",
     "@lingui/vite-plugin": "^5.9.5",
     "@react-email/ui": "^6.11.3",
-    "@tiptap/core": "^3.4.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@typescript/native-preview": "^7.0.0-dev.20260116.1",

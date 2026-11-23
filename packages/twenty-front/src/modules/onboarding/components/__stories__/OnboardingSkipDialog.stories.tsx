@@ -63,13 +63,11 @@ const meta: Meta<typeof OnboardingSkipDialogExample> = {
       {
         label: 'Continue with Microsoft',
         Icon: IconMicrosoft,
-        creditsReward: 2,
         onClick: fn(),
       },
       {
         label: 'Continue with Google',
         Icon: IconGoogle,
-        creditsReward: 2,
         onClick: fn(),
       },
     ],
@@ -81,28 +79,6 @@ export default meta;
 type Story = StoryObj<typeof OnboardingSkipDialogExample>;
 
 export const Default: Story = {
-  play: async ({ canvasElement }) => {
-    const dialog = await openSkipDialog(canvasElement);
-
-    await expect(
-      within(dialog).getByRole('button', {
-        name: 'Continue with Google, earn 2 free credits',
-      }),
-    ).toHaveTextContent('+2');
-  },
-};
-
-export const WithoutCreditsReward: Story = {
-  args: {
-    actions: [
-      {
-        label: 'Continue with Google',
-        Icon: IconGoogle,
-        creditsReward: 0,
-        onClick: fn(),
-      },
-    ],
-  },
   play: async ({ canvasElement }) => {
     const dialog = await openSkipDialog(canvasElement);
 
@@ -122,27 +98,5 @@ export const SkipAnyway: Story = {
 
     await waitFor(() => expect(dialog).not.toBeInTheDocument());
     await expect(args.onSkip).toHaveBeenCalledTimes(1);
-  },
-};
-
-export const PerItemCreditsReward: Story = {
-  args: {
-    actions: [
-      {
-        label: 'Add teammates',
-        creditsReward: 0.5,
-        isRewardPerItem: true,
-        onClick: fn(),
-      },
-    ],
-  },
-  play: async ({ canvasElement }) => {
-    const dialog = await openSkipDialog(canvasElement);
-
-    await expect(
-      within(dialog).getByRole('button', {
-        name: 'Add teammates, earn 0.5 free credits each',
-      }),
-    ).toHaveTextContent('+0.5 each');
   },
 };

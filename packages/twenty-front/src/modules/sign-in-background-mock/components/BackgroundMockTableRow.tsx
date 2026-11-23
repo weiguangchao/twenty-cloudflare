@@ -2,13 +2,11 @@ import { styled } from '@linaria/react';
 import { type BackgroundMockCompany } from '@/sign-in-background-mock/constants/BackgroundMockCompanies';
 import { BACKGROUND_MOCK_COLUMN_WIDTHS } from '@/sign-in-background-mock/constants/BackgroundMockColumnWidths';
 import { BACKGROUND_MOCK_TABLE_DIMENSIONS } from '@/sign-in-background-mock/constants/BackgroundMockTableDimensions';
-import { getAbsoluteImageUrl } from '~/utils/image/getAbsoluteImageUrl';
 import { Avatar, Chip } from 'twenty-ui/primitives/data-display';
 import { Checkbox } from 'twenty-ui/primitives/input';
 import { IconLink } from 'twenty-ui/icon';
 import { useTheme, themeCssVariables } from 'twenty-ui/theme';
 
-import { getLogoUrlFromDomainName } from 'twenty-shared/utils';
 import { useLingui } from '@lingui/react/macro';
 
 const StyledRow = styled.div`
@@ -98,8 +96,6 @@ export const BackgroundMockTableRow = ({
   const { t } = useLingui();
   const theme = useTheme();
 
-  const logoUrl = getLogoUrlFromDomainName(company.domainName);
-
   return (
     <StyledRow>
       <StyledDragHandleColumn />
@@ -114,7 +110,6 @@ export const BackgroundMockTableRow = ({
           startElement={
             <Avatar
               shape="square"
-              src={getAbsoluteImageUrl(logoUrl)}
               name={company.name}
               colorSeed={company.id}
               size="md"

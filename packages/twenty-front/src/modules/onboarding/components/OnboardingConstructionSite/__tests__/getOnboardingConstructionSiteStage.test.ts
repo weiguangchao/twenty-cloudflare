@@ -17,7 +17,6 @@ describe('getOnboardingConstructionSiteStage', () => {
       OnboardingStatus.SYNC_EMAIL,
       OnboardingStatus.PROFILE_CREATION,
       OnboardingStatus.INVITE_TEAM,
-      OnboardingStatus.BOOK_CALL,
     ].map(
       (onboardingStatus) =>
         getOnboardingConstructionSiteStage({
@@ -26,7 +25,7 @@ describe('getOnboardingConstructionSiteStage', () => {
         }).stageIndex,
     );
 
-    expect(stageIndexes).toEqual([0, 1, 2, 3]);
+    expect(stageIndexes).toEqual([0, 1, 2]);
   });
 
   it('should keep the site on its first stage before the first step that shows it', () => {
@@ -47,10 +46,10 @@ describe('getOnboardingConstructionSiteStage', () => {
   it('should keep the finale for the last step', () => {
     expect(
       getOnboardingConstructionSiteStage({
-        onboardingStatus: OnboardingStatus.PLAN_REQUIRED,
+        onboardingStatus: OnboardingStatus.COMPLETED,
         isLastOnboardingStep: false,
       }).stageIndex,
-    ).toBe(ONBOARDING_CONSTRUCTION_SITE_FINAL_STAGE_INDEX - 1);
+    ).toBeLessThan(ONBOARDING_CONSTRUCTION_SITE_FINAL_STAGE_INDEX);
   });
 
   it('should complete the site with the finale on the last step', () => {

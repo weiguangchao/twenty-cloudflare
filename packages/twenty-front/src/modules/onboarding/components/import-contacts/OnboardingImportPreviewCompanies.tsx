@@ -1,8 +1,6 @@
 import { IMPORT_CONTACTS_PREVIEW_COMPANIES } from '@/onboarding/constants/ImportContactsPreviewCompanies';
-import { getAbsoluteImageUrl } from '~/utils/image/getAbsoluteImageUrl';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
-import { getLogoUrlFromDomainName } from 'twenty-shared/utils';
 import { Avatar, Chip } from 'twenty-ui/primitives/data-display';
 import { Checkbox } from 'twenty-ui/primitives/input';
 import { IconBuildingSkyscraper, IconPlus } from 'twenty-ui/icon';
@@ -95,9 +93,6 @@ export const OnboardingImportPreviewCompanies = () => {
                   size="sm"
                   name={company.name}
                   colorSeed={company.id}
-                  src={getAbsoluteImageUrl(
-                    getLogoUrlFromDomainName(company.domainName),
-                  )}
                 />
               }
             >

@@ -1,7 +1,6 @@
 import { ONBOARDING_CONTENT_BLOCK_WIDTH } from '@/onboarding/constants/OnboardingContentBlockWidth';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
-import { type ReactNode } from 'react';
 import { isDefined } from 'twenty-shared/utils';
 import { LightIconButton } from 'twenty-ui/components/input';
 import { IconChevronLeft } from 'twenty-ui/icon';
@@ -66,13 +65,11 @@ const StyledLogo = styled.div`
 type OnboardingHeaderProps = {
   onBack?: () => void;
   isBackDisabled?: boolean;
-  rightComponent?: ReactNode;
 };
 
 export const OnboardingHeader = ({
   onBack,
   isBackDisabled,
-  rightComponent,
 }: OnboardingHeaderProps) => {
   const { t } = useLingui();
 
@@ -94,7 +91,7 @@ export const OnboardingHeader = ({
       <StyledCenter>
         <StyledLogo />
       </StyledCenter>
-      <StyledRightSide>{rightComponent}</StyledRightSide>
+      <StyledRightSide />
     </StyledHeader>
   );
 };

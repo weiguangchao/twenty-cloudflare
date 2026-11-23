@@ -16,7 +16,6 @@ import { AuthenticatedMethod } from '@/auth/types/AuthenticatedMethod';
 import { SignInUpMode } from '@/auth/types/SignInUpMode';
 import { useReadCaptchaToken } from '@/captcha/hooks/useReadCaptchaToken';
 import { useCaptcha } from '@/client-config/hooks/useCaptcha';
-import { useBuildSearchParamsFromUrlSyncedStates } from '@/domain-manager/hooks/useBuildSearchParamsFromUrlSyncedStates';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { getToastOptionsFromError } from '@/error-handler/utils/getToastOptionsFromError';
 import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
@@ -27,7 +26,6 @@ import { useLingui } from '@lingui/react/macro';
 import { AppPath } from 'twenty-shared/types';
 import { isDefined } from 'twenty-shared/utils';
 import { useToast } from 'twenty-ui/components/feedback';
-import { buildAppPathWithQueryParams } from '~/utils/buildAppPathWithQueryParams';
 import { isMatchingLocation } from '~/utils/isMatchingLocation';
 
 export const useSignInUp = (form: UseFormReturn<Form>) => {
@@ -64,9 +62,6 @@ export const useSignInUp = (form: UseFormReturn<Form>) => {
 
   const { readCaptchaToken } = useReadCaptchaToken();
   const { requestFreshCaptchaToken } = useRequestFreshCaptchaToken();
-
-  const { buildSearchParamsFromUrlSyncedStates } =
-    useBuildSearchParamsFromUrlSyncedStates();
 
   const continueWithEmail = useCallback(() => {
     setSignInUpStep(SignInUpStep.Email);
@@ -171,18 +166,12 @@ export const useSignInUp = (form: UseFormReturn<Form>) => {
           );
         }
 
-        const verifyEmailRedirectPath = buildAppPathWithQueryParams(
-          AppPath.PlanRequired,
-          await buildSearchParamsFromUrlSyncedStates(),
-        );
-
         await signUpWithCredentialsInWorkspace({
           email: data.email.toLowerCase().trim(),
           password: data.password,
           workspaceInviteHash,
           workspacePersonalInviteToken,
           captchaToken: token,
-          verifyEmailRedirectPath,
         });
       } catch (error: unknown) {
         void requestFreshCaptchaToken();
@@ -202,7 +191,6 @@ export const useSignInUp = (form: UseFormReturn<Form>) => {
       workspaceInviteHash,
       workspacePersonalInviteToken,
       enqueueToast,
-      buildSearchParamsFromUrlSyncedStates,
       isOnAWorkspace,
       workspacePublicData,
       setLastAuthenticatedMethod,

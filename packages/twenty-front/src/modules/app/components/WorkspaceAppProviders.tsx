@@ -1,6 +1,5 @@
 import { StrictMode } from 'react';
 import { Outlet } from 'react-router-dom';
-import { TrackPageViewEffect } from '@/analytics/components/TrackPageViewEffect';
 import { SharedAppProviders } from '@/app/components/SharedAppProviders';
 import { WorkspaceAppPageTitle } from '@/app/components/WorkspaceAppPageTitle';
 import { GotoHotkeysEffectsProvider } from '@/app/effect-components/GotoHotkeysEffectsProvider';
@@ -21,7 +20,6 @@ import { UserMetadataProviderInitialEffect } from '@/metadata-store/effect-compo
 import { ApolloCoreProvider } from '@/object-metadata/components/ApolloCoreProvider';
 import { RecordCreationFormProvider } from '@/object-record/record-form/components/RecordCreationFormProvider';
 import { SSEProvider } from '@/sse-db-event/components/SSEProvider';
-import { SupportChatEffect } from '@/support/components/SupportChatEffect';
 import { DialogManager } from '@/ui/feedback/dialog-manager/components/DialogManager';
 import { DialogComponentInstanceContext } from '@/ui/feedback/dialog-manager/contexts/DialogComponentInstanceContext';
 import { AppToaster } from '@/ui/feedback/toast/components/AppToaster';
@@ -73,9 +71,7 @@ export const WorkspaceAppProviders = () => {
                     </DialogManager>
                   </DialogComponentInstanceContext.Provider>
                 </ContextStoreComponentInstanceContext.Provider>
-                <SupportChatEffect />
                 <InitializeQueryParamStateEffect />
-                <TrackPageViewEffect />
                 <PageChangeEffect />
 
                 <SignOutOnOtherTabSignOutEffect />

@@ -1,5 +1,4 @@
 import { OnboardingInviteTeamSkipDialog } from '@/onboarding/components/OnboardingInviteTeamSkipDialog';
-import { OnboardingRewardMainButton } from '@/onboarding/components/OnboardingRewardMainButton';
 import { OnboardingSkipButton } from '@/onboarding/components/OnboardingSkipButton';
 import { OnboardingStepAnimatedItem } from '@/onboarding/components/OnboardingStepAnimatedItem';
 import { StyledOnboardingStepHeading } from '@/onboarding/components/StyledOnboardingStepHeading';
@@ -10,14 +9,13 @@ import { ONBOARDING_CONTENT_BLOCK_WIDTH } from '@/onboarding/constants/Onboardin
 import { ONBOARDING_MOTION_SLIDE_OFFSET } from '@/onboarding/constants/OnboardingMotionSlideOffset';
 import { useInviteTeam } from '@/onboarding/hooks/useInviteTeam';
 import { useOnboardingMotionTransition } from '@/onboarding/hooks/useOnboardingMotionTransition';
-import { onboardingCreditsProgressSelector } from '@/onboarding/states/selectors/onboardingCreditsProgressSelector';
 import { TextInput } from '@/ui/input/components/TextInput';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef } from 'react';
 import { Controller } from 'react-hook-form';
+import { MainButton } from 'twenty-ui/components/input';
 import { IconX } from 'twenty-ui/icon';
 import { themeCssVariables } from 'twenty-ui/theme';
 
@@ -53,9 +51,6 @@ export const InviteTeam = () => {
     isSubmitting,
     isNavigating,
   } = useInviteTeam();
-  const { inviteTeamButtonReward } = useAtomStateValue(
-    onboardingCreditsProgressSelector,
-  );
   const emailInputToFocusRef = useRef<HTMLInputElement>(null);
   const transition = useOnboardingMotionTransition();
 
@@ -124,14 +119,15 @@ export const InviteTeam = () => {
 
       <OnboardingStepAnimatedItem index={3}>
         <StyledFooter>
-          <OnboardingRewardMainButton
-            label={t`Invite`}
-            creditsReward={inviteTeamButtonReward.creditsReward}
-            isRewardPerItem={inviteTeamButtonReward.isRewardPerItem}
+          <MainButton
+            fullWidth
             disabled={!isValid}
-            isLoading={isSubmitting || isNavigating}
+            loading={isSubmitting || isNavigating}
+            loadingPosition="start"
             onClick={handleInvite}
-          />
+          >
+            {t`Invite`}
+          </MainButton>
           <OnboardingSkipButton
             onClick={() => void openSkipDialog()}
             disabled={isSubmitting || isNavigating}

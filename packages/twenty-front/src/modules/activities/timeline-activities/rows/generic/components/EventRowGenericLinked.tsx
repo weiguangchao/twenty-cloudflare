@@ -11,12 +11,10 @@ import {
   StyledEventRowContent,
   StyledEventRowLinkedRecord,
 } from '@/activities/timeline-activities/rows/components/EventRowStyles';
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { recordStoreIdentifierFamilySelector } from '@/object-record/record-store/states/selectors/recordStoreIdentifierFamilySelector';
 import { useOpenRecordInSidePanel } from '@/side-panel/hooks/useOpenRecordInSidePanel';
 import { SidePanelSearchRecordPreviewCard } from '@/side-panel/pages/search/components/SidePanelSearchRecordPreviewCard';
 import { useAtomFamilySelectorValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilySelectorValue';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { isNonEmptyString } from '@sniptt/guards';
 import { isDefined } from 'twenty-shared/utils';
 import { OverflowingTextWithTooltip } from 'twenty-ui/primitives/typography';
@@ -36,14 +34,10 @@ export const EventRowGenericLinked = ({
   const { openRecordInSidePanel } = useOpenRecordInSidePanel();
   const [isOpen, setIsOpen] = useState(false);
 
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
-  );
   const linkedRecordIdentifier = useAtomFamilySelectorValue(
     recordStoreIdentifierFamilySelector,
     {
       recordId: event.linkedRecordId ?? '',
-      allowRequestsToTwentyIcons,
     },
   );
 

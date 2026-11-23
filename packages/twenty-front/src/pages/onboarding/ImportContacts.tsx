@@ -1,5 +1,3 @@
-import { OnboardingRewardMainButton } from '@/onboarding/components/OnboardingRewardMainButton';
-import { type OnboardingRewardAction } from '@/onboarding/types/OnboardingRewardAction';
 import { OnboardingSkipButton } from '@/onboarding/components/OnboardingSkipButton';
 import { OnboardingStepAnimatedItem } from '@/onboarding/components/OnboardingStepAnimatedItem';
 import { StyledOnboardingStepHeading } from '@/onboarding/components/StyledOnboardingStepHeading';
@@ -7,12 +5,13 @@ import { StyledOnboardingStepPage } from '@/onboarding/components/StyledOnboardi
 import { StyledOnboardingStepSubtitle } from '@/onboarding/components/StyledOnboardingStepSubtitle';
 import { StyledOnboardingStepTitle } from '@/onboarding/components/StyledOnboardingStepTitle';
 import { OnboardingImportPreview } from '@/onboarding/components/import-contacts/OnboardingImportPreview';
-import { OnboardingTrustBadges } from '@/onboarding/components/import-contacts/OnboardingTrustBadges';
 import { ONBOARDING_CONTENT_BLOCK_WIDTH } from '@/onboarding/constants/OnboardingContentBlockWidth';
+import { type OnboardingAction } from '@/onboarding/types/OnboardingAction';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared/utils';
-import { themeCssVariables } from 'twenty-ui/theme';
+import { MainButton } from 'twenty-ui/components/input';
+import { themeCssVariables, useTheme } from 'twenty-ui/theme';
 
 const StyledOnboardingStep = styled(StyledOnboardingStepPage)`
   gap: ${themeCssVariables.spacing[8]};
@@ -49,7 +48,7 @@ const StyledButtons = styled.div`
 `;
 
 type ImportContactsProps = {
-  providerActions: OnboardingRewardAction[];
+  providerActions: OnboardingAction[];
   onSkip?: () => void;
 };
 
@@ -58,6 +57,7 @@ export const ImportContacts = ({
   onSkip,
 }: ImportContactsProps) => {
   const { t } = useLingui();
+  const theme = useTheme();
 
   return (
     <StyledOnboardingStep data-testid="onboarding-sync-emails-step">
@@ -74,7 +74,6 @@ export const ImportContacts = ({
 
       <OnboardingStepAnimatedItem index={2}>
         <StyledMiddle>
-          <OnboardingTrustBadges />
           <OnboardingImportPreview
             privacyNote={t`Only you will be able to see your emails and events`}
           />
@@ -85,14 +84,18 @@ export const ImportContacts = ({
         <StyledFooter>
           <StyledButtons>
             {providerActions.map((providerAction) => (
-              <OnboardingRewardMainButton
+              <MainButton
                 key={providerAction.label}
-                label={providerAction.label}
-                Icon={providerAction.Icon}
-                creditsReward={providerAction.creditsReward}
-                isRewardPerItem={providerAction.isRewardPerItem}
+                fullWidth
+                startIcon={
+                  isDefined(providerAction.Icon) ? (
+                    <providerAction.Icon size={theme.icon.size.md} />
+                  ) : undefined
+                }
                 onClick={providerAction.onClick}
-              />
+              >
+                {providerAction.label}
+              </MainButton>
             ))}
           </StyledButtons>
           {isDefined(onSkip) && <OnboardingSkipButton onClick={onSkip} />}

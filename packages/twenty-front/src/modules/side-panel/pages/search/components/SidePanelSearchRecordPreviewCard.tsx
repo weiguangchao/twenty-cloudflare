@@ -1,5 +1,4 @@
 import { SkeletonLine } from '@/ui/feedback/skeleton/components/SkeletonLine';
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { type FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { formatFieldMetadataItemAsColumnDefinition } from '@/object-metadata/utils/formatFieldMetadataItemAsColumnDefinition';
@@ -15,7 +14,6 @@ import { SIDE_PANEL_SEARCH_RECORD_PREVIEW_WIDTH } from '@/side-panel/pages/searc
 import { useSidePanelSearchRecordPreviewFields } from '@/side-panel/pages/search/hooks/useSidePanelSearchRecordPreviewFields';
 import { useSidePanelSearchRecordPreviewRecord } from '@/side-panel/pages/search/hooks/useSidePanelSearchRecordPreviewRecord';
 import { useAtomFamilySelectorValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilySelectorValue';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { styled } from '@linaria/react';
 import { useState } from 'react';
 import { SKELETON_HEIGHT_SIZES } from 'twenty-ui/primitives/feedback';
@@ -128,13 +126,9 @@ export const SidePanelSearchRecordPreviewCard = ({
     recordId,
   });
 
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
-  );
-
   const recordIdentifier = useAtomFamilySelectorValue(
     recordStoreIdentifierFamilySelector,
-    { recordId, allowRequestsToTwentyIcons },
+    { recordId },
   );
 
   const collapsedFields = visibleFields.slice(

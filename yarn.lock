@@ -2237,35 +2237,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@calcom/embed-core@npm:1.5.3":
-  version: 1.5.3
-  resolution: "@calcom/embed-core@npm:1.5.3"
-  checksum: 10c0/85d2a17800dc685c75670a24ddc650eabac571001067640f2715aa7e9ffdad5fb36fc4c5f33c6d00bf6937ae6997a3beb45cd0d3cc96754fc1b3171ea888d796
-  languageName: node
-  linkType: hard
-
-"@calcom/embed-react@npm:^1.5.3":
-  version: 1.5.3
-  resolution: "@calcom/embed-react@npm:1.5.3"
-  dependencies:
-    "@calcom/embed-core": "npm:1.5.3"
-    "@calcom/embed-snippet": "npm:1.3.3"
-  peerDependencies:
-    react: ^18.2.0 || ^19.0.0
-    react-dom: ^18.2.0 || ^19.0.0
-  checksum: 10c0/aa42bbd96b2d7b16dc2b582cdc6e13ea5015b91fa8e6f680f554e56d562f64e783df74eac50b028543827b3a8d62307fde37cad19f574b7ff7bc3bab8cf52dfe
-  languageName: node
-  linkType: hard
-
-"@calcom/embed-snippet@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@calcom/embed-snippet@npm:1.3.3"
-  dependencies:
-    "@calcom/embed-core": "npm:1.5.3"
-  checksum: 10c0/2488d33f23aa1495004803b6f8f3bba7f3aad2bd2b951aaffb9891c27250aed48fa7deb251cf4cf65e4e8c1f12c07c70eb5e6ab6706455fa71b8208fe53dfd53
-  languageName: node
-  linkType: hard
-
 "@clack/core@npm:1.4.3":
   version: 1.4.3
   resolution: "@clack/core@npm:1.4.3"
@@ -9779,76 +9750,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser-utils@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/browser-utils@npm:10.59.0"
-  dependencies:
-    "@sentry/core": "npm:10.59.0"
-  checksum: 10c0/acc92169566dc1290b7ef656c7d49c5466c8db90659b7bfaaf272f9ace6fba3b9bdd14d477354fa55c91480794997675462b10f23335fa44bd81d34c37c0d006
-  languageName: node
-  linkType: hard
-
-"@sentry/browser@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/browser@npm:10.59.0"
-  dependencies:
-    "@sentry/browser-utils": "npm:10.59.0"
-    "@sentry/core": "npm:10.59.0"
-    "@sentry/feedback": "npm:10.59.0"
-    "@sentry/replay": "npm:10.59.0"
-    "@sentry/replay-canvas": "npm:10.59.0"
-  checksum: 10c0/34168d3112103847e0d07398a85cd4f68e08e0d8e8de3e9ba3b8799c8736a1f3fe1953ca14039e5407db02ccd43eb510f163c8073505a85047945d5172e9aab6
-  languageName: node
-  linkType: hard
-
-"@sentry/core@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/core@npm:10.59.0"
-  checksum: 10c0/98ae0502b1147e8ad1501e4dc954cd3e44643573d99839ea70f9b43523495c4b7175fef8eef366a2e4dfe99f72e34de02def1d15158fa92345637cbbc24bc0e7
-  languageName: node
-  linkType: hard
-
-"@sentry/feedback@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/feedback@npm:10.59.0"
-  dependencies:
-    "@sentry/core": "npm:10.59.0"
-  checksum: 10c0/50062d7d9746414e436baffb09714eca5624c81819a35de0e7077e23401cfe80ea3b3d93190655924a9b36762023b4bad9487d1798ba7f5c61642c7ecdc7e7e0
-  languageName: node
-  linkType: hard
-
-"@sentry/react@npm:^10.51.0":
-  version: 10.59.0
-  resolution: "@sentry/react@npm:10.59.0"
-  dependencies:
-    "@sentry/browser": "npm:10.59.0"
-    "@sentry/core": "npm:10.59.0"
-  peerDependencies:
-    react: ^16.14.0 || 17.x || 18.x || 19.x
-  checksum: 10c0/5a5867d656efc344dca7bdaf61ecafc731e8ba6ff837830d845e402a5898744946514bd330680c2df5b86e24a71ce131623359097ff539ba200eb82377e3a2ec
-  languageName: node
-  linkType: hard
-
-"@sentry/replay-canvas@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/replay-canvas@npm:10.59.0"
-  dependencies:
-    "@sentry/core": "npm:10.59.0"
-    "@sentry/replay": "npm:10.59.0"
-  checksum: 10c0/4a3cfa05b0f31e9572fbe53be26ad270c880c29159e0833e6c8db6299c44674959ae3036ee54e0b1a9438c20e1bae9f47242f12bb5c538e1455bc6e92ac90bb7
-  languageName: node
-  linkType: hard
-
-"@sentry/replay@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/replay@npm:10.59.0"
-  dependencies:
-    "@sentry/browser-utils": "npm:10.59.0"
-    "@sentry/core": "npm:10.59.0"
-  checksum: 10c0/9b33b19a78eaef8d2231ed0b9f9814929b4bfcc83fb2d98fb22b6ebbcc2df79454a8e6078e0e953ded3702df227efe68ae051e17c5cf70381d244009cbe0915c
-  languageName: node
-  linkType: hard
-
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -10755,15 +10656,6 @@ __metadata:
   peerDependencies:
     "@tiptap/pm": 3.30.5
   checksum: 10c0/d64a695926b2db554a1faec7652c24bd34488be0d1fcfaa036a74094aefaed87c032c2a93fa8b8c0170c7f35b168fa942358a494a44597e1236acf5bd16026cc
-  languageName: node
-  linkType: hard
-
-"@tiptap/core@npm:^3.4.2":
-  version: 3.31.3
-  resolution: "@tiptap/core@npm:3.31.3"
-  peerDependencies:
-    "@tiptap/pm": 3.31.3
-  checksum: 10c0/f43dd23a64a08e7ccd2d8c8cbed11db7148e9942522647454096df8040fa6a7063611a404edc94584bc02769a218e7e63d3c549c52928b6483cefe069bdac49a
   languageName: node
   linkType: hard
 
@@ -12308,7 +12200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/expect@npm:4.1.12":
+"@vitest/expect@npm:4.1.12, @vitest/expect@npm:^4.1.0":
   version: 4.1.12
   resolution: "@vitest/expect@npm:4.1.12"
   dependencies:
@@ -26622,7 +26514,6 @@ __metadata:
     "@lingui/swc-plugin": "npm:^5.11.0"
     "@lingui/vite-plugin": "npm:^5.9.5"
     "@react-email/ui": "npm:^6.11.3"
-    "@tiptap/core": "npm:^3.4.2"
     "@types/react": "npm:^19.2.0"
     "@types/react-dom": "npm:^19.2.0"
     "@typescript/native-preview": "npm:^7.0.0-dev.20260116.1"
@@ -26644,7 +26535,6 @@ __metadata:
     "@apollo/client": "npm:^4.0.0"
     "@babel/core": "npm:^7.14.5"
     "@babel/preset-typescript": "npm:^7.24.6"
-    "@calcom/embed-react": "npm:^1.5.3"
     "@cyntler/react-doc-viewer": "npm:^1.17.0"
     "@dagrejs/dagre": "npm:^1.1.8"
     "@dnd-kit/react": "npm:^0.3.2"
@@ -26674,7 +26564,6 @@ __metadata:
     "@nivo/line": "npm:^0.99.0"
     "@nivo/pie": "npm:^0.99.0"
     "@scalar/api-reference-react": "npm:^0.9.83"
-    "@sentry/react": "npm:^10.51.0"
     "@sniptt/guards": "npm:^0.2.0"
     "@storybook-community/storybook-addon-cookie": "npm:^5.0.0"
     "@storybook/addon-coverage": "npm:^3.0.0"
@@ -26986,6 +26875,7 @@ __metadata:
     "@types/react": "npm:^19.2.0"
     "@types/react-dom": "npm:^19.2.0"
     "@types/sanitize-html": "npm:2.16.0"
+    "@vitest/expect": "npm:^4.1.0"
     bcryptjs: "npm:3.0.2"
     file-type: "npm:21.3.4"
     graphql: "npm:16.14.2"

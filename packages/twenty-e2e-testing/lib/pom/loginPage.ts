@@ -3,8 +3,6 @@ import { expect, type Locator, type Page } from '@playwright/test';
 export class LoginPage {
   private readonly loginWithGoogleButton: Locator;
   private readonly loginWithEmailButton: Locator;
-  private readonly termsOfServiceLink: Locator;
-  private readonly privacyPolicyLink: Locator;
   private readonly emailField: Locator;
   private readonly continueButton: Locator;
   private readonly forgotPasswordButton: Locator;
@@ -41,10 +39,6 @@ export class LoginPage {
     this.loginWithEmailButton = page.getByRole('button', {
       name: 'Continue with Email',
     });
-    this.termsOfServiceLink = page.getByRole('link', {
-      name: 'Terms of Service',
-    });
-    this.privacyPolicyLink = page.getByRole('link', { name: 'Privacy Policy' });
     this.emailField = page.getByPlaceholder('Email');
     this.continueButton = page.getByRole('button', {
       name: /^Continue(,|$)/,
@@ -111,14 +105,6 @@ export class LoginPage {
 
   async clickContinueButton() {
     await this.continueButton.click();
-  }
-
-  async clickTermsLink() {
-    await this.termsOfServiceLink.click();
-  }
-
-  async clickPrivacyPolicyLink() {
-    await this.privacyPolicyLink.click();
   }
 
   async typeEmail(email: string) {

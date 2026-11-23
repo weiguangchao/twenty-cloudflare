@@ -1,8 +1,6 @@
 import { currentUserState } from '@/auth/states/currentUserState';
 import { OnboardingLayout } from '@/onboarding/components/OnboardingLayout';
 import { OnboardingTransitionOutlet } from '@/onboarding/components/OnboardingTransitionOutlet';
-import { OnboardingHeaderFreeCredits } from '@/onboarding/components/free-credits/OnboardingHeaderFreeCredits';
-import { PrefetchBookCallStepEffect } from '@/onboarding/effect-components/PrefetchBookCallStepEffect';
 import { useGoBackToPreviousOnboardingStep } from '@/onboarding/hooks/useGoBackToPreviousOnboardingStep';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { lazy, Suspense } from 'react';
@@ -36,7 +34,6 @@ export const OnboardingStepLayout = () => {
           : undefined
       }
       isBackDisabled={isGoingBackToPreviousOnboardingStep}
-      headerRightComponent={<OnboardingHeaderFreeCredits />}
       backgroundComponent={
         <ErrorBoundary fallbackRender={() => null}>
           <Suspense fallback={null}>
@@ -45,8 +42,6 @@ export const OnboardingStepLayout = () => {
         </ErrorBoundary>
       }
     >
-      <PrefetchBookCallStepEffect />
-
       <OnboardingTransitionOutlet />
     </OnboardingLayout>
   );

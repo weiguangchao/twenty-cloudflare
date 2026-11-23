@@ -12,11 +12,7 @@ module.exports = {
     './src/modules/workspace-invitation/graphql/**/*.{ts,tsx}',
 
     './src/modules/settings/**/graphql/**/*.{ts,tsx}',
-    // DPA operations are served by the core (/graphql) schema via @CoreResolver,
-    // not the metadata schema, so they must not be validated against /metadata.
-    '!./src/modules/settings/legal/**/graphql/**/*.{ts,tsx}',
 
-    './src/modules/analytics/graphql/**/*.{ts,tsx}',
     './src/modules/object-metadata/graphql/**/*.{ts,tsx}',
     './src/modules/navigation-menu-item/**/graphql/**/*.{ts,tsx}',
     './src/modules/command-menu-item/graphql/**/*.{ts,tsx}',

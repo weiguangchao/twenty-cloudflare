@@ -9,9 +9,6 @@ export enum AppPath {
   CreateProfile = '/create/profile',
   SyncEmails = '/sync/emails',
   InviteTeam = '/invite-team',
-  PlanRequired = '/plan-required',
-  PlanRequiredSuccess = '/plan-required/payment-success',
-  BookCall = '/book-call',
 
   AiChat = '/chat/:threadId?',
   AiChatInbox = '/inbox/:threadId?',
@@ -36,9 +33,6 @@ export enum AppPath {
   DevelopersCatchAll = `/${Developers}/*`,
 
   Authorize = '/authorize',
-
-  // Deep link for twenty.com/dpa → in-app DPA generator (login-gated redirect).
-  Dpa = '/dpa',
 
   NotFoundWildcard = '*',
   NotFound = '/not-found',

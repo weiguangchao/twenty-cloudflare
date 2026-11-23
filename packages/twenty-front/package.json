@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.0",
-    "@calcom/embed-react": "^1.5.3",
     "@cyntler/react-doc-viewer": "^1.17.0",
     "@dagrejs/dagre": "^1.1.8",
     "@dnd-kit/react": "^0.3.2",
@@ -51,7 +50,6 @@
     "@nivo/line": "^0.99.0",
     "@nivo/pie": "^0.99.0",
     "@scalar/api-reference-react": "^0.9.83",
-    "@sentry/react": "^10.51.0",
     "@sniptt/guards": "^0.2.0",
     "@tiptap/core": "3.30.5",
     "@tiptap/extension-bold": "3.30.5",

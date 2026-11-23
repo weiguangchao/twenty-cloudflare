@@ -1,16 +1,15 @@
 import { DialogInstance } from '@/ui/layout/dialog/components/DialogInstance';
 import { useDialog } from '@/ui/layout/dialog/hooks/useDialog';
-import { OnboardingRewardMainButton } from '@/onboarding/components/OnboardingRewardMainButton';
-import { type OnboardingRewardAction } from '@/onboarding/types/OnboardingRewardAction';
+import { type OnboardingAction } from '@/onboarding/types/OnboardingAction';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
 import { type ReactNode, useRef } from 'react';
 import { isDefined } from 'twenty-shared/utils';
-import { IconButton } from 'twenty-ui/components/input';
+import { IconButton, MainButton } from 'twenty-ui/components/input';
 import { IconX } from 'twenty-ui/icon';
 import { Button } from 'twenty-ui/primitives/input';
 import { Dialog, type DialogPopupProps } from 'twenty-ui/primitives/surfaces';
-import { themeCssVariables } from 'twenty-ui/theme';
+import { themeCssVariables, useTheme } from 'twenty-ui/theme';
 
 const StyledHeader = styled(Dialog.Header)`
   align-items: center;
@@ -32,7 +31,7 @@ type OnboardingSkipDialogProps = {
   visual: ReactNode;
   title: string;
   description?: string;
-  actions: OnboardingRewardAction[];
+  actions: OnboardingAction[];
   finalFocus?: DialogPopupProps['finalFocus'];
   onSkip: () => void;
 };
@@ -47,10 +46,11 @@ export const OnboardingSkipDialog = ({
   onSkip,
 }: OnboardingSkipDialogProps) => {
   const { t } = useLingui();
+  const theme = useTheme();
   const { closeDialog } = useDialog();
   const firstActionRef = useRef<HTMLButtonElement>(null);
 
-  const runAction = (action: OnboardingRewardAction) => {
+  const runAction = (action: OnboardingAction) => {
     closeDialog(dialogId);
     action.onClick();
   };
@@ -84,15 +84,19 @@ export const OnboardingSkipDialog = ({
           </StyledHeader>
           <Dialog.Footer>
             {actions.map((action, index) => (
-              <OnboardingRewardMainButton
+              <MainButton
                 key={action.label}
                 ref={index === 0 ? firstActionRef : undefined}
-                label={action.label}
-                Icon={action.Icon}
-                creditsReward={action.creditsReward}
-                isRewardPerItem={action.isRewardPerItem}
+                fullWidth
+                startIcon={
+                  isDefined(action.Icon) ? (
+                    <action.Icon size={theme.icon.size.md} />
+                  ) : undefined
+                }
                 onClick={() => runAction(action)}
-              />
+              >
+                {action.label}
+              </MainButton>
             ))}
             <Button
               variant="ghost"

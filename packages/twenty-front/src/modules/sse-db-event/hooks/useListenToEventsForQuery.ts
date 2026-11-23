@@ -2,7 +2,6 @@ import { useListenToBrowserEvent } from '@/browser-event/hooks/useListenToBrowse
 import { SSE_CLIENT_RECONNECTED_EVENT_NAME } from '@/sse-db-event/constants/SseClientReconnectedEventName';
 import { SSE_RESYNC_DEBOUNCE_TIME_IN_MS } from '@/sse-db-event/constants/SseResyncDebounceTimeInMs';
 import { useChangeQueryListenState } from '@/sse-db-event/hooks/useChangeQueryListenState';
-import { captureException } from '@sentry/react';
 import { useCallback, useEffect } from 'react';
 import {
   type MetadataGqlOperationSignature,
@@ -11,6 +10,7 @@ import {
 import { isDefined } from 'twenty-shared/utils';
 import { doNotTranslate } from 'twenty-shared/i18n';
 import { useDebouncedCallback } from 'use-debounce';
+import { logError } from '~/utils/logError';
 
 export const useListenToEventsForQuery = ({
   queryId,
@@ -45,7 +45,7 @@ export const useListenToEventsForQuery = ({
     }
 
     const captureResyncError = (error: unknown) => {
-      captureException(
+      logError(
         new Error(
           doNotTranslate(
             `Failed to resync "${queryId}" after SSE reconnection`,

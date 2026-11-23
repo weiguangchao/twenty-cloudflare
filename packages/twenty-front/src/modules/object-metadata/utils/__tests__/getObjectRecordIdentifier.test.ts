@@ -9,7 +9,6 @@ describe('getObjectRecordIdentifier', () => {
     const identifier = getObjectRecordIdentifier({
       objectMetadataItem: companyObjectMetadataItem,
       record: { __typename: 'Company', id: 'company-id', name: 'Acme' },
-      allowRequestsToTwentyIcons: false,
     });
 
     expect(identifier.name).toBe('Acme');
@@ -23,7 +22,6 @@ describe('getObjectRecordIdentifier', () => {
         id: 'company-id',
         name: FIELD_RESTRICTED_ADDITIONAL_PERMISSIONS_REQUIRED,
       },
-      allowRequestsToTwentyIcons: false,
     });
 
     expect(identifier.name).toBe('Not shared');

@@ -28,14 +28,31 @@ describe('GET /healthz', () => {
   });
 });
 
+const REMOVED_HOSTED_SERVICE_FIELDS = [
+  'allowRequestsToTwentyIcons',
+  'analyticsEnabled',
+  'billing',
+  'enterpriseInstanceType',
+  'isBookCallOnboardingStepEnabled',
+  'isClickHouseConfigured',
+  'isCompanyEnrichmentEnabled',
+  'onboarding',
+  'sentry',
+  'support',
+];
+
 describe('GET /client-config', () => {
-  it('returns every top-level field the old server returned', async () => {
+  it('returns every top-level field the old server returned except hosted-service ones', async () => {
     const response = await SELF.fetch('http://localhost/client-config?v=v1');
     const clientConfig = (await response.json()) as Record<string, unknown>;
 
     expect(response.status).toBe(200);
     expect(Object.keys(clientConfig)).toEqual(
-      expect.arrayContaining(Object.keys(capturedClientConfig.response)),
+      expect.arrayContaining(
+        Object.keys(capturedClientConfig.response).filter(
+          (key) => !REMOVED_HOSTED_SERVICE_FIELDS.includes(key),
+        ),
+      ),
     );
     expect(describeShape(clientConfig.authProviders)).toEqual(
       describeShape(capturedClientConfig.response.authProviders),
@@ -57,7 +74,6 @@ describe('GET /client-config', () => {
         magicLink: false,
         sso: [],
       },
-      billing: { isBillingEnabled: false },
       isMultiWorkspaceEnabled: false,
       isCookieSessionEnabled: true,
       isGoogleMessagingEnabled: false,

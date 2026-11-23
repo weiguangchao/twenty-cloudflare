@@ -39,15 +39,6 @@ jest.mock('@/captcha/hooks/useReadCaptchaToken', () => ({
   useReadCaptchaToken: () => ({ readCaptchaToken: () => 'captcha-token' }),
 }));
 
-jest.mock(
-  '@/domain-manager/hooks/useBuildSearchParamsFromUrlSyncedStates',
-  () => ({
-    useBuildSearchParamsFromUrlSyncedStates: () => ({
-      buildSearchParamsFromUrlSyncedStates: async () => ({}),
-    }),
-  }),
-);
-
 const signUpWithCredentialsMock = jest.fn();
 const signUpWithCredentialsInWorkspaceMock = jest.fn();
 

@@ -55,29 +55,6 @@ export const GET_CURRENT_USER = gql`
     customUrl
   }
 
-  fragment BillingSubscriptionSchedulePhaseItemFragment on BillingSubscriptionSchedulePhaseItem {
-    price
-    quantity
-  }
-
-  fragment BillingSubscriptionSchedulePhaseFragment on BillingSubscriptionSchedulePhase {
-    start_date
-    end_date
-    items {
-      ...BillingSubscriptionSchedulePhaseItemFragment
-    }
-  }
-
-  fragment BillingSubscriptionFragment on BillingSubscription {
-    id
-    status
-    metadata
-    cancelAt
-    phases {
-      ...BillingSubscriptionSchedulePhaseFragment
-    }
-  }
-
   fragment RoleFragment on Role {
     id
     label
@@ -128,7 +105,6 @@ export const GET_CURRENT_USER = gql`
     hasPassword
     canAccessFullAdminPanel
     canImpersonate
-    supportUserHash
     onboardingStatus
     previousOnboardingStatus
     isWorkspaceCreator
@@ -201,15 +177,6 @@ export const GET_CURRENT_USER = gql`
         key
         value
       }
-      billingCustomer {
-        id
-        hasPaymentMethod
-        userCreditsFallback
-      }
-      billingSubscriptions {
-        ...BillingSubscriptionFragment
-      }
-      isTrialAvailable
       workspaceMembersCount
       defaultRole {
         ...RoleFragment

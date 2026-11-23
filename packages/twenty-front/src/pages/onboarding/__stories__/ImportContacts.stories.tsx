@@ -22,13 +22,11 @@ const meta: Meta<typeof ImportContacts> = {
       {
         label: 'Continue with Microsoft',
         Icon: IconMicrosoft,
-        creditsReward: 2,
         onClick: action('continue-with-microsoft'),
       },
       {
         label: 'Continue with Google',
         Icon: IconGoogle,
-        creditsReward: 2,
         onClick: action('continue-with-google'),
       },
     ],

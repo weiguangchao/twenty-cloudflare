@@ -25,7 +25,6 @@ export const RecordTableWidgetRelationPickerDropdownContent = ({
     searchFilterText: searchFilter,
     selectedIds: [],
     objectNameSingular,
-    allowRequestsToTwentyIcons: true,
     filter: recordsFilter,
   });
 

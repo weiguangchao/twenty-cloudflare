@@ -12,7 +12,6 @@ import { useRefetchAggregateQueriesForObjectMetadataItem } from '@/object-record
 import { useUpsertRecordsInStore } from '@/object-record/record-store/hooks/useUpsertRecordsInStore';
 import { computeOptimisticRecordFromInput } from '@/object-record/utils/computeOptimisticRecordFromInput';
 import { getUnknownRecordInputFields } from '@/object-record/utils/getUnknownRecordInputFields';
-import { captureMessage } from '@sentry/react';
 import { useStore } from 'jotai';
 import { useCallback } from 'react';
 import { isDefined, isNonEmptyArray } from 'twenty-shared/utils';
@@ -21,6 +20,7 @@ import {
   DatabaseEventAction,
   type ObjectRecordEvent,
 } from '~/generated-metadata/graphql';
+import { logError } from '~/utils/logError';
 
 export const useTriggerOptimisticEffectFromSseUpdateEvents = () => {
   const store = useStore();
@@ -64,11 +64,10 @@ export const useTriggerOptimisticEffectFromSseUpdateEvents = () => {
         });
 
         if (unknownRecordInputFields.length > 0) {
-          captureMessage(
+          logError(
             doNotTranslate(
               `SSE update event for ${objectMetadataItem.nameSingular} carried fields unknown to this tab's metadata: ${unknownRecordInputFields.join(', ')}`,
             ),
-            'warning',
           );
         }
 

@@ -51,32 +51,11 @@ describe('getImageIdentifierFieldValue', () => {
   });
 
   describe('LINKS', () => {
-    it('returns the favicon url when requests to twenty-icons are allowed', () => {
+    it('returns null so the avatar falls back to initials', () => {
       expect(
         getImageIdentifierFieldValue(
-          buildRecord({ primaryLinkUrl: 'twenty.com' }),
+          buildRecord({ primaryLinkUrl: 'example.com' }),
           buildFieldMetadataItem(FieldMetadataType.LINKS),
-          true,
-        ),
-      ).toBe('https://twenty-icons.com/twenty.com');
-    });
-
-    it('returns null when requests to twenty-icons are not allowed', () => {
-      expect(
-        getImageIdentifierFieldValue(
-          buildRecord({ primaryLinkUrl: 'twenty.com' }),
-          buildFieldMetadataItem(FieldMetadataType.LINKS),
-          false,
-        ),
-      ).toBe(null);
-    });
-
-    it('returns null when the primary link url is not defined', () => {
-      expect(
-        getImageIdentifierFieldValue(
-          buildRecord({ primaryLinkUrl: null }),
-          buildFieldMetadataItem(FieldMetadataType.LINKS),
-          true,
         ),
       ).toBe(null);
     });

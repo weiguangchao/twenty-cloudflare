@@ -64,7 +64,6 @@ const mockWorkspace = {
   id: 'workspace-id',
   metadataVersion: 1,
   activationStatus: WorkspaceActivationStatus.ACTIVE,
-  billingSubscriptions: [],
   workspaceMembersCount: 0,
   isPublicInviteLinkEnabled: false,
   isCampaignClickTrackingEnabled: false,
@@ -75,7 +74,6 @@ const mockWorkspace = {
   isPasswordAuthEnabled: false,
   isCustomDomainEnabled: false,
   hasActivatedAndValidEnterpriseKey: false,
-  isTrialAvailable: true,
   subdomain: 'test',
   customDomain: 'test.com',
   workspaceUrls: {

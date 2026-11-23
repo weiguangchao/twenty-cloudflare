@@ -32,7 +32,7 @@ export const AppErrorBoundary = ({
           />
         </>
       )}
-      onError={(error, errorInfo) => handleAppError({ error, errorInfo })}
+      onError={handleAppError}
       onReset={handleReset}
     >
       {children}

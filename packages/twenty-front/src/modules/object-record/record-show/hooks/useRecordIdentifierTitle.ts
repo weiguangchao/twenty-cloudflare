@@ -1,4 +1,3 @@
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { useLabelIdentifierFieldMetadataItem } from '@/object-metadata/hooks/useLabelIdentifierFieldMetadataItem';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useIsRecordFieldReadOnly } from '@/object-record/read-only/hooks/useIsRecordFieldReadOnly';
@@ -8,7 +7,6 @@ import { useRecordShowContainerActions } from '@/object-record/record-show/hooks
 import { useRecordRestrictedFieldNames } from '@/object-record/record-store/hooks/useRecordRestrictedFieldNames';
 import { recordStoreIdentifierFamilySelector } from '@/object-record/record-store/states/selectors/recordStoreIdentifierFamilySelector';
 import { useAtomFamilySelectorValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilySelectorValue';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { isDefined } from 'twenty-shared/utils';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 
@@ -21,15 +19,10 @@ export const useRecordIdentifierTitle = ({
   objectNameSingular,
   objectRecordId,
 }: UseRecordIdentifierTitleParams) => {
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
-  );
-
   const recordIdentifier = useAtomFamilySelectorValue(
     recordStoreIdentifierFamilySelector,
     {
       recordId: objectRecordId,
-      allowRequestsToTwentyIcons,
     },
   );
 

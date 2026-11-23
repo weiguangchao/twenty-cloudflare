@@ -2,7 +2,6 @@ import { type SettingsRolePermissionsSettingPermission } from '@/settings/roles/
 import { useMemo } from 'react';
 import {
   IconApps,
-  IconCreditCard,
   IconHierarchy,
   IconKey,
   IconAppWindow,
@@ -127,15 +126,6 @@ export const useSettingsRolePermissionFlagConfig = ({
         Icon: IconAppWindow,
         isRelevantForAgents: true,
         isRelevantForApiKeys: true,
-        isRelevantForUsers: true,
-      },
-      {
-        key: PermissionFlagType.BILLING,
-        name: t`Billing`,
-        description: t`Manage billing and subscriptions`,
-        Icon: IconCreditCard,
-        isRelevantForAgents: false,
-        isRelevantForApiKeys: false,
         isRelevantForUsers: true,
       },
       {

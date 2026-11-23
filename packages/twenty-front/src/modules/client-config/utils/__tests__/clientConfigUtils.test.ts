@@ -4,11 +4,6 @@ import { getClientConfig } from '@/client-config/utils/getClientConfig';
 global.fetch = jest.fn();
 
 const mockClientConfig = {
-  billing: {
-    isBillingEnabled: true,
-    billingUrl: 'https://billing.example.com',
-    trialPeriods: [],
-  },
   authProviders: {
     google: true,
     magicLink: false,
@@ -22,16 +17,6 @@ const mockClientConfig = {
   defaultSubdomain: 'app',
   frontDomain: 'localhost',
   serverUrl: 'http://localhost:3000',
-  support: {
-    supportDriver: 'none',
-    supportFrontChatId: undefined,
-  },
-  sentry: {
-    environment: 'development',
-    release: '1.0.0',
-    dsn: undefined,
-    tracesSampleRate: 0.1,
-  },
   captcha: {
     provider: undefined,
     siteKey: undefined,
@@ -40,7 +25,6 @@ const mockClientConfig = {
     mutationMaximumAffectedRecords: 100,
   },
   isAttachmentPreviewEnabled: true,
-  analyticsEnabled: false,
   canManageFeatureFlags: true,
   publicFeatureFlags: [],
   isMicrosoftMessagingEnabled: false,

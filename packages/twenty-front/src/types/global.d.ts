@@ -15,6 +15,5 @@ declare global {
       string,
       ComponentInstanceStateContext<any>
     >;
-    FrontChat?: (method: string, ...args: any[]) => void;
   }
 }

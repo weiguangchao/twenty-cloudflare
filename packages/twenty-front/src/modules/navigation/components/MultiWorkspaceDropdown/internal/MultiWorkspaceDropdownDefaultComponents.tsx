@@ -3,7 +3,6 @@ import { availableWorkspacesState } from '@/auth/states/availableWorkspacesState
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { countAvailableWorkspaces } from '@/auth/utils/availableWorkspacesUtils';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
-import { supportChatState } from '@/client-config/states/supportChatState';
 import { useRedirectToDefaultDomain } from '@/domain-manager/hooks/useRedirectToDefaultDomain';
 import { useOpenRecordInPreference } from '@/settings/experience/hooks/useOpenRecordInPreference';
 import { SelectOptionIcon } from '@/ui/input/components/SelectOptionIcon';
@@ -16,7 +15,6 @@ import { useColorScheme } from '@/workspace-member/hooks/useColorScheme';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { getWorkspaceAvatarColorSeed } from '@/workspace/utils/getWorkspaceAvatarColorSeed';
 import { useLingui } from '@lingui/react/macro';
-import { isNonEmptyString } from '@sniptt/guards';
 import { Link } from 'react-router-dom';
 import { AppPath, SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
@@ -25,7 +23,6 @@ import { Dropdown } from 'twenty-ui/components/navigation';
 import {
   IconDotsVertical,
   IconLogout,
-  IconMessage,
   IconPlus,
   IconSettings,
   IconSwitchHorizontal,
@@ -48,10 +45,6 @@ export const MultiWorkspaceDropdownDefaultComponents = () => {
   const { redirectToDefaultDomain } = useRedirectToDefaultDomain();
   const { signOut } = useAuth();
   const { colorScheme, colorSchemeList } = useColorScheme();
-  const supportChat = useAtomStateValue(supportChatState);
-  const isSupportChatConfigured =
-    supportChat?.supportDriver === 'FRONT' &&
-    isNonEmptyString(supportChat.supportFrontChatId);
   const { openRecordInPreference } = useOpenRecordInPreference();
   const navigateSettings = useNavigateSettings();
   const isMobile = useIsMobile();
@@ -59,10 +52,6 @@ export const MultiWorkspaceDropdownDefaultComponents = () => {
 
   const handleSettings = () => {
     navigateSettings(SettingsPath.ProfilePage);
-  };
-
-  const handleSupport = () => {
-    window.FrontChat?.('show');
   };
 
   const createWorkspace = () => {
@@ -189,14 +178,6 @@ export const MultiWorkspaceDropdownDefaultComponents = () => {
         >
           {t`Invite user`}
         </Dropdown.ActionItem>
-        {isSupportChatConfigured && (
-          <Dropdown.ActionItem
-            startIcon={<IconMessage />}
-            onClick={handleSupport}
-          >
-            {t`Support`}
-          </Dropdown.ActionItem>
-        )}
       </Dropdown.Section>
     </>
   );

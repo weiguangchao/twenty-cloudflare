@@ -41,7 +41,6 @@ export const canvasTheme = {
       bold: 600,
     },
     size: {
-      sm: '12px',
       md: '13px',
       lg: '16px',
       xl: '24px',

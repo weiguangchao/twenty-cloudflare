@@ -1,11 +1,9 @@
 import { SettingsPath } from 'twenty-shared/types';
 import { useAuth } from '@/auth/hooks/useAuth';
-import { supportChatState } from '@/client-config/states/supportChatState';
 import { permissionFlagMapSelector } from '@/settings/roles/states/permissionFlagMapSelector';
 import { type NavigationDrawerItemModifier } from '@/ui/navigation/navigation-drawer/types/NavigationDrawerItemModifier';
 import { type NavigationDrawerItemIndentationLevel } from '@/ui/navigation/navigation-drawer/types/NavigationDrawerItemIndentationLevel';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
-import { isNonEmptyString } from '@sniptt/guards';
 import {
   IconAppWindow,
   IconCode,
@@ -13,7 +11,6 @@ import {
   type IconComponent,
   IconDoorEnter,
   IconHierarchy,
-  IconMessage,
   IconSettings2,
   IconUserCircle,
   IconUsers,
@@ -41,11 +38,6 @@ export type SettingsNavigationItem = {
 const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
   const { t } = useLingui();
   const { signOut } = useAuth();
-  const supportChat = useAtomStateValue(supportChatState);
-  const isSupportChatConfigured =
-    supportChat?.supportDriver === 'FRONT' &&
-    isNonEmptyString(supportChat.supportFrontChatId);
-
   const permissionFlagMap = useAtomStateValue(permissionFlagMapSelector);
 
   return [
@@ -103,12 +95,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
     {
       label: t`Other`,
       items: [
-        {
-          label: t`Support`,
-          onClick: () => window.FrontChat?.('show'),
-          Icon: IconMessage,
-          isHidden: !isSupportChatConfigured,
-        },
         {
           label: t`Logout`,
           onClick: signOut,

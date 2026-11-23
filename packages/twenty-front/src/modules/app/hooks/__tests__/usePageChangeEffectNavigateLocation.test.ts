@@ -100,9 +100,7 @@ const setupMockState = (
   verifyEmailRedirectPath?: string,
   returnToPath?: string,
   currentWorkspace: object | null = { id: 'mock-workspace-id' },
-  isBillingEnabled: boolean = true,
   isMinimalMetadataReady: boolean = true,
-  _isOnboardingCheckoutPending: boolean = false,
 ) => {
   jest
     .mocked(useAtomStateValue)
@@ -126,9 +124,7 @@ const testCases: {
   returnToPath?: string;
   pageLayoutId?: string;
   useQueryResult?: { data?: unknown; loading?: boolean };
-  isBillingEnabled?: boolean;
   isMinimalMetadataReady?: boolean;
-  isOnboardingCheckoutPending?: boolean;
   shouldOpenGettingStartedResult?: { shouldOpenGettingStarted: boolean; isLoading: boolean };
 }[] = [
   { loc: AppPath.Verify, isLogged: false, isWorkspaceSuspended: false, onboardingStatus: undefined, res: undefined },
@@ -239,13 +235,11 @@ const testCases: {
   { loc: AppPath.NotFound, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.INVITE_TEAM, res: AppPath.InviteTeam },
   { loc: AppPath.NotFound, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, res: undefined },
 
-  // isBillingEnabled:false — no post-invite-team upgrade interception on billing-disabled instances
-  { loc: AppPath.InviteTeam, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, isBillingEnabled: false, res: defaultHomePagePath },
+  { loc: AppPath.InviteTeam, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, res: defaultHomePagePath },
 
   // returnToPath: should redirect to saved path instead of defaultHomePagePath
   { loc: AppPath.Verify, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, returnToPath: '/authorize?clientId=abc', res: '/authorize?clientId=abc' },
   { loc: AppPath.SignInUp, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, returnToPath: '/objects/tasks', res: '/objects/tasks' },
-  { loc: AppPath.Verify, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, isOnboardingCheckoutPending: true, res: defaultHomePagePath },
 
   // isOnAWorkspace:false — on default domain, don't redirect to returnToPath or defaultHomePagePath from auth pages
   { loc: AppPath.Verify, isLogged: true, isWorkspaceSuspended: false, onboardingStatus: OnboardingStatus.COMPLETED, isOnAWorkspace: false, res: undefined },
@@ -267,7 +261,6 @@ describe('usePageChangeEffectNavigateLocation', () => {
       returnToPath,
       pageLayoutId,
       useQueryResult,
-      isBillingEnabled,
       isMinimalMetadataReady,
       res,
     }) => {
@@ -284,9 +277,7 @@ describe('usePageChangeEffectNavigateLocation', () => {
         verifyEmailRedirectPath,
         returnToPath,
         undefined,
-        isBillingEnabled ?? true,
         isMinimalMetadataReady ?? true,
-        false,
       );
 
       expect(usePageChangeEffectNavigateLocation()).toEqual(res);

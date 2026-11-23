@@ -2,10 +2,6 @@
 // (twenty-front ClientConfig type). Nested shapes only cover what this
 // backend ever returns.
 export type ClientConfig = {
-  billing: {
-    isBillingEnabled: boolean;
-    trialPeriods: { duration: number; isCreditCardRequired: boolean }[];
-  };
   aiModels: never[];
   aiEvaluationModels: never[];
   aiModelTiers: never[];
@@ -23,13 +19,9 @@ export type ClientConfig = {
   frontDomain: string;
   serverUrl: string;
   publicFunctionDomain: string | null;
-  support: { supportDriver: 'NONE' };
-  sentry: { dsn?: string; environment?: string; release?: string };
   captcha: { provider?: string; siteKey?: string };
   api: { mutationMaximumAffectedRecords: number };
-  onboarding: null;
   isAttachmentPreviewEnabled: boolean;
-  analyticsEnabled: boolean;
   canManageFeatureFlags: boolean;
   publicFeatureFlags: never[];
   isCookieSessionEnabled: boolean;
@@ -40,13 +32,8 @@ export type ClientConfig = {
   isConfigVariablesInDbEnabled: boolean;
   isImapSmtpCaldavEnabled: boolean;
   isEmailingDomainInDemoMode: boolean;
-  allowRequestsToTwentyIcons: boolean;
-  isBookCallOnboardingStepEnabled: boolean;
-  isCompanyEnrichmentEnabled: boolean;
   isCloudflareIntegrationEnabled: boolean;
-  isClickHouseConfigured: boolean;
   isWorkspaceSchemaDDLLocked: boolean;
   isOnboardingAiChatEnabled: boolean;
   isTwoFactorAuthenticationEnabled: boolean;
-  enterpriseInstanceType: string;
 };

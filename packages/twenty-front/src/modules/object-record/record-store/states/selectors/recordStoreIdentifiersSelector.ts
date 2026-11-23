@@ -9,12 +9,11 @@ export const recordStoreIdentifiersFamilySelector = createAtomFamilySelector<
   ObjectRecordIdentifier[],
   {
     recordIds: string[];
-    allowRequestsToTwentyIcons: boolean;
   }
 >({
   key: 'recordStoreIdentifiersFamilySelector',
   get:
-    ({ recordIds, allowRequestsToTwentyIcons }) =>
+    ({ recordIds }) =>
     ({ get }) => {
       const objectMetadataItems = get(objectMetadataItemsSelector);
 
@@ -36,7 +35,6 @@ export const recordStoreIdentifiersFamilySelector = createAtomFamilySelector<
           return getObjectRecordIdentifier({
             objectMetadataItem: objectMetadataItem,
             record: recordFromStore,
-            allowRequestsToTwentyIcons,
           });
         })
         .filter(isDefined);

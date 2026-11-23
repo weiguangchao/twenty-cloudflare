@@ -18,7 +18,6 @@ import { recordStoreFamilyState } from '@/object-record/record-store/states/reco
 import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { themeCssVariables } from 'twenty-ui/theme';
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { isDefined } from 'twenty-shared/utils';
 
 const StyledTimelineItemContainer = styled.div`
@@ -83,10 +82,6 @@ export const EventRow = ({
 }: EventRowProps) => {
   const currentWorkspaceMember = useAtomStateValue(currentWorkspaceMemberState);
 
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
-  );
-
   const { recordId } = useContext(TimelineActivityContext);
 
   const recordStore = useAtomFamilyStateValue(recordStoreFamilyState, recordId);
@@ -126,7 +121,6 @@ export const EventRow = ({
   const labelIdentifier = getObjectRecordIdentifier({
     objectMetadataItem: mainObjectMetadataItem,
     record: recordStore,
-    allowRequestsToTwentyIcons,
   });
 
   const authorFullName = getTimelineActivityAuthorFullName(

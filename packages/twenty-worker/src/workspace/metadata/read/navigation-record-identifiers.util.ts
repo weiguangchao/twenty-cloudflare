@@ -1,4 +1,4 @@
-import { getLinkFaviconUrl, isPlainObject } from 'twenty-shared/utils';
+import { isPlainObject } from 'twenty-shared/utils';
 import { projectFileValues } from '@/files/project-file-values.util';
 import { type FileUrlContext } from '@/files/types/workspace-file.type';
 
@@ -56,8 +56,7 @@ export const navigationRecordIdentifiers = (
           ? JSON.parse(row.label)
           : row.label;
       const imageValue: unknown =
-        ['LINKS', 'FILES'].includes(image?.type ?? '') &&
-        typeof row.image === 'string'
+        image?.type === 'FILES' && typeof row.image === 'string'
           ? JSON.parse(row.image)
           : row.image;
       return [
@@ -69,18 +68,15 @@ export const navigationRecordIdentifiers = (
               ? [name.firstName, name.lastName].filter(Boolean).join(' ')
               : String(name ?? ''),
             imageIdentifier:
-              image?.type === 'LINKS' && isPlainObject(imageValue)
-                ? (getLinkFaviconUrl(String(imageValue.primaryLinkUrl ?? '')) ??
-                  '')
-                : image?.type === 'FILES'
-                  ? ((
-                      projectFileValues(context.sql, imageValue, fileUrl) as
-                        | { url?: string }[]
-                        | null
-                    )?.[0]?.url ?? '')
-                  : image?.type === 'TEXT'
-                    ? String(imageValue ?? '')
-                    : '',
+              image?.type === 'FILES'
+                ? ((
+                    projectFileValues(context.sql, imageValue, fileUrl) as
+                      | { url?: string }[]
+                      | null
+                  )?.[0]?.url ?? '')
+                : image?.type === 'TEXT'
+                  ? String(imageValue ?? '')
+                  : '',
           },
         },
       ];

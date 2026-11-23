@@ -25,7 +25,6 @@ import {
 } from 'twenty-shared/utils';
 import { doNotTranslate } from 'twenty-shared/i18n';
 import { IconUserCircle } from 'twenty-ui/icon';
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useLingui } from '@lingui/react/macro';
 
@@ -57,10 +56,6 @@ const ObjectFilterDropdownRecordSelectContent = ({
   const { t } = useLingui();
   const fieldMetadataItemUsedInFilterDropdown = useAtomComponentSelectorValue(
     fieldMetadataItemUsedInDropdownComponentSelector,
-  );
-
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
   );
 
   const { objectFilterDropdownFilterValue } =
@@ -126,7 +121,6 @@ const ObjectFilterDropdownRecordSelectContent = ({
       selectedIds: selectedRecordIds,
       objectNameSingular,
       limit: 10,
-      allowRequestsToTwentyIcons,
     });
 
   const currentWorkspaceMemberSelectableItem: SelectableItem = {

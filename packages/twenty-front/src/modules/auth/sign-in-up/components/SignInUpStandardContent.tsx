@@ -2,7 +2,6 @@ import { Logo } from '@/auth/components/Logo';
 import { StyledAuthContent } from '@/auth/components/StyledAuthContent';
 import { Title } from '@/auth/components/Title';
 import { AnimatedEaseIn } from '@/auth/components/internal/AnimatedEaseIn/AnimatedEaseIn';
-import { FooterNote } from '@/auth/sign-in-up/components/FooterNote';
 import { WorkspaceSelectionFooter } from '@/auth/sign-in-up/components/WorkspaceSelectionFooter';
 import { SignInUpStep } from '@/auth/states/signInUpStepState';
 import { styled } from '@linaria/react';
@@ -60,14 +59,6 @@ export const SignInUpStandardContent = ({
       {signInUpStep === SignInUpStep.WorkspaceSelection && (
         <WorkspaceSelectionFooter />
       )}
-      {![
-        SignInUpStep.Password,
-        SignInUpStep.TwoFactorAuthenticationProvision,
-        SignInUpStep.TwoFactorAuthenticationVerification,
-        SignInUpStep.TwoFactorAuthenticationRecovery,
-        SignInUpStep.WorkspaceSelection,
-        SignInUpStep.WorkspaceCreation,
-      ].includes(signInUpStep) && <FooterNote />}
     </StyledAuthContent>
   );
 };

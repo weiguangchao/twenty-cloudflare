@@ -9,7 +9,6 @@ import { createSerialTaskQueuesByKey } from '@/sse-db-event/utils/createSerialTa
 import { isCurrentEventStream } from '@/sse-db-event/utils/isCurrentEventStream';
 import { isGracefullyHandledEventStreamError } from '@/sse-db-event/utils/isGracefullyHandledEventStreamError';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
-import { captureException } from '@sentry/react';
 import { useMutation } from '@apollo/client/react';
 import { isNonEmptyString } from '@sniptt/guards';
 import { useStore } from 'jotai';
@@ -22,6 +21,7 @@ import {
   type RemoveQueryFromEventStreamInput,
 } from '~/generated-metadata/graphql';
 import { getGraphqlErrorExtensionsFromError } from '~/utils/get-graphql-error-extensions-from-error.util';
+import { logError } from '~/utils/logError';
 
 export const SSEQuerySubscribeEffect = () => {
   const store = useStore();
@@ -51,7 +51,7 @@ export const SSEQuerySubscribeEffect = () => {
           code: extensions?.code,
         })
       ) {
-        captureException(
+        logError(
           new Error(
             doNotTranslate(
               `Unhandled error for event stream: ${

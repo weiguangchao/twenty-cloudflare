@@ -1,7 +1,7 @@
 import { getLinksVariant } from '@/object-record/spreadsheet-import/utils/getLinksVariant';
 import { FieldInputEventContext } from '@/object-record/record-field/ui/contexts/FieldInputEventContext';
 import { useLinksField } from '@/object-record/record-field/ui/meta-types/hooks/useLinksField';
-import { LinksFieldDomainFavicon } from '@/object-record/record-field/ui/meta-types/input/components/LinksFieldDomainFavicon';
+import { LinksFieldDomainIcon } from '@/object-record/record-field/ui/meta-types/input/components/LinksFieldDomainIcon';
 import { LinksFieldEditInputs } from '@/object-record/record-field/ui/meta-types/input/components/LinksFieldEditInputs';
 import { LinksFieldEditPreview } from '@/object-record/record-field/ui/meta-types/input/components/LinksFieldEditPreview';
 import { LinksFieldMenuItem } from '@/object-record/record-field/ui/meta-types/input/components/LinksFieldMenuItem';
@@ -267,7 +267,7 @@ export const LinksFieldInput = () => {
       hasPadding={shouldShowInputInFooter && shouldShowItems}
       rightComponent={saveButton}
     >
-      {isDomainField && <LinksFieldDomainFavicon domain={inputValue} />}
+      {isDomainField && <LinksFieldDomainIcon />}
       <MultiItemFieldTextInput
         autoFocus
         spacing={inputSpacing}

@@ -4,10 +4,8 @@ import { type ObjectRecord } from '@/object-record/types/ObjectRecord';
 
 export const useMapToObjectRecordIdentifier = ({
   objectNameSingular,
-  allowRequestsToTwentyIcons,
 }: {
   objectNameSingular: string;
-  allowRequestsToTwentyIcons: boolean;
 }) => {
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
@@ -17,7 +15,6 @@ export const useMapToObjectRecordIdentifier = ({
     return getObjectRecordIdentifier({
       objectMetadataItem,
       record,
-      allowRequestsToTwentyIcons,
     });
   };
 

@@ -131,7 +131,6 @@ export const responseData = {
       email: 'test@example.com',
       canAccessFullAdminPanel: false,
       canImpersonate: false,
-      supportUserHash: null,
       onboardingStatus: 'completed',
       workspaceMember: {
         id: 'test-workspace-member-id',
@@ -157,7 +156,6 @@ export const responseData = {
         inviteHash: 'test-hash',
         activationStatus: 'active',
         isPublicInviteLinkEnabled: false,
-        isTrialAvailable: true,
         isGoogleAuthEnabled: true,
         isMicrosoftAuthEnabled: false,
         isPasswordAuthEnabled: true,
@@ -182,7 +180,6 @@ export const responseData = {
           canDestroyAllObjectRecords: true,
         },
       },
-      billingSubscriptions: [],
       workspaces: [],
       userVars: null,
     },

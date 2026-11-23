@@ -5,7 +5,6 @@ import {
   isNonEmptyString,
 } from 'twenty-shared/utils';
 
-import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { CommandMenuContext } from '@/command-menu-item/contexts/CommandMenuContext';
 import { CommandMenuItemSelectionRecordStack } from '@/command-menu-item/display/components/CommandMenuItemSelectionRecordStack';
 import { type CommandMenuItemSectionContext } from '@/command-menu-item/types/CommandMenuItemSectionContext';
@@ -19,7 +18,6 @@ import { getObjectRecordIdentifier } from '@/object-metadata/utils/getObjectReco
 import { recordStoreRecordsSelector } from '@/object-record/record-store/states/selectors/recordStoreRecordsSelector';
 import { useAtomComponentStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomComponentStateValue';
 import { useAtomFamilySelectorValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilySelectorValue';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 
 const MAX_STACKED_RECORDS = 3;
 
@@ -30,10 +28,6 @@ export const useCommandMenuItemSelectionSectionContext = ():
   const { objectMetadataItem } = useContextStoreObjectMetadataItem();
   const { identifierChipGeneratorPerObject } = useContext(
     PreComputedChipGeneratorsContext,
-  );
-
-  const allowRequestsToTwentyIcons = useAtomStateValue(
-    allowRequestsToTwentyIconsState,
   );
 
   const contextStoreTargetedRecordsRule = useAtomComponentStateValue(
@@ -77,7 +71,6 @@ export const useCommandMenuItemSelectionSectionContext = ():
       ? getObjectRecordIdentifier({
           objectMetadataItem,
           record: firstRecord,
-          allowRequestsToTwentyIcons,
         }).name
       : undefined;
 
