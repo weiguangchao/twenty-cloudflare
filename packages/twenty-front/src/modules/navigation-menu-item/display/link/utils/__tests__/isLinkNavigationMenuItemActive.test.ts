@@ -67,7 +67,7 @@ describe('isLinkNavigationMenuItemActive', () => {
     ).toBe(false);
     expect(
       isLinkNavigationMenuItemActive({
-        computedLink: 'https://twenty.com',
+        computedLink: 'https://example.com',
         location: { pathname: '/', search: '' },
       }),
     ).toBe(false);

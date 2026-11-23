@@ -45,7 +45,7 @@ export const NullLinks: Story = {
       primaryLinkLabel: 'Primary Link',
       secondaryLinks: [
         { url: null, label: 'Secondary Link' },
-        { url: 'https://www.twenty.com', label: 'Valid Link' },
+        { url: 'https://www.example.com', label: 'Valid Link' },
       ],
     },
   },
@@ -59,7 +59,7 @@ export const NullLinks: Story = {
 
     const validLink = await canvas.findByRole('link', { name: 'Valid Link' });
     expect(validLink).toBeVisible();
-    expect(validLink).toHaveAttribute('href', 'https://www.twenty.com');
+    expect(validLink).toHaveAttribute('href', 'https://www.example.com');
 
     expect(canvas.queryByText('Primary Link')).not.toBeInTheDocument();
     expect(canvas.queryByText('Secondary Link')).not.toBeInTheDocument();
@@ -69,7 +69,7 @@ export const NullLinks: Story = {
 export const SingleLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: null,
     },
@@ -79,7 +79,7 @@ export const SingleLink: Story = {
 
     const link = await canvas.findByRole('link');
     expect(link).toBeVisible();
-    expect(link).toHaveAttribute('href', 'https://www.twenty.com');
+    expect(link).toHaveAttribute('href', 'https://www.example.com');
     expect(link).toHaveTextContent('Twenty Website');
 
     await waitFor(() => {
@@ -91,11 +91,11 @@ export const SingleLink: Story = {
 export const MultipleLinks: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [
-        { url: 'https://docs.twenty.com', label: 'Documentation' },
-        { url: 'https://blog.twenty.com', label: 'Blog' },
+        { url: 'https://docs.example.com', label: 'Documentation' },
+        { url: 'https://blog.example.com', label: 'Blog' },
       ],
     },
   },
@@ -111,15 +111,15 @@ export const MultipleLinks: Story = {
       name: 'Twenty Website',
     });
     expect(primaryLink).toBeVisible();
-    expect(primaryLink).toHaveAttribute('href', 'https://www.twenty.com');
+    expect(primaryLink).toHaveAttribute('href', 'https://www.example.com');
 
     const docsLink = await canvas.findByRole('link', { name: 'Documentation' });
     expect(docsLink).toBeVisible();
-    expect(docsLink).toHaveAttribute('href', 'https://docs.twenty.com');
+    expect(docsLink).toHaveAttribute('href', 'https://docs.example.com');
 
     const blogLink = await canvas.findByRole('link', { name: 'Blog' });
     expect(blogLink).toBeVisible();
-    expect(blogLink).toHaveAttribute('href', 'https://blog.twenty.com');
+    expect(blogLink).toHaveAttribute('href', 'https://blog.example.com');
   },
 };
 

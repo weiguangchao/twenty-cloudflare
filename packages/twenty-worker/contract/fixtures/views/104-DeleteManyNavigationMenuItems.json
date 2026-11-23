@@ -49,7 +49,7 @@
           "targetRecordIdentifier": {
             "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
             "labelIdentifier": "Airbnb",
-            "imageIdentifier": "https://twenty-icons.com/airbnb.com",
+            "imageIdentifier": "",
             "__typename": "RecordIdentifier"
           }
         }

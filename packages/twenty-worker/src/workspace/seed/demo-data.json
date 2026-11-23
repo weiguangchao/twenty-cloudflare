@@ -1,5 +1,5 @@
 {
-  "source": "twenty-server standard-objects-prefill-data utils (companies, people, opportunities), composite columns folded into JSON objects",
+  "source": "old server standard-objects-prefill-data utils (companies, people, opportunities), composite columns folded into JSON objects",
   "placeholders": {
     "{{creatorWorkspaceMemberId}}": "workspaceMember id of the user activating the workspace"
   },
@@ -146,7 +146,7 @@
         "emails": {
           "primaryEmail": "chesky@airbnb.com"
         },
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/brian-chesky.jpg",
+        "avatarUrl": "",
         "position": 1,
         "createdBy": {
           "source": "SYSTEM",
@@ -173,7 +173,7 @@
         "emails": {
           "primaryEmail": "amodei@anthropic.com"
         },
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/dario-amodei.jpg",
+        "avatarUrl": "",
         "position": 2,
         "createdBy": {
           "source": "SYSTEM",
@@ -200,7 +200,7 @@
         "emails": {
           "primaryEmail": "collison@stripe.com"
         },
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/patrick-collison.jpg",
+        "avatarUrl": "",
         "position": 3,
         "createdBy": {
           "source": "SYSTEM",
@@ -227,7 +227,7 @@
         "emails": {
           "primaryEmail": "field@figma.com"
         },
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/dylan-field.jpg",
+        "avatarUrl": "",
         "position": 4,
         "createdBy": {
           "source": "SYSTEM",
@@ -254,7 +254,7 @@
         "emails": {
           "primaryEmail": "zhao@notion.com"
         },
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/ivan-zhao.jpg",
+        "avatarUrl": "",
         "position": 5,
         "createdBy": {
           "source": "SYSTEM",

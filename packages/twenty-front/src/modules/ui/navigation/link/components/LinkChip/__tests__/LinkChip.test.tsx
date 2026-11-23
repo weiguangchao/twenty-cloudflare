@@ -24,7 +24,7 @@ describe('LinkChip', () => {
           aria-label="Open record"
           ref={ref}
         >
-          https://twenty.com
+          https://example.com
         </LinkChip>
       </MemoryRouter>,
     );

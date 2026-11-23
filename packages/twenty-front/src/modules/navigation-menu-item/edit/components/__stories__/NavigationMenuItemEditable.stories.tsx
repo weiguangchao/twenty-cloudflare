@@ -110,7 +110,7 @@ export const EditLink: Story = {
     );
     const url = await body.findByDisplayValue('https://example.com');
     await userEvent.clear(url);
-    await userEvent.type(url, 'https://twenty.com/docs');
+    await userEvent.type(url, 'https://example.com/docs');
     fireEvent.keyDown(url, { key: 'Enter', code: 'Enter', isComposing: true });
     await expect(url).toBeVisible();
     await expect(
@@ -123,7 +123,7 @@ export const EditLink: Story = {
       (await canvas.findAllByRole('button', { name: 'Edit link' }))[0],
     );
     await expect(
-      await body.findByDisplayValue('https://twenty.com/docs'),
+      await body.findByDisplayValue('https://example.com/docs'),
     ).toBeVisible();
     await userEvent.keyboard('{Escape}');
   },
@@ -342,7 +342,7 @@ export const InvalidLinkStaysOpenUntilSaved: Story = {
     await expect(await body.findByPlaceholderText('URL')).toBeVisible();
     await expect(await body.findByRole('alert')).toBeVisible();
     await userEvent.clear(url);
-    await userEvent.type(url, 'https://twenty.com/docs');
+    await userEvent.type(url, 'https://example.com/docs');
     await userEvent.click(canvas.getByRole('button', { name: 'Outside' }));
     await waitFor(() =>
       expect(body.queryByPlaceholderText('URL')).not.toBeInTheDocument(),
@@ -351,7 +351,7 @@ export const InvalidLinkStaysOpenUntilSaved: Story = {
       (await canvas.findAllByRole('button', { name: 'Edit link' }))[0],
     );
     await expect(
-      await body.findByDisplayValue('https://twenty.com/docs'),
+      await body.findByDisplayValue('https://example.com/docs'),
     ).toBeVisible();
     await userEvent.keyboard('{Escape}');
     await expect(

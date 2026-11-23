@@ -33,7 +33,7 @@ const RECORD_NAME =
 export const NativeLink: Story = {
   args: {
     to: '/records/1',
-    children: 'https://twenty.com',
+    children: 'https://example.com',
     target: '_blank',
     onClick: fn(),
   },
@@ -49,7 +49,7 @@ export const NativeLink: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const user = userEvent.setup();
-    const link = canvas.getByRole('link', { name: 'https://twenty.com' });
+    const link = canvas.getByRole('link', { name: 'https://example.com' });
 
     expect(linkRef.current).toBe(link);
     expect(link.tagName).toBe('A');

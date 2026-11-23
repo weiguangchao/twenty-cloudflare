@@ -2,10 +2,10 @@ import { getSafeUrl } from '../getSafeUrl';
 
 describe('getSafeUrl', () => {
   it('returns safe absolute urls unchanged', () => {
-    expect(getSafeUrl('https://twenty.com')).toBe('https://twenty.com');
-    expect(getSafeUrl('http://twenty.com')).toBe('http://twenty.com');
-    expect(getSafeUrl('mailto:hello@twenty.com')).toBe(
-      'mailto:hello@twenty.com',
+    expect(getSafeUrl('https://example.com')).toBe('https://example.com');
+    expect(getSafeUrl('http://example.com')).toBe('http://example.com');
+    expect(getSafeUrl('mailto:hello@example.com')).toBe(
+      'mailto:hello@example.com',
     );
     expect(getSafeUrl('tel:+33123456789')).toBe('tel:+33123456789');
   });
@@ -15,7 +15,7 @@ describe('getSafeUrl', () => {
   });
 
   it('prepends https to scheme-less urls', () => {
-    expect(getSafeUrl('twenty.com')).toBe('https://twenty.com');
+    expect(getSafeUrl('example.com')).toBe('https://example.com');
   });
 
   it('rejects scheme-relative urls that leave the current origin', () => {

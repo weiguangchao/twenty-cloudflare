@@ -41,19 +41,19 @@ describe('OverflowingTextWithTooltip', () => {
 
   it('keeps URL strings plain inside a caller-provided anchor', () => {
     render(
-      <a href="https://twenty.com">
-        <OverflowingTextWithTooltip text="https://twenty.com" />
+      <a href="https://example.com">
+        <OverflowingTextWithTooltip text="https://example.com" />
       </a>,
     );
 
     expect(screen.getAllByRole('link')).toHaveLength(1);
-    expect(screen.getByRole('link')).toHaveTextContent('https://twenty.com');
+    expect(screen.getByRole('link')).toHaveTextContent('https://example.com');
   });
 
   it('preserves explicit child links without adding a tab stop', () => {
     render(
       <OverflowingTextWithTooltip
-        text={<a href="https://twenty.com">Documentation</a>}
+        text={<a href="https://example.com">Documentation</a>}
         tooltipContent="Open the documentation"
         alwaysShowTooltip
         data-testid="text"
@@ -63,7 +63,7 @@ describe('OverflowingTextWithTooltip', () => {
     expect(screen.getByTestId('text')).not.toHaveAttribute('tabindex');
     expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
       'href',
-      'https://twenty.com',
+      'https://example.com',
     );
   });
 
@@ -73,7 +73,7 @@ describe('OverflowingTextWithTooltip', () => {
     render(
       <OverflowingTextWithTooltip
         text="Documentation"
-        render={<a href="https://twenty.com" aria-label="Documentation" />}
+        render={<a href="https://example.com" aria-label="Documentation" />}
         ref={ref}
         title="Read documentation"
       />,

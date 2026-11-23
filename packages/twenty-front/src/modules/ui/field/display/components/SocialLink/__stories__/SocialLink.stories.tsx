@@ -10,7 +10,7 @@ const meta: Meta<typeof SocialLink> = {
   component: SocialLink,
   decorators: [ComponentWithRouterDecorator],
   args: {
-    href: 'https://twenty.com',
+    href: 'https://example.com',
   },
 };
 

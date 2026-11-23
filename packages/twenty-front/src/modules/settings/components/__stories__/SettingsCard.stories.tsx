@@ -58,14 +58,14 @@ export const Illustrated: Story = {
     title: 'Settings Card',
     description: 'Illustrated card description',
     illustrationColor: 'blue',
-    href: 'https://twenty.com',
+    href: 'https://example.com',
   },
   play: async ({ canvasElement }) => {
     const link = within(canvasElement).getByRole('link', {
       name: 'Settings Card Illustrated card description',
     });
 
-    await expect(link).toHaveAttribute('href', 'https://twenty.com');
+    await expect(link).toHaveAttribute('href', 'https://example.com');
   },
 };
 
@@ -73,14 +73,14 @@ export const ExternalLink: Story = {
   args: {
     Icon: React.createElement(IconMailCog),
     title: 'Settings Card',
-    href: 'https://twenty.com',
+    href: 'https://example.com',
   },
   play: async ({ canvasElement }) => {
     const link = within(canvasElement).getByRole('link', {
       name: 'Settings Card',
     });
 
-    await expect(link).toHaveAttribute('href', 'https://twenty.com');
+    await expect(link).toHaveAttribute('href', 'https://example.com');
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   },

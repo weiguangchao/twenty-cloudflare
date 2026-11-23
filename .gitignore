@@ -47,7 +47,6 @@ test-results/
 /flake.lock
 /flake.nix
 
-.crowdin.yml
 .react-email/
 
 mcp.json

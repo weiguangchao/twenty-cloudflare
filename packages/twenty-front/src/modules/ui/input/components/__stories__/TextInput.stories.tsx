@@ -65,7 +65,7 @@ export const WithLeftAdornment: Story = {
 
 export const WithRightAdornment: Story = {
   args: {
-    rightAdornment: '@twenty.com',
+    rightAdornment: '@example.com',
   },
 };
 
@@ -74,7 +74,7 @@ export const WithError: Story = {
     value: 'moblank',
     label: 'Subdomain',
     hint: 'Choose your workspace address',
-    rightAdornment: '.twenty.com',
+    rightAdornment: '.example.com',
     error: 'Subdomain already taken',
     fullWidth: true,
   },

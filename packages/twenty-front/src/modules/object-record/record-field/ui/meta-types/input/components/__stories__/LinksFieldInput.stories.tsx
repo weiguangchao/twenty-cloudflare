@@ -169,7 +169,7 @@ export const EmptyState: Story = {
 export const PrimaryLinkOnly: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: null,
     },
@@ -190,11 +190,11 @@ export const PrimaryLinkOnly: Story = {
 export const WithSecondaryLinks: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [
         {
-          url: 'https://docs.twenty.com',
+          url: 'https://docs.example.com',
           label: 'Documentation',
         },
         {
@@ -230,9 +230,9 @@ export const CreatePrimaryLink: Story = {
     const canvas = within(canvasElement);
 
     const input = await canvas.findByPlaceholderText('URL');
-    await userEvent.type(input, 'https://www.twenty.com{enter}');
+    await userEvent.type(input, 'https://www.example.com{enter}');
 
-    const linkDisplay = await canvas.findByText('twenty.com');
+    const linkDisplay = await canvas.findByText('example.com');
     expect(linkDisplay).toBeVisible();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -244,9 +244,9 @@ export const TrimInput: Story = {
     const canvas = within(canvasElement);
 
     const input = await canvas.findByPlaceholderText('URL');
-    await userEvent.type(input, '  https://www.twenty.com  {enter}');
+    await userEvent.type(input, '  https://www.example.com  {enter}');
 
-    const linkDisplay = await canvas.findByText('twenty.com');
+    const linkDisplay = await canvas.findByText('example.com');
     expect(linkDisplay).toBeVisible();
 
     expect(getPrimaryLinkBookmarkIcon(canvasElement)).not.toBeInTheDocument();
@@ -256,7 +256,7 @@ export const TrimInput: Story = {
 export const AddSecondaryLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -273,9 +273,9 @@ export const AddSecondaryLink: Story = {
     await userEvent.click(addButton);
 
     const input = await canvas.findByPlaceholderText('URL');
-    await userEvent.type(input, 'https://docs.twenty.com{enter}');
+    await userEvent.type(input, 'https://docs.example.com{enter}');
 
-    const secondaryLink = await canvas.findByText('docs.twenty.com');
+    const secondaryLink = await canvas.findByText('docs.example.com');
     expect(secondaryLink).toBeVisible();
   },
 };
@@ -283,7 +283,7 @@ export const AddSecondaryLink: Story = {
 export const DeletePrimaryLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -316,7 +316,7 @@ export const DeletePrimaryLink: Story = {
 export const DeletePrimaryLinkPersistsEmptyValue: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -345,7 +345,7 @@ export const DeletePrimaryLinkPersistsEmptyValue: Story = {
 export const ClearPrimaryLinkAndPressEnter: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -378,11 +378,11 @@ export const ClearPrimaryLinkAndPressEnter: Story = {
 export const DeletePrimaryLinkAndUseSecondaryLinkAsTheNewPrimaryLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [
         {
-          url: 'https://docs.twenty.com',
+          url: 'https://docs.example.com',
           label: 'Documentation',
         },
       ],
@@ -421,11 +421,11 @@ export const DeletePrimaryLinkAndUseSecondaryLinkAsTheNewPrimaryLink: Story = {
 export const DeleteSecondaryLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [
         {
-          url: 'https://docs.twenty.com',
+          url: 'https://docs.example.com',
           label: 'Documentation',
         },
       ],
@@ -525,11 +525,11 @@ export const InvalidUrls: Story = {
 export const MakeSecondaryLinkPrimary: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [
         {
-          url: 'https://docs.twenty.com',
+          url: 'https://docs.example.com',
           label: 'Documentation',
         },
       ],
@@ -563,10 +563,10 @@ export const MakeSecondaryLinkPrimary: Story = {
 
     expect(handleSubmitMocked).toHaveBeenCalledWith({
       newValue: {
-        primaryLinkUrl: 'https://docs.twenty.com',
+        primaryLinkUrl: 'https://docs.example.com',
         primaryLinkLabel: 'Documentation',
         secondaryLinks: [
-          { url: 'https://www.twenty.com', label: 'Twenty Website' },
+          { url: 'https://www.example.com', label: 'Twenty Website' },
         ],
       },
       skipClose: true,
@@ -577,7 +577,7 @@ export const MakeSecondaryLinkPrimary: Story = {
 export const CanNotSetPrimaryLinkAsPrimaryLink: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -651,7 +651,7 @@ export const EditLinkLabel: Story = {
 export const EditUrlKeepsLabel: Story = {
   args: {
     value: {
-      primaryLinkUrl: 'https://www.twenty.com',
+      primaryLinkUrl: 'https://www.example.com',
       primaryLinkLabel: 'Twenty Website',
       secondaryLinks: [],
     },
@@ -668,14 +668,14 @@ export const EditUrlKeepsLabel: Story = {
 
     await userEvent.click(await body.findByRole('menuitem', { name: 'Edit' }));
 
-    const input = await canvas.findByDisplayValue('https://www.twenty.com');
+    const input = await canvas.findByDisplayValue('https://www.example.com');
 
     await userEvent.clear(input);
-    await userEvent.type(input, 'https://twenty.com/pricing{enter}');
+    await userEvent.type(input, 'https://example.com/pricing{enter}');
 
     expect(handleSubmitMocked).toHaveBeenCalledWith({
       newValue: {
-        primaryLinkUrl: 'https://twenty.com/pricing',
+        primaryLinkUrl: 'https://example.com/pricing',
         primaryLinkLabel: 'Twenty Website',
         secondaryLinks: [],
       },

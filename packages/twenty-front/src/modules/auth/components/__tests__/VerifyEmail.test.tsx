@@ -140,7 +140,7 @@ describe('VerifyEmail', () => {
     isOnAWorkspaceValue = true;
     verifyEmailAndGetLoginTokenMock.mockResolvedValue({
       loginToken: { token: 'login-token' },
-      workspaceUrls: { subdomainUrl: 'https://foo.twenty.com/' },
+      workspaceUrls: { subdomainUrl: 'https://foo.example.com/' },
     });
 
     renderVerifyEmail(VERIFY_EMAIL_URL);

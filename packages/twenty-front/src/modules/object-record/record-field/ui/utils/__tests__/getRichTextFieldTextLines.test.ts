@@ -34,7 +34,7 @@ describe('getRichTextFieldTextLines', () => {
 
   it('should skip an image placed before the text', () => {
     const tiptap = buildTipTap([
-      { type: 'image', attrs: { src: 'https://twenty-icons.com/a.png' } },
+      { type: 'image', attrs: { src: 'https://images.example.com/a.png' } },
       buildParagraph('TEST'),
     ]);
 
@@ -83,9 +83,9 @@ describe('getRichTextFieldTextLines', () => {
                   { type: 'text', text: 'see ' },
                   {
                     type: 'text',
-                    text: 'twenty.com',
+                    text: 'example.com',
                     marks: [
-                      { type: 'link', attrs: { href: 'https://twenty.com' } },
+                      { type: 'link', attrs: { href: 'https://example.com' } },
                     ],
                   },
                   { type: 'mentionTag', attrs: { label: 'Ada' } },
@@ -100,7 +100,7 @@ describe('getRichTextFieldTextLines', () => {
     expect(getRichTextFieldTextLines({ markdown: null, tiptap })).toEqual([
       'Title',
       'first item',
-      'see twenty.comAda',
+      'see example.comAda',
     ]);
   });
 

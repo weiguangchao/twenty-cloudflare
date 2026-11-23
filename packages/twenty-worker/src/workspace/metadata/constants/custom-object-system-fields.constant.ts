@@ -25,9 +25,7 @@ const SYSTEM_FIELD_DEFAULTS = {
   disabledFieldPermissionActions: null,
 } as const;
 
-// Fields the old server adds to every custom object
-// (twenty-server partial-system-flat-field-metadatas.constant.ts and
-// build-name-flat-field-metadata-for-custom-object.util.ts).
+// Fields the old server adds to every custom object.
 export const CUSTOM_OBJECT_SYSTEM_FIELDS: CustomObjectSystemField[] = [
   {
     ...SYSTEM_FIELD_DEFAULTS,

@@ -163,12 +163,12 @@ describe('ListItem interaction ownership', () => {
 
     render(
       <>
-        <ListItem>https://twenty.com/plain</ListItem>
+        <ListItem>https://example.com/plain</ListItem>
         <ListItem
           render={(renderProps) => (
             <a
               {...renderProps}
-              href="https://twenty.com/docs"
+              href="https://example.com/docs"
               target="_blank"
               rel="noreferrer"
             >
@@ -181,18 +181,18 @@ describe('ListItem interaction ownership', () => {
           Documentation
         </ListItem>
         <ListItem>
-          <a href="https://twenty.com/help">Help</a>
+          <a href="https://example.com/help">Help</a>
         </ListItem>
       </>,
     );
 
     const link = screen.getByRole('link', { name: 'Documentation' });
     expect(ref.current).toBe(link);
-    expect(link).toHaveAttribute('href', 'https://twenty.com/docs');
+    expect(link).toHaveAttribute('href', 'https://example.com/docs');
     expect(link).toHaveAttribute('target', '_blank');
     expect(screen.getAllByRole('link')).toHaveLength(2);
     expect(
-      screen.getByText('https://twenty.com/plain').closest('a'),
+      screen.getByText('https://example.com/plain').closest('a'),
     ).toBeNull();
     expect(
       screen.getByRole('link', { name: 'Help' }).querySelector('a'),

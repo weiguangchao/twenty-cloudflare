@@ -42,7 +42,7 @@ describe('useColumnDefinitionsFromObjectMetadata', () => {
       isCustomDomainEnabled: false,
       customDomain: 'my-custom-domain.com',
       workspaceUrls: {
-        subdomainUrl: 'https://twenty.twenty.com',
+        subdomainUrl: 'https://twenty.example.com',
         customUrl: 'https://my-custom-domain.com',
       },
       isTwoFactorAuthenticationEnforced: false,

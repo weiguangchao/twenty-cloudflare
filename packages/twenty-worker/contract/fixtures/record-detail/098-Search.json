@@ -42,7 +42,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Figma",
-              "imageUrl": "https://twenty-icons.com/figma.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"

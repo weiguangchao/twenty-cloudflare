@@ -86,7 +86,7 @@ it('preserves caller-owned link nodes and URL strings', () => {
         <a href="#account">Account</a>
       </Tag>
       <Tag color="blue" truncate={false}>
-        https://twenty.com
+        https://example.com
       </Tag>
     </ThemeProvider>,
   );
@@ -96,5 +96,5 @@ it('preserves caller-owned link nodes and URL strings', () => {
     '#account',
   );
   expect(screen.getAllByRole('link')).toHaveLength(1);
-  expect(screen.getByText('https://twenty.com')).toBeVisible();
+  expect(screen.getByText('https://example.com')).toBeVisible();
 });

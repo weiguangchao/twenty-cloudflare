@@ -33,7 +33,7 @@
           "__typename": "AttachmentConnection"
         },
         "avatarFile": null,
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/brian-chesky.jpg",
+        "avatarUrl": "https://images.example.com/founders/brian-chesky.jpg",
         "calendarEventParticipants": {
           "edges": [],
           "__typename": "CalendarEventParticipantConnection"

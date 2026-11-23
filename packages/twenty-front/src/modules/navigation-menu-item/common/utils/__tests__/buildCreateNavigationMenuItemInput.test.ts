@@ -34,7 +34,7 @@ describe('buildCreateNavigationMenuItemInput', () => {
 
   it.each([
     ['/workflows', '/workflows'],
-    ['twenty.com', 'https://twenty.com'],
+    ['example.com', 'https://example.com'],
   ])('saves the link %s as %s', (link, expectedLink) => {
     const input = buildCreateNavigationMenuItemInput(
       {

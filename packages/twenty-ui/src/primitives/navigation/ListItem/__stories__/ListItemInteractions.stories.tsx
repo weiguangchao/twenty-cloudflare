@@ -249,7 +249,7 @@ export const ButtonOwner: Story = {
 
 export const LinkOwner: Story = {
   args: {
-    children: 'https://twenty.com/developers',
+    children: 'https://example.com/developers',
     render: (renderProps) => (
       <a {...renderProps} href="#list-item-destination">
         {renderProps.children}
@@ -263,7 +263,7 @@ export const LinkOwner: Story = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const link = canvas.getByRole('link', {
-      name: 'https://twenty.com/developers',
+      name: 'https://example.com/developers',
     });
 
     await expect(canvas.getAllByRole('link')).toHaveLength(1);
@@ -280,12 +280,12 @@ export const LinkOwner: Story = {
 };
 
 export const PlainUrlLabel: Story = {
-  args: { children: 'https://twenty.com/developers' },
+  args: { children: 'https://example.com/developers' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     await expect(
-      canvas.getByText('https://twenty.com/developers'),
+      canvas.getByText('https://example.com/developers'),
     ).toBeVisible();
     await expect(canvas.queryByRole('link')).not.toBeInTheDocument();
   },

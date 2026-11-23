@@ -9,12 +9,12 @@ it('keeps field URL navigation explicit and separate from its row action', async
 
   render(
     <div onClick={onClick}>
-      <LinkifiedText text="Read https://twenty.com/docs today" />
+      <LinkifiedText text="Read https://example.com/docs today" />
     </div>,
   );
 
-  const link = screen.getByRole('link', { name: 'https://twenty.com/docs' });
-  expect(link).toHaveAttribute('href', 'https://twenty.com/docs');
+  const link = screen.getByRole('link', { name: 'https://example.com/docs' });
+  expect(link).toHaveAttribute('href', 'https://example.com/docs');
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noopener noreferrer');
 

@@ -13,7 +13,6 @@ import { useTheme, themeCssVariables } from 'twenty-ui/theme';
 
 export type SelectControlTextAccent = 'default' | 'placeholder';
 
-// TODO: factorize this with https://github.com/twentyhq/core-team-issues/issues/752
 export const StyledControlContainer = styled.div<{
   disabled?: boolean;
   hasIcon: boolean;

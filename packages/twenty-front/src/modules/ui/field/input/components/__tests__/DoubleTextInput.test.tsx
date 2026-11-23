@@ -31,8 +31,8 @@ it('replaces the full label and URL when clicking into either field', async () =
   expect(label).toHaveValue('Twenty CRM');
 
   await user.click(url);
-  await user.keyboard('https://twenty.com');
-  expect(url).toHaveValue('https://twenty.com');
+  await user.keyboard('https://example.com');
+  expect(url).toHaveValue('https://example.com');
 
   await user.tab({ shift: true });
   await user.keyboard('Updated label');

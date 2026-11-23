@@ -33,7 +33,7 @@
           "__typename": "AttachmentConnection"
         },
         "avatarFile": null,
-        "avatarUrl": "https://twentyhq.github.io/placeholder-images/founders/dylan-field.jpg",
+        "avatarUrl": "https://images.example.com/founders/dylan-field.jpg",
         "calendarEventParticipants": {
           "edges": [],
           "__typename": "CalendarEventParticipantConnection"

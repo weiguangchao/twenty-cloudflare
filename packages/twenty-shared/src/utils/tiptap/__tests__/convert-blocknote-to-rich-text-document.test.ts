@@ -109,7 +109,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
         block('paragraph', [text('Intro')], {}, [
           block('paragraph', [text('Indented')], {}, [
             block('bulletListItem', [text('Deeper')]),
-            block('image', undefined, { url: 'https://twenty.com/a.png' }),
+            block('image', undefined, { url: 'https://example.com/a.png' }),
           ]),
         ]),
       ]),
@@ -166,7 +166,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
       {
         type: 'image',
         attrs: {
-          src: 'https://twenty.com/a.png',
+          src: 'https://example.com/a.png',
           alt: null,
           title: null,
           width: null,
@@ -248,7 +248,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
         block('paragraph', [
           {
             type: 'link',
-            href: 'https://twenty.com',
+            href: 'https://example.com',
             content: [text('Twenty', { italic: true, code: true })],
           },
           text(' and '),
@@ -274,7 +274,7 @@ describe('convertBlockNoteToRichTextDocument', () => {
             text: 'Twenty',
             marks: [
               { type: 'italic' },
-              { type: 'link', attrs: { href: 'https://twenty.com' } },
+              { type: 'link', attrs: { href: 'https://example.com' } },
             ],
           },
           { type: 'text', text: ' and ' },

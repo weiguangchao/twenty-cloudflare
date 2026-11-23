@@ -61,8 +61,8 @@ export const results = {
     workspace: {
       id: 'workspace-id',
       workspaceUrls: {
-        subdomainUrl: 'https://subdomain.twenty.com',
-        customUrl: 'https://custom.twenty.com',
+        subdomainUrl: 'https://subdomain.example.com',
+        customUrl: 'https://custom.example.com',
       },
     },
   },
@@ -94,7 +94,7 @@ export const results = {
         customDomain: null,
         workspaceUrls: {
           customUrl: undefined,
-          subdomainUrl: 'https://twenty.com',
+          subdomainUrl: 'https://example.com',
         },
         featureFlags: {
           id: 'id',

@@ -36,7 +36,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Notion",
-              "imageUrl": "https://twenty-icons.com/notion.com",
+              "imageUrl": "",
               "tsRankCD": 0.2,
               "tsRank": 0.12158542,
               "__typename": "SearchRecord"

@@ -3,13 +3,13 @@ import { getLinkNavigationMenuItemComputedLink } from '@/navigation-menu-item/co
 describe('getLinkNavigationMenuItemComputedLink', () => {
   it('keeps absolute URLs', () => {
     expect(
-      getLinkNavigationMenuItemComputedLink({ link: 'https://twenty.com' }),
-    ).toBe('https://twenty.com');
+      getLinkNavigationMenuItemComputedLink({ link: 'https://example.com' }),
+    ).toBe('https://example.com');
   });
 
   it('prefixes bare domains with https', () => {
-    expect(getLinkNavigationMenuItemComputedLink({ link: 'twenty.com' })).toBe(
-      'https://twenty.com',
+    expect(getLinkNavigationMenuItemComputedLink({ link: 'example.com' })).toBe(
+      'https://example.com',
     );
   });
 
@@ -33,8 +33,8 @@ describe('getLinkNavigationMenuItemComputedLink', () => {
 
   it('keeps an uppercase scheme as is', () => {
     expect(
-      getLinkNavigationMenuItemComputedLink({ link: 'HTTPS://twenty.com' }),
-    ).toBe('HTTPS://twenty.com');
+      getLinkNavigationMenuItemComputedLink({ link: 'HTTPS://example.com' }),
+    ).toBe('HTTPS://example.com');
   });
 
   it('keeps localhost URLs external', () => {

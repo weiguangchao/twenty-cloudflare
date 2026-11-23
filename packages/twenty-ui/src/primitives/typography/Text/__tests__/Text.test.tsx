@@ -51,10 +51,10 @@ describe('Text', () => {
   it('renders caller-owned semantic content without automatic links', () => {
     render(
       <Text render={<p />} truncate>
-        https://twenty.com
+        https://example.com
       </Text>,
     );
-    expect(screen.getByText('https://twenty.com').tagName).toBe('P');
+    expect(screen.getByText('https://example.com').tagName).toBe('P');
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 

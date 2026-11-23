@@ -219,10 +219,10 @@ export const MultilineWithReactNodeNotOverflowing: Story = {
 export const ExplicitLink: Story = {
   decorators: [ComponentDecorator],
   args: {
-    text: 'https://twenty.com/developers/long-documentation-path',
+    text: 'https://example.com/developers/long-documentation-path',
     render: (
       <a
-        href="https://twenty.com/developers/long-documentation-path"
+        href="https://example.com/developers/long-documentation-path"
         aria-label="Typography documentation"
       />
     ),

@@ -77,7 +77,7 @@ const pasteFiles = ({ editor, files }: { editor: Editor; files: File[] }) => {
 };
 
 const onFileUpload = async (file: File) => ({
-  url: `https://files.twenty.com/${file.name}`,
+  url: `https://files.example.com/${file.name}`,
 });
 
 describe('uploading into the editor', () => {
@@ -88,7 +88,7 @@ describe('uploading into the editor', () => {
       editor,
       file: FILE,
       onFileUpload: async () => ({
-        url: 'https://files.twenty.com/report.pdf',
+        url: 'https://files.example.com/report.pdf',
       }),
     });
     editor.commands.insertContent('typed while uploading');
@@ -99,7 +99,7 @@ describe('uploading into the editor', () => {
     await flushPromises();
 
     expect(savedDocuments.at(-1)).toContain(
-      'https://files.twenty.com/report.pdf',
+      'https://files.example.com/report.pdf',
     );
 
     editor.destroy();
@@ -111,13 +111,13 @@ describe('uploading into the editor', () => {
     insertUploadingImage({
       editor,
       file: FILE,
-      onImageUpload: async () => ({ url: 'https://files.twenty.com/logo.png' }),
+      onImageUpload: async () => ({ url: 'https://files.example.com/logo.png' }),
     });
 
     await flushPromises();
 
     expect(savedDocuments.at(-1)).toContain(
-      'https://files.twenty.com/logo.png',
+      'https://files.example.com/logo.png',
     );
 
     editor.destroy();
@@ -143,9 +143,9 @@ describe('uploading into the editor', () => {
 
   it('uploads every pasted file, images as images and the rest as files', async () => {
     const { editor, savedDocuments } = createEditorSavingEveryUpdate({
-      onImageUpload: async () => ({ url: 'https://files.twenty.com/logo.png' }),
+      onImageUpload: async () => ({ url: 'https://files.example.com/logo.png' }),
       onFileUpload: async () => ({
-        url: 'https://files.twenty.com/report.pdf',
+        url: 'https://files.example.com/report.pdf',
       }),
     });
     pasteFiles({
@@ -159,13 +159,13 @@ describe('uploading into the editor', () => {
         expect.objectContaining({
           type: 'image',
           attrs: expect.objectContaining({
-            src: 'https://files.twenty.com/logo.png',
+            src: 'https://files.example.com/logo.png',
           }),
         }),
         expect.objectContaining({
           type: 'file',
           attrs: expect.objectContaining({
-            url: 'https://files.twenty.com/report.pdf',
+            url: 'https://files.example.com/report.pdf',
           }),
         }),
       ]),
@@ -257,7 +257,7 @@ describe('uploading into the editor', () => {
       .spyOn(Date, 'now')
       .mockReturnValue(Date.now() + 60_000);
 
-    resolveUpload({ url: 'https://files.twenty.com/report.pdf' });
+    resolveUpload({ url: 'https://files.example.com/report.pdf' });
     await flushPromises();
 
     editor.commands.undo();

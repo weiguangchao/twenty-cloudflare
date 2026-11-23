@@ -74,7 +74,7 @@ describe('Chip content and composition', () => {
         variant="outline"
         render={
           <a
-            href="https://twenty.com"
+            href="https://example.com"
             target="_blank"
             aria-label="Open Twenty"
           />
@@ -83,14 +83,14 @@ describe('Chip content and composition', () => {
         title="Documentation"
         data-owner="caller"
       >
-        https://twenty.com
+        https://example.com
       </Chip>,
     );
 
     const link = screen.getByRole('link', { name: 'Open Twenty' });
     expect(ref.current).toBe(link);
     expect(link).toHaveAttribute('data-variant', 'outline');
-    expect(link).toHaveAttribute('href', 'https://twenty.com');
+    expect(link).toHaveAttribute('href', 'https://example.com');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('title', 'Documentation');
     expect(link).toHaveAttribute('data-owner', 'caller');
@@ -100,14 +100,14 @@ describe('Chip content and composition', () => {
   it('renders intentional links supplied as content once', () => {
     render(
       <Chip>
-        <a href="https://twenty.com">Documentation</a>
+        <a href="https://example.com">Documentation</a>
       </Chip>,
     );
 
     expect(screen.getAllByRole('link')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
       'href',
-      'https://twenty.com',
+      'https://example.com',
     );
   });
 });

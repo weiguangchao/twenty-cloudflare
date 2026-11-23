@@ -98,7 +98,7 @@ export const LinkOwner: Story = {
   args: {
     children: 'Typography documentation',
     render: (renderProps) => (
-      <a {...renderProps} href="https://twenty.com/developers">
+      <a {...renderProps} href="https://example.com/developers">
         {renderProps.children}
       </a>
     ),
@@ -109,7 +109,7 @@ export const ExplicitLinkContent: Story = {
   ...Display,
   parameters: { ...Display.parameters, a11y: A11Y_DEFER_COLOR_CONTRAST },
   args: {
-    children: <a href="https://twenty.com/developers">Read documentation</a>,
+    children: <a href="https://example.com/developers">Read documentation</a>,
     description: 'Resource',
   },
 };

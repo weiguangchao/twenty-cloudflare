@@ -1,6 +1,6 @@
 # 契约（阶段 0 产出）
 
-从运行中的旧系统（`twenty-server`，提交 `f7fed3afdc7`）采集的前后端契约，是新后端各阶段的验收依据。采集于 2026-11-12。
+从运行中的旧服务端（提交 `f7fed3afdc7`）采集的前后端契约，是新后端各阶段的验收依据。采集于 2026-11-12。
 
 | 路径 | 内容 |
 |---|---|
@@ -74,9 +74,9 @@ JWT、session cookie 值、邀请链接 hash 替换为 `<redacted-jwt-N>`、`<re
 
 ## 采集方式
 
-浏览器部分用 Playwright MCP 驱动，在浏览器上下文挂响应监听，把请求和响应发给本地 collector 写成 JSONL，再拆分和脱敏成 `fixtures/`；`-api` 流程直接调用 API。SDL 和元数据从运行中的旧系统导出。采集脚本依赖已删除的 `twenty-server` 和 `pg`，已从仓库移除，需要时从提交 `6baa10464fb` 的 `packages/twenty-worker/contract/scripts/` 恢复。
+浏览器部分用 Playwright MCP 驱动，在浏览器上下文挂响应监听，把请求和响应发给本地 collector 写成 JSONL，再拆分和脱敏成 `fixtures/`；`-api` 流程直接调用 API。SDL 和元数据从运行中的旧系统导出。采集脚本依赖已删除的旧服务端和 `pg`，已从仓库移除，需要时从提交 `6baa10464fb` 的 `packages/twenty-worker/contract/scripts/` 恢复。
 
-`demo-data.json` 是一次性生成的：在仓库外临时写了一个脚本，用假的 EntityManager 执行旧服务端的 `prefill-companies.util.ts`、`prefill-people.util.ts`、`prefill-opportunities.util.ts`，截获插入的行，再把展开的复合列折回 JSON 对象。这个脚本没有放进本包，因为本包不允许 import `twenty-server`。三份数据都是代码里的字面量，以后不会变。
+`demo-data.json` 是一次性生成的：在仓库外临时写了一个脚本，用假的 EntityManager 执行旧服务端的 `prefill-companies.util.ts`、`prefill-people.util.ts`、`prefill-opportunities.util.ts`，截获插入的行，再把展开的复合列折回 JSON 对象。这个脚本没有放进本包，因为本包不允许 import 旧服务端。三份数据都是代码里的字面量，以后不会变。
 
 ## 种子数据的裁剪规则
 

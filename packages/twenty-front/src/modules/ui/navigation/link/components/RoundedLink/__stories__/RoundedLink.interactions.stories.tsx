@@ -19,19 +19,19 @@ type Story = StoryObj<typeof RoundedLink>;
 const DESTINATIONS = [
   {
     label: 'Website',
-    href: 'https://twenty.com',
-    expected: 'https://twenty.com',
+    href: 'https://example.com',
+    expected: 'https://example.com',
   },
   {
     label: 'Without scheme',
-    href: 'twenty.com',
-    expected: 'https://twenty.com',
+    href: 'example.com',
+    expected: 'https://example.com',
   },
   { label: 'Settings', href: '/settings', expected: '/settings' },
   {
     label: 'Email',
-    href: 'mailto:hello@twenty.com',
-    expected: 'mailto:hello@twenty.com',
+    href: 'mailto:hello@example.com',
+    expected: 'mailto:hello@example.com',
   },
   { label: 'Phone', href: 'tel:+33123456789', expected: 'tel:+33123456789' },
 ];
@@ -60,9 +60,9 @@ export const Destinations: Story = {
 export const MissingLabels: Story = {
   render: () => (
     <>
-      <RoundedLink href="https://twenty.com" />
-      <RoundedLink href="https://twenty.com" label="" />
-      <RoundedLink href="https://twenty.com" label="Visible link" />
+      <RoundedLink href="https://example.com" />
+      <RoundedLink href="https://example.com" label="" />
+      <RoundedLink href="https://example.com" label="Visible link" />
     </>
   ),
   play: async ({ canvasElement }) => {
@@ -98,7 +98,7 @@ const handleLinkClick = fn((event: MouseEvent<HTMLElement>) => {
 
 export const ClickAndKeyboard: Story = {
   args: {
-    href: 'https://twenty.com',
+    href: 'https://example.com',
     label: 'Open website',
     className: 'caller-link',
     onClick: handleLinkClick,

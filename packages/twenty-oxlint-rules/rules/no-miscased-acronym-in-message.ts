@@ -79,11 +79,11 @@ export const rule = defineRule({
     type: 'problem',
     docs: {
       description:
-        'Disallow title-cased acronyms in translatable source strings, which translators render correctly and Crowdin then reports as a mismatch.',
+        'Disallow title-cased acronyms in translatable source strings, which translators render correctly and translation QA then flags as a mismatch.',
     },
     messages: {
       miscasedAcronym:
-        'Write {{corrected}} rather than {{found}} in a translatable string. Translators render the acronym correctly in their own language, so the miscased English is what Crowdin reports as a QA failure - and it ships to users as a wrong label.',
+        'Write {{corrected}} rather than {{found}} in a translatable string. Translators render the acronym correctly in their own language, so the miscased English is what translation QA flags - and it ships to users as a wrong label.',
     },
     schema: [],
   },

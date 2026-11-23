@@ -44,7 +44,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Notion",
-              "imageUrl": "https://twenty-icons.com/notion.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"
@@ -58,7 +58,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Stripe",
-              "imageUrl": "https://twenty-icons.com/stripe.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"
@@ -72,7 +72,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Airbnb",
-              "imageUrl": "https://twenty-icons.com/airbnb.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"
@@ -86,7 +86,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Anthropic",
-              "imageUrl": "https://twenty-icons.com/anthropic.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"

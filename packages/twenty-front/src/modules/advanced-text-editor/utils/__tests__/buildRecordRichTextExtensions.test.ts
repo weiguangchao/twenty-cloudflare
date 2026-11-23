@@ -41,7 +41,7 @@ const DOCUMENT_WITH_EVERY_NODE_AND_MARK: JSONContent = {
         text('underline', [{ type: 'underline' }]),
         text('strike', [{ type: 'strike' }]),
         text('code', [{ type: 'code' }]),
-        text('link', [{ type: 'link', attrs: { href: 'https://twenty.com' } }]),
+        text('link', [{ type: 'link', attrs: { href: 'https://example.com' } }]),
         text('colored', [
           {
             type: 'textStyle',
@@ -88,7 +88,7 @@ const DOCUMENT_WITH_EVERY_NODE_AND_MARK: JSONContent = {
     {
       type: 'image',
       attrs: {
-        src: 'https://twenty.com/image.png',
+        src: 'https://example.com/image.png',
         alt: 'image.png',
         title: 'Caption',
         width: 320,
@@ -96,7 +96,7 @@ const DOCUMENT_WITH_EVERY_NODE_AND_MARK: JSONContent = {
     },
     {
       type: 'file',
-      attrs: { url: 'https://twenty.com/file.pdf', name: 'file.pdf' },
+      attrs: { url: 'https://example.com/file.pdf', name: 'file.pdf' },
     },
     {
       type: 'table',
@@ -197,7 +197,7 @@ describe('buildRecordRichTextExtensions', () => {
     const editor = createEditor();
 
     editor.commands.setContent(
-      '<p><a href="#cite-1">anchor</a> <a href="ftp://twenty.com">ftp</a> <a href="https://twenty.com">safe</a></p>',
+      '<p><a href="#cite-1">anchor</a> <a href="ftp://example.com">ftp</a> <a href="https://example.com">safe</a></p>',
     );
 
     const linkHrefs = editor
@@ -205,7 +205,7 @@ describe('buildRecordRichTextExtensions', () => {
       .content?.[0]?.content?.flatMap((node) => node.marks ?? [])
       .map((mark) => mark.attrs?.href);
 
-    expect(linkHrefs).toEqual(['https://twenty.com']);
+    expect(linkHrefs).toEqual(['https://example.com']);
 
     editor.destroy();
   });

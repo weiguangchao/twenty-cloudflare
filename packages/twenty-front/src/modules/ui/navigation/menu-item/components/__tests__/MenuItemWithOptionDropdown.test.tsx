@@ -81,7 +81,7 @@ describe('MenuItemWithOptionDropdown', () => {
       <Provider store={createStore()}>
         <MenuItemWithOptionDropdown
           dropdownId="link-options"
-          text={<a href="https://twenty.com">Documentation</a>}
+          text={<a href="https://example.com">Documentation</a>}
           dropdownContent={<Dropdown.ActionItem>Copy</Dropdown.ActionItem>}
         />
       </Provider>,
@@ -89,7 +89,7 @@ describe('MenuItemWithOptionDropdown', () => {
 
     const link = screen.getByRole('link', { name: 'Documentation' });
 
-    expect(link).toHaveAttribute('href', 'https://twenty.com');
+    expect(link).toHaveAttribute('href', 'https://example.com');
     expect(link.closest('button')).toBeNull();
     expect(screen.getAllByRole('button')).toHaveLength(1);
   });

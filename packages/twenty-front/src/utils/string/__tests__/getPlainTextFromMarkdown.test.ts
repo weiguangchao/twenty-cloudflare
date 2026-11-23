@@ -4,7 +4,7 @@ describe('getPlainTextFromMarkdown', () => {
   it('removes markdown syntax', () => {
     expect(
       getPlainTextFromMarkdown(
-        '## Title\n> **Bold**, *italic*, _also italic_, ~~gone~~ and `code`\n- [link](https://twenty.com)',
+        '## Title\n> **Bold**, *italic*, _also italic_, ~~gone~~ and `code`\n- [link](https://example.com)',
       ),
     ).toBe('Title Bold, italic, also italic, gone and code link');
   });

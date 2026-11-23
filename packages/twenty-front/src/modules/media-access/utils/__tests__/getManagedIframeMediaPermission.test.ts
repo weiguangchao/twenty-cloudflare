@@ -8,7 +8,7 @@ const DEFAULT_INPUT = {
   iframeMediaPermissions: [
     { origin: TRUSTED_ORIGIN, microphone: true, camera: false },
   ],
-  hostOrigin: 'https://workspace.twenty.com',
+  hostOrigin: 'https://workspace.example.com',
 } satisfies Pick<
   ManagedIframeProps,
   'src' | 'requestedMediaCapabilities' | 'iframeMediaPermissions'
@@ -39,7 +39,7 @@ describe('getManagedIframeMediaPermission', () => {
     'https://subdomain.phone.example.com',
     'https://phone.example.com:444',
     'https://user:password@phone.example.com',
-    'https://workspace.twenty.com',
+    'https://workspace.example.com',
     'blob:https://phone.example.com/stream',
     'data:text/html,hello',
     'about:blank',

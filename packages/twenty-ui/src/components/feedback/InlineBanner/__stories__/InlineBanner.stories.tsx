@@ -294,11 +294,11 @@ export const CustomLink: Story = {
       <InlineBanner.Action
         nativeButton={false}
         role="link"
-        href={'https://twenty.com'}
+        href={'https://example.com'}
         target={'_blank'}
         rel={'noopener noreferrer'}
         render={
-          <a href="https://twenty.com" aria-label="Open connection settings" />
+          <a href="https://example.com" aria-label="Open connection settings" />
         }
         onClick={onLinkAction}
       >
@@ -311,7 +311,7 @@ export const CustomLink: Story = {
     const link = canvas.getByRole('link', { name: 'Open connection settings' });
 
     await expect(link).not.toHaveAttribute('type');
-    await expect(link).toHaveAttribute('href', 'https://twenty.com');
+    await expect(link).toHaveAttribute('href', 'https://example.com');
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     await userEvent.tab();

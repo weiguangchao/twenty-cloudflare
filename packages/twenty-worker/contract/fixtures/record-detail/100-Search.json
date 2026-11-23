@@ -44,7 +44,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Stripe",
-              "imageUrl": "https://twenty-icons.com/stripe.com",
+              "imageUrl": "",
               "tsRankCD": 0.2,
               "tsRank": 0.12158542,
               "__typename": "SearchRecord"

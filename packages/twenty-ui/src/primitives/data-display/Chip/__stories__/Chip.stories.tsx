@@ -279,15 +279,15 @@ export const IconOnly: Story = {
 export const ExplicitLink: Story = {
   decorators: [ComponentDecorator],
   args: {
-    render: <a href="#chip-link" aria-label="https://twenty.com" />,
+    render: <a href="#chip-link" aria-label="https://example.com" />,
     variant: 'outline',
     shape: 'round',
-    children: 'https://twenty.com',
+    children: 'https://example.com',
     clickable: true,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const link = canvas.getByRole('link', { name: 'https://twenty.com' });
+    const link = canvas.getByRole('link', { name: 'https://example.com' });
     await expect(link).toHaveAttribute('href', '#chip-link');
     await expect(link.querySelector('a')).toBeNull();
     link.focus();

@@ -45,7 +45,7 @@
               "objectNameSingular": "company",
               "objectLabelSingular": "公司",
               "label": "Airbnb",
-              "imageUrl": "https://twenty-icons.com/airbnb.com",
+              "imageUrl": "",
               "tsRankCD": 0,
               "tsRank": 0,
               "__typename": "SearchRecord"

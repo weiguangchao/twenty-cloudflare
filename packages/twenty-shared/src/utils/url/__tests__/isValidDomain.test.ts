@@ -2,13 +2,13 @@ import { isValidDomain } from '@/utils/url/isValidDomain';
 
 describe('isValidDomain', () => {
   it.each([
-    'twenty.com',
-    'https://www.twenty.com/careers?x=1',
-    'blog.twenty.com',
+    'example.com',
+    'https://www.example.com/careers?x=1',
+    'blog.example.com',
     'twenty.co.uk',
     'münchen.de',
-    'twenty.com.',
-    'twenty.com:8080',
+    'example.com.',
+    'example.com:8080',
   ])('should accept %s', (rawDomain) => {
     expect(isValidDomain(rawDomain)).toBe(true);
   });
@@ -26,7 +26,7 @@ describe('isValidDomain', () => {
   });
 
   it('should judge a backslash host the way a browser reads it', () => {
-    expect(isValidDomain('twenty.com\\@evil.com')).toBe(true);
-    expect(isValidDomain('twenty.com\\@not a domain')).toBe(true);
+    expect(isValidDomain('example.com\\@evil.com')).toBe(true);
+    expect(isValidDomain('example.com\\@not a domain')).toBe(true);
   });
 });

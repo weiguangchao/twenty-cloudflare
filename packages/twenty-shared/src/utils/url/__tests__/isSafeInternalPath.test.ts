@@ -8,7 +8,7 @@ describe('isSafeInternalPath', () => {
   });
 
   it('rejects anything a browser could resolve to another origin', () => {
-    expect(isSafeInternalPath('https://twenty.com')).toBe(false);
+    expect(isSafeInternalPath('https://example.com')).toBe(false);
     expect(isSafeInternalPath('//evil.com/workflows')).toBe(false);
     expect(isSafeInternalPath('/\\evil.com')).toBe(false);
     expect(isSafeInternalPath('/\t/evil.com')).toBe(false);

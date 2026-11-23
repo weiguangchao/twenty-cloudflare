@@ -66,7 +66,7 @@ export const PreservesSecondaryLinksWhenEditingPrimary: Story = {
       primaryLinkLabel: 'Google',
       primaryLinkUrl: 'https://www.google.com',
       secondaryLinks: [
-        { label: 'Documentation', url: 'https://docs.twenty.com' },
+        { label: 'Documentation', url: 'https://docs.example.com' },
       ],
     },
   },
@@ -81,7 +81,7 @@ export const PreservesSecondaryLinksWhenEditingPrimary: Story = {
       expect(args.onChange).toHaveBeenCalledWith(
         expect.objectContaining({
           secondaryLinks: [
-            { label: 'Documentation', url: 'https://docs.twenty.com' },
+            { label: 'Documentation', url: 'https://docs.example.com' },
           ],
         }),
       );
@@ -105,12 +105,12 @@ export const AddsASecondaryLink: Story = {
     const secondaryLinkInput =
       await canvas.findByPlaceholderText('Enter an item');
 
-    await userEvent.type(secondaryLinkInput, 'https://docs.twenty.com{enter}');
+    await userEvent.type(secondaryLinkInput, 'https://docs.example.com{enter}');
 
     await waitFor(() => {
       expect(args.onChange).toHaveBeenCalledWith(
         expect.objectContaining({
-          secondaryLinks: [{ label: null, url: 'https://docs.twenty.com' }],
+          secondaryLinks: [{ label: null, url: 'https://docs.example.com' }],
         }),
       );
     });
@@ -145,13 +145,13 @@ export const StopsAddingSecondaryLinksAtTheFieldLimit: Story = {
     defaultValue: {
       primaryLinkLabel: 'Google',
       primaryLinkUrl: 'https://www.google.com',
-      secondaryLinks: [{ label: null, url: 'https://docs.twenty.com' }],
+      secondaryLinks: [{ label: null, url: 'https://docs.example.com' }],
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await userEvent.click(await canvas.findByText('https://docs.twenty.com'));
+    await userEvent.click(await canvas.findByText('https://docs.example.com'));
 
     await waitFor(() => {
       expect(canvas.queryByText('Add item')).not.toBeInTheDocument();

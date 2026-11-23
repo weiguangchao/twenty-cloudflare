@@ -74,11 +74,11 @@ describe('EditLinkDropdown', () => {
       },
     );
     const input = screen.getByRole('textbox', { name: 'Enter link' });
-    await user.type(input, 'https://twenty.com{Enter}');
+    await user.type(input, 'https://example.com{Enter}');
 
     expect(store.get(focusStackState.atom)).toEqual([]);
     expect(commands.setLink).toHaveBeenCalledWith({
-      href: 'https://twenty.com',
+      href: 'https://example.com',
     });
     await waitFor(() =>
       expect(screen.getByRole('textbox', { name: 'Editor' })).toHaveFocus(),
@@ -130,7 +130,7 @@ describe('EditLinkDropdown', () => {
         <EditLinkDropdown
           dropdownId="edit-link-test"
           editor={editor}
-          defaultValue="https://twenty.com"
+          defaultValue="https://example.com"
         />
       </>,
     );

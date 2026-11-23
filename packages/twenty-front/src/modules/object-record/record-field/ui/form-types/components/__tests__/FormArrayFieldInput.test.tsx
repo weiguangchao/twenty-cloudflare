@@ -151,7 +151,7 @@ it('adds the typed secondary link when Tab leaves the links field', async () => 
   );
   const secondaryLinksInput = screen.getByPlaceholderText('Enter an item');
   await user.click(secondaryLinksInput);
-  await user.type(secondaryLinksInput, 'twenty.com');
+  await user.type(secondaryLinksInput, 'example.com');
 
   await user.tab();
 
@@ -160,6 +160,6 @@ it('adds the typed secondary link when Tab leaves the links field', async () => 
   expect(onChange).toHaveBeenCalledWith({
     primaryLinkLabel: '',
     primaryLinkUrl: '',
-    secondaryLinks: [{ url: 'twenty.com', label: null }],
+    secondaryLinks: [{ url: 'example.com', label: null }],
   });
 });

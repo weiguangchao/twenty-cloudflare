@@ -31,7 +31,7 @@ type Story = StoryObj<typeof OverflowingTextWithTooltip>;
 export const ExplicitChildLink: Story = {
   args: {
     text: (
-      <Text render={<a href="https://twenty.com" aria-label="Documentation" />}>
+      <Text render={<a href="https://example.com" aria-label="Documentation" />}>
         Documentation
       </Text>
     ),

@@ -19,9 +19,9 @@ const isMatchingLinksFilter = ({
   });
 
 const LINKS_VALUE = {
-  primaryLinkUrl: 'https://twenty.com',
-  primaryLinkLabel: 'Twenty',
-  secondaryLinks: [{ url: 'https://docs.twenty.com', label: 'Docs' }],
+  primaryLinkUrl: 'https://example.com',
+  primaryLinkLabel: 'Example',
+  secondaryLinks: [{ url: 'https://docs.example.com', label: 'Docs' }],
 };
 
 describe('isMatchingCompositeFilter', () => {
@@ -29,8 +29,8 @@ describe('isMatchingCompositeFilter', () => {
     expect(
       isMatchingLinksFilter({
         compositeFilter: {
-          primaryLinkUrl: { ilike: '%twenty%' },
-          primaryLinkLabel: { eq: 'Twenty' },
+          primaryLinkUrl: { ilike: '%example%' },
+          primaryLinkLabel: { eq: 'Example' },
         },
         compositeValue: LINKS_VALUE,
       }),
@@ -41,7 +41,7 @@ describe('isMatchingCompositeFilter', () => {
     expect(
       isMatchingLinksFilter({
         compositeFilter: {
-          primaryLinkUrl: { ilike: '%twenty%' },
+          primaryLinkUrl: { ilike: '%example%' },
           primaryLinkLabel: { eq: 'Other' },
         },
         compositeValue: LINKS_VALUE,
@@ -77,7 +77,7 @@ describe('isMatchingCompositeFilter', () => {
 
     expect(
       isMatchingLinksFilter({
-        compositeFilter: { primaryLinkLabel: { eq: 'Twenty' } },
+        compositeFilter: { primaryLinkLabel: { eq: 'Example' } },
         compositeValue: { primaryLinkLabel: null },
       }),
     ).toBe(false);
@@ -86,7 +86,7 @@ describe('isMatchingCompositeFilter', () => {
   it('matches secondary links through their JSON content', () => {
     expect(
       isMatchingLinksFilter({
-        compositeFilter: { secondaryLinks: { like: '%docs.twenty.com%' } },
+        compositeFilter: { secondaryLinks: { like: '%docs.example.com%' } },
         compositeValue: LINKS_VALUE,
       }),
     ).toBe(true);

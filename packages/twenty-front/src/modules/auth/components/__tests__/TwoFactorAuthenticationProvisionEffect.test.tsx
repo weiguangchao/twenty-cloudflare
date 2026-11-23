@@ -32,7 +32,7 @@ jest.mock(
 );
 
 jest.mock('@/domain-manager/hooks/useOrigin', () => ({
-  useOrigin: () => ({ origin: 'https://apple.twenty.com' }),
+  useOrigin: () => ({ origin: 'https://apple.example.com' }),
 }));
 
 jest.mock('~/hooks/useNavigateApp', () => ({
