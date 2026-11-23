@@ -1,18 +1,8 @@
 export const TWENTY_UI_OVERRIDE_EXEMPTIONS = [
   {
     filePath:
-      'packages/twenty-front/src/modules/activities/calendar/components/CalendarDayCardContent.tsx',
-    reason: 'Card.Content day row layout and the animation for ended days',
-  },
-  {
-    filePath:
       'packages/twenty-front/src/modules/activities/components/ActivityList.tsx',
     reason: 'Card.Root scrolls inside a full-height activity list',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/activities/emails/components/EmailsCardContent.tsx',
-    reason: 'Section.Root fills the widget height',
   },
   {
     filePath:
@@ -31,34 +21,9 @@ export const TWENTY_UI_OVERRIDE_EXEMPTIONS = [
   },
   {
     filePath:
-      'packages/twenty-front/src/modules/log-console/components/LogConsoleDetailPanel.tsx',
-    reason: 'Card.Root laid out as a padded error message block',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/log-console/components/LogConsoleFieldsCard.tsx',
-    reason: 'Card.Root laid out as a padded column of log fields',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/log-console/components/LogConsoleRecordChangeDetail.tsx',
-    reason: 'Button placement in its parent column',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/marketplace/components/SettingsApplicationInstallPermissionValidationModal.tsx',
-    reason: 'LightButton pinned to the corner of the fullscreen dialog',
-  },
-  {
-    filePath:
       'packages/twenty-front/src/modules/navigation/components/MobileNavigationBar.tsx',
     reason:
       'IconButton sized as a 40px touch target with the current page fill',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/object-record/record-update-multiple/components/UpdateMultipleRecordsForm.tsx',
-    reason: 'Section.Root laid out as the padded column of bulk edit fields',
   },
   {
     filePath:
@@ -69,21 +34,6 @@ export const TWENTY_UI_OVERRIDE_EXEMPTIONS = [
     filePath:
       'packages/twenty-front/src/modules/onboarding/components/free-credits/OnboardingFreeCreditsPill.tsx',
     reason: 'Popover.Popup width for the free credits breakdown',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/settings/accounts/components/SettingsAccountsPasswordController.tsx',
-    reason: 'Button placement in its parent column',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/settings/admin-panel/health-status/components/SettingsAdminWorkspacesByHealthAccordion.tsx',
-    reason: 'Card.Content laid out as the accordion header row',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/settings/applications/components/SettingsApplicationOverviewCard.tsx',
-    reason: 'Card.Root media layout with a minimum height',
   },
   {
     filePath:
@@ -135,16 +85,6 @@ export const TWENTY_UI_OVERRIDE_EXEMPTIONS = [
     filePath:
       'packages/twenty-front/src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx',
     reason: 'Tinted preview Card.Content',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/settings/event-logs/components/SettingsLogs.tsx',
-    reason: 'Card.Content laid out as the column of log filters and results',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/settings/mcp/components/SettingsMcpSetupCard.tsx',
-    reason: 'One-off Card.Content row layout',
   },
   {
     filePath:
@@ -209,15 +149,5 @@ export const TWENTY_UI_OVERRIDE_EXEMPTIONS = [
       'packages/twenty-front/src/modules/ui/suggestion/components/SuggestionListItem.tsx',
     reason:
       'Editor integration keeps the active suggestion fill while focus stays in the editor',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/modules/workflow/workflow-diagram/workflow-edges/components/WorkflowDiagramEdgeButtonGroup.tsx',
-    reason: 'React Flow nodrag and nopan classes on ButtonGroup',
-  },
-  {
-    filePath:
-      'packages/twenty-front/src/pages/settings/ai/SettingsAiPrompts.tsx',
-    reason: 'Section.Header without trailing margin above the prompt form',
   },
 ] as const;

@@ -53,24 +53,6 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
     steps:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
@@ -86,12 +68,6 @@ jobs:
           additional_permissions: |
             actions: read
           claude_args: '--max-turns 200 --model opus --allowedTools "Edit,Write,WebFetch,Bash(bash packages/twenty-utils/setup-dev-env.sh),Bash(npx nx *),Bash(npx jest *),Bash(yarn *),Bash(git *),Bash(gh *),Bash(sed *),Bash(python3 *),Bash(rm *),Bash(find *),Bash(grep *),Bash(cat *),Bash(ls *),Bash(head *),Bash(tail *),Bash(wc *),Bash(sort *),Bash(uniq *),Bash(mkdir *),Bash(cp *),Bash(mv *),Bash(touch *),Bash(chmod *),Bash(echo *),Bash(curl *),Bash(cd *),Bash(pwd *),Bash(diff *),Bash(xargs *),Bash(awk *),Bash(cut *),Bash(tee *),Bash(tr *)"'
-          settings: |
-            {
-              "env": {
-                "PG_DATABASE_URL": "postgres://postgres:postgres@localhost:5432/default"
-              }
-            }
       - name: Post Create-PR link if Claude ran out of turns
         if: failure()
         env:
@@ -129,24 +105,6 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
@@ -177,12 +135,6 @@ jobs:
           additional_permissions: |
             actions: read
           claude_args: '--max-turns 200 --model opus --allowedTools "Edit,Write,WebFetch,Bash(bash packages/twenty-utils/setup-dev-env.sh),Bash(npx nx *),Bash(npx jest *),Bash(yarn *),Bash(git *),Bash(gh *),Bash(sed *),Bash(python3 *),Bash(rm *),Bash(find *),Bash(grep *),Bash(cat *),Bash(ls *),Bash(head *),Bash(tail *),Bash(wc *),Bash(sort *),Bash(uniq *),Bash(mkdir *),Bash(cp *),Bash(mv *),Bash(touch *),Bash(chmod *),Bash(echo *),Bash(curl *),Bash(cd *),Bash(pwd *),Bash(diff *),Bash(xargs *),Bash(awk *),Bash(cut *),Bash(tee *),Bash(tr *)"'
-          settings: |
-            {
-              "env": {
-                "PG_DATABASE_URL": "postgres://postgres:postgres@localhost:5432/default"
-              }
-            }
       - name: Mint twenty-factory dispatch token
         id: app-token
         if: always()

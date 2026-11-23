@@ -10,7 +10,7 @@ const PASCAL_CASE = [{ convention: 'PascalCase' }];
 const KEBAB_CASE_TYPE_SUFFIX = [{ convention: 'kebab-case-type-suffix' }];
 
 const front = (path: string) => `/project/packages/twenty-front/src/${path}`;
-const server = (path: string) => `/project/packages/twenty-server/src/${path}`;
+const worker = (path: string) => `/project/packages/twenty-worker/src/${path}`;
 
 ruleTester.run(RULE_NAME, rule, {
   valid: [
@@ -66,22 +66,22 @@ ruleTester.run(RULE_NAME, rule, {
     },
     {
       code: DUMMY_CODE,
-      filename: server('modules/workflow/types/workflow-action-input.type.ts'),
+      filename: worker('modules/workflow/types/workflow-action-input.type.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
     },
     {
       code: DUMMY_CODE,
-      filename: server('engine/api/rest/types/request-context.type.ts'),
+      filename: worker('engine/api/rest/types/request-context.type.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
     },
     {
       code: DUMMY_CODE,
-      filename: server('engine/core-modules/ai/types/model-family.enum.ts'),
+      filename: worker('engine/core-modules/ai/types/model-family.enum.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
     },
     {
       code: DUMMY_CODE,
-      filename: server(
+      filename: worker(
         'engine/metadata-modules/types/syncable-entity.interface.ts',
       ),
       options: KEBAB_CASE_TYPE_SUFFIX,
@@ -108,7 +108,7 @@ ruleTester.run(RULE_NAME, rule, {
     },
     {
       code: DUMMY_CODE,
-      filename: server('modules/workflow/types/workflow-action-input.spec.ts'),
+      filename: worker('modules/workflow/types/workflow-action-input.spec.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
     },
   ],
@@ -133,25 +133,25 @@ ruleTester.run(RULE_NAME, rule, {
     },
     {
       code: DUMMY_CODE,
-      filename: server('engine/api/rest/types/RequestContext.ts'),
+      filename: worker('engine/api/rest/types/RequestContext.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
       errors: [{ messageId: 'invalidKebabCaseTypeFilename' }],
     },
     {
       code: DUMMY_CODE,
-      filename: server('modules/messaging/types/message.ts'),
+      filename: worker('modules/messaging/types/message.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
       errors: [{ messageId: 'invalidKebabCaseTypeFilename' }],
     },
     {
       code: DUMMY_CODE,
-      filename: server('engine/core-modules/dpa/types/dpa.types.ts'),
+      filename: worker('engine/core-modules/dpa/types/dpa.types.ts'),
       options: KEBAB_CASE_TYPE_SUFFIX,
       errors: [{ messageId: 'invalidKebabCaseTypeFilename' }],
     },
     {
       code: DUMMY_CODE,
-      filename: server(
+      filename: worker(
         'engine/metadata-modules/ai/types/modelConfiguration.ts',
       ),
       options: KEBAB_CASE_TYPE_SUFFIX,

@@ -1,10 +1,6 @@
 import { definePlugin } from '@oxlint/plugins';
 
 import {
-  rule as applicationTargetGuards,
-  RULE_NAME as applicationTargetGuardsName,
-} from './rules/application-target-guards';
-import {
   rule as componentPropsNaming,
   RULE_NAME as componentPropsNamingName,
 } from './rules/component-props-naming';
@@ -21,14 +17,6 @@ import {
   RULE_NAME as folderStructureName,
 } from './rules/folder-structure';
 import {
-  rule as graphqlResolversShouldBeGuarded,
-  RULE_NAME as graphqlResolversShouldBeGuardedName,
-} from './rules/graphql-resolvers-should-be-guarded';
-import {
-  rule as injectWorkspaceRepository,
-  RULE_NAME as injectWorkspaceRepositoryName,
-} from './rules/inject-workspace-repository';
-import {
   rule as matchingStateVariable,
   RULE_NAME as matchingStateVariableName,
 } from './rules/matching-state-variable';
@@ -36,10 +24,6 @@ import {
   rule as maxConstsPerFile,
   RULE_NAME as maxConstsPerFileName,
 } from './rules/max-consts-per-file';
-import {
-  rule as noDataMutationInFastInstanceCommand,
-  RULE_NAME as noDataMutationInFastInstanceCommandName,
-} from './rules/no-data-mutation-in-fast-instance-command';
 import {
   rule as noDirectAtomFamilyInSelector,
   RULE_NAME as noDirectAtomFamilyInSelectorName,
@@ -69,10 +53,6 @@ import {
   RULE_NAME as noNavigatePreferLinkName,
 } from './rules/no-navigate-prefer-link';
 import {
-  rule as noRuntimeImportFromUpgradeCommand,
-  RULE_NAME as noRuntimeImportFromUpgradeCommandName,
-} from './rules/no-runtime-import-from-upgrade-command';
-import {
   rule as noStateUseref,
   RULE_NAME as noStateUserefName,
 } from './rules/no-state-useref';
@@ -89,14 +69,6 @@ import {
   RULE_NAME as noWindowOpenName,
 } from './rules/no-window-open';
 import {
-  rule as preferWorkspaceScopedRepository,
-  RULE_NAME as preferWorkspaceScopedRepositoryName,
-} from './rules/prefer-workspace-scoped-repository';
-import {
-  rule as restApiMethodsShouldBeGuarded,
-  RULE_NAME as restApiMethodsShouldBeGuardedName,
-} from './rules/rest-api-methods-should-be-guarded';
-import {
   rule as sortCssPropertiesAlphabetically,
   RULE_NAME as sortCssPropertiesAlphabeticallyName,
 } from './rules/sort-css-properties-alphabetically';
@@ -108,25 +80,16 @@ import {
   rule as typesFolderFilename,
   RULE_NAME as typesFolderFilenameName,
 } from './rules/types-folder-filename';
-import {
-  rule as upgradeCommandFilename,
-  RULE_NAME as upgradeCommandFilenameName,
-} from './rules/upgrade-command-filename';
 
 export default definePlugin({
   meta: { name: 'twenty' },
   rules: {
-    [applicationTargetGuardsName]: applicationTargetGuards,
     [componentPropsNamingName]: componentPropsNaming,
     [effectComponentsName]: effectComponents,
     [enforceModuleBoundariesName]: enforceModuleBoundaries,
     [folderStructureName]: folderStructure,
-    [graphqlResolversShouldBeGuardedName]: graphqlResolversShouldBeGuarded,
-    [injectWorkspaceRepositoryName]: injectWorkspaceRepository,
     [matchingStateVariableName]: matchingStateVariable,
     [maxConstsPerFileName]: maxConstsPerFile,
-    [noDataMutationInFastInstanceCommandName]:
-      noDataMutationInFastInstanceCommand,
     [noDirectAtomFamilyInSelectorName]: noDirectAtomFamilyInSelector,
     [noHardcodedColorsName]: noHardcodedColors,
     [noIcuEscapingApostropheName]: noIcuEscapingApostrophe,
@@ -134,17 +97,13 @@ export default definePlugin({
     [noMiscasedAcronymInIdentifierName]: noMiscasedAcronymInIdentifier,
     [noMiscasedAcronymInMessageName]: noMiscasedAcronymInMessage,
     [noNavigatePreferLinkName]: noNavigatePreferLink,
-    [noRuntimeImportFromUpgradeCommandName]: noRuntimeImportFromUpgradeCommand,
     [noStateUserefName]: noStateUseref,
     [noStorybookA11yDisableName]: noStorybookA11yDisable,
     [noTwentyUiOverrideName]: noTwentyUiOverride,
     [noWindowOpenName]: noWindowOpen,
-    [preferWorkspaceScopedRepositoryName]: preferWorkspaceScopedRepository,
-    [restApiMethodsShouldBeGuardedName]: restApiMethodsShouldBeGuarded,
     [sortCssPropertiesAlphabeticallyName]: sortCssPropertiesAlphabetically,
     [styledComponentsPrefixedWithStyledName]:
       styledComponentsPrefixedWithStyled,
     [typesFolderFilenameName]: typesFolderFilename,
-    [upgradeCommandFilenameName]: upgradeCommandFilename,
   },
 });
