@@ -1,5 +1,3 @@
-import { type RowLevelRecordsPermissions } from '@/types/RowLevelRecordsPermissions';
-
 export type ObjectRecordsPermissions = {
   canCreateAllRecords: boolean;
   canReadAllRecords: boolean;
@@ -8,5 +6,4 @@ export type ObjectRecordsPermissions = {
   canDestroyAllRecords: boolean;
   unreadableFields: string[];
   uneditableFields: string[];
-  rowLevelRecordsPermissions?: RowLevelRecordsPermissions | null;
 };

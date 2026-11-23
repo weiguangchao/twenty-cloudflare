@@ -35,8 +35,4 @@ export const getCommandMenuContextApiObjectPermissions = ({
   }),
   unreadableFields: objectRecordsPermissions.unreadableFields,
   uneditableFields: objectRecordsPermissions.uneditableFields,
-  rowLevelPermissionPredicates:
-    objectRecordsPermissions.rowLevelRecordsPermissions?.predicates ?? [],
-  rowLevelPermissionPredicateGroups:
-    objectRecordsPermissions.rowLevelRecordsPermissions?.predicateGroups ?? [],
 });

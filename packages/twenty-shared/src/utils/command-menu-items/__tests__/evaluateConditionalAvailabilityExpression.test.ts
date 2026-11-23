@@ -21,8 +21,6 @@ const buildContext = (
     canDestroyObjectRecords: false,
     unreadableFields: [],
     uneditableFields: [],
-    rowLevelPermissionPredicates: [],
-    rowLevelPermissionPredicateGroups: [],
   },
   selectedRecords: [],
   featureFlags: {},
@@ -408,8 +406,6 @@ describe('evaluateConditionalAvailabilityExpression', () => {
           canDestroyObjectRecords: false,
           unreadableFields: [],
           uneditableFields: [],
-          rowLevelPermissionPredicates: [],
-          rowLevelPermissionPredicateGroups: [],
         },
       });
 

@@ -1,14 +1,14 @@
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { isDefined } from 'twenty-shared/utils';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
-import { type AvailableWorkspace } from '~/generated-metadata/graphql';
+import { type AvailableWorkspaceFragmentFragment } from '~/generated-metadata/graphql';
 
 export const useFilteredAvailableWorkspaces = () => {
   const currentWorkspace = useAtomStateValue(currentWorkspaceState);
 
   const searchAvailableWorkspaces = (
     searchValue: string,
-    availableWorkspaces: Array<AvailableWorkspace>,
+    availableWorkspaces: Array<AvailableWorkspaceFragmentFragment>,
   ) => {
     return availableWorkspaces.filter(
       (availableWorkspace) =>

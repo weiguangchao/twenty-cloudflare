@@ -16,7 +16,7 @@ import {
   jotaiStore,
   resetJotaiStore,
 } from '@/ui/utilities/state/jotai/jotaiStore';
-import { type PublicWorkspaceData } from '~/generated-metadata/graphql';
+import { type GetPublicWorkspaceDataByDomainQuery } from '~/generated-metadata/graphql';
 
 jest.mock('@/auth/hooks/useAuth', () => ({ useAuth: jest.fn() }));
 
@@ -64,7 +64,11 @@ const credentials: Form = {
   captchaToken: '',
 };
 
-const renderUseSignInUp = (workspacePublicData: PublicWorkspaceData | null) => {
+const renderUseSignInUp = (
+  workspacePublicData:
+    | GetPublicWorkspaceDataByDomainQuery['getPublicWorkspaceDataByDomain']
+    | null,
+) => {
   jotaiStore.set(workspacePublicDataState.atom, workspacePublicData);
   jotaiStore.set(signInUpModeState.atom, SignInUpMode.SignUp);
 
@@ -88,7 +92,7 @@ describe('useSignInUp > submitCredentials > sign-up routing', () => {
   it('signs up in the workspace when the location resolves one, so its approved access domains are checked', async () => {
     const { result } = renderUseSignInUp({
       id: 'workspace-id',
-    } as PublicWorkspaceData);
+    } as GetPublicWorkspaceDataByDomainQuery['getPublicWorkspaceDataByDomain']);
 
     await act(() => result.current.submitCredentials(credentials));
 

@@ -1,7 +1,7 @@
 import { AppPath } from 'twenty-shared/types';
 import {
-  type AvailableWorkspace,
-  type AvailableWorkspaces,
+  type AvailableWorkspaceFragmentFragment,
+  type AvailableWorkspacesFragmentFragment,
 } from '~/generated-metadata/graphql';
 import {
   countAvailableWorkspaces,
@@ -10,14 +10,17 @@ import {
 } from '@/auth/utils/availableWorkspacesUtils';
 
 const createMockAvailableWorkspace = (
-  overrides: Partial<AvailableWorkspace> = {},
-): AvailableWorkspace => ({
+  overrides: Partial<AvailableWorkspaceFragmentFragment> = {},
+): AvailableWorkspaceFragmentFragment => ({
   __typename: 'AvailableWorkspace',
   id: 'workspace-1',
   displayName: 'Test Workspace',
+  loginToken: null,
+  inviteHash: null,
+  personalInviteToken: null,
   logo: null,
-  sso: [],
   workspaceUrls: {
+    __typename: 'WorkspaceUrls',
     customUrl: null,
     subdomainUrl: 'https://test.twenty.com',
   },
@@ -25,9 +28,9 @@ const createMockAvailableWorkspace = (
 });
 
 const createMockAvailableWorkspaces = (
-  signInWorkspaces: AvailableWorkspace[] = [],
-  signUpWorkspaces: AvailableWorkspace[] = [],
-): AvailableWorkspaces => ({
+  signInWorkspaces: AvailableWorkspaceFragmentFragment[] = [],
+  signUpWorkspaces: AvailableWorkspaceFragmentFragment[] = [],
+): AvailableWorkspacesFragmentFragment => ({
   __typename: 'AvailableWorkspaces',
   availableWorkspacesForSignIn: signInWorkspaces,
   availableWorkspacesForSignUp: signUpWorkspaces,

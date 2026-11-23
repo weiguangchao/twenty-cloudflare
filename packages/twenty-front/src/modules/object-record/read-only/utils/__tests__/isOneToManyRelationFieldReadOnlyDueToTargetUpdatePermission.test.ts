@@ -25,7 +25,6 @@ const buildObjectPermissions = (opts: {
   uneditableFields: Object.entries(opts.fieldRestrictions ?? {})
     .filter(([, { canUpdate }]) => canUpdate === false)
     .map(([fieldMetadataId]) => fieldMetadataId),
-  rowLevelRecordsPermissions: null,
 });
 
 const buildObjectPermissionsMap = (opts: {

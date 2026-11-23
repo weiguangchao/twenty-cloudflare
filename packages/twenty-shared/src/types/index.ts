@@ -318,15 +318,6 @@ export { RelationOnDeleteAction } from './RelationOnDeleteAction';
 export { RelationType } from './RelationType';
 export type { RelationUpdatePayload } from './RelationUpdatePayload';
 export type { RemoveSuffix } from './RemoveSuffix';
-export type { RowLevelPermissionPredicate } from './RowLevelPermissionPredicate';
-export type { RowLevelPermissionPredicateGroup } from './RowLevelPermissionPredicateGroup';
-export { RowLevelPermissionPredicateGroupLogicalOperator } from './RowLevelPermissionPredicateGroupLogicalOperator';
-export { RowLevelPermissionPredicateOperand } from './RowLevelPermissionPredicateOperand';
-export type {
-  RelationPredicateValue,
-  RowLevelPermissionPredicateValue,
-} from './RowLevelPermissionPredicateValue';
-export type { RowLevelRecordsPermissions } from './RowLevelRecordsPermissions';
 export type { SerializedRelation } from './SerializedRelation';
 export { SERIALIZED_RELATION_BRAND } from './SerializedRelation';
 export { ServerFileFolder } from './ServerFileFolder';

@@ -1,6 +1,5 @@
 import { type EnrichedObjectMetadataItem } from '@/object-metadata/types/EnrichedObjectMetadataItem';
 import { getLabelIdentifierFieldMetadataItem } from '@/object-metadata/utils/getLabelIdentifierFieldMetadataItem';
-import { useBuildRecordInputFromRLSPredicates } from '@/object-record/hooks/useBuildRecordInputFromRLSPredicates';
 import { useRecordCreationForm } from '@/object-record/record-form/hooks/useRecordCreationForm';
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
 import { getFieldMetadataItemGqlFieldName } from '@/object-metadata/utils/getFieldMetadataItemGqlFieldName';
@@ -50,19 +49,12 @@ export const useCreateNewRecord = ({
 
   const navigate = useNavigateApp();
 
-  const { buildRecordInputFromRLSPredicates } =
-    useBuildRecordInputFromRLSPredicates({
-      objectMetadataItem,
-    });
-
   const createRecord = useCallback(
     async (recordInput?: Partial<ObjectRecord>) => {
       const recordId = v4();
-      const recordInputFromRLSPredicates = buildRecordInputFromRLSPredicates();
       const additionalRecordInput = buildRecordInput?.();
 
       const mergedRecordInput = {
-        ...recordInputFromRLSPredicates,
         ...additionalRecordInput,
         ...recordInput,
       };
@@ -74,7 +66,7 @@ export const useCreateNewRecord = ({
 
       return createdRecord;
     },
-    [buildRecordInputFromRLSPredicates, buildRecordInput, createOneRecord],
+    [buildRecordInput, createOneRecord],
   );
 
   const createAndStoreRecord = useCallback(
@@ -96,7 +88,6 @@ export const useCreateNewRecord = ({
       const createdRecord = await requestRecordCreation({
         objectMetadataItem,
         initialDraftRecord: {
-          ...buildRecordInputFromRLSPredicates(),
           ...buildRecordInput?.(),
           ...recordInput,
         },
@@ -157,7 +148,6 @@ export const useCreateNewRecord = ({
       return createdRecord;
     },
     [
-      buildRecordInputFromRLSPredicates,
       buildRecordInput,
       createAndStoreRecord,
       store,

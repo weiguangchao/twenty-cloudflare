@@ -39,7 +39,6 @@ describe('mapObjectMetadataToGraphQLQuery', () => {
           canDestroyAllRecords: true,
           unreadableFields: [],
           uneditableFields: [],
-          rowLevelRecordsPermissions: null,
         },
       },
     });
@@ -160,7 +159,6 @@ describe('mapObjectMetadataToGraphQLQuery', () => {
           canDestroyAllRecords: true,
           unreadableFields: [],
           uneditableFields: [],
-          rowLevelRecordsPermissions: null,
         },
       },
     });

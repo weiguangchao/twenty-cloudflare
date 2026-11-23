@@ -91,7 +91,6 @@ export const results = {
         displayName: 'displayName',
         logo: 'logo',
         inviteHash: 'inviteHash',
-        allowImpersonation: true,
         subscriptionStatus: 'subscriptionStatus',
         customDomain: null,
         workspaceUrls: {

@@ -25,7 +25,6 @@ describe('getObjectPermissionsForObject', () => {
       canDestroyAllRecords: false,
       unreadableFields: ['field-metadata-id'],
       uneditableFields: ['field-metadata-id'],
-      rowLevelRecordsPermissions: null,
     };
 
     expect(

@@ -15,7 +15,7 @@ import { IconGoogle } from 'twenty-ui/icon';
 import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { LastUsedPill } from './LastUsedPill';
-import { StyledSsoButtonContainer } from './SignInUpSsoButtonStyles';
+import { StyledSignInUpButtonContainer } from './SignInUpButtonStyles';
 import { useTheme } from 'twenty-ui/theme';
 import { SignInUpSeparator } from './SignInUpSeparator';
 
@@ -48,7 +48,7 @@ export const SignInUpWithGoogle = ({
 
   return (
     <>
-      <StyledSsoButtonContainer>
+      <StyledSignInUpButtonContainer>
         <MainButton
           startIcon={isDefined(GoogleIcon) ? <GoogleIcon /> : undefined}
           onClick={handleClick}
@@ -58,7 +58,7 @@ export const SignInUpWithGoogle = ({
         {isLastUsed && (isGlobalScope || hasMultipleAuthMethods) && (
           <LastUsedPill />
         )}
-      </StyledSsoButtonContainer>
+      </StyledSignInUpButtonContainer>
       <SignInUpSeparator />
     </>
   );

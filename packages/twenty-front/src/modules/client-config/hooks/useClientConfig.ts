@@ -15,10 +15,8 @@ import { isAnalyticsEnabledState } from '@/client-config/states/isAnalyticsEnabl
 import { isAttachmentPreviewEnabledState } from '@/client-config/states/isAttachmentPreviewEnabledState';
 import { isConfigVariablesInDbEnabledState } from '@/client-config/states/isConfigVariablesInDbEnabledState';
 import { isDeveloperDefaultSignInPrefilledState } from '@/client-config/states/isDeveloperDefaultSignInPrefilledState';
-import { isClickHouseConfiguredState } from '@/client-config/states/isClickHouseConfiguredState';
 import { isCloudflareIntegrationEnabledState } from '@/client-config/states/isCloudflareIntegrationEnabledState';
 import { isDDLLockedState } from '@/client-config/states/isDDLLockedState';
-import { enterpriseInstanceTypeState } from '@/client-config/states/enterpriseInstanceTypeState';
 import { isEmailingDomainInDemoModeState } from '@/client-config/states/isEmailingDomainInDemoModeState';
 import { isEmailVerificationRequiredState } from '@/client-config/states/isEmailVerificationRequiredState';
 import { isGoogleCalendarEnabledState } from '@/client-config/states/isGoogleCalendarEnabledState';
@@ -41,7 +39,6 @@ import { getInitialClientConfig } from '@/client-config/utils/getInitialClientCo
 import { allowRequestsToTwentyIconsState } from '@/client-config/states/allowRequestsToTwentyIcons';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
 import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
-import { ENTERPRISE_INSTANCE_TYPE } from 'twenty-shared/constants';
 import { t } from '@lingui/core/macro';
 import { CaptchaDriverType } from '~/generated-metadata/graphql';
 
@@ -138,10 +135,6 @@ export const useClientConfig = (): UseClientConfigResult => {
     isCloudflareIntegrationEnabledState,
   );
 
-  const setIsClickHouseConfigured = useSetAtomState(
-    isClickHouseConfiguredState,
-  );
-
   const setIsDDLLocked = useSetAtomState(isDDLLockedState);
 
   const setIsOnboardingAiChatEnabled = useSetAtomState(
@@ -149,10 +142,6 @@ export const useClientConfig = (): UseClientConfigResult => {
   );
 
   const setMaintenanceMode = useSetAtomState(maintenanceModeState);
-
-  const setEnterpriseInstanceType = useSetAtomState(
-    enterpriseInstanceTypeState,
-  );
 
   const setAppVersion = useSetAtomState(appVersionState);
 
@@ -184,7 +173,6 @@ export const useClientConfig = (): UseClientConfigResult => {
           microsoft: clientConfig.authProviders.microsoft,
           password: clientConfig.authProviders.password,
           magicLink: false,
-          sso: clientConfig.authProviders.sso,
         });
         setAiModels(clientConfig.aiModels ?? []);
         setAiEvaluationModels(clientConfig.aiEvaluationModels ?? []);
@@ -251,18 +239,11 @@ export const useClientConfig = (): UseClientConfigResult => {
         setIsCloudflareIntegrationEnabled(
           clientConfig?.isCloudflareIntegrationEnabled,
         );
-        setIsClickHouseConfigured(
-          clientConfig?.isClickHouseConfigured ?? false,
-        );
         setIsDDLLocked(clientConfig?.isWorkspaceSchemaDDLLocked ?? false);
         setIsOnboardingAiChatEnabled(
           clientConfig?.isOnboardingAiChatEnabled ?? false,
         );
         setMaintenanceMode(clientConfig?.maintenance ?? null);
-        setEnterpriseInstanceType(
-          clientConfig?.enterpriseInstanceType ??
-            ENTERPRISE_INSTANCE_TYPE.PRODUCTION,
-        );
       } catch (err) {
         const error =
           err instanceof Error
@@ -303,13 +284,11 @@ export const useClientConfig = (): UseClientConfigResult => {
       setIsImapSmtpCaldavEnabled,
       setIsMultiWorkspaceEnabled,
       setIsEmailingDomainInDemoMode,
-      setIsClickHouseConfigured,
       setIsCloudflareIntegrationEnabled,
       setIsDDLLocked,
       setIsOnboardingAiChatEnabled,
       setLabPublicFeatureFlags,
       setMaintenanceMode,
-      setEnterpriseInstanceType,
       setIsMicrosoftCalendarEnabled,
       setIsMicrosoftMessagingEnabled,
       setSentryConfig,

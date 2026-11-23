@@ -61,8 +61,6 @@ const getWrapper =
             unreadableFields: [],
             uneditableFields: [],
             objectMetadataId: '',
-            rowLevelPermissionPredicates: [],
-            rowLevelPermissionPredicateGroups: [],
           },
           selectedRecords: [],
           featureFlags: {},

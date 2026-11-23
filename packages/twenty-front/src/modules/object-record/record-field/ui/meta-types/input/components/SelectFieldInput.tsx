@@ -2,8 +2,6 @@ import { FieldInputEventContext } from '@/object-record/record-field/ui/contexts
 import { useClearField } from '@/object-record/record-field/ui/hooks/useClearField';
 import { useAddSelectOption } from '@/object-record/record-field/ui/meta-types/hooks/useAddSelectOption';
 import { useCanAddSelectOption } from '@/object-record/record-field/ui/meta-types/hooks/useCanAddSelectOption';
-import { useFilteredSelectOptionsFromRLSPredicates } from '@/object-record/record-field/ui/meta-types/hooks/useFilteredSelectOptionsFromRLSPredicates';
-import { useFilteredSelectOptionsFromValidationRules } from '@/object-record/record-field/ui/meta-types/hooks/useFilteredSelectOptionsFromValidationRules';
 import { useSelectField } from '@/object-record/record-field/ui/meta-types/hooks/useSelectField';
 import { FieldInputDropdown } from '@/object-record/record-field/ui/meta-types/input/components/FieldInputDropdown';
 import { SelectInput } from '@/ui/input/components/SelectInput';
@@ -11,7 +9,7 @@ import { useContext } from 'react';
 import { type SelectOption } from 'twenty-ui/primitives/input';
 
 export const SelectFieldInput = () => {
-  const { recordId, fieldDefinition, fieldValue } = useSelectField();
+  const { fieldDefinition, fieldValue } = useSelectField();
   const { addSelectOption } = useAddSelectOption(
     fieldDefinition.fieldMetadataId,
   );
@@ -20,31 +18,6 @@ export const SelectFieldInput = () => {
   );
 
   const { onCancel, onSubmit } = useContext(FieldInputEventContext);
-
-  const {
-    filteredOptions: optionsAllowedByPermissions,
-    canSelectEmpty: canSelectEmptyByPermissions,
-  } = useFilteredSelectOptionsFromRLSPredicates({
-    fieldMetadataId: fieldDefinition.fieldMetadataId,
-    objectMetadataNameSingular:
-      fieldDefinition.metadata.objectMetadataNameSingular,
-    options: fieldDefinition.metadata.options,
-  });
-
-  const {
-    filteredOptions: selectOptions,
-    canSelectEmpty: canSelectEmptyByValidationRules,
-  } = useFilteredSelectOptionsFromValidationRules({
-    recordId,
-    fieldMetadataId: fieldDefinition.fieldMetadataId,
-    objectMetadataNameSingular:
-      fieldDefinition.metadata.objectMetadataNameSingular,
-    options: optionsAllowedByPermissions,
-    currentValue: fieldValue,
-  });
-
-  const canSelectEmpty =
-    canSelectEmptyByPermissions && canSelectEmptyByValidationRules;
 
   const clearField = useClearField();
 
@@ -65,12 +38,10 @@ export const SelectFieldInput = () => {
     <FieldInputDropdown value={fieldValue} onDismiss={handleCancel}>
       <SelectInput
         onOptionSelected={handleSubmit}
-        options={selectOptions}
+        options={fieldDefinition.metadata.options}
         value={fieldValue}
         onClear={
-          fieldDefinition.metadata.isNullable && canSelectEmpty
-            ? handleClearField
-            : undefined
+          fieldDefinition.metadata.isNullable ? handleClearField : undefined
         }
         clearLabel={fieldDefinition.label}
         onAddSelectOption={canAddSelectOption ? addSelectOption : undefined}

@@ -7,13 +7,10 @@ import {
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
-import { authProvidersState } from '@/client-config/states/authProvidersState';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { useLastAuthenticatedWorkspaceDomain } from '@/domain-manager/hooks/useLastAuthenticatedWorkspaceDomain';
 import { useInitializeFormatPreferences } from '@/localization/hooks/useInitializeFormatPreferences';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useSetAtomState } from '@/ui/utilities/state/jotai/hooks/useSetAtomState';
-import { workspaceAuthBypassProvidersState } from '@/workspace/states/workspaceAuthBypassProvidersState';
 import { useCallback } from 'react';
 import { t } from '@lingui/core/macro';
 import { SOURCE_LOCALE, type APP_LOCALES } from 'twenty-shared/translations';
@@ -40,10 +37,6 @@ export const useLoadCurrentUser = () => {
   );
   const setCurrentWorkspace = useSetAtomState(currentWorkspaceState);
   const { initializeFormatPreferences } = useInitializeFormatPreferences();
-  const setWorkspaceAuthBypassProviders = useSetAtomState(
-    workspaceAuthBypassProvidersState,
-  );
-  const authProviders = useAtomStateValue(authProvidersState);
 
   const { isOnAWorkspace } = useIsCurrentLocationOnAWorkspace();
 
@@ -119,16 +112,6 @@ export const useLoadCurrentUser = () => {
 
     setCurrentWorkspace(workspace);
 
-    if (isDefined(workspace)) {
-      setWorkspaceAuthBypassProviders({
-        google: authProviders.google && workspace.isGoogleAuthBypassEnabled,
-        microsoft:
-          authProviders.microsoft && workspace.isMicrosoftAuthBypassEnabled,
-        password:
-          authProviders.password && workspace.isPasswordAuthBypassEnabled,
-      });
-    }
-
     if (isDefined(workspace) && isOnAWorkspace) {
       setLastAuthenticateWorkspaceDomain({
         workspaceId: workspace.id,
@@ -152,8 +135,6 @@ export const useLoadCurrentUser = () => {
     setCurrentWorkspaceMember,
     initializeFormatPreferences,
     setLastAuthenticateWorkspaceDomain,
-    authProviders,
-    setWorkspaceAuthBypassProviders,
   ]);
 
   return {

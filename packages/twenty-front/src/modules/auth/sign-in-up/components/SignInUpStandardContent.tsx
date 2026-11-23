@@ -9,7 +9,7 @@ import { styled } from '@linaria/react';
 import { type JSX } from 'react';
 import { AppPath } from 'twenty-shared/types';
 import { themeCssVariables } from 'twenty-ui/theme';
-import { type PublicWorkspaceData } from '~/generated-metadata/graphql';
+import { type GetPublicWorkspaceDataByDomainQuery } from '~/generated-metadata/graphql';
 
 const StyledTitleContainer = styled.div`
   line-height: 1.2;
@@ -27,7 +27,9 @@ const StyledFormContainer = styled.div`
 `;
 
 type SignInUpStandardContentProps = {
-  workspacePublicData: PublicWorkspaceData | null;
+  workspacePublicData:
+    | GetPublicWorkspaceDataByDomainQuery['getPublicWorkspaceDataByDomain']
+    | null;
   signInUpForm: JSX.Element | null;
   signInUpStep: SignInUpStep;
   title: string;

@@ -23,8 +23,6 @@ export const objectPermissionsByObjectMetadataIdSelector =
             canDestroyAllRecords: objectRecordsPermissions.canDestroyAllRecords,
             unreadableFields: objectRecordsPermissions.unreadableFields,
             uneditableFields: objectRecordsPermissions.uneditableFields,
-            rowLevelRecordsPermissions:
-              objectRecordsPermissions.rowLevelRecordsPermissions,
           },
         ]),
       );

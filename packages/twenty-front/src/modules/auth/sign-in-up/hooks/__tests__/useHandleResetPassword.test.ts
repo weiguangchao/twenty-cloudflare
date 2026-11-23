@@ -11,7 +11,7 @@ import { useCaptcha } from '@/client-config/hooks/useCaptcha';
 
 import { jotaiStore } from '@/ui/utilities/state/jotai/jotaiStore';
 import { SOURCE_LOCALE } from 'twenty-shared/translations';
-import { type PublicWorkspaceData } from '~/generated-metadata/graphql';
+import { type GetPublicWorkspaceDataByDomainQuery } from '~/generated-metadata/graphql';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
 
 const mockEnqueueToast = jest.fn();
@@ -33,7 +33,7 @@ dynamicActivate(SOURCE_LOCALE);
 const renderHooks = () => {
   jotaiStore.set(workspacePublicDataState.atom, {
     id: 'workspace-id',
-  } as PublicWorkspaceData);
+  } as GetPublicWorkspaceDataByDomainQuery['getPublicWorkspaceDataByDomain']);
 
   const { result } = renderHook(() => useHandleResetPassword(), {
     wrapper: ({ children }: { children: ReactNode }) =>

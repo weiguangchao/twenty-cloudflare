@@ -21,8 +21,6 @@ export const EMPTY_COMMAND_MENU_CONTEXT_API: CommandMenuContextApi = {
     unreadableFields: [],
     uneditableFields: [],
     objectMetadataId: '',
-    rowLevelPermissionPredicates: [],
-    rowLevelPermissionPredicateGroups: [],
   },
   selectedRecords: [],
   featureFlags: {},

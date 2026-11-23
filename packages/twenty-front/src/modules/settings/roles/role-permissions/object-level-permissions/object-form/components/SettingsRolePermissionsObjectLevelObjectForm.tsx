@@ -1,26 +1,16 @@
 import { NavigationButton } from '@/ui/input/components/NavigationButton';
-import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { useObjectMetadataItemById } from '@/object-metadata/hooks/useObjectMetadataItemById';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { SettingsRolePermissionsObjectLevelObjectFieldPermissionTable } from '@/settings/roles/role-permissions/object-level-permissions/field-permissions/components/SettingsRolePermissionsObjectLevelObjectFieldPermissionTable';
 import { SettingsRolePermissionsObjectLevelObjectFormObjectLevel } from '@/settings/roles/role-permissions/object-level-permissions/object-form/components/SettingsRolePermissionsObjectLevelObjectFormObjectLevel';
-import { SettingsRolePermissionsObjectLevelRecordLevelSection } from '@/settings/roles/role-permissions/object-level-permissions/record-level-permissions/components/SettingsRolePermissionsObjectLevelRecordLevelSection';
 import { settingsDraftRoleFamilyState } from '@/settings/roles/states/settingsDraftRoleFamilyState';
 import { SettingsPageLayout } from '@/settings/components/layout/SettingsPageLayout';
 import { SettingsWizardStepBar } from '@/settings/components/layout/SettingsWizardStepBar';
 import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
 import { useNavigate } from 'react-router-dom';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { SettingsPath } from 'twenty-shared/types';
-import {
-  getSettingsPath,
-  isDefined,
-  isRecordFilterValueValid,
-  mapRLSOperandToRecordFilterOperand,
-} from 'twenty-shared/utils';
+import { getSettingsPath } from 'twenty-shared/utils';
 import { themeCssVariables } from 'twenty-ui/theme';
-import { checkIfBillingEntitlementIsEnabledOnWorkspace } from '@/workspace/utils/checkIfBillingEntitlementIsEnabledOnWorkspace';
-import { BillingEntitlementKey } from '~/generated-metadata/graphql';
 import { useLingui } from '@lingui/react/macro';
 
 type SettingsRolePermissionsObjectLevelObjectFormProps = {
@@ -35,8 +25,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
   const { t } = useLingui();
   const navigate = useNavigate();
 
-  const currentWorkspace = useAtomStateValue(currentWorkspaceState);
-
   const settingsDraftRole = useAtomFamilyStateValue(
     settingsDraftRoleFamilyState,
     roleId,
@@ -45,12 +33,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
   const objectMetadata = useObjectMetadataItemById({
     objectId: objectMetadataId,
   });
-
-  const isRLSBillingEntitlementEnabled =
-    checkIfBillingEntitlementIsEnabledOnWorkspace(
-      BillingEntitlementKey.RLS,
-      currentWorkspace,
-    );
 
   const objectMetadataItem = objectMetadata.objectMetadataItem;
 
@@ -89,24 +71,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
 
   const headerTitle = settingsDraftRole.label;
 
-  const objectPredicates =
-    settingsDraftRole.rowLevelPermissionPredicates?.filter(
-      (predicate) => predicate.objectMetadataId === objectMetadataItem.id,
-    ) ?? [];
-
-  const hasInvalidPredicate = objectPredicates.some((predicate) => {
-    if (isDefined(predicate.workspaceMemberFieldMetadataId)) {
-      return false;
-    }
-
-    return !isRecordFilterValueValid({
-      operand: mapRLSOperandToRecordFilterOperand(predicate.operand),
-      value: predicate.value ?? '',
-    });
-  });
-
-  const isFinishDisabled = hasInvalidPredicate;
-
   return (
     <SettingsPageLayout
       title={headerTitle}
@@ -120,7 +84,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
             <NavigationButton
               size="sm"
               to={finishButtonPath}
-              disabled={isFinishDisabled}
               variant="solid"
               color="accent"
             >{t`Finish`}</NavigationButton>
@@ -136,11 +99,6 @@ export const SettingsRolePermissionsObjectLevelObjectForm = ({
         <SettingsRolePermissionsObjectLevelObjectFieldPermissionTable
           objectMetadataItem={objectMetadataItem}
           roleId={roleId}
-        />
-        <SettingsRolePermissionsObjectLevelRecordLevelSection
-          objectMetadataItem={objectMetadataItem}
-          roleId={roleId}
-          hasOrganizationPlan={isRLSBillingEntitlementEnabled}
         />
       </SettingsPageContainer>
     </SettingsPageLayout>

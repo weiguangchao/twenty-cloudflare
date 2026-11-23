@@ -50,34 +50,6 @@ export const GET_CURRENT_USER = gql`
     userEmail
   }
 
-  fragment RowLevelPermissionPredicateFragment on RowLevelPermissionPredicate {
-    id
-    fieldMetadataId
-    relationFieldMetadataId
-    objectMetadataId
-    operand
-    subFieldName
-    workspaceMemberFieldMetadataId
-    workspaceMemberSubFieldName
-    rowLevelPermissionPredicateGroupId
-    positionInRowLevelPermissionPredicateGroup
-    roleId
-    value
-  }
-
-  fragment RowLevelPermissionPredicateGroupFragment on RowLevelPermissionPredicateGroup {
-    id
-    parentRowLevelPermissionPredicateGroupId
-    logicalOperator
-    positionInRowLevelPermissionPredicateGroup
-    canReadRecords
-    canUpdateRecords
-    canSoftDeleteRecords
-    canDestroyRecords
-    roleId
-    objectMetadataId
-  }
-
   fragment WorkspaceUrlsFragment on WorkspaceUrls {
     subdomainUrl
     customUrl
@@ -93,39 +65,6 @@ export const GET_CURRENT_USER = gql`
     end_date
     items {
       ...BillingSubscriptionSchedulePhaseItemFragment
-    }
-  }
-
-  fragment CurrentBillingSubscriptionFragment on BillingSubscription {
-    id
-    status
-    interval
-    metadata
-    currentPeriodEnd
-    cancelAt
-    collectionMethod
-    hasUserCredits
-    phases {
-      ...BillingSubscriptionSchedulePhaseFragment
-    }
-    billingSubscriptionItems {
-      id
-      hasReachedCurrentPeriodCap
-      quantity
-      stripePriceId
-      unitAmount
-      creditAmount
-      billingProduct {
-        name
-        description
-        images
-        metadata {
-          productKey
-          planKey
-          priceUsageBased
-          isLegacy
-        }
-      }
     }
   }
 
@@ -170,13 +109,6 @@ export const GET_CURRENT_USER = gql`
       customUrl
     }
     logo
-    sso {
-      type
-      id
-      issuer
-      name
-      status
-    }
   }
 
   fragment AvailableWorkspacesFragment on AvailableWorkspaces {
@@ -223,19 +155,6 @@ export const GET_CURRENT_USER = gql`
         unreadableFields
         uneditableFields
         restrictedFields
-        rowLevelRecordsPermissions {
-          canCreateRecords
-          canReadRecords
-          canUpdateRecords
-          canSoftDeleteRecords
-          canDestroyRecords
-          predicates {
-            ...RowLevelPermissionPredicateFragment
-          }
-          predicateGroups {
-            ...RowLevelPermissionPredicateGroupFragment
-          }
-        }
       }
       twoFactorAuthenticationMethodSummary {
         twoFactorAuthenticationMethodId
@@ -248,7 +167,6 @@ export const GET_CURRENT_USER = gql`
       displayName
       logo
       inviteHash
-      allowImpersonation
       activationStatus
       isPublicInviteLinkEnabled
       isCampaignClickTrackingEnabled
@@ -257,13 +175,8 @@ export const GET_CURRENT_USER = gql`
       isGoogleAuthEnabled
       isMicrosoftAuthEnabled
       isPasswordAuthEnabled
-      isGoogleAuthBypassEnabled
-      isMicrosoftAuthBypassEnabled
-      isPasswordAuthBypassEnabled
       subdomain
       customDomain
-      hasValidSignedEnterpriseKey
-      hasValidEnterpriseValidityToken
       workspaceCustomApplication {
         id
       }
@@ -288,9 +201,6 @@ export const GET_CURRENT_USER = gql`
         key
         value
       }
-      currentBillingSubscription {
-        ...CurrentBillingSubscriptionFragment
-      }
       billingCustomer {
         id
         hasPaymentMethod
@@ -298,10 +208,6 @@ export const GET_CURRENT_USER = gql`
       }
       billingSubscriptions {
         ...BillingSubscriptionFragment
-      }
-      billingEntitlements {
-        key
-        value
       }
       isTrialAvailable
       workspaceMembersCount
@@ -329,7 +235,6 @@ export const GET_CURRENT_USER = gql`
       }
       isTwoFactorAuthenticationEnforced
       trashRetentionDays
-      eventLogRetentionDays
       editableProfileFields
       isInternalMessagesImportEnabled
     }

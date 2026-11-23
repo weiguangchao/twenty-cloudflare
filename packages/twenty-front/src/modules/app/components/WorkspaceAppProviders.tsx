@@ -20,7 +20,6 @@ import { MinimalMetadataLoadEffect } from '@/metadata-store/effect-components/Mi
 import { UserMetadataProviderInitialEffect } from '@/metadata-store/effect-components/UserMetadataProviderInitialEffect';
 import { ApolloCoreProvider } from '@/object-metadata/components/ApolloCoreProvider';
 import { RecordCreationFormProvider } from '@/object-record/record-form/components/RecordCreationFormProvider';
-import { RecordUpdateFormProvider } from '@/object-record/record-form/components/RecordUpdateFormProvider';
 import { SSEProvider } from '@/sse-db-event/components/SSEProvider';
 import { SupportChatEffect } from '@/support/components/SupportChatEffect';
 import { DialogManager } from '@/ui/feedback/dialog-manager/components/DialogManager';
@@ -65,12 +64,10 @@ export const WorkspaceAppProviders = () => {
                         <PageFavicon />
 
                         <RecordCreationFormProvider>
-                          <RecordUpdateFormProvider>
-                            <Outlet />
-                            <GlobalFilePreviewModal />
-                            <CommandMenuConfirmationModalManager />
-                            <CommandRunner />
-                          </RecordUpdateFormProvider>
+                          <Outlet />
+                          <GlobalFilePreviewModal />
+                          <CommandMenuConfirmationModalManager />
+                          <CommandRunner />
                         </RecordCreationFormProvider>
                       </StrictMode>
                     </DialogManager>

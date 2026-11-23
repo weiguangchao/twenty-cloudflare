@@ -141,7 +141,6 @@ const meta: Meta<typeof RecordCalendarGrid> = {
                         canDestroyAllRecords: true,
                         unreadableFields: [],
                         uneditableFields: [],
-                        rowLevelRecordsPermissions: null,
                       },
                     }}
                   >

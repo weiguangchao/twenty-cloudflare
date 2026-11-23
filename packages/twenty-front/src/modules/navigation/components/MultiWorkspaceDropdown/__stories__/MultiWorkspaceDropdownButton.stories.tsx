@@ -10,7 +10,7 @@ import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { graphql, HttpResponse } from 'msw';
 import { expect, fn, spyOn, userEvent, waitFor, within } from 'storybook/test';
 import { OpenRecordIn } from 'twenty-shared/types';
-import { type AvailableWorkspace } from '~/generated-metadata/graphql';
+import { type AvailableWorkspaceFragmentFragment } from '~/generated-metadata/graphql';
 import { ComponentWithRouterDecorator } from '~/testing/decorators/ComponentWithRouterDecorator';
 import { ToastDecorator } from '~/testing/decorators/ToastDecorator';
 import {
@@ -19,39 +19,77 @@ import {
 } from '~/testing/mock-data/users';
 
 const updateWorkspaceMemberSettings = fn();
-const AVAILABLE_WORKSPACES: AvailableWorkspace[] = [
+const AVAILABLE_WORKSPACES: AvailableWorkspaceFragmentFragment[] = [
   {
+    __typename: 'AvailableWorkspace',
     id: mockCurrentWorkspace.id,
     displayName: 'Twenty',
-    sso: [],
-    workspaceUrls: { subdomainUrl: 'https://twenty.example.com' },
+    loginToken: null,
+    inviteHash: null,
+    personalInviteToken: null,
+    logo: null,
+    workspaceUrls: {
+      __typename: 'WorkspaceUrls',
+      customUrl: null,
+      subdomainUrl: 'https://twenty.example.com',
+    },
   },
   {
+    __typename: 'AvailableWorkspace',
     id: 'acme',
     displayName: 'Acme',
-    sso: [],
-    workspaceUrls: { subdomainUrl: 'https://acme.example.com' },
+    loginToken: null,
+    inviteHash: null,
+    personalInviteToken: null,
+    logo: null,
+    workspaceUrls: {
+      __typename: 'WorkspaceUrls',
+      customUrl: null,
+      subdomainUrl: 'https://acme.example.com',
+    },
   },
   {
+    __typename: 'AvailableWorkspace',
     id: 'venture',
     displayName: 'Venture',
-    sso: [],
-    workspaceUrls: { subdomainUrl: 'https://venture.example.com' },
+    loginToken: null,
+    inviteHash: null,
+    personalInviteToken: null,
+    logo: null,
+    workspaceUrls: {
+      __typename: 'WorkspaceUrls',
+      customUrl: null,
+      subdomainUrl: 'https://venture.example.com',
+    },
   },
   {
+    __typename: 'AvailableWorkspace',
     id: 'studio',
     displayName: 'Studio',
-    sso: [],
-    workspaceUrls: { subdomainUrl: 'https://studio.example.com' },
+    loginToken: null,
+    inviteHash: null,
+    personalInviteToken: null,
+    logo: null,
+    workspaceUrls: {
+      __typename: 'WorkspaceUrls',
+      customUrl: null,
+      subdomainUrl: 'https://studio.example.com',
+    },
   },
 ];
-const INVITED_WORKSPACE: AvailableWorkspace = {
+const INVITED_WORKSPACE: AvailableWorkspaceFragmentFragment = {
+  __typename: 'AvailableWorkspace',
   id: 'invited',
   displayName: 'Invited workspace',
   inviteHash: 'workspace-invite',
   personalInviteToken: 'personal-invite',
-  sso: [],
-  workspaceUrls: { subdomainUrl: 'https://invited.example.com' },
+  loginToken: null,
+  logo: null,
+  workspaceUrls: {
+    __typename: 'WorkspaceUrls',
+    customUrl: null,
+    subdomainUrl: 'https://invited.example.com',
+  },
 };
 
 const meta: Meta<typeof MultiWorkspaceDropdownButton> = {

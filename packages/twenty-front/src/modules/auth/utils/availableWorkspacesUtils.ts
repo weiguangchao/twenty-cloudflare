@@ -2,9 +2,14 @@ import { generatePath } from 'react-router-dom';
 import { AppPath } from 'twenty-shared/types';
 import { isDefined } from 'twenty-shared/utils';
 import {
-  type AvailableWorkspace,
-  type AvailableWorkspaces,
+  type AvailableWorkspaceFragmentFragment,
+  type AvailableWorkspacesFragmentFragment,
 } from '~/generated-metadata/graphql';
+
+type AvailableWorkspaces = Omit<
+  AvailableWorkspacesFragmentFragment,
+  '__typename'
+>;
 
 export const countAvailableWorkspaces = ({
   availableWorkspacesForSignIn,
@@ -18,12 +23,12 @@ export const countAvailableWorkspaces = ({
 export const getFirstAvailableWorkspaces = ({
   availableWorkspacesForSignIn,
   availableWorkspacesForSignUp,
-}: AvailableWorkspaces): AvailableWorkspace => {
+}: AvailableWorkspaces): AvailableWorkspaceFragmentFragment => {
   return availableWorkspacesForSignIn[0] ?? availableWorkspacesForSignUp[0];
 };
 
 const getAvailableWorkspacePathname = (
-  availableWorkspace: AvailableWorkspace,
+  availableWorkspace: AvailableWorkspaceFragmentFragment,
 ) => {
   if (isDefined(availableWorkspace.loginToken)) {
     return AppPath.Verify;
@@ -42,7 +47,7 @@ const getAvailableWorkspacePathname = (
 };
 
 const getAvailableWorkspaceSearchParams = (
-  availableWorkspace: AvailableWorkspace,
+  availableWorkspace: AvailableWorkspaceFragmentFragment,
   defaultSearchParams: Record<string, string> = {},
 ) => {
   const searchParams: Record<string, string> = defaultSearchParams;
@@ -60,7 +65,7 @@ const getAvailableWorkspaceSearchParams = (
 };
 
 export const getAvailableWorkspacePathAndSearchParams = (
-  availableWorkspace: AvailableWorkspace,
+  availableWorkspace: AvailableWorkspaceFragmentFragment,
   defaultSearchParams: Record<string, string> = {},
 ): { pathname: string; searchParams: Record<string, string> } => {
   return {

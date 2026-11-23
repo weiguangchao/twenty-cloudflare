@@ -32,7 +32,7 @@ import { Avatar } from 'twenty-ui/primitives/data-display';
 import { Separator } from 'twenty-ui/primitives/layout';
 import { useTheme, themeCssVariables } from 'twenty-ui/theme';
 import {
-  type AvailableWorkspace,
+  type AvailableWorkspaceFragmentFragment,
   GetWorkspaceCreationDefaultsDocument,
 } from '~/generated-metadata/graphql';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
@@ -142,7 +142,9 @@ export const SignInUpGlobalScopeForm = () => {
     skip: signInUpStep !== SignInUpStep.WorkspaceSelection,
   });
 
-  const getAvailableWorkspaceUrl = (availableWorkspace: AvailableWorkspace) => {
+  const getAvailableWorkspaceUrl = (
+    availableWorkspace: AvailableWorkspaceFragmentFragment,
+  ) => {
     const { pathname, searchParams } = getAvailableWorkspacePathAndSearchParams(
       availableWorkspace,
       { email: form.getValues('email') },

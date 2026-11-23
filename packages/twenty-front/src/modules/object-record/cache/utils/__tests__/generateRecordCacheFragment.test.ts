@@ -23,7 +23,6 @@ const objectPermissionsByObjectMetadataId = {
     canDestroyAllRecords: true,
     unreadableFields: [],
     uneditableFields: [],
-    rowLevelRecordsPermissions: null,
   },
 };
 

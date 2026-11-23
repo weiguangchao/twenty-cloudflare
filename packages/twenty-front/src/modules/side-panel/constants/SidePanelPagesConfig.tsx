@@ -3,7 +3,6 @@ import { SidePanelRoutedPage } from '@/side-panel/routing/components/SidePanelRo
 import { SidePanelCreateRelatedRecordPage } from '@/side-panel/pages/create-related-record/components/SidePanelCreateRelatedRecordPage';
 import { SidePanelRecordCreationFormPage } from '@/side-panel/pages/record-creation-form/components/SidePanelRecordCreationFormPage';
 import { SidePanelRecordCreationFormSettingsPage } from '@/side-panel/pages/record-creation-form-settings/components/SidePanelRecordCreationFormSettingsPage';
-import { SidePanelRecordUpdateFormPage } from '@/side-panel/pages/record-update-form/components/SidePanelRecordUpdateFormPage';
 import { SidePanelShareRecordPage } from '@/side-panel/pages/share-record/components/SidePanelShareRecordPage';
 import { SidePanelDashboardChartSettings } from '@/side-panel/pages/page-layout/components/dashboard/SidePanelDashboardChartSettings';
 import { SidePanelDashboardIframeSettings } from '@/side-panel/pages/page-layout/components/dashboard/SidePanelDashboardIframeSettings';
@@ -66,7 +65,6 @@ export const SIDE_PANEL_PAGES_CONFIG = new Map<
     SidePanelPages.RecordCreationFormSettings,
     <SidePanelRecordCreationFormSettingsPage />,
   ],
-  [SidePanelPages.RecordUpdateForm, <SidePanelRecordUpdateFormPage />],
   [SidePanelPages.RoutedPage, <SidePanelRoutedPage />],
   [SidePanelPages.ShareRecord, <SidePanelShareRecordPage />],
 ]);
