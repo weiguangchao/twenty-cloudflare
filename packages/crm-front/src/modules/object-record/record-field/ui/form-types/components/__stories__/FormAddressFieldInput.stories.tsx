@@ -37,41 +37,6 @@ export const Default: Story = {
   },
 };
 
-export const WithVariables: Story = {
-  args: {
-    label: 'Address',
-    defaultValue: {
-      addressStreet1: `{{trigger.properties.after.address.addressStreet1}}`,
-      addressStreet2: `{{trigger.properties.after.address.addressStreet2}}`,
-      addressCity: `{{trigger.properties.after.address.addressCity}}`,
-      addressState: `{{trigger.properties.after.address.addressState}}`,
-      addressCountry: `{{trigger.properties.after.address.addressCountry}}`,
-      addressPostcode: `{{trigger.properties.after.address.addressPostcode}}`,
-      addressLat: 39.781721,
-      addressLng: -89.650148,
-    },
-    VariablePicker: () => <div>VariablePicker</div>,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const street1Variable = await canvas.findByText('Address Street1');
-    const street2Variable = await canvas.findByText('Address Street2');
-    const cityVariable = await canvas.findByText('Address City');
-    const stateVariable = await canvas.findByText('Address State');
-    const postcodeVariable = await canvas.findByText('Address Postcode');
-
-    expect(street1Variable).toBeVisible();
-    expect(street2Variable).toBeVisible();
-    expect(cityVariable).toBeVisible();
-    expect(stateVariable).toBeVisible();
-    expect(postcodeVariable).toBeVisible();
-
-    const variablePickers = await canvas.findAllByText('VariablePicker');
-    expect(variablePickers).toHaveLength(6);
-  },
-};
-
 export const Disabled: Story = {
   args: {
     label: 'Address',

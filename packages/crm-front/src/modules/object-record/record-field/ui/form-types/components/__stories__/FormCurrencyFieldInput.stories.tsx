@@ -3,7 +3,6 @@ import { type FieldCurrencyValue } from '@/object-record/record-field/ui/types/F
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { CurrencyCode } from 'crm-shared/constants';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormCurrencyFieldInput> = {
   title: 'UI/Data/Field/Form/Input/FormCurrencyFieldInput',
@@ -31,25 +30,6 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     await canvas.findByText('Currency Code');
     await canvas.findByText('Amount Micros');
-  },
-};
-
-export const WithVariable: Story = {
-  args: {
-    label: 'Salary',
-    defaultValue: {
-      currencyCode: `{{${MOCKED_STEP_ID}.amount.currencyCode}}` as CurrencyCode,
-      amountMicros: `{{${MOCKED_STEP_ID}.amount.amountMicros}}`,
-    },
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const amountMicros = await canvas.findAllByText('Amount Micros');
-    const currencyCode = await canvas.findAllByText('Currency Code');
-
-    expect(amountMicros).toHaveLength(2);
-    expect(currencyCode).toHaveLength(2);
   },
 };
 

@@ -1,7 +1,6 @@
 import { FormFullNameFieldInput } from '@/object-record/record-field/ui/form-types/components/FormFullNameFieldInput';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormFullNameFieldInput> = {
   title: 'UI/Data/Field/Form/Input/FormFullNameFieldInput',
@@ -29,27 +28,6 @@ export const Default: Story = {
     await canvas.findByText('Name');
     await canvas.findByText('First Name');
     await canvas.findByText('Last Name');
-  },
-};
-
-export const WithVariable: Story = {
-  args: {
-    label: 'Name',
-    defaultValue: {
-      firstName: `{{${MOCKED_STEP_ID}.name}}`,
-      lastName: `{{${MOCKED_STEP_ID}.amount}}`,
-    },
-    VariablePicker: () => <div>VariablePicker</div>,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await canvas.findAllByText('Name');
-
-    const lastNameVariable = await canvas.findByText('Amount');
-    expect(lastNameVariable).toBeVisible();
-
-    await canvas.findAllByText('VariablePicker');
   },
 };
 

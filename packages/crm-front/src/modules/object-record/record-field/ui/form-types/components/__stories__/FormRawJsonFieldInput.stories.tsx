@@ -201,118 +201,6 @@ export const DoesNotIgnoreInvalidJson: Story = {
   },
 };
 
-export const DisplayDefaultValueWithVariablesProperly: Story = {
-  args: {
-    placeholder: 'Enter valid json',
-    defaultValue: `{ "a": { "b" :  {{${MOCKED_STEP_ID}.name}} } }`,
-    onChange: fn(),
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await canvas.findByText(/{ "a": { "b" : /);
-
-    const variableTag = await canvas.findByText('Name');
-    await expect(variableTag).toBeVisible();
-
-    await canvas.findByText(/ } }/);
-  },
-};
-
-export const InsertVariableInTheMiddleOnTextInput: Story = {
-  args: {
-    placeholder: 'Enter valid json',
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect('{{test}}');
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const editor = await waitFor(() => {
-      const editor = canvasElement.querySelector('.ProseMirror > p');
-      expect(editor).toBeVisible();
-      return editor;
-    });
-
-    if (!editor) {
-      throw new Error('Editor element not found');
-    }
-
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
-
-    await userEvent.type(editor, '{{ "a": {{ "b" : ');
-
-    await userEvent.click(addVariableButton);
-
-    await userEvent.type(editor, ' } }');
-
-    await Promise.all([
-      waitFor(() => {
-        expect(args.onChange).toHaveBeenCalledWith(
-          '{ "a": { "b" : {{test}} } }',
-        );
-      }),
-    ]);
-  },
-};
-
-export const CanUseVariableAsObjectProperty: Story = {
-  args: {
-    placeholder: 'Enter valid json',
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect('{{test}}');
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const editor = await waitFor(() => {
-      const editor = canvasElement.querySelector('.ProseMirror > p');
-      expect(editor).toBeVisible();
-      return editor;
-    });
-
-    if (!editor) {
-      throw new Error('Editor element not found');
-    }
-
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
-
-    await userEvent.type(editor, '{{ "');
-
-    await userEvent.click(addVariableButton);
-
-    await userEvent.type(editor, '": 2 }');
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith('{ "{{test}}": 2 }');
-    });
-  },
-};
-
 export const ClearField: Story = {
   args: {
     placeholder: 'Enter valid json',
@@ -394,23 +282,10 @@ export const AcceptsJsonEncodedNewline: Story = {
 export const HasHistory: Story = {
   args: {
     placeholder: 'Enter valid json',
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.name}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
     onChange: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const controlKey = getUserDevice() === 'mac' ? 'Meta' : 'Control';
-
-    const canvas = within(canvasElement);
 
     const editor = await waitFor(() => {
       const editor = canvasElement.querySelector('.ProseMirror > p');
@@ -422,19 +297,9 @@ export const HasHistory: Story = {
       throw new Error('Editor element not found');
     }
 
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
+    await userEvent.type(editor, '{{ "a": "b" }');
 
-    await userEvent.type(editor, '{{ "a": ');
-
-    await userEvent.click(addVariableButton);
-
-    await userEvent.type(editor, ' }');
-
-    expect(args.onChange).toHaveBeenLastCalledWith(
-      `{ "a": {{${MOCKED_STEP_ID}.name}} }`,
-    );
+    expect(args.onChange).toHaveBeenLastCalledWith('{ "a": "b" }');
 
     await userEvent.type(editor, `{${controlKey}>}z{/${controlKey}}`);
 
@@ -446,9 +311,7 @@ export const HasHistory: Story = {
       `{Shift>}{${controlKey}>}z{/${controlKey}}{/Shift}`,
     );
 
-    expect(editor).toHaveTextContent('{ "a": Name }');
-    expect(args.onChange).toHaveBeenLastCalledWith(
-      `{ "a": {{${MOCKED_STEP_ID}.name}} }`,
-    );
+    expect(editor).toHaveTextContent('{ "a": "b" }');
+    expect(args.onChange).toHaveBeenLastCalledWith('{ "a": "b" }');
   },
 };

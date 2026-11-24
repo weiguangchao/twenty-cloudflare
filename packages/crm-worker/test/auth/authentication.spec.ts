@@ -307,7 +307,8 @@ describe('authentication and onboarding contracts', () => {
     expect(sessions.result.data!.currentUserSessions).toHaveLength(1);
     expect(sessions.result.data!.currentUserSessions[0].isCurrent).toBe(true);
     let code: string | undefined;
-    for (let attempt = 0; attempt < 25; attempt++) {
+    // Enough attempts to hit the limit of 20 even if a 60 second window resets mid-loop.
+    for (let attempt = 0; attempt < 45; attempt++) {
       const login = await connection.request(
         'mutation($email: String!, $password: String!) { signIn(email: $email, password: $password) { tokens { accessOrWorkspaceAgnosticToken { token } } } }',
         { email, password: 'WrongPassword' },

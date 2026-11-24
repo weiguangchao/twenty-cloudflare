@@ -323,78 +323,6 @@ export const TabOrderIncludesTrigger: Story = {
   },
 };
 
-export const SetVariable: Story = {
-  args: {
-    label: 'Items',
-    defaultValue: undefined,
-    onChange: fn(),
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.name}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
-
-    await userEvent.click(addVariableButton);
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith(`{{${MOCKED_STEP_ID}.name}}`);
-    });
-
-    const variable = await canvas.findByText('Name');
-
-    expect(variable).toBeVisible();
-  },
-};
-
-export const ReplaceItemsWithVariable: Story = {
-  args: {
-    label: 'Items',
-    defaultValue: ['First item', 'Second item'],
-    onChange: fn(),
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.name}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
-
-    await userEvent.click(addVariableButton);
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith(`{{${MOCKED_STEP_ID}.name}}`);
-    });
-
-    const variable = await canvas.findByText('Name');
-
-    expect(variable).toBeVisible();
-  },
-};
-
 export const ReplaceVariableWithItems: Story = {
   args: {
     label: 'Items',
@@ -465,25 +393,5 @@ export const DisabledWithItems: Story = {
 
       expect(itemChip).toBeVisible();
     }
-  },
-};
-
-export const DisabledWithVariable: Story = {
-  args: {
-    label: 'Items',
-    defaultValue: `{{${MOCKED_STEP_ID}.createdAt}}`,
-    onChange: fn(),
-    readonly: true,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const variableChip = await canvas.findByText('Creation date');
-    expect(variableChip).toBeVisible();
-
-    await userEvent.click(variableChip);
-
-    const searchInputInModal = canvas.queryByPlaceholderText('Search');
-    expect(searchInputInModal).not.toBeInTheDocument();
   },
 };

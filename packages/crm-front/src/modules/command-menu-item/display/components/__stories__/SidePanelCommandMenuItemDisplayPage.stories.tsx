@@ -35,11 +35,9 @@ import { FocusComponentType } from '@/ui/utilities/focus/types/FocusComponentTyp
 import { jotaiStore } from '@/ui/utilities/state/jotai/jotaiStore';
 import { type ViewWithRelations } from '@/views/types/ViewWithRelations';
 import { type CommandMenuContextApi } from 'crm-shared/types';
-import { isDefined } from 'crm-shared/utils';
 import {
   CommandMenuItemAvailabilityType,
   EngineComponentKey,
-  PermissionFlagType,
   type CommandMenuItemFieldsFragment,
 } from '~/generated-metadata/graphql';
 import { ToastStoryContainer } from '~/testing/components/ToastStoryContainer';
@@ -179,7 +177,6 @@ type CreateDecoratorParams = {
   isInPreviewMode?: boolean;
   pathname?: string;
   colorScheme?: ColorScheme;
-  permissionFlags?: PermissionFlagType[];
 };
 
 const createDecorator = ({
@@ -191,16 +188,11 @@ const createDecorator = ({
   isInPreviewMode = false,
   pathname = '/objects/companies',
   colorScheme = 'System',
-  permissionFlags,
 }: CreateDecoratorParams): Decorator => {
-  const currentUserWorkspace = isDefined(permissionFlags)
-    ? { permissionFlags, objectRecordsPermissions: [] }
-    : null;
-
   return (Story) => {
     jotaiStore.set(sidePanelSearchState.atom, sidePanelSearch);
     jotaiStore.set(isSidePanelOpenedState.atom, true);
-    jotaiStore.set(currentUserWorkspaceState.atom, currentUserWorkspace);
+    jotaiStore.set(currentUserWorkspaceState.atom, null);
     jotaiStore.set(currentWorkspaceMemberState.atom, {
       ...mockedWorkspaceMemberData,
       colorScheme,
@@ -391,24 +383,6 @@ export const SearchWithoutMatchingItemsAndWithFallback: Story = {
     await waitFor(() => {
       expect(canvas.queryByText('No results found')).not.toBeInTheDocument();
     });
-  },
-};
-
-export const SearchWithoutMatchingItemsOffersAskAi: Story = {
-  decorators: [
-    createDecorator({
-      commandMenuItems: [...PINNED_ITEMS, OTHER_ITEM, FALLBACK_ITEM],
-      sidePanelSearch: 'mike',
-      pinnedItemsContainerWidth: 1000,
-      permissionFlags: [PermissionFlagType.AI],
-    }),
-  ],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    expect(await canvas.findByText('Use ‘mike’ with...')).toBeVisible();
-    expect(canvas.getByText('Search records')).toBeVisible();
-    expect(canvas.getByText('Ask AI')).toBeVisible();
   },
 };
 

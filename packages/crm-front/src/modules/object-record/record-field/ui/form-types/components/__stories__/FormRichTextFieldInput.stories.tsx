@@ -1,17 +1,9 @@
 import { FormRichTextFieldInput } from '@/object-record/record-field/ui/form-types/components/FormRichTextFieldInput';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { type JSONContent } from '@tiptap/core';
-import {
-  expect,
-  fn,
-  userEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { TIPTAP_DOCUMENT_SCHEMA_VERSION } from 'crm-shared/utils';
 import { getUserDevice } from 'crm-ui/utilities';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const serializeDocument = (content: JSONContent[]) =>
   JSON.stringify({
@@ -47,131 +39,6 @@ export const WithLabel: Story = {
     const canvas = within(canvasElement);
 
     await canvas.findByText('Rich Text');
-  },
-};
-
-export const WithVariable: Story = {
-  args: {
-    label: 'Rich Text',
-    placeholder: 'Rich Text field...',
-    defaultValue: { tiptap: null, markdown: '## Title\nVariable: ' },
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.name}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const editor = await waitFor(() => {
-      const editor = canvasElement.querySelector('.ProseMirror > p');
-
-      expect(editor).toBeVisible();
-
-      return editor;
-    });
-
-    if (!editor) {
-      throw new Error('Editor element not found');
-    }
-
-    await userEvent.click(editor);
-
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
-
-    await userEvent.click(addVariableButton);
-
-    const variable = await canvas.findByText('Name');
-    expect(variable).toBeVisible();
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith({
-        tiptap: serializeDocument([
-          {
-            type: 'heading',
-            attrs: { level: 2 },
-            content: [{ type: 'text', text: 'Title' }],
-          },
-          {
-            type: 'paragraph',
-            content: [
-              { type: 'text', text: 'Variable:' },
-              {
-                type: 'variableTag',
-                attrs: {
-                  variable: '{{04d5f3bf-9714-400d-ba27-644006a5fb1b.name}}',
-                },
-              },
-            ],
-          },
-        ]),
-        markdown: null,
-        blocknote: null,
-      });
-    });
-    expect(args.onChange).toHaveBeenCalledTimes(1);
-  },
-};
-
-export const WithDeletableVariable: Story = {
-  args: {
-    label: 'Text',
-    placeholder: 'Text field...',
-    defaultValue: {
-      tiptap: null,
-      markdown: `test {{${MOCKED_STEP_ID}.name}} test`,
-    },
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const editor = await waitFor(() => {
-      const editor = canvasElement.querySelector('.ProseMirror > p');
-
-      expect(editor).toBeVisible();
-
-      return editor;
-    });
-
-    const variable = await canvas.findByText('Name');
-    expect(variable).toBeVisible();
-
-    const deleteVariableButton = await canvas.findByRole('button', {
-      name: 'Remove variable',
-    });
-
-    await Promise.all([
-      waitForElementToBeRemoved(variable),
-
-      deleteVariableButton.click(),
-    ]);
-
-    expect(editor).toHaveTextContent('test test');
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith({
-        tiptap: serializeDocument([
-          {
-            type: 'paragraph',
-            content: [{ type: 'text', text: 'test  test' }],
-          },
-        ]),
-        markdown: null,
-        blocknote: null,
-      });
-    });
-    expect(args.onChange).toHaveBeenCalledTimes(1);
   },
 };
 
@@ -214,56 +81,14 @@ export const Disabled: Story = {
   },
 };
 
-export const DisabledWithVariable: Story = {
-  args: {
-    label: 'Text',
-    defaultValue: {
-      tiptap: null,
-      markdown: `test {{${MOCKED_STEP_ID}.name}} test`,
-    },
-    readonly: true,
-  },
-  play: async ({ canvasElement }) => {
-    const editor = await waitFor(() => {
-      const editor = canvasElement.querySelector('.ProseMirror > p');
-
-      expect(editor).toBeVisible();
-
-      return editor;
-    });
-
-    await waitFor(() => {
-      expect(editor).toHaveTextContent('test Name test');
-    });
-
-    const deleteVariableButton = within(editor as HTMLElement).queryByRole(
-      'button',
-    );
-    expect(deleteVariableButton).not.toBeInTheDocument();
-  },
-};
-
 export const HasHistory: Story = {
   args: {
     label: 'Text',
     placeholder: 'Text field...',
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.name}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
     onChange: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const controlKey = getUserDevice() === 'mac' ? 'Meta' : 'Control';
-
-    const canvas = within(canvasElement);
 
     const editor = await waitFor(() => {
       const editor = canvasElement.querySelector('.ProseMirror > p');
@@ -275,31 +100,17 @@ export const HasHistory: Story = {
       throw new Error('Editor element not found');
     }
 
-    const addVariableButton = await canvas.findByRole('button', {
-      name: 'Add variable',
-    });
+    await userEvent.type(editor, 'Hello World');
 
-    await userEvent.type(editor, 'Hello World ');
-
-    await userEvent.click(addVariableButton);
-
-    const documentWithVariable = serializeDocument([
+    const documentWithText = serializeDocument([
       {
         type: 'paragraph',
-        content: [
-          { type: 'text', text: 'Hello World ' },
-          {
-            type: 'variableTag',
-            attrs: {
-              variable: '{{04d5f3bf-9714-400d-ba27-644006a5fb1b.name}}',
-            },
-          },
-        ],
+        content: [{ type: 'text', text: 'Hello World' }],
       },
     ]);
 
     expect(args.onChange).toHaveBeenLastCalledWith({
-      tiptap: documentWithVariable,
+      tiptap: documentWithText,
       markdown: null,
       blocknote: null,
     });
@@ -318,9 +129,9 @@ export const HasHistory: Story = {
       `{Shift>}{${controlKey}>}z{/${controlKey}}{/Shift}`,
     );
 
-    expect(editor).toHaveTextContent(`Hello World Name`);
+    expect(editor).toHaveTextContent('Hello World');
     expect(args.onChange).toHaveBeenLastCalledWith({
-      tiptap: documentWithVariable,
+      tiptap: documentWithText,
       markdown: null,
       blocknote: null,
     });

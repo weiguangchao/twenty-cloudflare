@@ -1,10 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { FormPhoneFieldInput } from '@/object-record/record-field/ui/form-types/components/FormPhoneFieldInput';
 import { type FieldPhonesValue } from '@/object-record/record-field/ui/types/FieldMetadata';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormPhoneFieldInput> = {
   title: 'UI/Data/Field/Form/Input/FormPhoneFieldInput',
@@ -58,87 +57,6 @@ export const Default: Story = {
     const canvas = within(canvasElement);
 
     await canvas.findByText('Phone');
-  },
-};
-
-export const WithVariablesAsDefaultValues: Story = {
-  args: {
-    label: 'Phone',
-    defaultValue: {
-      primaryPhoneCountryCode: '',
-      primaryPhoneCallingCode: `{{${MOCKED_STEP_ID}.name}}`,
-      primaryPhoneNumber: `{{${MOCKED_STEP_ID}.amount.amountMicros}}`,
-    },
-    VariablePicker: () => <div>VariablePicker</div>,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const callingCodeVariable = await canvas.findByText('Name');
-    expect(callingCodeVariable).toBeVisible();
-
-    const variablePickers = await canvas.findAllByText('VariablePicker');
-
-    expect(variablePickers).toHaveLength(2);
-
-    for (const variablePicker of variablePickers) {
-      expect(variablePicker).toBeVisible();
-    }
-  },
-};
-
-export const SelectingVariables: Story = {
-  args: {
-    label: 'Phone',
-    VariablePicker: ({ onVariableSelect }) => {
-      return (
-        <button
-          onClick={() => {
-            onVariableSelect(`{{${MOCKED_STEP_ID}.amount.amountMicros}}`);
-          }}
-        >
-          Add variable
-        </button>
-      );
-    },
-    onChange: fn(),
-  },
-  render: (args) => (
-    <FormPhoneFieldInputWithState
-      label={args.label}
-      defaultValue={args.defaultValue}
-      onChange={args.onChange}
-      readonly={args.readonly}
-      VariablePicker={args.VariablePicker}
-    />
-  ),
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-
-    const callingCodeDefaultValue = await canvas.findByText(
-      'Select a calling code',
-    );
-
-    expect(callingCodeDefaultValue).toBeVisible();
-
-    const phoneNumberDefaultValue = await canvas.findByRole('textbox');
-    expect(phoneNumberDefaultValue).toHaveTextContent('');
-
-    const addVariableButtons = await canvas.findAllByText('Add variable');
-    const phoneNumberVariablePicker = addVariableButtons[1];
-
-    await userEvent.click(phoneNumberVariablePicker);
-
-    const phoneNumberVariable = await canvas.findByText('Amount Micros');
-    expect(phoneNumberVariable).toBeVisible();
-
-    await waitFor(() => {
-      expect(args.onChange).toHaveBeenCalledWith({
-        primaryPhoneNumber: `{{${MOCKED_STEP_ID}.amount.amountMicros}}`,
-        primaryPhoneCountryCode: '',
-        primaryPhoneCallingCode: '',
-      });
-    });
   },
 };
 

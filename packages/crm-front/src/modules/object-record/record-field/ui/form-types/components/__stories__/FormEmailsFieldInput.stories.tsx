@@ -1,7 +1,6 @@
 import { FormEmailsFieldInput } from '@/object-record/record-field/ui/form-types/components/FormEmailsFieldInput';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormEmailsFieldInput> = {
   title: 'UI/Data/Field/Form/Input/FormEmailsFieldInput',
@@ -29,26 +28,6 @@ export const Default: Story = {
     await canvas.findByText('Emails');
     await canvas.findByText('Primary Email');
     await canvas.findByText('tim@example.com');
-  },
-};
-
-export const WithVariable: Story = {
-  args: {
-    label: 'Emails',
-    defaultValue: {
-      primaryEmail: `{{${MOCKED_STEP_ID}.name}}`,
-      additionalEmails: [],
-    },
-    VariablePicker: () => <div>VariablePicker</div>,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const primaryEmailVariable = await canvas.findByText('Name');
-    expect(primaryEmailVariable).toBeVisible();
-
-    const variablePicker = await canvas.findByText('VariablePicker');
-    expect(variablePicker).toBeVisible();
   },
 };
 

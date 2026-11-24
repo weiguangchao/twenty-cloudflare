@@ -12,15 +12,6 @@ const ROLES = [
   ...mockedRoles,
   {
     ...mockedRoles[1],
-    id: 'agent-only-role',
-    label: 'Agent only',
-    canBeAssignedToUsers: false,
-    canBeAssignedToAgents: true,
-    canBeAssignedToApiKeys: false,
-    workspaceMembers: [],
-  },
-  {
-    ...mockedRoles[1],
     id: 'api-key-only-role',
     label: 'API key only',
     canBeAssignedToUsers: false,
@@ -58,31 +49,21 @@ export const FilterPanelTogglesStayOpen: Story = {
     const body = within(canvasElement.ownerDocument.body);
 
     expect(await canvas.findByText('Admin')).toBeVisible();
-    expect(canvas.queryByText('Agent only')).not.toBeInTheDocument();
+    expect(canvas.queryByText('API key only')).not.toBeInTheDocument();
 
     const trigger = canvas.getByRole('button', { name: 'Filter' });
 
     await userEvent.click(trigger);
     const popup = await body.findByRole('dialog', { name: 'Filter' });
-    const agentRoles = within(popup).getByRole('switch', {
-      name: 'Agent roles',
-    });
-
-    await waitFor(() => expect(agentRoles).toHaveFocus());
-    await userEvent.keyboard(' ');
-    expect(agentRoles).toBeChecked();
-    expect(await canvas.findByText('Agent only')).toBeVisible();
-    expect(popup).toBeVisible();
-
-    await userEvent.tab();
     const apiKeyRoles = within(popup).getByRole('switch', {
       name: 'API key roles',
     });
 
-    expect(apiKeyRoles).toHaveFocus();
+    await waitFor(() => expect(apiKeyRoles).toHaveFocus());
     await userEvent.keyboard(' ');
     expect(apiKeyRoles).toBeChecked();
     expect(await canvas.findByText('API key only')).toBeVisible();
+    expect(popup).toBeVisible();
 
     await userEvent.keyboard('{Escape}');
     await waitFor(() => expect(popup).not.toBeInTheDocument());

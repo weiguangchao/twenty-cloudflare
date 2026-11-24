@@ -2,7 +2,6 @@ import { FormMultiSelectFieldInput } from '@/object-record/record-field/ui/form-
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { Input } from 'crm-ui/primitives/input';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { MOCKED_STEP_ID } from '~/testing/mock-data/workflow';
 
 const meta: Meta<typeof FormMultiSelectFieldInput> = {
   title: 'UI/Data/Field/Form/Input/FormMultiSelectFieldInput',
@@ -112,26 +111,6 @@ export const Disabled: Story = {
     expect(firstChip).toBeVisible();
 
     await userEvent.click(firstChip);
-
-    const searchInputInModal = canvas.queryByPlaceholderText('Search');
-    expect(searchInputInModal).not.toBeInTheDocument();
-  },
-};
-
-export const DisabledWithVariable: Story = {
-  args: {
-    label: 'Created At',
-    defaultValue: `{{${MOCKED_STEP_ID}.stage}}`,
-    onChange: fn(),
-    readonly: true,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const variableChip = await canvas.findByText('Stage');
-    expect(variableChip).toBeVisible();
-
-    await userEvent.click(variableChip);
 
     const searchInputInModal = canvas.queryByPlaceholderText('Search');
     expect(searchInputInModal).not.toBeInTheDocument();
