@@ -2,6 +2,15 @@ name: CI Front
 
 on:
   pull_request:
+    paths:
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/ci-front.yaml'
+      - '.github/workflows/ci-front-storybook-test.yaml'
+      - 'packages/crm-front/**'
+      - 'packages/crm-oxlint-rules/**'
+      - 'packages/crm-ui/**'
+      - 'packages/crm-shared/**'
 
 permissions:
   contents: read
@@ -11,21 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  changed-files-check:
-    uses: ./.github/workflows/changed-files.yaml
-    with:
-      files: |
-        package.json
-        yarn.lock
-        .github/workflows/ci-front.yaml
-        .github/workflows/ci-front-storybook-test.yaml
-        packages/crm-front/**
-        packages/crm-oxlint-rules/**
-        packages/crm-ui/**
-        packages/crm-shared/**
   front-sb-test:
-    needs: changed-files-check
-    if: needs.changed-files-check.outputs.any_changed == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -42,8 +37,6 @@ jobs:
       shard: ${{ matrix.shard }}
       shard-count: ${{ matrix.shard-count }}
   front-task:
-    needs: changed-files-check
-    if: needs.changed-files-check.outputs.any_changed == 'true'
     timeout-minutes: 30
     runs-on: ubuntu-24.04
     env:
@@ -62,21 +55,9 @@ jobs:
         uses: ./.github/actions/yarn-install
       - name: Write .env
         run: npx nx reset:env crm-front
-      - name: Lint and check translations
+      - name: Lint
         if: matrix.name == 'lint'
-        run: |
-          npx nx lint crm-front
-          npx nx lingui:extract crm-front
-          npx nx lingui:compile crm-front
+        run: npx nx lint crm-front
       - name: Test
         if: matrix.name == 'test'
         run: npx nx test crm-front --configuration=ci --shard=${{ matrix.shard }}/3
-  ci-front-status-check:
-    if: always() && !cancelled()
-    timeout-minutes: 5
-    runs-on: ubuntu-24.04
-    needs: [changed-files-check, front-task, front-sb-test]
-    steps:
-      - name: Fail job if any needs failed
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1

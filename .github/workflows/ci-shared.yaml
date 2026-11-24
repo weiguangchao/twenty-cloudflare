@@ -2,6 +2,12 @@ name: CI Shared
 
 on:
   pull_request:
+    paths:
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/ci-shared.yaml'
+      - 'packages/crm-shared/**'
+      - 'packages/crm-oxlint-rules/**'
 
 permissions:
   contents: read
@@ -11,18 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  changed-files-check:
-    uses: ./.github/workflows/changed-files.yaml
-    with:
-      files: |
-        package.json
-        yarn.lock
-        .github/workflows/ci-shared.yaml
-        packages/crm-shared/**
-        packages/crm-oxlint-rules/**
   shared-test:
-    needs: changed-files-check
-    if: needs.changed-files-check.outputs.any_changed == 'true'
     timeout-minutes: 30
     runs-on: ubuntu-latest
     env:
@@ -36,12 +31,3 @@ jobs:
         uses: ./.github/actions/yarn-install
       - name: Run ${{ matrix.task }}
         run: npx nx ${{ matrix.task }} crm-shared
-  ci-shared-status-check:
-    if: always() && !cancelled()
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    needs: [changed-files-check, shared-test]
-    steps:
-      - name: Fail job if any needs failed
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
