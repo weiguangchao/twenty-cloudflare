@@ -8,6 +8,7 @@ on:
       - 'packages/crm-ui/**'
       - 'packages/crm-emails/**'
       - 'packages/crm-e2e-testing/**'
+      - 'packages/crm-oxlint-rules/**'
       - 'package.json'
       - 'yarn.lock'
       - '.github/workflows/ci-worker.yaml'
@@ -42,9 +43,10 @@ jobs:
           npx nx build crm-shared --skip-nx-cache
           npx nx build crm-emails
           npx nx build crm-front
-      - name: Worker lint and direct types
+      - name: Worker and email lint, direct types
         run: |
           npx nx lint crm-worker --excludeTaskDependencies --skip-nx-cache
+          npx nx lint crm-emails
           cd packages/crm-worker
           npx tsgo -p tsconfig.json --noEmit
       - name: Shared package direct types

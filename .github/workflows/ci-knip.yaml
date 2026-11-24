@@ -5,28 +5,23 @@ permissions:
 
 on:
   pull_request:
+    paths:
+      - 'knip.json'
+      - '.github/workflows/ci-knip.yaml'
+      - 'nx.json'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'packages/crm-front/**'
+      - 'packages/crm-oxlint-rules/**'
+      - 'packages/crm-shared/**'
+      - 'packages/crm-ui/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  changed-files-check:
-    uses: ./.github/workflows/changed-files.yaml
-    with:
-      files: |
-        knip.json
-        .github/workflows/ci-knip.yaml
-        nx.json
-        package.json
-        yarn.lock
-        packages/crm-front/**
-        packages/crm-oxlint-rules/**
-        packages/crm-shared/**
-        packages/crm-ui/**
   knip:
-    needs: changed-files-check
-    if: needs.changed-files-check.outputs.any_changed == 'true'
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -35,12 +30,3 @@ jobs:
         uses: ./.github/actions/yarn-install
       - name: Run knip
         run: npx nx run-many -t knip --parallel=1
-  ci-knip-status-check:
-    if: always() && !cancelled()
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    needs: [changed-files-check, knip]
-    steps:
-      - name: Fail job if any needs failed
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
