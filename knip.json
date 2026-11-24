@@ -41,7 +41,7 @@
       "ignoreDependencies": ["eslint", "eslint-plugin-lingui", "oxlint"]
     },
     "packages/crm-ui": {
-      "entry": ["scripts/**/*.ts", "docs/**/*.ts"],
+      "entry": ["scripts/**/*.ts"],
       "ignore": ["src/styles/abstracts/**"],
       "ignoreDependencies": ["@storybook/addon-coverage", "@swc/core"]
     }

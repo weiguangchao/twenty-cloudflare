@@ -216,6 +216,9 @@
   "icon": {
     "reExports": [],
     "values": {
+      "CRM_ICON_DICTIONARY": "icon/constants/CrmIconDictionary",
+      "CRM_ICON_DICTIONARY_CATEGORIES": "icon/constants/CrmIconDictionary",
+      "CRM_ICON_DICTIONARY_FIGMA_URL": "icon/constants/CrmIconDictionary",
       "Icon123": "icon/components/TablerIcons",
       "IconAddressBook": "icon/components/IconAddressBook",
       "IconAdjustments": "icon/components/TablerIcons",
@@ -651,6 +654,7 @@
       "IconStack2": "icon/components/TablerIcons",
       "IconStairs": "icon/components/TablerIcons",
       "IconStar": "icon/components/TablerIcons",
+      "IconStarFilled": "icon/components/TablerIcons",
       "IconStatusChange": "icon/components/TablerIcons",
       "IconStepInto": "icon/components/TablerIcons",
       "IconStrikethrough": "icon/components/TablerIcons",
@@ -680,8 +684,6 @@
       "IconTrashXOff": "icon/components/IconTrashXOff",
       "IconTrendingDown": "icon/components/TablerIcons",
       "IconTrendingUp": "icon/components/TablerIcons",
-      "IconCrmStar": "icon/components/IconCrmStar",
-      "IconCrmStarFilled": "icon/components/IconCrmStarFilled",
       "IconTypography": "icon/components/TablerIcons",
       "IconUnderline": "icon/components/TablerIcons",
       "IconUnlink": "icon/components/TablerIcons",
@@ -730,17 +732,14 @@
       "IllustrationIconUid": "icon/components/IllustrationIconUid",
       "IllustrationIconUser": "icon/components/IllustrationIconUser",
       "IllustrationIconWrapper": "icon/components/IllustrationIconWrapper",
-      "ThinkingOrbitLoaderIcon": "icon/components/ThinkingOrbitLoaderIcon",
-      "CRM_ICON_DICTIONARY": "icon/constants/CrmIconDictionary",
-      "CRM_ICON_DICTIONARY_CATEGORIES": "icon/constants/CrmIconDictionary",
-      "CRM_ICON_DICTIONARY_FIGMA_URL": "icon/constants/CrmIconDictionary"
+      "ThinkingOrbitLoaderIcon": "icon/components/ThinkingOrbitLoaderIcon"
     },
     "types": {
+      "CrmIconDictionaryCategory": "icon/constants/CrmIconDictionary",
+      "CrmIconDictionaryEntry": "icon/constants/CrmIconDictionary",
       "IconComponent": "icon/types/IconComponent",
       "IconComponentProps": "icon/types/IconComponent",
-      "TablerIconsProps": "icon/components/TablerIcons",
-      "CrmIconDictionaryCategory": "icon/constants/CrmIconDictionary",
-      "CrmIconDictionaryEntry": "icon/constants/CrmIconDictionary"
+      "TablerIconsProps": "icon/components/TablerIcons"
     }
   },
   "icon/provider": {

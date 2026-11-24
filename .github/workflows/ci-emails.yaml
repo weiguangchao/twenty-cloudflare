@@ -56,7 +56,7 @@ jobs:
           sleep 20
 
           # Check if server is running
-          if ! curl -s http://localhost:4001/preview/test.email > /dev/null; then
+          if ! curl -fsS http://localhost:4001/preview/password-reset-link.email > /dev/null; then
             echo "Email server failed to start"
             kill $SERVER_PID
             exit 1
