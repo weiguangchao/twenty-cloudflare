@@ -14825,7 +14825,6 @@ __metadata:
     "@fontsource/dm-mono": "npm:^5.2.7"
     "@fontsource/inter": "npm:^5.2.8"
     "@monaco-editor/react": "npm:^4.7.0"
-    "@prettier/sync": "npm:^0.5.2"
     "@size-limit/preset-small-lib": "npm:^12.1.0"
     "@sniptt/guards": "npm:^0.2.0"
     "@storybook-community/storybook-addon-cookie": "npm:^5.0.0"

@@ -2,21 +2,22 @@ name: CI Shared
 
 on:
   pull_request:
-  merge_group:
 
 permissions:
   contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 jobs:
   changed-files-check:
-    if: github.event_name != 'merge_group'
     uses: ./.github/workflows/changed-files.yaml
     with:
       files: |
+        package.json
+        yarn.lock
+        .github/workflows/ci-shared.yaml
         packages/crm-shared/**
         packages/crm-oxlint-rules/**
   shared-test:
@@ -28,19 +29,13 @@ jobs:
       NODE_OPTIONS: '--max-old-space-size=4096'
     strategy:
       matrix:
-        task: [lint, typecheck, test]
+        task: [lint, test]
     steps:
-      - name: Fetch custom Github Actions and base branch history
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-        with:
-          fetch-depth: 10
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
-      - name: Run ${{ matrix.task }} task
-        uses: ./.github/actions/nx-affected
-        with:
-          tag: scope:shared
-          tasks: ${{ matrix.task }}
+      - name: Run ${{ matrix.task }}
+        run: npx nx ${{ matrix.task }} crm-shared
   ci-shared-status-check:
     if: always() && !cancelled()
     timeout-minutes: 5

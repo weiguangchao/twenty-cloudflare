@@ -15,7 +15,6 @@
     "@fontsource/dm-mono": "^5.2.7",
     "@fontsource/inter": "^5.2.8",
     "@monaco-editor/react": "^4.7.0",
-    "@prettier/sync": "^0.5.2",
     "@size-limit/preset-small-lib": "^12.1.0",
     "@storybook-community/storybook-addon-cookie": "^5.0.0",
     "@storybook/addon-a11y": "^10.6.3",

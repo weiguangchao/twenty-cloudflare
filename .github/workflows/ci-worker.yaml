@@ -11,9 +11,9 @@ on:
       - 'package.json'
       - 'yarn.lock'
       - '.github/workflows/ci-worker.yaml'
+      - '.github/actions/**'
   push:
-    branches: [cloudflare-migration, main]
-  merge_group:
+    branches: [cloudflare-migration]
   workflow_dispatch:
     inputs:
       deploy:
