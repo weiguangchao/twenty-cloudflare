@@ -1,0 +1,27 @@
+{
+  "flow": "data-model",
+  "sequence": 139,
+  "capturedAt": "2026-11-12T11:48:16.902Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "ObjectMetadataItems",
+  "query": "fragment ObjectMetadataFields on Object {\n  id\n  universalIdentifier\n  nameSingular\n  namePlural\n  labelSingular\n  labelPlural\n  color\n  description\n  icon\n  isRemote\n  isActive\n  isSystem\n  isAuditLogged\n  isUIEditable\n  isUICreatable\n  createdAt\n  updatedAt\n  labelIdentifierFieldMetadataId\n  imageIdentifierFieldMetadataId\n  applicationId\n  shortcut\n  isLabelSyncedWithName\n  isSearchable\n  openRecordIn\n  duplicateCriteria\n  searchFieldMetadataList {\n    id\n    fieldMetadataId\n    tsVectorFieldMetadataId\n    position\n    createdAt\n    updatedAt\n    __typename\n  }\n  indexMetadataList {\n    id\n    createdAt\n    updatedAt\n    name\n    indexWhereClause\n    indexType\n    isUnique\n    applicationId\n    isSystemSideEffect\n    indexFieldMetadataList {\n      id\n      fieldMetadataId\n      subFieldName\n      createdAt\n      updatedAt\n      order\n      __typename\n    }\n    __typename\n  }\n  fieldsList {\n    id\n    universalIdentifier\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isSystem\n    isUIEditable\n    isSystemSideEffect\n    isNullable\n    isUnique\n    isSearchable\n    createdAt\n    updatedAt\n    defaultValue\n    options\n    settings\n    isLabelSyncedWithName\n    morphId\n    applicationId\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery ObjectMetadataItems {\n  objects(paging: {first: 1000}) {\n    edges {\n      node {\n        ...ObjectMetadataFields\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "722577",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "repeatCount": 1,
+  "responseOmitted": {
+    "reason": "intermediate copy of a large collection, see the first and last fixture of this operation in the flow",
+    "bytes": 722577
+  }
+}

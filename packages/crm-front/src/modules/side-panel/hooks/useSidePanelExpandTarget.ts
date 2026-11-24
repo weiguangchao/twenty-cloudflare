@@ -1,0 +1,33 @@
+import { SidePanelPages } from 'crm-shared/types';
+import { useIsMobile } from 'crm-ui/utilities';
+import { useSidePanelSubPageHistory } from '@/side-panel/hooks/useSidePanelSubPageHistory';
+import { useExpandRecordSidePanelPage } from '@/side-panel/routing/hooks/useExpandRecordSidePanelPage';
+import { useExpandRichTextSidePanelPage } from '@/side-panel/pages/rich-text-page/hooks/useExpandRichTextSidePanelPage';
+import { useExpandRoutedSidePanelPage } from '@/side-panel/routing/hooks/useExpandRoutedSidePanelPage';
+import { sidePanelPageInfoSelector } from '@/side-panel/states/sidePanelPageInfoSelector';
+import { type SidePanelExpandTarget } from '@/side-panel/types/SidePanelExpandTarget';
+import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
+
+export const useSidePanelExpandTarget = (): SidePanelExpandTarget | null => {
+  const sidePanelPage = useAtomStateValue(sidePanelPageInfoSelector).page;
+  const { hasSidePanelSubPages } = useSidePanelSubPageHistory();
+  const isMobile = useIsMobile();
+
+  const recordExpandTarget = useExpandRecordSidePanelPage();
+  const richTextExpandTarget = useExpandRichTextSidePanelPage();
+  const routedExpandTarget = useExpandRoutedSidePanelPage();
+
+  // Nothing to expand into on mobile, and expanding under a sub page would discard what the user is doing
+  if (isMobile || hasSidePanelSubPages) {
+    return null;
+  }
+
+  switch (sidePanelPage) {
+    case SidePanelPages.EditRichText:
+      return richTextExpandTarget;
+    case SidePanelPages.RoutedPage:
+      return recordExpandTarget ?? routedExpandTarget;
+    default:
+      return null;
+  }
+};

@@ -1,0 +1,50 @@
+{
+  "flow": "members-roles",
+  "sequence": 33,
+  "capturedAt": "2026-11-12T12:18:14.934Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "UpsertFieldPermissions",
+  "query": "mutation UpsertFieldPermissions($upsertFieldPermissionsInput: UpsertFieldPermissionsInput!) {\n  upsertFieldPermissions(\n    upsertFieldPermissionsInput: $upsertFieldPermissionsInput\n  ) {\n    ...FieldPermissionFragment\n    __typename\n  }\n}\n\nfragment FieldPermissionFragment on FieldPermission {\n  objectMetadataId\n  fieldMetadataId\n  canReadFieldValue\n  canUpdateFieldValue\n  id\n  roleId\n  __typename\n}",
+  "variables": {
+    "upsertFieldPermissionsInput": {
+      "roleId": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+      "fieldPermissions": [
+        {
+          "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+          "fieldMetadataId": "149e5c50-c05b-4cde-9ab2-cb122f701851",
+          "canReadFieldValue": false,
+          "canUpdateFieldValue": false
+        }
+      ]
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "331",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "upsertFieldPermissions": [
+        {
+          "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+          "fieldMetadataId": "149e5c50-c05b-4cde-9ab2-cb122f701851",
+          "canReadFieldValue": false,
+          "canUpdateFieldValue": false,
+          "id": "27c6784c-06de-4845-b79c-0fd3968a5b33",
+          "roleId": "4567f8ad-441f-4454-89f1-e68b374b70f0",
+          "__typename": "FieldPermission"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

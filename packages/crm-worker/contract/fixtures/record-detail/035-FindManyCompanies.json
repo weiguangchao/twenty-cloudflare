@@ -1,0 +1,77 @@
+{
+  "flow": "record-detail",
+  "sequence": 35,
+  "capturedAt": "2026-11-12T11:27:13.865Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyCompanies",
+  "query": "query FindManyCompanies($filter: CompanyFilterInput, $orderBy: [CompanyOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  companies(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        id\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "position": {
+            "gt": 1
+          }
+        },
+        {
+          "and": [
+            {
+              "position": {
+                "eq": 1
+              }
+            },
+            {
+              "id": {
+                "gt": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 1
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "companies": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Company",
+              "id": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6MiwiaWQiOiJmNDVlZTQyMS04YTNlLTRhYTUtYTFjZi03MjA3Y2M2NzU0ZTEifQ",
+            "__typename": "CompanyEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": true,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6MiwiaWQiOiJmNDVlZTQyMS04YTNlLTRhYTUtYTFjZi03MjA3Y2M2NzU0ZTEifQ",
+          "endCursor": "eyJwb3NpdGlvbiI6MiwiaWQiOiJmNDVlZTQyMS04YTNlLTRhYTUtYTFjZi03MjA3Y2M2NzU0ZTEifQ",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 4,
+        "__typename": "CompanyConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

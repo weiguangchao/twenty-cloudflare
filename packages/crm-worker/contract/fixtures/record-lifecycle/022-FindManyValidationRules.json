@@ -1,0 +1,30 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 22,
+  "capturedAt": "2026-11-12T11:33:31.084Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindManyValidationRules",
+  "query": "query FindManyValidationRules($objectMetadataId: UUID!) {\n  validationRules(objectMetadataId: $objectMetadataId) {\n    ...ValidationRuleFragment\n    __typename\n  }\n}\n\nfragment ValidationRuleFragment on ValidationRule {\n  id\n  objectMetadataId\n  name\n  description\n  icon\n  errorFieldMetadataId\n  expression\n  message\n  isActive\n  __typename\n}",
+  "variables": {
+    "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "31",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "validationRules": []
+    }
+  },
+  "repeatCount": 2
+}

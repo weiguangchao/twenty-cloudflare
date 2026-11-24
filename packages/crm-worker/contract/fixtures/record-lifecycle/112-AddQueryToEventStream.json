@@ -1,0 +1,44 @@
+{
+  "flow": "record-lifecycle",
+  "sequence": 112,
+  "capturedAt": "2026-11-12T11:38:14.352Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "AddQueryToEventStream",
+  "query": "mutation AddQueryToEventStream($input: AddQuerySubscriptionInput!) {\n  addQueryToEventStream(input: $input)\n}",
+  "variables": {
+    "input": {
+      "eventStreamId": "01717ce8-7481-4aa1-a8f9-6973a39e0dc7",
+      "queryId": "record-show-person-ac15dca9-2891-4f48-ab02-81365d943d55",
+      "operationSignature": {
+        "objectNameSingular": "person",
+        "variables": {
+          "filter": {
+            "id": {
+              "eq": "ac15dca9-2891-4f48-ab02-81365d943d55"
+            }
+          },
+          "limit": 1
+        }
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "39",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "addQueryToEventStream": true
+    }
+  },
+  "repeatCount": 1
+}

@@ -9,5 +9,3 @@ updates:
     # bumps are turned off to stop the constant PR churn.
     open-pull-requests-limit: 0
     versioning-strategy: 'lockfile-only'
-    assignees:
-      - 'mabdullahabaid'

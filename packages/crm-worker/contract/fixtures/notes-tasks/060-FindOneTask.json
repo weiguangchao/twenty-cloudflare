@@ -1,0 +1,125 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 60,
+  "capturedAt": "2026-11-12T11:39:43.128Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindOneTask",
+  "query": "query FindOneTask($objectRecordId: UUID!) {\n  task(\n    filter: {or: [{deletedAt: {is: NULL}}, {deletedAt: {is: NOT_NULL}}], id: {eq: $objectRecordId}}\n  ) {\n    __typename\n    assignee {\n      __typename\n      avatarUrl\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    assigneeId\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    bodyV2 {\n      blocknote\n      markdown\n      tiptap\n      __typename\n    }\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    dueAt\n    id\n    position\n    status\n    taskTargets {\n      edges {\n        node {\n          __typename\n          id\n          targetCompany {\n            __typename\n            domainName {\n              primaryLinkUrl\n              primaryLinkLabel\n              secondaryLinks {\n                label\n                url\n                __typename\n              }\n              __typename\n            }\n            id\n            name\n          }\n          targetOpportunity {\n            __typename\n            id\n            name\n          }\n          targetPerson {\n            __typename\n            avatarFile {\n              fileId\n              label\n              extension\n              url\n              __typename\n            }\n            id\n            name {\n              firstName\n              lastName\n              __typename\n            }\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    title\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "objectRecordId": "37a24a59-f068-49ba-ade8-31307a8061d5"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "task": {
+        "__typename": "Task",
+        "assignee": null,
+        "assigneeId": null,
+        "attachments": {
+          "edges": [],
+          "__typename": "AttachmentConnection"
+        },
+        "bodyV2": {
+          "blocknote": null,
+          "markdown": "",
+          "tiptap": null,
+          "__typename": "RichText"
+        },
+        "createdAt": "2026-11-12T11:39:39.541Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "dueAt": null,
+        "id": "37a24a59-f068-49ba-ade8-31307a8061d5",
+        "position": 2,
+        "status": "TODO",
+        "taskTargets": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "TaskTarget",
+                "id": "79f7bcff-ede8-4810-9e31-e8ac37eca5af",
+                "targetCompany": {
+                  "__typename": "Company",
+                  "domainName": {
+                    "primaryLinkUrl": "airbnb.com",
+                    "primaryLinkLabel": "",
+                    "secondaryLinks": [
+                      {
+                        "label": "News",
+                        "url": "news.airbnb.com",
+                        "__typename": "SecondaryLink"
+                      }
+                    ],
+                    "__typename": "Links"
+                  },
+                  "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                  "name": "Airbnb"
+                },
+                "targetOpportunity": null,
+                "targetPerson": null
+              },
+              "__typename": "TaskTargetEdge"
+            }
+          ],
+          "__typename": "TaskTargetConnection"
+        },
+        "timelineActivities": {
+          "edges": [
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "b4a5e65a-965d-432a-9c62-7894357ced48",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            },
+            {
+              "node": {
+                "__typename": "TimelineActivity",
+                "id": "0b5cde55-248b-4e13-8647-d8f619e7d3cb",
+                "linkedRecordCachedName": ""
+              },
+              "__typename": "TimelineActivityEdge"
+            }
+          ],
+          "__typename": "TimelineActivityConnection"
+        },
+        "title": "Send proposal",
+        "updatedAt": "2026-11-12T11:39:42.911Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        }
+      }
+    }
+  },
+  "repeatCount": 1
+}

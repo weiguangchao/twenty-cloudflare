@@ -1,0 +1,37 @@
+{
+  "flow": "files",
+  "sequence": 101,
+  "capturedAt": "2026-11-12T12:12:37.376Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CompleteFileUpload",
+  "query": "mutation CompleteFileUpload($fileId: String!) {\n  completeFileUpload(fileId: $fileId) {\n    id\n    path\n    size\n    createdAt\n    url\n    __typename\n  }\n}",
+  "variables": {
+    "fileId": "5821f859-5a0e-4b52-b0ce-1a65d20add88"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "795",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "completeFileUpload": {
+        "id": "5821f859-5a0e-4b52-b0ce-1a65d20add88",
+        "path": "files-field/d136f9d0-6844-45f9-a292-c2d184d95616/5821f859-5a0e-4b52-b0ce-1a65d20add88.txt",
+        "size": 1300,
+        "createdAt": "2026-11-12T12:12:37.049Z",
+        "url": "http://localhost:3000/file/files-field/5821f859-5a0e-4b52-b0ce-1a65d20add88?token=<redacted-jwt-118>",
+        "__typename": "FileWithSignedUrl"
+      }
+    }
+  },
+  "repeatCount": 1
+}

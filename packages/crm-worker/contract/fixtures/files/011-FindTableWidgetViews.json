@@ -1,0 +1,130 @@
+{
+  "flow": "files",
+  "sequence": 11,
+  "capturedAt": "2026-11-12T12:09:17.710Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "FindTableWidgetViews",
+  "query": "query FindTableWidgetViews($viewTypes: [ViewType!]) {\n  getViews(viewTypes: $viewTypes) {\n    ...ViewFragment\n    __typename\n  }\n}\n\nfragment ViewFieldFragment on ViewField {\n  id\n  fieldMetadataId\n  viewId\n  isVisible\n  position\n  size\n  aggregateOperation\n  viewFieldGroupId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFieldGroupFragment on ViewFieldGroup {\n  id\n  name\n  position\n  isVisible\n  viewId\n  isActive\n  createdAt\n  updatedAt\n  deletedAt\n  viewFields {\n    ...ViewFieldFragment\n    __typename\n  }\n  __typename\n}\n\nfragment ViewFilterFragment on ViewFilter {\n  id\n  fieldMetadataId\n  operand\n  value\n  viewFilterGroupId\n  positionInViewFilterGroup\n  subFieldName\n  relationTargetFieldMetadataId\n  viewId\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFilterGroupFragment on ViewFilterGroup {\n  id\n  parentViewFilterGroupId\n  logicalOperator\n  positionInViewFilterGroup\n  viewId\n  __typename\n}\n\nfragment ViewSortFragment on ViewSort {\n  id\n  fieldMetadataId\n  direction\n  subFieldName\n  viewId\n  createdAt\n  deletedAt\n  updatedAt\n  __typename\n}\n\nfragment ViewGroupFragment on ViewGroup {\n  id\n  isVisible\n  fieldValue\n  position\n  viewId\n  createdAt\n  updatedAt\n  deletedAt\n  __typename\n}\n\nfragment ViewFragment on View {\n  id\n  name\n  objectMetadataId\n  type\n  key\n  icon\n  position\n  isCompact\n  kanbanAggregateOperation\n  kanbanAggregateOperationFieldMetadataId\n  mainGroupByFieldMetadataId\n  shouldHideEmptyGroups\n  kanbanColumnWidth\n  groupLoadLimit\n  anyFieldFilterValue\n  calendarFieldMetadataId\n  calendarEndFieldMetadataId\n  calendarLayout\n  visibility\n  createdByUserWorkspaceId\n  applicationId\n  universalIdentifier\n  isActive\n  viewFields {\n    ...ViewFieldFragment\n    __typename\n  }\n  viewFieldGroups {\n    ...ViewFieldGroupFragment\n    __typename\n  }\n  viewFilters {\n    ...ViewFilterFragment\n    __typename\n  }\n  viewFilterGroups {\n    ...ViewFilterGroupFragment\n    __typename\n  }\n  viewSorts {\n    ...ViewSortFragment\n    __typename\n  }\n  viewGroups {\n    ...ViewGroupFragment\n    __typename\n  }\n  __typename\n}",
+  "variables": {
+    "viewTypes": [
+      "TABLE_WIDGET",
+      "KANBAN_WIDGET",
+      "LIST_WIDGET",
+      "CALENDAR_WIDGET"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "2496",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "getViews": [
+        {
+          "id": "d114ff46-4435-4d5e-b3e5-465e895750e9",
+          "name": "List Members Table",
+          "objectMetadataId": "4f8c98aa-492f-41b7-97a6-345304d176f9",
+          "type": "TABLE_WIDGET",
+          "key": null,
+          "icon": "IconTable",
+          "position": 1,
+          "isCompact": false,
+          "kanbanAggregateOperation": null,
+          "kanbanAggregateOperationFieldMetadataId": null,
+          "mainGroupByFieldMetadataId": null,
+          "shouldHideEmptyGroups": false,
+          "kanbanColumnWidth": null,
+          "groupLoadLimit": 8,
+          "anyFieldFilterValue": null,
+          "calendarFieldMetadataId": null,
+          "calendarEndFieldMetadataId": null,
+          "calendarLayout": null,
+          "visibility": "WORKSPACE",
+          "createdByUserWorkspaceId": null,
+          "applicationId": "5353121f-f6fa-40f1-beb9-0f5c19f19dd4",
+          "universalIdentifier": "bef79e8e-9ef3-4458-81ed-78a299e2566f",
+          "isActive": true,
+          "viewFields": [
+            {
+              "id": "9bac50ce-4551-44ee-8dd0-c4d5e9d6f4b0",
+              "fieldMetadataId": "7baeca42-52db-4fd8-88f3-7e07e9b9d8f3",
+              "viewId": "d114ff46-4435-4d5e-b3e5-465e895750e9",
+              "isVisible": true,
+              "position": 0,
+              "size": 210,
+              "aggregateOperation": "COUNT",
+              "viewFieldGroupId": null,
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "deletedAt": null,
+              "__typename": "ViewField"
+            },
+            {
+              "id": "4b9e26bd-e05f-4277-b786-e3afdd9cc1e6",
+              "fieldMetadataId": "545607c5-8173-4acb-8063-1b5cdb73d9ca",
+              "viewId": "d114ff46-4435-4d5e-b3e5-465e895750e9",
+              "isVisible": true,
+              "position": 1,
+              "size": 150,
+              "aggregateOperation": null,
+              "viewFieldGroupId": null,
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "deletedAt": null,
+              "__typename": "ViewField"
+            },
+            {
+              "id": "de8db9b1-f5b7-4f9b-84d2-f157296c93a8",
+              "fieldMetadataId": "fdf6e12d-eaac-48e1-9329-2fc34de047fc",
+              "viewId": "d114ff46-4435-4d5e-b3e5-465e895750e9",
+              "isVisible": true,
+              "position": 2,
+              "size": 150,
+              "aggregateOperation": null,
+              "viewFieldGroupId": null,
+              "isActive": true,
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "deletedAt": null,
+              "__typename": "ViewField"
+            }
+          ],
+          "viewFieldGroups": [],
+          "viewFilters": [
+            {
+              "id": "5a06f590-d633-4c6a-9076-119eb480c787",
+              "fieldMetadataId": "cba89b9f-182c-4338-acd4-16598c7054d8",
+              "operand": "IS",
+              "value": "{\"selectedRecordIds\":[],\"isCurrentRecordSelected\":true}",
+              "viewFilterGroupId": null,
+              "positionInViewFilterGroup": null,
+              "subFieldName": null,
+              "relationTargetFieldMetadataId": "6e399177-e4c7-410f-a88c-e9e66461f3f8",
+              "viewId": "d114ff46-4435-4d5e-b3e5-465e895750e9",
+              "createdAt": "2026-11-12T11:19:46.100Z",
+              "updatedAt": "2026-11-12T11:19:46.100Z",
+              "deletedAt": null,
+              "__typename": "ViewFilter"
+            }
+          ],
+          "viewFilterGroups": [],
+          "viewSorts": [],
+          "viewGroups": [],
+          "__typename": "View"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

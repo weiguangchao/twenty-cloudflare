@@ -1,0 +1,25 @@
+{
+  "flow": "members-roles",
+  "sequence": 64,
+  "capturedAt": "2026-11-12T12:19:40.653Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SignOut",
+  "query": "mutation SignOut($refreshToken: String) {\n  signOut(refreshToken: $refreshToken)\n}",
+  "variables": {},
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "25",
+    "content-type": "application/graphql-response+json; charset=utf-8",
+    "set-cookie": "__Host-crm-session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax\ncrm-session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax"
+  },
+  "response": null,
+  "repeatCount": 2
+}

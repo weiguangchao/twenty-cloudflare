@@ -1,0 +1,19 @@
+import { type ComponentInstanceStateContext } from '@/ui/utilities/state/component-state/types/ComponentInstanceStateContext';
+
+declare module 'react-router' {
+  interface NavigateOptions {
+    surface?: 'main';
+  }
+}
+
+declare global {
+  interface Window {
+    _env_?: Record<string, string>;
+    __APOLLO_CLIENT__?: any;
+    grecaptcha?: any;
+    componentComponentStateContextMap: Map<
+      string,
+      ComponentInstanceStateContext<any>
+    >;
+  }
+}

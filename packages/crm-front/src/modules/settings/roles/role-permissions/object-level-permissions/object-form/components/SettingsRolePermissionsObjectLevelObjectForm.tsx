@@ -1,0 +1,106 @@
+import { NavigationButton } from '@/ui/input/components/NavigationButton';
+import { useObjectMetadataItemById } from '@/object-metadata/hooks/useObjectMetadataItemById';
+import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
+import { SettingsRolePermissionsObjectLevelObjectFieldPermissionTable } from '@/settings/roles/role-permissions/object-level-permissions/field-permissions/components/SettingsRolePermissionsObjectLevelObjectFieldPermissionTable';
+import { SettingsRolePermissionsObjectLevelObjectFormObjectLevel } from '@/settings/roles/role-permissions/object-level-permissions/object-form/components/SettingsRolePermissionsObjectLevelObjectFormObjectLevel';
+import { settingsDraftRoleFamilyState } from '@/settings/roles/states/settingsDraftRoleFamilyState';
+import { SettingsPageLayout } from '@/settings/components/layout/SettingsPageLayout';
+import { SettingsWizardStepBar } from '@/settings/components/layout/SettingsWizardStepBar';
+import { useAtomFamilyStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomFamilyStateValue';
+import { useNavigate } from 'react-router-dom';
+import { SettingsPath } from 'crm-shared/types';
+import { getSettingsPath } from 'crm-shared/utils';
+import { themeCssVariables } from 'crm-ui/theme';
+import { useLingui } from '@lingui/react/macro';
+
+type SettingsRolePermissionsObjectLevelObjectFormProps = {
+  roleId: string;
+  objectMetadataId: string;
+};
+
+export const SettingsRolePermissionsObjectLevelObjectForm = ({
+  roleId,
+  objectMetadataId,
+}: SettingsRolePermissionsObjectLevelObjectFormProps) => {
+  const { t } = useLingui();
+  const navigate = useNavigate();
+
+  const settingsDraftRole = useAtomFamilyStateValue(
+    settingsDraftRoleFamilyState,
+    roleId,
+  );
+
+  const objectMetadata = useObjectMetadataItemById({
+    objectId: objectMetadataId,
+  });
+
+  const objectMetadataItem = objectMetadata.objectMetadataItem;
+
+  const objectLabelSingular = objectMetadataItem.labelSingular;
+  const objectLabelPlural = objectMetadataItem.labelPlural;
+
+  const breadcrumbLinks = [
+    {
+      children: t`Workspace`,
+      href: getSettingsPath(SettingsPath.General),
+    },
+    {
+      children: t`Members`,
+      href: getSettingsPath(SettingsPath.WorkspaceMembersPage),
+    },
+    {
+      children: t`Roles`,
+      href: getSettingsPath(SettingsPath.Roles),
+    },
+    {
+      children: settingsDraftRole.label,
+      href: getSettingsPath(SettingsPath.RoleDetail, {
+        roleId,
+      }),
+    },
+    {
+      children: t`Permissions · ${objectLabelSingular}`,
+    },
+  ];
+
+  const finishButtonPath = getSettingsPath(SettingsPath.RoleDetail, { roleId });
+
+  const previousStepPath = `${getSettingsPath(SettingsPath.RoleAddObjectLevel, {
+    roleId,
+  })}`;
+
+  const headerTitle = settingsDraftRole.label;
+
+  return (
+    <SettingsPageLayout
+      title={headerTitle}
+      titleColor={themeCssVariables.font.color.tertiary}
+      links={breadcrumbLinks}
+      secondaryBar={
+        <SettingsWizardStepBar
+          label={t`2. Set ${objectLabelPlural} permissions`}
+          onBack={() => navigate(previousStepPath)}
+          trailing={
+            <NavigationButton
+              size="sm"
+              to={finishButtonPath}
+              variant="solid"
+              color="accent"
+            >{t`Finish`}</NavigationButton>
+          }
+        />
+      }
+    >
+      <SettingsPageContainer>
+        <SettingsRolePermissionsObjectLevelObjectFormObjectLevel
+          objectMetadataItem={objectMetadataItem}
+          roleId={roleId}
+        />
+        <SettingsRolePermissionsObjectLevelObjectFieldPermissionTable
+          objectMetadataItem={objectMetadataItem}
+          roleId={roleId}
+        />
+      </SettingsPageContainer>
+    </SettingsPageLayout>
+  );
+};

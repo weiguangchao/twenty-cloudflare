@@ -1,0 +1,66 @@
+{
+  "flow": "record-detail",
+  "sequence": 102,
+  "capturedAt": "2026-11-12T11:30:34.011Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "Stri",
+    "limit": 60,
+    "filter": {
+      "not": {
+        "id": {
+          "in": [
+            "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0"
+          ]
+        }
+      }
+    },
+    "includedObjectNameSingulars": [
+      "company"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "785",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+              "objectNameSingular": "company",
+              "objectLabelSingular": "公司",
+              "label": "Stripe",
+              "imageUrl": "",
+              "tsRankCD": 0.2,
+              "tsRank": 0.12158542,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMiwidHNSYW5rIjowLjEyMTU4NTQyfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJjb21wYW55IjoiMWY3MDE1N2MtNGVhNS00ZDgxLWJjNDktZTE0MDFhYmZiYjk0In19",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAuMiwidHNSYW5rIjowLjEyMTU4NTQyfSwibGFzdFJlY29yZElkc1Blck9iamVjdCI6eyJjb21wYW55IjoiMWY3MDE1N2MtNGVhNS00ZDgxLWJjNDktZTE0MDFhYmZiYjk0In19",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

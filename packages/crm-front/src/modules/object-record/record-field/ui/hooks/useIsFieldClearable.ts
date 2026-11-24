@@ -1,0 +1,11 @@
+import { useContext } from 'react';
+
+import { FieldContext } from '@/object-record/record-field/ui/contexts/FieldContext';
+
+export const useIsFieldClearable = (): boolean => {
+  const { clearable, isLabelIdentifier } = useContext(FieldContext);
+
+  const fieldCanBeCleared = !isLabelIdentifier && clearable !== false;
+
+  return fieldCanBeCleared;
+};

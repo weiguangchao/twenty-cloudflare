@@ -1,0 +1,20 @@
+{
+  "flow": "record-detail",
+  "sequence": 15,
+  "capturedAt": "2026-11-12T11:27:10.045Z",
+  "endpoint": "/client-config",
+  "method": "GET",
+  "path": "/client-config",
+  "operationName": "GET /client-config",
+  "query": null,
+  "variables": {
+    "v": "v1"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>"
+  },
+  "status": 200,
+  "responseHeaders": {},
+  "response": null,
+  "repeatCount": 5
+}

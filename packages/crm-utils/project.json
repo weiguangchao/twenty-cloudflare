@@ -1,0 +1,7 @@
+{
+  "name": "crm-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/crm-utils",
+  "projectType": "application",
+  "targets": {}
+}

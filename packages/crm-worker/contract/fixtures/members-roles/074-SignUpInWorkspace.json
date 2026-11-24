@@ -1,0 +1,52 @@
+{
+  "flow": "members-roles",
+  "sequence": 74,
+  "capturedAt": "2026-11-12T12:20:11.753Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "SignUpInWorkspace",
+  "query": "mutation SignUpInWorkspace($email: String!, $password: String!, $workspaceInviteHash: String, $workspacePersonalInviteToken: String = null, $captchaToken: String, $workspaceId: UUID, $locale: String, $verifyEmailRedirectPath: String) {\n  signUpInWorkspace(\n    email: $email\n    password: $password\n    workspaceInviteHash: $workspaceInviteHash\n    workspacePersonalInviteToken: $workspacePersonalInviteToken\n    captchaToken: $captchaToken\n    workspaceId: $workspaceId\n    locale: $locale\n    verifyEmailRedirectPath: $verifyEmailRedirectPath\n  ) {\n    loginToken {\n      ...AuthTokenFragment\n      __typename\n    }\n    workspace {\n      id\n      workspaceUrls {\n        subdomainUrl\n        customUrl\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment AuthTokenFragment on AuthToken {\n  token\n  expiresAt\n  __typename\n}",
+  "variables": {
+    "workspacePersonalInviteToken": null,
+    "email": "bob@example.com",
+    "password": "Password123!",
+    "workspaceInviteHash": "<redacted-invite-hash-1>",
+    "locale": "zh-CN",
+    "workspaceId": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+    "verifyEmailRedirectPath": "/plan-required?locale=zh-CN"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "788",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "signUpInWorkspace": {
+        "loginToken": {
+          "token": "<redacted-jwt-157>",
+          "expiresAt": "2026-11-12T12:35:11.737Z",
+          "__typename": "AuthToken"
+        },
+        "workspace": {
+          "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+          "workspaceUrls": {
+            "subdomainUrl": "http://localhost:3001/",
+            "customUrl": null,
+            "__typename": "WorkspaceUrls"
+          },
+          "__typename": "WorkspaceUrlsAndId"
+        },
+        "__typename": "SignUp"
+      }
+    }
+  },
+  "repeatCount": 1
+}

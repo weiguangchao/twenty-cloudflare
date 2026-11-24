@@ -1,6 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "ignoreWorkspaces": ["packages/twenty-docs"],
   "rules": {
     "binaries": "warn",
     "dependencies": "error",
@@ -15,7 +14,7 @@
     "unresolved": "warn"
   },
   "workspaces": {
-    "packages/twenty-front": {
+    "packages/crm-front": {
       "entry": [
         "src/index.tsx",
         "src/**/graphql/**/*.{ts,tsx}",
@@ -37,12 +36,12 @@
         "rollup-plugin-node-polyfills"
       ]
     },
-    "packages/twenty-oxlint-rules": {
+    "packages/crm-oxlint-rules": {
       "entry": ["scripts/**/*.mjs"],
       "ignoreDependencies": ["eslint", "eslint-plugin-lingui", "oxlint"]
     },
-    "packages/twenty-ui": {
-      "entry": ["scripts/**/*.ts", "docs/**/*.ts"],
+    "packages/crm-ui": {
+      "entry": ["scripts/**/*.ts"],
       "ignore": ["src/styles/abstracts/**"],
       "ignoreDependencies": ["@storybook/addon-coverage", "@swc/core"]
     }

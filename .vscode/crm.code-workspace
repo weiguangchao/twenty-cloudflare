@@ -1,0 +1,101 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "packages/crm-front",
+      "path": "../packages/crm-front"
+    },
+    {
+      "name": "packages/crm-ui",
+      "path": "../packages/crm-ui"
+    },
+    {
+      "name": "packages/crm-emails",
+      "path": "../packages/crm-emails"
+    },
+    {
+      "name": "packages/crm-shared",
+      "path": "../packages/crm-shared"
+    },
+    {
+      "name": "packages/crm-worker",
+      "path": "../packages/crm-worker"
+    },
+    {
+      "name": "packages/crm-utils",
+      "path": "../packages/crm-utils"
+    },
+    {
+      "name": "packages/crm-oxlint-rules",
+      "path": "../packages/crm-oxlint-rules"
+    },
+    {
+      "name": "packages/crm-e2e-testing",
+      "path": "../packages/crm-e2e-testing"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": false,
+    "files.eol": "auto",
+    "[typescript]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "explicit",
+        "source.addMissingImports": "always"
+      }
+    },
+    "[javascript]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "explicit",
+        "source.addMissingImports": "always"
+      }
+    },
+    "[typescriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "explicit",
+        "source.addMissingImports": "always"
+      }
+    },
+    "[json]": {
+      "editor.formatOnSave": true
+    },
+    "javascript.format.enable": false,
+    "typescript.format.enable": false,
+    "cSpell.enableFiletypes": [
+      "!javascript",
+      "!json",
+      "!typescript",
+      "!typescriptreact",
+      "md",
+      "mdx"
+    ],
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "[javascript][typescript][typescriptreact]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll.oxc": "explicit",
+        "source.addMissingImports": "always"
+      }
+    },
+    "search.exclude": {
+      "**/.yarn": true,
+    },
+    "files.exclude": {
+      "packages/": true
+    },
+    "oxc.lint.enable": true,
+    "jest.runMode": "on-demand",
+    "jest.disabledWorkspaceFolders": [
+      "ROOT",
+      "packages/crm-worker",
+      "packages/crm-utils"
+    ]
+  }
+}

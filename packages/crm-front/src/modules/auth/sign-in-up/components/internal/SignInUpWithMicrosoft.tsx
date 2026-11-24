@@ -1,0 +1,60 @@
+import { useHasMultipleAuthMethods } from '@/auth/sign-in-up/hooks/useHasMultipleAuthMethods';
+import { useSignInWithMicrosoft } from '@/auth/sign-in-up/hooks/useSignInWithMicrosoft';
+import { lastAuthenticatedMethodState } from '@/auth/states/lastAuthenticatedMethodState';
+import {
+  SignInUpStep,
+  signInUpStepState,
+} from '@/auth/states/signInUpStepState';
+import { AuthenticatedMethod } from '@/auth/types/AuthenticatedMethod';
+import { type SocialSsoSignInUpActionType } from '@/auth/types/SocialSsoSignInUpActionType';
+import { useLingui } from '@lingui/react/macro';
+import { MainButton } from 'crm-ui/components/input';
+import { IconMicrosoft } from 'crm-ui/icon';
+import { useAtomState } from '@/ui/utilities/state/jotai/hooks/useAtomState';
+import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
+import { LastUsedPill } from './LastUsedPill';
+import { StyledSignInUpButtonContainer } from './SignInUpButtonStyles';
+import { useTheme } from 'crm-ui/theme';
+import { SignInUpSeparator } from './SignInUpSeparator';
+
+export const SignInUpWithMicrosoft = ({
+  action,
+  isGlobalScope,
+}: {
+  action: SocialSsoSignInUpActionType;
+  isGlobalScope?: boolean;
+}) => {
+  const theme = useTheme();
+  const { t } = useLingui();
+
+  const signInUpStep = useAtomStateValue(signInUpStepState);
+  const [lastAuthenticatedMethod, setLastAuthenticatedMethod] = useAtomState(
+    lastAuthenticatedMethodState,
+  );
+  const { signInWithMicrosoft } = useSignInWithMicrosoft();
+  const hasMultipleAuthMethods = useHasMultipleAuthMethods();
+
+  const handleClick = () => {
+    setLastAuthenticatedMethod(AuthenticatedMethod.MICROSOFT);
+    signInWithMicrosoft({ action });
+  };
+
+  const isLastUsed = lastAuthenticatedMethod === AuthenticatedMethod.MICROSOFT;
+
+  return (
+    <>
+      <StyledSignInUpButtonContainer>
+        <MainButton
+          startIcon={<IconMicrosoft size={theme.icon.size.md} />}
+          onClick={handleClick}
+          fullWidth
+          variant={signInUpStep === SignInUpStep.Init ? 'solid' : 'outline'}
+        >{t`Continue with Microsoft`}</MainButton>
+        {isLastUsed && (isGlobalScope || hasMultipleAuthMethods) && (
+          <LastUsedPill />
+        )}
+      </StyledSignInUpButtonContainer>
+      <SignInUpSeparator />
+    </>
+  );
+};

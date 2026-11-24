@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-02-01 18:53+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: uz\n"
+"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2025-01-01 00:00\n"
+"Last-Translator: \n"
+"Language-Team: Uzbek\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "{senderName} (<0>{senderEmail}</0>) has invited you to join a workspace called <1>{workspaceName}</1>."
+msgstr "{senderName} (<0>{senderEmail}</0>) sizni <1>{workspaceName}</1> nomli ish maydoniga qoʻshilishga taklif qildi."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Accept invite"
+msgstr "Taklifni qabul qiling"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm new email"
+msgstr "Yangi elektron pochtani tasdiqlang"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your email address"
+msgstr "Elektron pochta manzilingizni tasdiqlang"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Confirm your new email address"
+msgstr "Yangi elektron pochta manzilingizni tasdiqlang"
+
+#. js-lingui-explicit-id
+#: src/components/BaseHead.tsx
+msgid "CRM email"
+msgstr "CRM elektron pochtasi"
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Join your team on CRM"
+msgstr "Jamoangizga CRM da qoʻshiling"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset"
+msgstr "Qayta oʻrnatish"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Reset your password 🗝"
+msgstr "Parolingizni qayta oʻrnating 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set"
+msgstr "Oʻrnatish"
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "Set your password 🗝"
+msgstr "Parolingizni oʻrnating 🗝"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Thanks for registering for an account on CRM! Before we get started, we just need to confirm that this is you. Click below to verify your email address."
+msgstr "CRM’da hisob qaydnomasidan o‘tganingiz uchun rahmat! Boshlashdan oldin, bu siz ekaningizni tasdiqlashimiz kerak. Elektron pochta manzilingizni tasdiqlash uchun quyidagi tugmani bosing."
+
+#. js-lingui-explicit-id
+#: src/emails/password-reset-link.email.tsx
+msgid "This link is only valid for the next {duration}. If the link does not work, you can use the login verification link directly:"
+msgstr "Ushbu havola faqat keyingi {duration} davomida amal qiladi. Agar havola ishlamasa, siz tizimga kirish tasdiqlash havolasidan bevosita foydalanishingiz mumkin:"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "Verify Email"
+msgstr "Elektron pochtani tasdiqlang"
+
+#. js-lingui-explicit-id
+#: src/emails/send-email-verification-link.email.tsx
+msgid "We received a request to change the email address associated with your CRM account. Click below to confirm this change."
+msgstr "CRM hisob qaydnomangiz bilan bog‘langan elektron pochta manzilini o‘zgartirish so‘rovini oldik. Ushbu o‘zgarishni tasdiqlash uchun quyidagi tugmani bosing."
+
+#. js-lingui-explicit-id
+#: src/emails/send-invite-link.email.tsx
+msgid "Workspace logo"
+msgstr "Ish maydoni logotipi"

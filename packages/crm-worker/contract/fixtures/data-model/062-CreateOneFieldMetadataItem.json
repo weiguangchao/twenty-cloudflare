@@ -1,0 +1,71 @@
+{
+  "flow": "data-model",
+  "sequence": 62,
+  "capturedAt": "2026-11-12T11:45:48.043Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconAbc",
+        "label": "Code",
+        "name": "code",
+        "settings": {
+          "displayedMaxRows": 0
+        },
+        "isLabelSyncedWithName": true,
+        "isUnique": false,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "TEXT"
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "589",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createOneField": {
+        "id": "85fae2f3-8bca-4acf-8f5a-319aa253ee46",
+        "type": "TEXT",
+        "name": "code",
+        "label": "Code",
+        "description": "",
+        "icon": "IconAbc",
+        "isActive": true,
+        "isUnique": false,
+        "isSearchable": false,
+        "isNullable": true,
+        "createdAt": "2026-11-12T11:45:47.787Z",
+        "updatedAt": "2026-11-12T11:45:47.787Z",
+        "settings": {
+          "displayedMaxRows": 0
+        },
+        "defaultValue": null,
+        "options": null,
+        "isLabelSyncedWithName": true,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "object": {
+          "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+          "__typename": "Object"
+        },
+        "relation": null,
+        "morphRelations": null,
+        "__typename": "Field"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,54 @@
+{
+  "flow": "members-roles",
+  "sequence": 101,
+  "capturedAt": "2026-11-12T12:21:10.723Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "GetPublicWorkspaceDataByDomain",
+  "query": "query GetPublicWorkspaceDataByDomain($origin: String!) {\n  getPublicWorkspaceDataByDomain(origin: $origin) {\n    id\n    logo\n    displayName\n    workspaceUrls {\n      ...WorkspaceUrlsFragment\n      __typename\n    }\n    authProviders {\n      sso {\n        id\n        name\n        type\n        status\n        issuer\n        __typename\n      }\n      google\n      magicLink\n      password\n      microsoft\n      __typename\n    }\n    authBypassProviders {\n      google\n      password\n      microsoft\n      __typename\n    }\n    __typename\n  }\n}\n\nfragment WorkspaceUrlsFragment on WorkspaceUrls {\n  subdomainUrl\n  customUrl\n  __typename\n}",
+  "variables": {
+    "origin": "http://localhost:3001"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1018",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "getPublicWorkspaceDataByDomain": {
+        "id": "9b2efe49-8f80-4e36-8cb4-ea9ddf49b0ee",
+        "logo": "http://localhost:3000/file/core-picture/ff1e2459-9aa8-47ca-a47b-06fc42e53d91?token=<redacted-jwt-170>",
+        "displayName": "Acme",
+        "workspaceUrls": {
+          "subdomainUrl": "http://localhost:3001/",
+          "customUrl": null,
+          "__typename": "WorkspaceUrls"
+        },
+        "authProviders": {
+          "sso": [],
+          "google": false,
+          "magicLink": false,
+          "password": true,
+          "microsoft": false,
+          "__typename": "AuthProviders"
+        },
+        "authBypassProviders": {
+          "google": false,
+          "password": false,
+          "microsoft": false,
+          "__typename": "AuthBypassProviders"
+        },
+        "__typename": "PublicWorkspaceData"
+      }
+    }
+  },
+  "repeatCount": 1
+}

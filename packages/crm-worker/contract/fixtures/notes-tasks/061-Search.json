@@ -1,0 +1,58 @@
+{
+  "flow": "notes-tasks",
+  "sequence": 61,
+  "capturedAt": "2026-11-12T11:39:53.271Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "Search",
+  "query": "query Search($searchInput: String!, $limit: Int!, $after: String, $excludedObjectNameSingulars: [String!], $includedObjectNameSingulars: [String!], $filter: ObjectRecordFilterInput) {\n  search(\n    searchInput: $searchInput\n    limit: $limit\n    after: $after\n    excludedObjectNameSingulars: $excludedObjectNameSingulars\n    includedObjectNameSingulars: $includedObjectNameSingulars\n    filter: $filter\n  ) {\n    edges {\n      node {\n        recordId\n        objectNameSingular\n        objectLabelSingular\n        label\n        imageUrl\n        tsRankCD\n        tsRank\n        __typename\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "searchInput": "",
+    "limit": 60,
+    "filter": {},
+    "includedObjectNameSingulars": [
+      "workspaceMember"
+    ]
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "753",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "search": {
+        "edges": [
+          {
+            "node": {
+              "recordId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+              "objectNameSingular": "workspaceMember",
+              "objectLabelSingular": "工作区成员",
+              "label": "Alice Admin",
+              "imageUrl": "",
+              "tsRankCD": 0,
+              "tsRank": 0,
+              "__typename": "SearchRecord"
+            },
+            "cursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsid29ya3NwYWNlTWVtYmVyIjoiYmFhMDMxNzgtMDAzMC00ZTBhLWI3YzgtNTkzMTJiNWQzZWFhIn19",
+            "__typename": "SearchResultEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0UmFua3MiOnsidHNSYW5rQ0QiOjAsInRzUmFuayI6MH0sImxhc3RSZWNvcmRJZHNQZXJPYmplY3QiOnsid29ya3NwYWNlTWVtYmVyIjoiYmFhMDMxNzgtMDAzMC00ZTBhLWI3YzgtNTkzMTJiNWQzZWFhIn19",
+          "__typename": "SearchResultPageInfo"
+        },
+        "__typename": "SearchResultConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

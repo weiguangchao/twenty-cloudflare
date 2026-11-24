@@ -1,0 +1,103 @@
+{
+  "flow": "views",
+  "sequence": 58,
+  "capturedAt": "2026-11-12T12:06:42.024Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "InitiativesGroupByRecords",
+  "query": "query InitiativesGroupByRecords($groupBy: [InitiativeGroupByInput!]!, $filter: InitiativeFilterInput, $orderByForRecords: [InitiativeOrderByInput!], $limit: Int, $offsetForRecords: Int) {\n  initiativesGroupBy(\n    groupBy: $groupBy\n    filter: $filter\n    orderByForRecords: $orderByForRecords\n    limit: $limit\n    offsetForRecords: $offsetForRecords\n  ) {\n    groupByDimensionValues\n    edges {\n      node {\n        __typename\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        id\n        name\n        phase\n        position\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n      }\n      __typename\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {
+      "or": [
+        {
+          "phase": {
+            "is": "NULL"
+          }
+        },
+        {
+          "phase": {
+            "in": [
+              "PLANNING",
+              "EXECUTION"
+            ]
+          }
+        }
+      ]
+    },
+    "groupBy": {
+      "phase": true
+    },
+    "orderByForRecords": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 3
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "initiativesGroupBy": [
+        {
+          "groupByDimensionValues": [
+            "EXECUTION"
+          ],
+          "edges": [
+            {
+              "node": {
+                "__typename": "Initiative",
+                "createdAt": "2026-11-12T12:01:03.392Z",
+                "createdBy": {
+                  "source": "MANUAL",
+                  "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                  "name": "Alice Admin",
+                  "context": {
+                    "provider": null,
+                    "applicationId": null,
+                    "__typename": "ActorContext"
+                  },
+                  "__typename": "Actor"
+                },
+                "deletedAt": null,
+                "id": "11b170fb-3229-40e9-8c51-e42cf4a3d12f",
+                "name": "Website Revamp",
+                "phase": "EXECUTION",
+                "position": 0,
+                "updatedAt": "2026-11-12T12:02:44.508Z",
+                "updatedBy": {
+                  "source": "MANUAL",
+                  "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+                  "name": "Alice Admin",
+                  "context": {
+                    "provider": null,
+                    "applicationId": null,
+                    "__typename": "ActorContext"
+                  },
+                  "__typename": "Actor"
+                }
+              },
+              "__typename": "InitiativeEdge"
+            }
+          ],
+          "pageInfo": {
+            "endCursor": "eyJwb3NpdGlvbiI6MCwiaWQiOiIxMWIxNzBmYi0zMjI5LTQwZTktOGM1MS1lNDJjZjRhM2QxMmYifQ",
+            "hasNextPage": false,
+            "__typename": "PageInfo"
+          },
+          "__typename": "InitiativeConnection"
+        }
+      ]
+    }
+  },
+  "repeatCount": 1
+}

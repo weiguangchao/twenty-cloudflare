@@ -1,0 +1,37 @@
+{
+  "name": "crm-worker",
+  "private": true,
+  "license": "AGPL-3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "cf-typegen": "wrangler types --include-runtime=false --strict-vars=false"
+  },
+  "dependencies": {
+    "@lingui/core": "^5.9.5",
+    "@sniptt/guards": "0.2.0",
+    "bcryptjs": "3.0.2",
+    "crm-emails": "workspace:*",
+    "crm-shared": "workspace:*",
+    "file-type": "21.3.4",
+    "graphql": "16.14.2",
+    "graphql-yoga": "5.24.6",
+    "hono": "~4.13.17",
+    "jose": "^6.2.13",
+    "libphonenumber-js": "1.11.5",
+    "mrmime": "2.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sanitize-html": "2.18.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "~1.6.1",
+    "@cloudflare/workers-types": "~5.20261108.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/sanitize-html": "2.16.0",
+    "@vitest/expect": "^4.1.0",
+    "vitest": "^4.1.0",
+    "wrangler": "^4.151.0"
+  }
+}

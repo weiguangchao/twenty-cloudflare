@@ -2,18 +2,18 @@ name: Cloudflare CRM
 on:
   pull_request:
     paths:
-      - 'packages/twenty-worker/**'
-      - 'packages/twenty-front/**'
-      - 'packages/twenty-shared/**'
-      - 'packages/twenty-ui/**'
-      - 'packages/twenty-emails/**'
-      - 'packages/twenty-e2e-testing/**'
+      - 'packages/crm-worker/**'
+      - 'packages/crm-front/**'
+      - 'packages/crm-shared/**'
+      - 'packages/crm-ui/**'
+      - 'packages/crm-emails/**'
+      - 'packages/crm-e2e-testing/**'
       - 'package.json'
       - 'yarn.lock'
       - '.github/workflows/ci-worker.yaml'
+      - '.github/actions/**'
   push:
-    branches: [cloudflare-migration, main]
-  merge_group:
+    branches: [cloudflare-migration]
   workflow_dispatch:
     inputs:
       deploy:
@@ -38,46 +38,46 @@ jobs:
       - uses: ./.github/actions/yarn-install
       - name: Build runtime dependencies and frontend
         run: |
-          npx nx build twenty-oxlint-rules
-          npx nx build twenty-shared --skip-nx-cache
-          npx nx build twenty-emails
-          npx nx build twenty-front
+          npx nx build crm-oxlint-rules
+          npx nx build crm-shared --skip-nx-cache
+          npx nx build crm-emails
+          npx nx build crm-front
       - name: Worker lint and direct types
         run: |
-          npx nx lint twenty-worker --excludeTaskDependencies --skip-nx-cache
-          cd packages/twenty-worker
+          npx nx lint crm-worker --excludeTaskDependencies --skip-nx-cache
+          cd packages/crm-worker
           npx tsgo -p tsconfig.json --noEmit
       - name: Shared package direct types
         run: |
-          for package in twenty-shared twenty-ui twenty-emails twenty-oxlint-rules; do
+          for package in crm-shared crm-ui crm-emails crm-oxlint-rules; do
             (cd "packages/$package" && npx tsgo -p tsconfig.json --noEmit)
           done
       - name: Worker regression tests
-        working-directory: packages/twenty-worker
+        working-directory: packages/crm-worker
         run: npx vitest run --maxWorkers=2 --testTimeout=30000 --hookTimeout=60000
       - name: Generate frontend types from Worker schemas
         run: |
-          node packages/twenty-worker/scripts/export-schemas.mjs
-          cd packages/twenty-front
+          node packages/crm-worker/scripts/export-schemas.mjs
+          cd packages/crm-front
           npx graphql-codegen --config codegen.cjs
           npx graphql-codegen --config codegen-metadata.cjs
           npx tsgo -p tsconfig.json --noEmit
           cd ../..
-          git diff --exit-code -- packages/twenty-worker/contract/worker-core-schema.graphql packages/twenty-front/src/generated packages/twenty-front/src/generated-metadata
+          git diff --exit-code -- packages/crm-worker/contract/worker-core-schema.graphql packages/crm-front/src/generated packages/crm-front/src/generated-metadata
       - name: Install Chromium
-        working-directory: packages/twenty-e2e-testing
+        working-directory: packages/crm-e2e-testing
         run: npx playwright install --with-deps chromium
       - name: Core CRM end-to-end tests
-        working-directory: packages/twenty-e2e-testing
+        working-directory: packages/crm-e2e-testing
         run: npx playwright test
       - name: Validate Worker bundle
-        working-directory: packages/twenty-worker
+        working-directory: packages/crm-worker
         run: npx wrangler deploy --env production --dry-run --outdir dist
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: failure()
         with:
           name: playwright-results
-          path: packages/twenty-e2e-testing/run_results
+          path: packages/crm-e2e-testing/run_results
           retention-days: 7
   deploy:
     needs: validate
@@ -95,7 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
       - uses: ./.github/actions/yarn-install
-      - run: npx nx build twenty-worker
+      - run: npx nx build crm-worker
       - name: Deploy validated CRM
-        working-directory: packages/twenty-worker
+        working-directory: packages/crm-worker
         run: node scripts/deploy.mjs production

@@ -1,0 +1,97 @@
+{
+  "flow": "data-model",
+  "sequence": 122,
+  "capturedAt": "2026-11-12T11:47:41.131Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CreateOneFieldMetadataItem",
+  "query": "mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {\n  createOneField(input: $input) {\n    id\n    type\n    name\n    label\n    description\n    icon\n    isActive\n    isUnique\n    isSearchable\n    isNullable\n    createdAt\n    updatedAt\n    settings\n    defaultValue\n    options\n    isLabelSyncedWithName\n    applicationId\n    object {\n      id\n      __typename\n    }\n    relation {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    morphRelations {\n      type\n      sourceObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      targetObjectMetadata {\n        id\n        nameSingular\n        namePlural\n        __typename\n      }\n      sourceFieldMetadata {\n        id\n        name\n        __typename\n      }\n      targetFieldMetadata {\n        id\n        name\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}",
+  "variables": {
+    "input": {
+      "field": {
+        "description": null,
+        "icon": "IconStar",
+        "label": "Priority",
+        "name": "priority",
+        "isLabelSyncedWithName": true,
+        "isUnique": false,
+        "objectMetadataId": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+        "type": "RATING"
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "1029",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "createOneField": {
+        "id": "38626ef8-ea88-48ec-a2ce-75d0ae8e56e2",
+        "type": "RATING",
+        "name": "priority",
+        "label": "Priority",
+        "description": "",
+        "icon": "IconStar",
+        "isActive": true,
+        "isUnique": false,
+        "isSearchable": false,
+        "isNullable": true,
+        "createdAt": "2026-11-12T11:47:40.825Z",
+        "updatedAt": "2026-11-12T11:47:40.825Z",
+        "settings": null,
+        "defaultValue": null,
+        "options": [
+          {
+            "id": "3d445210-d9f0-49c3-a9fc-8026d86a6401",
+            "label": "1",
+            "value": "RATING_1",
+            "position": 0
+          },
+          {
+            "id": "af3b5cf2-e8f8-4f47-a0b7-b17131ab0cd7",
+            "label": "2",
+            "value": "RATING_2",
+            "position": 1
+          },
+          {
+            "id": "6567af07-d9da-4894-a331-73528dce295e",
+            "label": "3",
+            "value": "RATING_3",
+            "position": 2
+          },
+          {
+            "id": "1c62e8c7-c4a2-4f9c-9890-cae53f5164f0",
+            "label": "4",
+            "value": "RATING_4",
+            "position": 3
+          },
+          {
+            "id": "77dc191e-993e-4ceb-83d6-f93bbff793e9",
+            "label": "5",
+            "value": "RATING_5",
+            "position": 4
+          }
+        ],
+        "isLabelSyncedWithName": true,
+        "applicationId": "ba8a1847-53b2-4f35-b39a-01802658806a",
+        "object": {
+          "id": "a3cddb99-f8f2-410d-967b-4b7798e1d29d",
+          "__typename": "Object"
+        },
+        "relation": null,
+        "morphRelations": null,
+        "__typename": "Field"
+      }
+    }
+  },
+  "repeatCount": 1
+}

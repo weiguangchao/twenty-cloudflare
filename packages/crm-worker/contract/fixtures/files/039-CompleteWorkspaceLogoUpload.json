@@ -1,0 +1,37 @@
+{
+  "flow": "files",
+  "sequence": 39,
+  "capturedAt": "2026-11-12T12:10:12.713Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "CompleteWorkspaceLogoUpload",
+  "query": "mutation CompleteWorkspaceLogoUpload($fileId: String!) {\n  completeWorkspaceLogoUpload(fileId: $fileId) {\n    id\n    path\n    size\n    createdAt\n    url\n    __typename\n  }\n}",
+  "variables": {
+    "fileId": "ff1e2459-9aa8-47ca-a47b-06fc42e53d91"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "768",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "completeWorkspaceLogoUpload": {
+        "id": "ff1e2459-9aa8-47ca-a47b-06fc42e53d91",
+        "path": "core-picture/ff1e2459-9aa8-47ca-a47b-06fc42e53d91.png",
+        "size": 177,
+        "createdAt": "2026-11-12T12:10:12.547Z",
+        "url": "http://localhost:3000/file/core-picture/ff1e2459-9aa8-47ca-a47b-06fc42e53d91?token=<redacted-jwt-96>",
+        "__typename": "FileWithSignedUrl"
+      }
+    }
+  },
+  "repeatCount": 1
+}

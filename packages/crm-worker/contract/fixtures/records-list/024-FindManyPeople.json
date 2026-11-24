@@ -1,0 +1,328 @@
+{
+  "flow": "records-list",
+  "sequence": 24,
+  "capturedAt": "2026-11-12T11:23:10.548Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyPeople",
+  "query": "query FindManyPeople($filter: PersonFilterInput, $orderBy: [PersonOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  people(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        avatarFile {\n          fileId\n          label\n          extension\n          url\n          __typename\n        }\n        company {\n          __typename\n          domainName {\n            primaryLinkUrl\n            primaryLinkLabel\n            secondaryLinks {\n              label\n              url\n              __typename\n            }\n            __typename\n          }\n          id\n          name\n        }\n        companyId\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        deletedAt\n        emails {\n          primaryEmail\n          additionalEmails\n          __typename\n        }\n        id\n        jobTitle\n        linkedinLink {\n          primaryLinkUrl\n          primaryLinkLabel\n          secondaryLinks {\n            label\n            url\n            __typename\n          }\n          __typename\n        }\n        name {\n          firstName\n          lastName\n          __typename\n        }\n        phones {\n          primaryPhoneNumber\n          primaryPhoneCountryCode\n          primaryPhoneCallingCode\n          additionalPhones {\n            number\n            callingCode\n            countryCode\n            __typename\n          }\n          __typename\n        }\n        position\n        updatedAt\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "filter": {},
+    "orderBy": [
+      {
+        "position": "AscNullsFirst"
+      }
+    ],
+    "limit": 10,
+    "offset": 90
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "zh-CN",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "people": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "airbnb.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [],
+                  "__typename": "Links"
+                },
+                "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+                "name": "Airbnb"
+              },
+              "companyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "chesky@airbnb.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+              "jobTitle": "",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Brian",
+                "lastName": "Chesky",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "123456789",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "+1",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": 1,
+              "updatedAt": "2026-11-12T11:19:49.323Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6MSwiaWQiOiJhMmU3OGE1ZS0zMzhiLTQ2ZGYtODgxMS1mYTA4YzdkMTlkMzUifQ",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "anthropic.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [],
+                  "__typename": "Links"
+                },
+                "id": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1",
+                "name": "Anthropic"
+              },
+              "companyId": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1",
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "amodei@anthropic.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "93c72d2e-e65c-44c4-99ad-f87f50349dcf",
+              "jobTitle": "",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Dario",
+                "lastName": "Amodei",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "555123456",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "+1",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": 2,
+              "updatedAt": "2026-11-12T11:19:49.323Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6MiwiaWQiOiI5M2M3MmQyZS1lNjVjLTQ0YzQtOTlhZC1mODdmNTAzNDlkY2YifQ",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "stripe.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [],
+                  "__typename": "Links"
+                },
+                "id": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+                "name": "Stripe"
+              },
+              "companyId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "collison@stripe.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "edf6d445-13a7-4373-9a47-8f89e8c0a877",
+              "jobTitle": "",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Patrick",
+                "lastName": "Collison",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "987625341",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "+1",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": 3,
+              "updatedAt": "2026-11-12T11:19:49.323Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6MywiaWQiOiJlZGY2ZDQ0NS0xM2E3LTQzNzMtOWE0Ny04Zjg5ZThjMGE4NzcifQ",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "figma.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [],
+                  "__typename": "Links"
+                },
+                "id": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+                "name": "Figma"
+              },
+              "companyId": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "field@figma.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "b1e26fa6-c757-4c88-abfa-4b11f5cf3acf",
+              "jobTitle": "",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Dylan",
+                "lastName": "Field",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "098822619",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "+1",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": 4,
+              "updatedAt": "2026-11-12T11:19:49.323Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6NCwiaWQiOiJiMWUyNmZhNi1jNzU3LTRjODgtYWJmYS00YjExZjVjZjNhY2YifQ",
+            "__typename": "PersonEdge"
+          },
+          {
+            "node": {
+              "__typename": "Person",
+              "avatarFile": null,
+              "company": {
+                "__typename": "Company",
+                "domainName": {
+                  "primaryLinkUrl": "notion.com",
+                  "primaryLinkLabel": "",
+                  "secondaryLinks": [],
+                  "__typename": "Links"
+                },
+                "id": "06290608-8bf0-4806-99ae-a715a6a93fad",
+                "name": "Notion"
+              },
+              "companyId": "06290608-8bf0-4806-99ae-a715a6a93fad",
+              "createdAt": "2026-11-12T11:19:49.323Z",
+              "createdBy": {
+                "source": "SYSTEM",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "deletedAt": null,
+              "emails": {
+                "primaryEmail": "zhao@notion.com",
+                "additionalEmails": [],
+                "__typename": "Emails"
+              },
+              "id": "7a93d1e5-3f74-4945-8a65-d7f996083f72",
+              "jobTitle": "",
+              "linkedinLink": {
+                "primaryLinkUrl": "",
+                "primaryLinkLabel": "",
+                "secondaryLinks": [],
+                "__typename": "Links"
+              },
+              "name": {
+                "firstName": "Ivan",
+                "lastName": "Zhao",
+                "__typename": "FullName"
+              },
+              "phones": {
+                "primaryPhoneNumber": "882261739",
+                "primaryPhoneCountryCode": "",
+                "primaryPhoneCallingCode": "+1",
+                "additionalPhones": [],
+                "__typename": "Phones"
+              },
+              "position": 5,
+              "updatedAt": "2026-11-12T11:19:49.323Z"
+            },
+            "cursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI3YTkzZDFlNS0zZjc0LTQ5NDUtOGE2NS1kN2Y5OTYwODNmNzIifQ",
+            "__typename": "PersonEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJwb3NpdGlvbiI6MSwiaWQiOiJhMmU3OGE1ZS0zMzhiLTQ2ZGYtODgxMS1mYTA4YzdkMTlkMzUifQ",
+          "endCursor": "eyJwb3NpdGlvbiI6NSwiaWQiOiI3YTkzZDFlNS0zZjc0LTQ5NDUtOGE2NS1kN2Y5OTYwODNmNzIifQ",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 95,
+        "__typename": "PersonConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,423 @@
+{
+  "source": "old server standard-objects-prefill-data utils (companies, people, opportunities), composite columns folded into JSON objects",
+  "placeholders": {
+    "{{creatorWorkspaceMemberId}}": "workspaceMember id of the user activating the workspace"
+  },
+  "records": {
+    "company": [
+      {
+        "id": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "name": "Airbnb",
+        "domainName": {
+          "primaryLinkUrl": "airbnb.com"
+        },
+        "address": {
+          "addressStreet1": "888 Brannan St",
+          "addressStreet2": null,
+          "addressCity": "San Francisco",
+          "addressState": "CA",
+          "addressPostcode": "94103",
+          "addressCountry": "United States"
+        },
+        "position": 1,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1",
+        "name": "Anthropic",
+        "domainName": {
+          "primaryLinkUrl": "anthropic.com"
+        },
+        "address": {
+          "addressStreet1": "548 Market Street",
+          "addressStreet2": null,
+          "addressCity": "San Francisco",
+          "addressState": "CA",
+          "addressPostcode": "94104",
+          "addressCountry": "United States"
+        },
+        "position": 2,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+        "name": "Stripe",
+        "domainName": {
+          "primaryLinkUrl": "stripe.com"
+        },
+        "address": {
+          "addressStreet1": "Eutaw Street",
+          "addressStreet2": null,
+          "addressCity": "Dublin",
+          "addressState": null,
+          "addressPostcode": null,
+          "addressCountry": "Ireland"
+        },
+        "position": 3,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+        "name": "Figma",
+        "domainName": {
+          "primaryLinkUrl": "figma.com"
+        },
+        "address": {
+          "addressStreet1": "760 Market St",
+          "addressStreet2": "Floor 10",
+          "addressCity": "San Francisco",
+          "addressState": null,
+          "addressPostcode": "94102",
+          "addressCountry": "United States"
+        },
+        "position": 4,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "06290608-8bf0-4806-99ae-a715a6a93fad",
+        "name": "Notion",
+        "domainName": {
+          "primaryLinkUrl": "notion.com"
+        },
+        "address": {
+          "addressStreet1": "2300 Harrison St",
+          "addressStreet2": null,
+          "addressCity": "San Francisco",
+          "addressState": "CA",
+          "addressPostcode": "94110",
+          "addressCountry": "United States"
+        },
+        "position": 5,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      }
+    ],
+    "person": [
+      {
+        "id": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+        "name": {
+          "firstName": "Brian",
+          "lastName": "Chesky"
+        },
+        "emails": {
+          "primaryEmail": "chesky@airbnb.com"
+        },
+        "avatarUrl": "",
+        "position": 1,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "phones": {
+          "primaryPhoneNumber": "123456789",
+          "primaryPhoneCallingCode": "+1"
+        },
+        "companyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f"
+      },
+      {
+        "id": "93c72d2e-e65c-44c4-99ad-f87f50349dcf",
+        "name": {
+          "firstName": "Dario",
+          "lastName": "Amodei"
+        },
+        "emails": {
+          "primaryEmail": "amodei@anthropic.com"
+        },
+        "avatarUrl": "",
+        "position": 2,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "phones": {
+          "primaryPhoneNumber": "555123456",
+          "primaryPhoneCallingCode": "+1"
+        },
+        "companyId": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1"
+      },
+      {
+        "id": "edf6d445-13a7-4373-9a47-8f89e8c0a877",
+        "name": {
+          "firstName": "Patrick",
+          "lastName": "Collison"
+        },
+        "emails": {
+          "primaryEmail": "collison@stripe.com"
+        },
+        "avatarUrl": "",
+        "position": 3,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "phones": {
+          "primaryPhoneNumber": "987625341",
+          "primaryPhoneCallingCode": "+1"
+        },
+        "companyId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94"
+      },
+      {
+        "id": "b1e26fa6-c757-4c88-abfa-4b11f5cf3acf",
+        "name": {
+          "firstName": "Dylan",
+          "lastName": "Field"
+        },
+        "emails": {
+          "primaryEmail": "field@figma.com"
+        },
+        "avatarUrl": "",
+        "position": 4,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "phones": {
+          "primaryPhoneNumber": "098822619",
+          "primaryPhoneCallingCode": "+1"
+        },
+        "companyId": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0"
+      },
+      {
+        "id": "7a93d1e5-3f74-4945-8a65-d7f996083f72",
+        "name": {
+          "firstName": "Ivan",
+          "lastName": "Zhao"
+        },
+        "emails": {
+          "primaryEmail": "zhao@notion.com"
+        },
+        "avatarUrl": "",
+        "position": 5,
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "phones": {
+          "primaryPhoneNumber": "882261739",
+          "primaryPhoneCallingCode": "+1"
+        },
+        "companyId": "06290608-8bf0-4806-99ae-a715a6a93fad"
+      }
+    ],
+    "opportunity": [
+      {
+        "id": "822639e5-9bf7-40f1-8882-a11140362339",
+        "name": "Platform Migration",
+        "amount": {
+          "amountMicros": 60000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-01-31T16:25:00.000Z",
+        "stage": "PROPOSAL",
+        "position": 1,
+        "companyId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+        "pointOfContactId": "edf6d445-13a7-4373-9a47-8f89e8c0a877",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "fc747edc-cb00-4078-8d6b-1fab2611dae4",
+        "name": "AI Model Training",
+        "amount": {
+          "amountMicros": 100000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-02-15T16:25:00.000Z",
+        "stage": "CUSTOMER",
+        "position": 2,
+        "companyId": "f45ee421-8a3e-4aa5-a1cf-7207cc6754e1",
+        "pointOfContactId": "93c72d2e-e65c-44c4-99ad-f87f50349dcf",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "75de302f-1044-4957-8da4-1f67ebefd52b",
+        "name": "Workspace Expansion",
+        "amount": {
+          "amountMicros": 45000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-01-20T16:26:00.000Z",
+        "stage": "MEETING",
+        "position": 3,
+        "companyId": "06290608-8bf0-4806-99ae-a715a6a93fad",
+        "pointOfContactId": "7a93d1e5-3f74-4945-8a65-d7f996083f72",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "2beb07b0-340c-41d7-be33-5aa91757f329",
+        "name": "API Integration Deal",
+        "amount": {
+          "amountMicros": 75000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-01-25T16:26:00.000Z",
+        "stage": "SCREENING",
+        "position": 4,
+        "companyId": "1f70157c-4ea5-4d81-bc49-e1401abfbb94",
+        "pointOfContactId": "edf6d445-13a7-4373-9a47-8f89e8c0a877",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "9543adcf-ec03-44e2-9233-3c2d3ebae98a",
+        "name": "Enterprise Plan Upgrade",
+        "amount": {
+          "amountMicros": 50000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-03-10T16:26:00.000Z",
+        "stage": "NEW",
+        "position": 5,
+        "companyId": "c776ee49-f608-4a77-8cc8-6fe96ae1e43f",
+        "pointOfContactId": "a2e78a5e-338b-46df-8811-fa08c7d19d35",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      },
+      {
+        "id": "9457f8e9-16ae-43b9-92ee-cbd21f3dded5",
+        "name": "Design Partnership",
+        "amount": {
+          "amountMicros": 30000000000,
+          "currencyCode": "USD"
+        },
+        "closeDate": "2026-01-15T16:27:00.000Z",
+        "stage": "NEW",
+        "position": 6,
+        "companyId": "9d5bcf43-7d38-4e88-82cb-d6d4ce638bf0",
+        "pointOfContactId": "b1e26fa6-c757-4c88-abfa-4b11f5cf3acf",
+        "ownerId": "{{creatorWorkspaceMemberId}}",
+        "createdBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        },
+        "updatedBy": {
+          "source": "SYSTEM",
+          "workspaceMemberId": null,
+          "name": "System"
+        }
+      }
+    ]
+  }
+}

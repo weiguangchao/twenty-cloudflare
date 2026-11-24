@@ -1,0 +1,157 @@
+{
+  "flow": "custom-object-records",
+  "sequence": 21,
+  "capturedAt": "2026-11-12T12:01:03.520Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "CreateOneInitiative",
+  "query": "mutation CreateOneInitiative($input: InitiativeCreateInput!) {\n  createInitiative(data: $input) {\n    __typename\n    agentChatThreadTargets {\n      edges {\n        node {\n          __typename\n          id\n          thread {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    aliases\n    attachments {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    contactEmails {\n      primaryEmail\n      additionalEmails\n      __typename\n    }\n    cost {\n      amountMicros\n      currencyCode\n      __typename\n    }\n    createdAt\n    createdBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    deletedAt\n    documents {\n      fileId\n      label\n      extension\n      url\n      __typename\n    }\n    dueDate\n    hotline {\n      primaryPhoneNumber\n      primaryPhoneCountryCode\n      primaryPhoneCallingCode\n      additionalPhones {\n        number\n        callingCode\n        countryCode\n        __typename\n      }\n      __typename\n    }\n    id\n    isActive\n    kickoffAt\n    lead {\n      __typename\n      avatarFile {\n        fileId\n        label\n        extension\n        url\n        __typename\n      }\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    leadId\n    name\n    noteTargets {\n      edges {\n        node {\n          __typename\n          id\n          note {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    opportunities {\n      edges {\n        node {\n          __typename\n          id\n          name\n        }\n        __typename\n      }\n      __typename\n    }\n    ownerCompany {\n      __typename\n      domainName {\n        primaryLinkUrl\n        primaryLinkLabel\n        secondaryLinks {\n          label\n          url\n          __typename\n        }\n        __typename\n      }\n      id\n      name\n    }\n    ownerCompanyId\n    ownerPerson {\n      __typename\n      avatarFile {\n        fileId\n        label\n        extension\n        url\n        __typename\n      }\n      id\n      name {\n        firstName\n        lastName\n        __typename\n      }\n    }\n    ownerPersonId\n    phase\n    position\n    priority\n    projectCode\n    settingsJson\n    siteAddress {\n      addressStreet1\n      addressStreet2\n      addressCity\n      addressState\n      addressCountry\n      addressPostcode\n      addressLat\n      addressLng\n      __typename\n    }\n    sponsorName {\n      firstName\n      lastName\n      __typename\n    }\n    summary {\n      blocknote\n      markdown\n      tiptap\n      __typename\n    }\n    tags\n    taskTargets {\n      edges {\n        node {\n          __typename\n          id\n          task {\n            __typename\n            id\n            title\n          }\n        }\n        __typename\n      }\n      __typename\n    }\n    timelineActivities {\n      edges {\n        node {\n          __typename\n          id\n          linkedRecordCachedName\n        }\n        __typename\n      }\n      __typename\n    }\n    updatedAt\n    updatedBy {\n      source\n      workspaceMemberId\n      name\n      context {\n        provider\n        applicationId\n        __typename\n      }\n      __typename\n    }\n    website {\n      primaryLinkUrl\n      primaryLinkLabel\n      secondaryLinks {\n        label\n        url\n        __typename\n      }\n      __typename\n    }\n  }\n}",
+  "variables": {
+    "input": {
+      "id": "11b170fb-3229-40e9-8c51-e42cf4a3d12f",
+      "position": "first",
+      "cost": {
+        "currencyCode": "USD",
+        "amountMicros": 25000000000
+      },
+      "name": "Website Revamp",
+      "projectCode": "WR-01",
+      "contactEmails": {
+        "primaryEmail": "team@example.com",
+        "additionalEmails": []
+      }
+    }
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-3>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "createInitiative": {
+        "__typename": "Initiative",
+        "agentChatThreadTargets": {
+          "edges": [],
+          "__typename": "AgentChatThreadTargetConnection"
+        },
+        "aliases": [],
+        "attachments": {
+          "edges": [],
+          "__typename": "AttachmentConnection"
+        },
+        "contactEmails": {
+          "primaryEmail": "team@example.com",
+          "additionalEmails": [],
+          "__typename": "Emails"
+        },
+        "cost": {
+          "amountMicros": 25000000000,
+          "currencyCode": "USD",
+          "__typename": "Currency"
+        },
+        "createdAt": "2026-11-12T12:01:03.392Z",
+        "createdBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "deletedAt": null,
+        "documents": null,
+        "dueDate": null,
+        "hotline": {
+          "primaryPhoneNumber": "",
+          "primaryPhoneCountryCode": "",
+          "primaryPhoneCallingCode": "",
+          "additionalPhones": [],
+          "__typename": "Phones"
+        },
+        "id": "11b170fb-3229-40e9-8c51-e42cf4a3d12f",
+        "isActive": true,
+        "kickoffAt": null,
+        "lead": null,
+        "leadId": null,
+        "name": "Website Revamp",
+        "noteTargets": {
+          "edges": [],
+          "__typename": "NoteTargetConnection"
+        },
+        "opportunities": {
+          "edges": [],
+          "__typename": "OpportunityConnection"
+        },
+        "ownerCompany": null,
+        "ownerCompanyId": null,
+        "ownerPerson": null,
+        "ownerPersonId": null,
+        "phase": null,
+        "position": 0,
+        "priority": null,
+        "projectCode": "WR-01",
+        "settingsJson": null,
+        "siteAddress": {
+          "addressStreet1": "",
+          "addressStreet2": "",
+          "addressCity": "",
+          "addressState": "",
+          "addressCountry": "",
+          "addressPostcode": "",
+          "addressLat": null,
+          "addressLng": null,
+          "__typename": "Address"
+        },
+        "sponsorName": {
+          "firstName": "",
+          "lastName": "",
+          "__typename": "FullName"
+        },
+        "summary": {
+          "blocknote": null,
+          "markdown": "",
+          "tiptap": null,
+          "__typename": "RichText"
+        },
+        "tags": [],
+        "taskTargets": {
+          "edges": [],
+          "__typename": "TaskTargetConnection"
+        },
+        "timelineActivities": {
+          "edges": [],
+          "__typename": "TimelineActivityConnection"
+        },
+        "updatedAt": "2026-11-12T12:01:03.392Z",
+        "updatedBy": {
+          "source": "MANUAL",
+          "workspaceMemberId": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+          "name": "Alice Admin",
+          "context": {
+            "provider": null,
+            "applicationId": null,
+            "__typename": "ActorContext"
+          },
+          "__typename": "Actor"
+        },
+        "website": {
+          "primaryLinkUrl": "",
+          "primaryLinkLabel": "",
+          "secondaryLinks": [],
+          "__typename": "Links"
+        }
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,27 @@
+import { type RoleWithPartialMembers } from '@/settings/roles/types/RoleWithPartialMembers';
+
+export const DEFAULT_SETTINGS_DRAFT_ROLE: RoleWithPartialMembers = {
+  __typename: 'Role',
+  id: '',
+  label: '',
+  description: '',
+  icon: '',
+  canDestroyAllObjectRecords: false,
+  canReadAllObjectRecords: false,
+  canSoftDeleteAllObjectRecords: false,
+  canUpdateAllObjectRecords: false,
+  canUpdateAllSettings: false,
+  canAccessAllTools: false,
+  canAccessAllAgentChatChannels: false,
+  isEditable: false,
+  workspaceMembers: [],
+  permissionFlags: [],
+  objectPermissions: [],
+  fieldPermissions: [],
+  canBeAssignedToAgents: false,
+  canBeAssignedToApiKeys: false,
+  canBeAssignedToUsers: false,
+  applicationId: '',
+  agents: [],
+  apiKeys: [],
+};

@@ -1,0 +1,72 @@
+import { type FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { getImageIdentifierFieldValue } from '@/object-metadata/utils/getImageIdentifierFieldValue';
+import { type ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { FieldMetadataType } from 'crm-shared/types';
+
+const buildFieldMetadataItem = (
+  type: FieldMetadataType,
+  name = 'imageField',
+): FieldMetadataItem => ({ name, type }) as FieldMetadataItem;
+
+const buildRecord = (value: unknown, name = 'imageField'): ObjectRecord => ({
+  __typename: 'Company',
+  id: 'record-id',
+  [name]: value,
+});
+
+describe('getImageIdentifierFieldValue', () => {
+  it('returns null when the image identifier field metadata item is undefined', () => {
+    expect(getImageIdentifierFieldValue(buildRecord('value'), undefined)).toBe(
+      null,
+    );
+  });
+
+  it('returns null when the field value is not defined on the record', () => {
+    expect(
+      getImageIdentifierFieldValue(
+        buildRecord(undefined),
+        buildFieldMetadataItem(FieldMetadataType.FILES),
+      ),
+    ).toBe(null);
+  });
+
+  describe('FILES', () => {
+    it('returns the url of the first file', () => {
+      expect(
+        getImageIdentifierFieldValue(
+          buildRecord([{ url: 'https://example.com/a.png' }]),
+          buildFieldMetadataItem(FieldMetadataType.FILES),
+        ),
+      ).toBe('https://example.com/a.png');
+    });
+
+    it('returns null for an empty files array', () => {
+      expect(
+        getImageIdentifierFieldValue(
+          buildRecord([]),
+          buildFieldMetadataItem(FieldMetadataType.FILES),
+        ),
+      ).toBe(null);
+    });
+  });
+
+  describe('LINKS', () => {
+    it('returns null so the avatar falls back to initials', () => {
+      expect(
+        getImageIdentifierFieldValue(
+          buildRecord({ primaryLinkUrl: 'example.com' }),
+          buildFieldMetadataItem(FieldMetadataType.LINKS),
+        ),
+      ).toBe(null);
+    });
+  });
+
+  it('returns null for unsupported field types (image identifiers are constrained to FILES/LINKS)', () => {
+    expect(
+      getImageIdentifierFieldValue(
+        buildRecord('https://example.com/avatar.png'),
+        buildFieldMetadataItem(FieldMetadataType.TEXT),
+      ),
+    ).toBe(null);
+  });
+});

@@ -1,0 +1,129 @@
+{
+  "flow": "members-roles",
+  "sequence": 148,
+  "capturedAt": "2026-11-12T12:23:05.601Z",
+  "endpoint": "/graphql",
+  "method": "POST",
+  "operationName": "FindManyWorkspaceMembers",
+  "query": "query FindManyWorkspaceMembers($filter: WorkspaceMemberFilterInput, $orderBy: [WorkspaceMemberOrderByInput], $lastCursor: String, $limit: Int, $offset: Int) {\n  workspaceMembers(\n    filter: $filter\n    orderBy: $orderBy\n    first: $limit\n    after: $lastCursor\n    offset: $offset\n  ) {\n    edges {\n      node {\n        __typename\n        avatarUrl\n        calendarStartDay\n        colorScheme\n        createdAt\n        createdBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        dateFormat\n        deletedAt\n        id\n        jobTitle\n        locale\n        name {\n          firstName\n          lastName\n          __typename\n        }\n        numberFormat\n        openRecordIn\n        position\n        timeFormat\n        timeZone\n        uiScale\n        updatedAt\n        updatedBy {\n          source\n          workspaceMemberId\n          name\n          context {\n            provider\n            applicationId\n            __typename\n          }\n          __typename\n        }\n        userEmail\n        userId\n      }\n      cursor\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    totalCount\n    __typename\n  }\n}",
+  "variables": {
+    "limit": 60
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-type": "application/json"
+  },
+  "response": {
+    "data": {
+      "workspaceMembers": {
+        "edges": [
+          {
+            "node": {
+              "__typename": "WorkspaceMember",
+              "avatarUrl": "",
+              "calendarStartDay": 7,
+              "colorScheme": "System",
+              "createdAt": "2026-11-12T12:20:11.630Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "dateFormat": "SYSTEM",
+              "deletedAt": null,
+              "id": "40cc477c-a642-42f9-914a-b1fd5efc9ffe",
+              "jobTitle": "",
+              "locale": "zh-CN",
+              "name": {
+                "firstName": "Bob",
+                "lastName": "Member",
+                "__typename": "FullName"
+              },
+              "numberFormat": "SYSTEM",
+              "openRecordIn": "SIDE_PANEL",
+              "position": 0,
+              "timeFormat": "SYSTEM",
+              "timeZone": "system",
+              "uiScale": "Default",
+              "updatedAt": "2026-11-12T12:20:28.289Z",
+              "updatedBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "userEmail": "bob@example.com",
+              "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80"
+            },
+            "cursor": "eyJpZCI6IjQwY2M0NzdjLWE2NDItNDJmOS05MTRhLWIxZmQ1ZWZjOWZmZSJ9",
+            "__typename": "WorkspaceMemberEdge"
+          },
+          {
+            "node": {
+              "__typename": "WorkspaceMember",
+              "avatarUrl": "http://localhost:3000/file/core-picture/68e29b6b-7c7b-4f0f-a31e-9e4315b4088a?token=<redacted-jwt-193>",
+              "calendarStartDay": 7,
+              "colorScheme": "System",
+              "createdAt": "2026-11-12T11:19:49.295Z",
+              "createdBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "dateFormat": "SYSTEM",
+              "deletedAt": null,
+              "id": "baa03178-0030-4e0a-b7c8-59312b5d3eaa",
+              "jobTitle": "",
+              "locale": "en",
+              "name": {
+                "firstName": "Alice",
+                "lastName": "Admin",
+                "__typename": "FullName"
+              },
+              "numberFormat": "SYSTEM",
+              "openRecordIn": "SIDE_PANEL",
+              "position": 0,
+              "timeFormat": "SYSTEM",
+              "timeZone": "system",
+              "uiScale": "Default",
+              "updatedAt": "2026-11-12T12:09:29.925Z",
+              "updatedBy": {
+                "source": "MANUAL",
+                "workspaceMemberId": null,
+                "name": "System",
+                "context": null,
+                "__typename": "Actor"
+              },
+              "userEmail": "alice@example.com",
+              "userId": "15956aaa-a89b-4eaa-8c7f-819c65fa735b"
+            },
+            "cursor": "eyJpZCI6ImJhYTAzMTc4LTAwMzAtNGUwYS1iN2M4LTU5MzEyYjVkM2VhYSJ9",
+            "__typename": "WorkspaceMemberEdge"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "eyJpZCI6IjQwY2M0NzdjLWE2NDItNDJmOS05MTRhLWIxZmQ1ZWZjOWZmZSJ9",
+          "endCursor": "eyJpZCI6ImJhYTAzMTc4LTAwMzAtNGUwYS1iN2M4LTU5MzEyYjVkM2VhYSJ9",
+          "__typename": "PageInfo"
+        },
+        "totalCount": 2,
+        "__typename": "WorkspaceMemberConnection"
+      }
+    }
+  },
+  "repeatCount": 1
+}

@@ -1,0 +1,35 @@
+{
+  "flow": "members-roles",
+  "sequence": 130,
+  "capturedAt": "2026-11-12T12:21:46.039Z",
+  "endpoint": "/metadata",
+  "method": "POST",
+  "operationName": "twoFactorAuthenticationRecoveryStatus",
+  "query": "query twoFactorAuthenticationRecoveryStatus($userId: UUID!) {\n  twoFactorAuthenticationRecoveryStatus(userId: $userId) {\n    hasVerifiedTwoFactorAuthenticationMethod\n    isAwaitingRecoveryEnrollment\n    pendingRecoveryCodeExpiresAt\n    __typename\n  }\n}",
+  "variables": {
+    "userId": "973f4651-a83d-44a6-a3b6-77832fe5cc80"
+  },
+  "requestHeaders": {
+    "cookie": "analyticsCookie=<redacted-cookie>; crm-session=<redacted-session-6>; lastAuthenticateWorkspaceDomain=<redacted-cookie>",
+    "origin": "http://localhost:3001",
+    "content-type": "application/json",
+    "x-locale": "en",
+    "x-crm-session-cookie": "1"
+  },
+  "status": 200,
+  "responseHeaders": {
+    "content-length": "227",
+    "content-type": "application/graphql-response+json; charset=utf-8"
+  },
+  "response": {
+    "data": {
+      "twoFactorAuthenticationRecoveryStatus": {
+        "hasVerifiedTwoFactorAuthenticationMethod": false,
+        "isAwaitingRecoveryEnrollment": false,
+        "pendingRecoveryCodeExpiresAt": null,
+        "__typename": "TwoFactorAuthenticationRecoveryStatus"
+      }
+    }
+  },
+  "repeatCount": 2
+}

@@ -1,0 +1,36 @@
+import {
+  ContextStorePageType,
+  type CommandMenuContextApi,
+} from 'crm-shared/types';
+
+export const EMPTY_COMMAND_MENU_CONTEXT_API: CommandMenuContextApi = {
+  pageType: ContextStorePageType.Index,
+  isInSidePanel: false,
+  isDashboardPageLayoutInEditMode: false,
+  isLayoutCustomizationModeEnabled: false,
+  favoriteRecordIds: [],
+  isSelectAll: false,
+  hasAnySoftDeleteFilterOnView: false,
+  numberOfSelectedRecords: 0,
+  objectPermissions: {
+    canCreateObjectRecords: false,
+    canReadObjectRecords: false,
+    canUpdateObjectRecords: false,
+    canSoftDeleteObjectRecords: false,
+    canDestroyObjectRecords: false,
+    unreadableFields: [],
+    uneditableFields: [],
+    objectMetadataId: '',
+  },
+  selectedRecords: [],
+  featureFlags: {},
+  permissionFlags: {},
+  targetObjectReadPermissions: {},
+  targetObjectWritePermissions: {},
+  canImpersonate: false,
+  canAccessFullAdminPanel: false,
+  objectMetadataItem: {},
+  objectMetadataLabel: '',
+  coreObjectName: null,
+  currentView: null,
+};
